@@ -1,0 +1,11 @@
+2014-02-26 17:24:47 Error: [MissingActionException] Action AppController::index() could not be found.
+Exception Attributes: array (
+  'controller' => 'AppController',
+  'action' => 'index',
+)
+Request URL: /t02itjap/elearning/app/
+Stack Trace:
+#0 C:\xampp\htdocs\t02itjap\elearning\lib\Cake\Routing\Dispatcher.php(185): Controller->invokeAction(Object(CakeRequest))
+#1 C:\xampp\htdocs\t02itjap\elearning\lib\Cake\Routing\Dispatcher.php(160): Dispatcher->_invoke(Object(AppController), Object(CakeRequest), Object(CakeResponse))
+#2 C:\xampp\htdocs\t02itjap\elearning\app\webroot\index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#3 {main}
