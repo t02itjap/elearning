@@ -1,5 +1,5 @@
 <?php
-class StudentController extends AppController {
+class StudentsController extends AppController {
 	var $name = 'Student';
 	var $uses = array ('User');
 	function beforeFilter(){
