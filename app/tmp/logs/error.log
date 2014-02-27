@@ -9,6 +9,7 @@ Stack Trace:
 #1 C:\xampp\htdocs\t02itjap\elearning\lib\Cake\Routing\Dispatcher.php(160): Dispatcher->_invoke(Object(AppController), Object(CakeRequest), Object(CakeResponse))
 #2 C:\xampp\htdocs\t02itjap\elearning\app\webroot\index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
 #3 {main}
+<<<<<<< HEAD
 2014-02-27 00:17:40 Error: [MissingViewException] View file "/var/www/elearning/app/View/Student/index.ctp" is missing.
 Exception Attributes: array (
   'file' => '/var/www/elearning/app/View/Student/index.ctp',
@@ -122,3 +123,454 @@ Request URL: /elearning/css/style.css
 Stack Trace:
 #0 /var/www/elearning/app/webroot/index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
 #1 {main}
+=======
+2014-02-26 19:35:22 Error: [MissingViewException] View file "/opt/lampp/htdocs/elearning/app/View/Student/index.ctp" is missing.
+Exception Attributes: array (
+  'file' => '/opt/lampp/htdocs/elearning/app/View/Student/index.ctp',
+)
+Request URL: /elearning/student
+Stack Trace:
+#0 /opt/lampp/htdocs/elearning/lib/Cake/View/View.php(457): View->_getViewFileName(NULL)
+#1 /opt/lampp/htdocs/elearning/lib/Cake/Controller/Controller.php(952): View->render(NULL, NULL)
+#2 /opt/lampp/htdocs/elearning/lib/Cake/Routing/Dispatcher.php(192): Controller->render()
+#3 /opt/lampp/htdocs/elearning/lib/Cake/Routing/Dispatcher.php(160): Dispatcher->_invoke(Object(StudentController), Object(CakeRequest), Object(CakeResponse))
+#4 /opt/lampp/htdocs/elearning/app/webroot/index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#5 {main}
+2014-02-27 03:29:00 Error: [MissingControllerException] Controller class StudentController could not be found.
+Exception Attributes: array (
+  'class' => 'StudentController',
+  'plugin' => NULL,
+)
+Request URL: /elearning/student
+Stack Trace:
+#0 /opt/lampp/htdocs/elearning/app/webroot/index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2014-02-27 03:29:27 Error: [MissingViewException] View file "/opt/lampp/htdocs/elearning/app/View/Student/index.ctp" is missing.
+Exception Attributes: array (
+  'file' => '/opt/lampp/htdocs/elearning/app/View/Student/index.ctp',
+)
+Request URL: /elearning/students
+Stack Trace:
+#0 /opt/lampp/htdocs/elearning/lib/Cake/View/View.php(457): View->_getViewFileName(NULL)
+#1 /opt/lampp/htdocs/elearning/lib/Cake/Controller/Controller.php(952): View->render(NULL, NULL)
+#2 /opt/lampp/htdocs/elearning/lib/Cake/Routing/Dispatcher.php(192): Controller->render()
+#3 /opt/lampp/htdocs/elearning/lib/Cake/Routing/Dispatcher.php(160): Dispatcher->_invoke(Object(StudentsController), Object(CakeRequest), Object(CakeResponse))
+#4 /opt/lampp/htdocs/elearning/app/webroot/index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#5 {main}
+2014-02-27 03:37:20 Error: [MissingViewException] View file "/opt/lampp/htdocs/elearning/app/View/Student/index.ctp" is missing.
+Exception Attributes: array (
+  'file' => '/opt/lampp/htdocs/elearning/app/View/Student/index.ctp',
+)
+Request URL: /elearning/students
+Stack Trace:
+#0 /opt/lampp/htdocs/elearning/lib/Cake/View/View.php(457): View->_getViewFileName(NULL)
+#1 /opt/lampp/htdocs/elearning/lib/Cake/Controller/Controller.php(952): View->render(NULL, NULL)
+#2 /opt/lampp/htdocs/elearning/lib/Cake/Routing/Dispatcher.php(192): Controller->render()
+#3 /opt/lampp/htdocs/elearning/lib/Cake/Routing/Dispatcher.php(160): Dispatcher->_invoke(Object(StudentsController), Object(CakeRequest), Object(CakeResponse))
+#4 /opt/lampp/htdocs/elearning/app/webroot/index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#5 {main}
+2014-02-27 03:37:21 Error: [MissingViewException] View file "/opt/lampp/htdocs/elearning/app/View/Student/index.ctp" is missing.
+Exception Attributes: array (
+  'file' => '/opt/lampp/htdocs/elearning/app/View/Student/index.ctp',
+)
+Request URL: /elearning/students
+Stack Trace:
+#0 /opt/lampp/htdocs/elearning/lib/Cake/View/View.php(457): View->_getViewFileName(NULL)
+#1 /opt/lampp/htdocs/elearning/lib/Cake/Controller/Controller.php(952): View->render(NULL, NULL)
+#2 /opt/lampp/htdocs/elearning/lib/Cake/Routing/Dispatcher.php(192): Controller->render()
+#3 /opt/lampp/htdocs/elearning/lib/Cake/Routing/Dispatcher.php(160): Dispatcher->_invoke(Object(StudentsController), Object(CakeRequest), Object(CakeResponse))
+#4 /opt/lampp/htdocs/elearning/app/webroot/index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#5 {main}
+2014-02-27 03:37:21 Error: [MissingViewException] View file "/opt/lampp/htdocs/elearning/app/View/Student/index.ctp" is missing.
+Exception Attributes: array (
+  'file' => '/opt/lampp/htdocs/elearning/app/View/Student/index.ctp',
+)
+Request URL: /elearning/students
+Stack Trace:
+#0 /opt/lampp/htdocs/elearning/lib/Cake/View/View.php(457): View->_getViewFileName(NULL)
+#1 /opt/lampp/htdocs/elearning/lib/Cake/Controller/Controller.php(952): View->render(NULL, NULL)
+#2 /opt/lampp/htdocs/elearning/lib/Cake/Routing/Dispatcher.php(192): Controller->render()
+#3 /opt/lampp/htdocs/elearning/lib/Cake/Routing/Dispatcher.php(160): Dispatcher->_invoke(Object(StudentsController), Object(CakeRequest), Object(CakeResponse))
+#4 /opt/lampp/htdocs/elearning/app/webroot/index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#5 {main}
+2014-02-27 04:43:07 Error: [PDOException] SQLSTATE[42S02]: Base table or view not found: 1146 Table 'elearning.tb_user' doesn't exist
+Request URL: /elearning/bills
+Stack Trace:
+#0 /opt/lampp/htdocs/elearning/lib/Cake/Model/Datasource/DboSource.php(458): PDOStatement->execute(Array)
+#1 /opt/lampp/htdocs/elearning/lib/Cake/Model/Datasource/DboSource.php(424): DboSource->_execute('SELECT `User`.`...', Array)
+#2 /opt/lampp/htdocs/elearning/lib/Cake/Model/Datasource/DboSource.php(665): DboSource->execute('SELECT `User`.`...', Array, Array)
+#3 /opt/lampp/htdocs/elearning/lib/Cake/Model/Datasource/DboSource.php(1077): DboSource->fetchAll('SELECT `User`.`...', false)
+#4 /opt/lampp/htdocs/elearning/lib/Cake/Model/Model.php(2900): DboSource->read(Object(Bill), Array)
+#5 /opt/lampp/htdocs/elearning/lib/Cake/Model/Model.php(2872): Model->_readDataSource('all', Array)
+#6 /opt/lampp/htdocs/elearning/app/Model/Bill.php(19): Model->find('all', Array)
+#7 /opt/lampp/htdocs/elearning/app/Controller/BillsController.php(4): Bill->getBills()
+#8 [internal function]: BillsController->index()
+#9 /opt/lampp/htdocs/elearning/lib/Cake/Controller/Controller.php(490): ReflectionMethod->invokeArgs(Object(BillsController), Array)
+#10 /opt/lampp/htdocs/elearning/lib/Cake/Routing/Dispatcher.php(185): Controller->invokeAction(Object(CakeRequest))
+#11 /opt/lampp/htdocs/elearning/lib/Cake/Routing/Dispatcher.php(160): Dispatcher->_invoke(Object(BillsController), Object(CakeRequest), Object(CakeResponse))
+#12 /opt/lampp/htdocs/elearning/app/webroot/index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#13 {main}
+2014-02-27 04:44:18 Error: [PDOException] SQLSTATE[42S02]: Base table or view not found: 1146 Table 'elearning.tb_user' doesn't exist
+Request URL: /elearning/bills
+Stack Trace:
+#0 /opt/lampp/htdocs/elearning/lib/Cake/Model/Datasource/DboSource.php(458): PDOStatement->execute(Array)
+#1 /opt/lampp/htdocs/elearning/lib/Cake/Model/Datasource/DboSource.php(424): DboSource->_execute('SELECT `User`.`...', Array)
+#2 /opt/lampp/htdocs/elearning/lib/Cake/Model/Datasource/DboSource.php(665): DboSource->execute('SELECT `User`.`...', Array, Array)
+#3 /opt/lampp/htdocs/elearning/lib/Cake/Model/Datasource/DboSource.php(1077): DboSource->fetchAll('SELECT `User`.`...', false)
+#4 /opt/lampp/htdocs/elearning/lib/Cake/Model/Model.php(2900): DboSource->read(Object(Bill), Array)
+#5 /opt/lampp/htdocs/elearning/lib/Cake/Model/Model.php(2872): Model->_readDataSource('all', Array)
+#6 /opt/lampp/htdocs/elearning/app/Model/Bill.php(19): Model->find('all', Array)
+#7 /opt/lampp/htdocs/elearning/app/Controller/BillsController.php(4): Bill->getBills(3)
+#8 [internal function]: BillsController->index()
+#9 /opt/lampp/htdocs/elearning/lib/Cake/Controller/Controller.php(490): ReflectionMethod->invokeArgs(Object(BillsController), Array)
+#10 /opt/lampp/htdocs/elearning/lib/Cake/Routing/Dispatcher.php(185): Controller->invokeAction(Object(CakeRequest))
+#11 /opt/lampp/htdocs/elearning/lib/Cake/Routing/Dispatcher.php(160): Dispatcher->_invoke(Object(BillsController), Object(CakeRequest), Object(CakeResponse))
+#12 /opt/lampp/htdocs/elearning/app/webroot/index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#13 {main}
+2014-02-27 04:44:34 Error: [PDOException] SQLSTATE[42S22]: Column not found: 1054 Unknown column 'Bill.lestion_cost' in 'field list'
+Request URL: /elearning/bills
+Stack Trace:
+#0 /opt/lampp/htdocs/elearning/lib/Cake/Model/Datasource/DboSource.php(458): PDOStatement->execute(Array)
+#1 /opt/lampp/htdocs/elearning/lib/Cake/Model/Datasource/DboSource.php(424): DboSource->_execute('SELECT `User`.`...', Array)
+#2 /opt/lampp/htdocs/elearning/lib/Cake/Model/Datasource/DboSource.php(665): DboSource->execute('SELECT `User`.`...', Array, Array)
+#3 /opt/lampp/htdocs/elearning/lib/Cake/Model/Datasource/DboSource.php(1077): DboSource->fetchAll('SELECT `User`.`...', false)
+#4 /opt/lampp/htdocs/elearning/lib/Cake/Model/Model.php(2900): DboSource->read(Object(Bill), Array)
+#5 /opt/lampp/htdocs/elearning/lib/Cake/Model/Model.php(2872): Model->_readDataSource('all', Array)
+#6 /opt/lampp/htdocs/elearning/app/Model/Bill.php(19): Model->find('all', Array)
+#7 /opt/lampp/htdocs/elearning/app/Controller/BillsController.php(4): Bill->getBills(3)
+#8 [internal function]: BillsController->index()
+#9 /opt/lampp/htdocs/elearning/lib/Cake/Controller/Controller.php(490): ReflectionMethod->invokeArgs(Object(BillsController), Array)
+#10 /opt/lampp/htdocs/elearning/lib/Cake/Routing/Dispatcher.php(185): Controller->invokeAction(Object(CakeRequest))
+#11 /opt/lampp/htdocs/elearning/lib/Cake/Routing/Dispatcher.php(160): Dispatcher->_invoke(Object(BillsController), Object(CakeRequest), Object(CakeResponse))
+#12 /opt/lampp/htdocs/elearning/app/webroot/index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#13 {main}
+2014-02-27 04:45:20 Error: [PDOException] SQLSTATE[42S22]: Column not found: 1054 Unknown column 'Array' in 'on clause'
+Request URL: /elearning/bills
+Stack Trace:
+#0 /opt/lampp/htdocs/elearning/lib/Cake/Model/Datasource/DboSource.php(458): PDOStatement->execute(Array)
+#1 /opt/lampp/htdocs/elearning/lib/Cake/Model/Datasource/DboSource.php(424): DboSource->_execute('SELECT `User`.`...', Array)
+#2 /opt/lampp/htdocs/elearning/lib/Cake/Model/Datasource/DboSource.php(665): DboSource->execute('SELECT `User`.`...', Array, Array)
+#3 /opt/lampp/htdocs/elearning/lib/Cake/Model/Datasource/DboSource.php(1077): DboSource->fetchAll('SELECT `User`.`...', false)
+#4 /opt/lampp/htdocs/elearning/lib/Cake/Model/Model.php(2900): DboSource->read(Object(Bill), Array)
+#5 /opt/lampp/htdocs/elearning/lib/Cake/Model/Model.php(2872): Model->_readDataSource('all', Array)
+#6 /opt/lampp/htdocs/elearning/app/Model/Bill.php(19): Model->find('all', Array)
+#7 /opt/lampp/htdocs/elearning/app/Controller/BillsController.php(4): Bill->getBills(3)
+#8 [internal function]: BillsController->index()
+#9 /opt/lampp/htdocs/elearning/lib/Cake/Controller/Controller.php(490): ReflectionMethod->invokeArgs(Object(BillsController), Array)
+#10 /opt/lampp/htdocs/elearning/lib/Cake/Routing/Dispatcher.php(185): Controller->invokeAction(Object(CakeRequest))
+#11 /opt/lampp/htdocs/elearning/lib/Cake/Routing/Dispatcher.php(160): Dispatcher->_invoke(Object(BillsController), Object(CakeRequest), Object(CakeResponse))
+#12 /opt/lampp/htdocs/elearning/app/webroot/index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#13 {main}
+2014-02-27 04:45:21 Error: [PDOException] SQLSTATE[42S22]: Column not found: 1054 Unknown column 'Array' in 'on clause'
+Request URL: /elearning/bills
+Stack Trace:
+#0 /opt/lampp/htdocs/elearning/lib/Cake/Model/Datasource/DboSource.php(458): PDOStatement->execute(Array)
+#1 /opt/lampp/htdocs/elearning/lib/Cake/Model/Datasource/DboSource.php(424): DboSource->_execute('SELECT `User`.`...', Array)
+#2 /opt/lampp/htdocs/elearning/lib/Cake/Model/Datasource/DboSource.php(665): DboSource->execute('SELECT `User`.`...', Array, Array)
+#3 /opt/lampp/htdocs/elearning/lib/Cake/Model/Datasource/DboSource.php(1077): DboSource->fetchAll('SELECT `User`.`...', false)
+#4 /opt/lampp/htdocs/elearning/lib/Cake/Model/Model.php(2900): DboSource->read(Object(Bill), Array)
+#5 /opt/lampp/htdocs/elearning/lib/Cake/Model/Model.php(2872): Model->_readDataSource('all', Array)
+#6 /opt/lampp/htdocs/elearning/app/Model/Bill.php(19): Model->find('all', Array)
+#7 /opt/lampp/htdocs/elearning/app/Controller/BillsController.php(4): Bill->getBills(3)
+#8 [internal function]: BillsController->index()
+#9 /opt/lampp/htdocs/elearning/lib/Cake/Controller/Controller.php(490): ReflectionMethod->invokeArgs(Object(BillsController), Array)
+#10 /opt/lampp/htdocs/elearning/lib/Cake/Routing/Dispatcher.php(185): Controller->invokeAction(Object(CakeRequest))
+#11 /opt/lampp/htdocs/elearning/lib/Cake/Routing/Dispatcher.php(160): Dispatcher->_invoke(Object(BillsController), Object(CakeRequest), Object(CakeResponse))
+#12 /opt/lampp/htdocs/elearning/app/webroot/index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#13 {main}
+2014-02-27 04:45:21 Error: [PDOException] SQLSTATE[42S22]: Column not found: 1054 Unknown column 'Array' in 'on clause'
+Request URL: /elearning/bills
+Stack Trace:
+#0 /opt/lampp/htdocs/elearning/lib/Cake/Model/Datasource/DboSource.php(458): PDOStatement->execute(Array)
+#1 /opt/lampp/htdocs/elearning/lib/Cake/Model/Datasource/DboSource.php(424): DboSource->_execute('SELECT `User`.`...', Array)
+#2 /opt/lampp/htdocs/elearning/lib/Cake/Model/Datasource/DboSource.php(665): DboSource->execute('SELECT `User`.`...', Array, Array)
+#3 /opt/lampp/htdocs/elearning/lib/Cake/Model/Datasource/DboSource.php(1077): DboSource->fetchAll('SELECT `User`.`...', false)
+#4 /opt/lampp/htdocs/elearning/lib/Cake/Model/Model.php(2900): DboSource->read(Object(Bill), Array)
+#5 /opt/lampp/htdocs/elearning/lib/Cake/Model/Model.php(2872): Model->_readDataSource('all', Array)
+#6 /opt/lampp/htdocs/elearning/app/Model/Bill.php(19): Model->find('all', Array)
+#7 /opt/lampp/htdocs/elearning/app/Controller/BillsController.php(4): Bill->getBills(3)
+#8 [internal function]: BillsController->index()
+#9 /opt/lampp/htdocs/elearning/lib/Cake/Controller/Controller.php(490): ReflectionMethod->invokeArgs(Object(BillsController), Array)
+#10 /opt/lampp/htdocs/elearning/lib/Cake/Routing/Dispatcher.php(185): Controller->invokeAction(Object(CakeRequest))
+#11 /opt/lampp/htdocs/elearning/lib/Cake/Routing/Dispatcher.php(160): Dispatcher->_invoke(Object(BillsController), Object(CakeRequest), Object(CakeResponse))
+#12 /opt/lampp/htdocs/elearning/app/webroot/index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#13 {main}
+2014-02-27 04:45:22 Error: [PDOException] SQLSTATE[42S22]: Column not found: 1054 Unknown column 'Array' in 'on clause'
+Request URL: /elearning/bills
+Stack Trace:
+#0 /opt/lampp/htdocs/elearning/lib/Cake/Model/Datasource/DboSource.php(458): PDOStatement->execute(Array)
+#1 /opt/lampp/htdocs/elearning/lib/Cake/Model/Datasource/DboSource.php(424): DboSource->_execute('SELECT `User`.`...', Array)
+#2 /opt/lampp/htdocs/elearning/lib/Cake/Model/Datasource/DboSource.php(665): DboSource->execute('SELECT `User`.`...', Array, Array)
+#3 /opt/lampp/htdocs/elearning/lib/Cake/Model/Datasource/DboSource.php(1077): DboSource->fetchAll('SELECT `User`.`...', false)
+#4 /opt/lampp/htdocs/elearning/lib/Cake/Model/Model.php(2900): DboSource->read(Object(Bill), Array)
+#5 /opt/lampp/htdocs/elearning/lib/Cake/Model/Model.php(2872): Model->_readDataSource('all', Array)
+#6 /opt/lampp/htdocs/elearning/app/Model/Bill.php(19): Model->find('all', Array)
+#7 /opt/lampp/htdocs/elearning/app/Controller/BillsController.php(4): Bill->getBills(3)
+#8 [internal function]: BillsController->index()
+#9 /opt/lampp/htdocs/elearning/lib/Cake/Controller/Controller.php(490): ReflectionMethod->invokeArgs(Object(BillsController), Array)
+#10 /opt/lampp/htdocs/elearning/lib/Cake/Routing/Dispatcher.php(185): Controller->invokeAction(Object(CakeRequest))
+#11 /opt/lampp/htdocs/elearning/lib/Cake/Routing/Dispatcher.php(160): Dispatcher->_invoke(Object(BillsController), Object(CakeRequest), Object(CakeResponse))
+#12 /opt/lampp/htdocs/elearning/app/webroot/index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#13 {main}
+2014-02-27 04:45:22 Error: [PDOException] SQLSTATE[42S22]: Column not found: 1054 Unknown column 'Array' in 'on clause'
+Request URL: /elearning/bills
+Stack Trace:
+#0 /opt/lampp/htdocs/elearning/lib/Cake/Model/Datasource/DboSource.php(458): PDOStatement->execute(Array)
+#1 /opt/lampp/htdocs/elearning/lib/Cake/Model/Datasource/DboSource.php(424): DboSource->_execute('SELECT `User`.`...', Array)
+#2 /opt/lampp/htdocs/elearning/lib/Cake/Model/Datasource/DboSource.php(665): DboSource->execute('SELECT `User`.`...', Array, Array)
+#3 /opt/lampp/htdocs/elearning/lib/Cake/Model/Datasource/DboSource.php(1077): DboSource->fetchAll('SELECT `User`.`...', false)
+#4 /opt/lampp/htdocs/elearning/lib/Cake/Model/Model.php(2900): DboSource->read(Object(Bill), Array)
+#5 /opt/lampp/htdocs/elearning/lib/Cake/Model/Model.php(2872): Model->_readDataSource('all', Array)
+#6 /opt/lampp/htdocs/elearning/app/Model/Bill.php(19): Model->find('all', Array)
+#7 /opt/lampp/htdocs/elearning/app/Controller/BillsController.php(4): Bill->getBills(3)
+#8 [internal function]: BillsController->index()
+#9 /opt/lampp/htdocs/elearning/lib/Cake/Controller/Controller.php(490): ReflectionMethod->invokeArgs(Object(BillsController), Array)
+#10 /opt/lampp/htdocs/elearning/lib/Cake/Routing/Dispatcher.php(185): Controller->invokeAction(Object(CakeRequest))
+#11 /opt/lampp/htdocs/elearning/lib/Cake/Routing/Dispatcher.php(160): Dispatcher->_invoke(Object(BillsController), Object(CakeRequest), Object(CakeResponse))
+#12 /opt/lampp/htdocs/elearning/app/webroot/index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#13 {main}
+2014-02-27 05:07:54 Error: [MissingControllerException] Controller class StudentController could not be found.
+Exception Attributes: array (
+  'class' => 'StudentController',
+  'plugin' => NULL,
+)
+Request URL: /elearning/student
+Stack Trace:
+#0 C:\xampp\htdocs\elearning\app\webroot\index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2014-02-27 05:07:59 Error: [MissingControllerException] Controller class StudentController could not be found.
+Exception Attributes: array (
+  'class' => 'StudentController',
+  'plugin' => NULL,
+)
+Request URL: /elearning/student
+Stack Trace:
+#0 C:\xampp\htdocs\elearning\app\webroot\index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2014-02-27 05:08:00 Error: [MissingControllerException] Controller class StudentController could not be found.
+Exception Attributes: array (
+  'class' => 'StudentController',
+  'plugin' => NULL,
+)
+Request URL: /elearning/student
+Stack Trace:
+#0 C:\xampp\htdocs\elearning\app\webroot\index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2014-02-27 05:08:51 Error: [MissingControllerException] Controller class StudentController could not be found.
+Exception Attributes: array (
+  'class' => 'StudentController',
+  'plugin' => NULL,
+)
+Request URL: /elearning/student
+Stack Trace:
+#0 C:\xampp\htdocs\elearning\app\webroot\index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2014-02-27 05:08:53 Error: [MissingControllerException] Controller class StudentController could not be found.
+Exception Attributes: array (
+  'class' => 'StudentController',
+  'plugin' => NULL,
+)
+Request URL: /elearning/student
+Stack Trace:
+#0 C:\xampp\htdocs\elearning\app\webroot\index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2014-02-27 05:09:05 Error: [MissingControllerException] Controller class StudentController could not be found.
+Exception Attributes: array (
+  'class' => 'StudentController',
+  'plugin' => NULL,
+)
+Request URL: /elearning/student
+Stack Trace:
+#0 C:\xampp\htdocs\elearning\app\webroot\index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2014-02-27 05:09:10 Error: [MissingTableException] Table tb_users for model User was not found in datasource default.
+Exception Attributes: array (
+  'table' => 'tb_users',
+  'class' => 'User',
+  'ds' => 'default',
+)
+Request URL: /elearning/students
+Stack Trace:
+#0 C:\xampp\htdocs\elearning\lib\Cake\Model\Model.php(3496): Model->setSource('users')
+#1 C:\xampp\htdocs\elearning\lib\Cake\Model\Model.php(2900): Model->getDataSource()
+#2 C:\xampp\htdocs\elearning\lib\Cake\Model\Model.php(2872): Model->_readDataSource('all', Array)
+#3 C:\xampp\htdocs\elearning\lib\Cake\Controller\Component\PaginatorComponent.php(196): Model->find('all', Array)
+#4 C:\xampp\htdocs\elearning\lib\Cake\Controller\Controller.php(1079): PaginatorComponent->paginate('User', Array, Array)
+#5 C:\xampp\htdocs\elearning\app\Controller\StudentsController.php(15): Controller->paginate('User')
+#6 [internal function]: StudentsController->index()
+#7 C:\xampp\htdocs\elearning\lib\Cake\Controller\Controller.php(490): ReflectionMethod->invokeArgs(Object(StudentsController), Array)
+#8 C:\xampp\htdocs\elearning\lib\Cake\Routing\Dispatcher.php(185): Controller->invokeAction(Object(CakeRequest))
+#9 C:\xampp\htdocs\elearning\lib\Cake\Routing\Dispatcher.php(160): Dispatcher->_invoke(Object(StudentsController), Object(CakeRequest), Object(CakeResponse))
+#10 C:\xampp\htdocs\elearning\app\webroot\index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#11 {main}
+2014-02-27 05:09:38 Error: [MissingControllerException] Controller class StudentController could not be found.
+Exception Attributes: array (
+  'class' => 'StudentController',
+  'plugin' => NULL,
+)
+Request URL: /elearning/student
+Stack Trace:
+#0 C:\xampp\htdocs\elearning\app\webroot\index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2014-02-27 05:09:39 Error: [MissingControllerException] Controller class StudentController could not be found.
+Exception Attributes: array (
+  'class' => 'StudentController',
+  'plugin' => NULL,
+)
+Request URL: /elearning/student
+Stack Trace:
+#0 C:\xampp\htdocs\elearning\app\webroot\index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2014-02-27 05:09:40 Error: [MissingControllerException] Controller class StudentController could not be found.
+Exception Attributes: array (
+  'class' => 'StudentController',
+  'plugin' => NULL,
+)
+Request URL: /elearning/student
+Stack Trace:
+#0 C:\xampp\htdocs\elearning\app\webroot\index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2014-02-27 05:09:40 Error: [MissingControllerException] Controller class StudentController could not be found.
+Exception Attributes: array (
+  'class' => 'StudentController',
+  'plugin' => NULL,
+)
+Request URL: /elearning/student
+Stack Trace:
+#0 C:\xampp\htdocs\elearning\app\webroot\index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2014-02-27 05:09:40 Error: [MissingControllerException] Controller class StudentController could not be found.
+Exception Attributes: array (
+  'class' => 'StudentController',
+  'plugin' => NULL,
+)
+Request URL: /elearning/student
+Stack Trace:
+#0 C:\xampp\htdocs\elearning\app\webroot\index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2014-02-27 05:09:40 Error: [MissingControllerException] Controller class StudentController could not be found.
+Exception Attributes: array (
+  'class' => 'StudentController',
+  'plugin' => NULL,
+)
+Request URL: /elearning/student
+Stack Trace:
+#0 C:\xampp\htdocs\elearning\app\webroot\index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2014-02-27 05:09:58 Error: [MissingControllerException] Controller class StudentController could not be found.
+Exception Attributes: array (
+  'class' => 'StudentController',
+  'plugin' => NULL,
+)
+Request URL: /elearning/student
+Stack Trace:
+#0 C:\xampp\htdocs\elearning\app\webroot\index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2014-02-27 05:09:58 Error: [MissingControllerException] Controller class StudentController could not be found.
+Exception Attributes: array (
+  'class' => 'StudentController',
+  'plugin' => NULL,
+)
+Request URL: /elearning/student
+Stack Trace:
+#0 C:\xampp\htdocs\elearning\app\webroot\index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2014-02-27 05:09:58 Error: [MissingControllerException] Controller class StudentController could not be found.
+Exception Attributes: array (
+  'class' => 'StudentController',
+  'plugin' => NULL,
+)
+Request URL: /elearning/student
+Stack Trace:
+#0 C:\xampp\htdocs\elearning\app\webroot\index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2014-02-27 05:09:59 Error: [MissingControllerException] Controller class StudentController could not be found.
+Exception Attributes: array (
+  'class' => 'StudentController',
+  'plugin' => NULL,
+)
+Request URL: /elearning/student
+Stack Trace:
+#0 C:\xampp\htdocs\elearning\app\webroot\index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2014-02-27 05:10:28 Error: [MissingTableException] Table tb_users for model User was not found in datasource default.
+Exception Attributes: array (
+  'table' => 'tb_users',
+  'class' => 'User',
+  'ds' => 'default',
+)
+Request URL: /elearning/student
+Stack Trace:
+#0 C:\xampp\htdocs\elearning\lib\Cake\Model\Model.php(3496): Model->setSource('users')
+#1 C:\xampp\htdocs\elearning\lib\Cake\Model\Model.php(2900): Model->getDataSource()
+#2 C:\xampp\htdocs\elearning\lib\Cake\Model\Model.php(2872): Model->_readDataSource('all', Array)
+#3 C:\xampp\htdocs\elearning\lib\Cake\Controller\Component\PaginatorComponent.php(196): Model->find('all', Array)
+#4 C:\xampp\htdocs\elearning\lib\Cake\Controller\Controller.php(1079): PaginatorComponent->paginate('User', Array, Array)
+#5 C:\xampp\htdocs\elearning\app\Controller\StudentController.php(15): Controller->paginate('User')
+#6 [internal function]: StudentController->index()
+#7 C:\xampp\htdocs\elearning\lib\Cake\Controller\Controller.php(490): ReflectionMethod->invokeArgs(Object(StudentController), Array)
+#8 C:\xampp\htdocs\elearning\lib\Cake\Routing\Dispatcher.php(185): Controller->invokeAction(Object(CakeRequest))
+#9 C:\xampp\htdocs\elearning\lib\Cake\Routing\Dispatcher.php(160): Dispatcher->_invoke(Object(StudentController), Object(CakeRequest), Object(CakeResponse))
+#10 C:\xampp\htdocs\elearning\app\webroot\index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#11 {main}
+2014-02-27 05:10:46 Error: [MissingTableException] Table tb_users for model User was not found in datasource default.
+Exception Attributes: array (
+  'table' => 'tb_users',
+  'class' => 'User',
+  'ds' => 'default',
+)
+Request URL: /elearning/student
+Stack Trace:
+#0 C:\xampp\htdocs\elearning\lib\Cake\Model\Model.php(3496): Model->setSource('users')
+#1 C:\xampp\htdocs\elearning\lib\Cake\Model\Model.php(2900): Model->getDataSource()
+#2 C:\xampp\htdocs\elearning\lib\Cake\Model\Model.php(2872): Model->_readDataSource('all', Array)
+#3 C:\xampp\htdocs\elearning\lib\Cake\Controller\Component\PaginatorComponent.php(196): Model->find('all', Array)
+#4 C:\xampp\htdocs\elearning\lib\Cake\Controller\Controller.php(1079): PaginatorComponent->paginate('User', Array, Array)
+#5 C:\xampp\htdocs\elearning\app\Controller\StudentController.php(15): Controller->paginate('User')
+#6 [internal function]: StudentController->index()
+#7 C:\xampp\htdocs\elearning\lib\Cake\Controller\Controller.php(490): ReflectionMethod->invokeArgs(Object(StudentController), Array)
+#8 C:\xampp\htdocs\elearning\lib\Cake\Routing\Dispatcher.php(185): Controller->invokeAction(Object(CakeRequest))
+#9 C:\xampp\htdocs\elearning\lib\Cake\Routing\Dispatcher.php(160): Dispatcher->_invoke(Object(StudentController), Object(CakeRequest), Object(CakeResponse))
+#10 C:\xampp\htdocs\elearning\app\webroot\index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#11 {main}
+2014-02-27 05:10:48 Error: [MissingTableException] Table tb_users for model User was not found in datasource default.
+Exception Attributes: array (
+  'table' => 'tb_users',
+  'class' => 'User',
+  'ds' => 'default',
+)
+Request URL: /elearning/student
+Stack Trace:
+#0 C:\xampp\htdocs\elearning\lib\Cake\Model\Model.php(3496): Model->setSource('users')
+#1 C:\xampp\htdocs\elearning\lib\Cake\Model\Model.php(2900): Model->getDataSource()
+#2 C:\xampp\htdocs\elearning\lib\Cake\Model\Model.php(2872): Model->_readDataSource('all', Array)
+#3 C:\xampp\htdocs\elearning\lib\Cake\Controller\Component\PaginatorComponent.php(196): Model->find('all', Array)
+#4 C:\xampp\htdocs\elearning\lib\Cake\Controller\Controller.php(1079): PaginatorComponent->paginate('User', Array, Array)
+#5 C:\xampp\htdocs\elearning\app\Controller\StudentController.php(15): Controller->paginate('User')
+#6 [internal function]: StudentController->index()
+#7 C:\xampp\htdocs\elearning\lib\Cake\Controller\Controller.php(490): ReflectionMethod->invokeArgs(Object(StudentController), Array)
+#8 C:\xampp\htdocs\elearning\lib\Cake\Routing\Dispatcher.php(185): Controller->invokeAction(Object(CakeRequest))
+#9 C:\xampp\htdocs\elearning\lib\Cake\Routing\Dispatcher.php(160): Dispatcher->_invoke(Object(StudentController), Object(CakeRequest), Object(CakeResponse))
+#10 C:\xampp\htdocs\elearning\app\webroot\index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#11 {main}
+2014-02-27 05:10:50 Error: [MissingTableException] Table tb_users for model User was not found in datasource default.
+Exception Attributes: array (
+  'table' => 'tb_users',
+  'class' => 'User',
+  'ds' => 'default',
+)
+Request URL: /elearning/student
+Stack Trace:
+#0 C:\xampp\htdocs\elearning\lib\Cake\Model\Model.php(3496): Model->setSource('users')
+#1 C:\xampp\htdocs\elearning\lib\Cake\Model\Model.php(2900): Model->getDataSource()
+#2 C:\xampp\htdocs\elearning\lib\Cake\Model\Model.php(2872): Model->_readDataSource('all', Array)
+#3 C:\xampp\htdocs\elearning\lib\Cake\Controller\Component\PaginatorComponent.php(196): Model->find('all', Array)
+#4 C:\xampp\htdocs\elearning\lib\Cake\Controller\Controller.php(1079): PaginatorComponent->paginate('User', Array, Array)
+#5 C:\xampp\htdocs\elearning\app\Controller\StudentController.php(15): Controller->paginate('User')
+#6 [internal function]: StudentController->index()
+#7 C:\xampp\htdocs\elearning\lib\Cake\Controller\Controller.php(490): ReflectionMethod->invokeArgs(Object(StudentController), Array)
+#8 C:\xampp\htdocs\elearning\lib\Cake\Routing\Dispatcher.php(185): Controller->invokeAction(Object(CakeRequest))
+#9 C:\xampp\htdocs\elearning\lib\Cake\Routing\Dispatcher.php(160): Dispatcher->_invoke(Object(StudentController), Object(CakeRequest), Object(CakeResponse))
+#10 C:\xampp\htdocs\elearning\app\webroot\index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#11 {main}
+>>>>>>> cb6f55b441bba0bce8bd7f68a13e66f4390380d9

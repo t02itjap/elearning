@@ -1,2 +1,7 @@
+<<<<<<< HEAD
 1393475926
 a:17:{i:0;s:18:"tb_banned_students";i:1;s:8:"tb_bills";i:2;s:13:"tb_categories";i:3;s:19:"tb_changeable_value";i:4;s:11:"tb_comments";i:5;s:12:"tb_documents";i:6;s:16:"tb_initial_users";i:7;s:13:"tb_ip_address";i:8;s:18:"tb_learn_histories";i:9;s:10:"tb_lessons";i:10;s:15:"tb_locked_users";i:11;s:15:"tb_online_users";i:12;s:16:"tb_question_type";i:13;s:8:"tb_tests";i:14;s:13:"tb_user_types";i:15;s:8:"tb_users";i:16;s:14:"test_histories";}
+=======
+1393474256
+a:1:{i:0;s:17:"tb_question_types";}
+>>>>>>> cb6f55b441bba0bce8bd7f68a13e66f4390380d9
