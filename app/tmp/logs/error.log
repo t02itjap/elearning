@@ -9,3 +9,116 @@ Stack Trace:
 #1 C:\xampp\htdocs\t02itjap\elearning\lib\Cake\Routing\Dispatcher.php(160): Dispatcher->_invoke(Object(AppController), Object(CakeRequest), Object(CakeResponse))
 #2 C:\xampp\htdocs\t02itjap\elearning\app\webroot\index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
 #3 {main}
+2014-02-27 00:17:40 Error: [MissingViewException] View file "/var/www/elearning/app/View/Student/index.ctp" is missing.
+Exception Attributes: array (
+  'file' => '/var/www/elearning/app/View/Student/index.ctp',
+)
+Request URL: /elearning/student
+Stack Trace:
+#0 /var/www/elearning/lib/Cake/View/View.php(457): View->_getViewFileName(NULL)
+#1 /var/www/elearning/lib/Cake/Controller/Controller.php(952): View->render(NULL, NULL)
+#2 /var/www/elearning/lib/Cake/Routing/Dispatcher.php(192): Controller->render()
+#3 /var/www/elearning/lib/Cake/Routing/Dispatcher.php(160): Dispatcher->_invoke(Object(StudentController), Object(CakeRequest), Object(CakeResponse))
+#4 /var/www/elearning/app/webroot/index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#5 {main}
+2014-02-27 00:17:50 Error: [MissingControllerException] Controller class StudentsController could not be found.
+Exception Attributes: array (
+  'class' => 'StudentsController',
+  'plugin' => NULL,
+)
+Request URL: /elearning/students
+Stack Trace:
+#0 /var/www/elearning/app/webroot/index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2014-02-27 00:17:54 Error: [MissingViewException] View file "/var/www/elearning/app/View/Student/index.ctp" is missing.
+Exception Attributes: array (
+  'file' => '/var/www/elearning/app/View/Student/index.ctp',
+)
+Request URL: /elearning/student
+Stack Trace:
+#0 /var/www/elearning/lib/Cake/View/View.php(457): View->_getViewFileName(NULL)
+#1 /var/www/elearning/lib/Cake/Controller/Controller.php(952): View->render(NULL, NULL)
+#2 /var/www/elearning/lib/Cake/Routing/Dispatcher.php(192): Controller->render()
+#3 /var/www/elearning/lib/Cake/Routing/Dispatcher.php(160): Dispatcher->_invoke(Object(StudentController), Object(CakeRequest), Object(CakeResponse))
+#4 /var/www/elearning/app/webroot/index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#5 {main}
+2014-02-27 00:18:44 Error: [MissingActionException] Action StudentController::index.ctp() could not be found.
+Exception Attributes: array (
+  'controller' => 'StudentController',
+  'action' => 'index.ctp',
+)
+Request URL: /elearning/student/index.ctp
+Stack Trace:
+#0 /var/www/elearning/lib/Cake/Routing/Dispatcher.php(185): Controller->invokeAction(Object(CakeRequest))
+#1 /var/www/elearning/lib/Cake/Routing/Dispatcher.php(160): Dispatcher->_invoke(Object(StudentController), Object(CakeRequest), Object(CakeResponse))
+#2 /var/www/elearning/app/webroot/index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#3 {main}
+2014-02-27 00:19:23 Error: [MissingViewException] View file "/var/www/elearning/app/View/Student/index.ctp" is missing.
+Exception Attributes: array (
+  'file' => '/var/www/elearning/app/View/Student/index.ctp',
+)
+Request URL: /elearning/student/
+Stack Trace:
+#0 /var/www/elearning/lib/Cake/View/View.php(457): View->_getViewFileName(NULL)
+#1 /var/www/elearning/lib/Cake/Controller/Controller.php(952): View->render(NULL, NULL)
+#2 /var/www/elearning/lib/Cake/Routing/Dispatcher.php(192): Controller->render()
+#3 /var/www/elearning/lib/Cake/Routing/Dispatcher.php(160): Dispatcher->_invoke(Object(StudentController), Object(CakeRequest), Object(CakeResponse))
+#4 /var/www/elearning/app/webroot/index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#5 {main}
+2014-02-27 00:26:29 Error: [MissingViewException] View file "/var/www/elearning/app/View/Student/index.ctp" is missing.
+Exception Attributes: array (
+  'file' => '/var/www/elearning/app/View/Student/index.ctp',
+)
+Request URL: /elearning/student/
+Stack Trace:
+#0 /var/www/elearning/lib/Cake/View/View.php(457): View->_getViewFileName(NULL)
+#1 /var/www/elearning/lib/Cake/Controller/Controller.php(952): View->render(NULL, NULL)
+#2 /var/www/elearning/lib/Cake/Routing/Dispatcher.php(192): Controller->render()
+#3 /var/www/elearning/lib/Cake/Routing/Dispatcher.php(160): Dispatcher->_invoke(Object(StudentController), Object(CakeRequest), Object(CakeResponse))
+#4 /var/www/elearning/app/webroot/index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#5 {main}
+2014-02-27 00:26:30 Error: [MissingViewException] View file "/var/www/elearning/app/View/Student/index.ctp" is missing.
+Exception Attributes: array (
+  'file' => '/var/www/elearning/app/View/Student/index.ctp',
+)
+Request URL: /elearning/student/
+Stack Trace:
+#0 /var/www/elearning/lib/Cake/View/View.php(457): View->_getViewFileName(NULL)
+#1 /var/www/elearning/lib/Cake/Controller/Controller.php(952): View->render(NULL, NULL)
+#2 /var/www/elearning/lib/Cake/Routing/Dispatcher.php(192): Controller->render()
+#3 /var/www/elearning/lib/Cake/Routing/Dispatcher.php(160): Dispatcher->_invoke(Object(StudentController), Object(CakeRequest), Object(CakeResponse))
+#4 /var/www/elearning/app/webroot/index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#5 {main}
+2014-02-27 00:26:30 Error: [MissingViewException] View file "/var/www/elearning/app/View/Student/index.ctp" is missing.
+Exception Attributes: array (
+  'file' => '/var/www/elearning/app/View/Student/index.ctp',
+)
+Request URL: /elearning/student/
+Stack Trace:
+#0 /var/www/elearning/lib/Cake/View/View.php(457): View->_getViewFileName(NULL)
+#1 /var/www/elearning/lib/Cake/Controller/Controller.php(952): View->render(NULL, NULL)
+#2 /var/www/elearning/lib/Cake/Routing/Dispatcher.php(192): Controller->render()
+#3 /var/www/elearning/lib/Cake/Routing/Dispatcher.php(160): Dispatcher->_invoke(Object(StudentController), Object(CakeRequest), Object(CakeResponse))
+#4 /var/www/elearning/app/webroot/index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#5 {main}
+2014-02-27 00:29:26 Error: [MissingViewException] View file "/var/www/elearning/app/View/Student/index.ctp" is missing.
+Exception Attributes: array (
+  'file' => '/var/www/elearning/app/View/Student/index.ctp',
+)
+Request URL: /elearning/student
+Stack Trace:
+#0 /var/www/elearning/lib/Cake/View/View.php(457): View->_getViewFileName(NULL)
+#1 /var/www/elearning/lib/Cake/Controller/Controller.php(952): View->render(NULL, NULL)
+#2 /var/www/elearning/lib/Cake/Routing/Dispatcher.php(192): Controller->render()
+#3 /var/www/elearning/lib/Cake/Routing/Dispatcher.php(160): Dispatcher->_invoke(Object(StudentController), Object(CakeRequest), Object(CakeResponse))
+#4 /var/www/elearning/app/webroot/index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#5 {main}
+2014-02-27 11:34:48 Error: [MissingControllerException] Controller class CssController could not be found.
+Exception Attributes: array (
+  'class' => 'CssController',
+  'plugin' => NULL,
+)
+Request URL: /elearning/css/style.css
+Stack Trace:
+#0 /var/www/elearning/app/webroot/index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
