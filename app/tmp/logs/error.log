@@ -574,3 +574,21 @@ Stack Trace:
 #10 C:\xampp\htdocs\elearning\app\webroot\index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
 #11 {main}
 >>>>>>> cb6f55b441bba0bce8bd7f68a13e66f4390380d9
+2014-02-28 03:11:31 Error: [MissingControllerException] Controller class PageController could not be found.
+Exception Attributes: array (
+  'class' => 'PageController',
+  'plugin' => NULL,
+)
+Request URL: /elearning/page
+Stack Trace:
+#0 /opt/lampp/htdocs/elearning/app/webroot/index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2014-02-28 03:18:00 Error: [MissingControllerException] Controller class LessionsController could not be found.
+Exception Attributes: array (
+  'class' => 'LessionsController',
+  'plugin' => NULL,
+)
+Request URL: /elearning/lessions
+Stack Trace:
+#0 /opt/lampp/htdocs/elearning/app/webroot/index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}

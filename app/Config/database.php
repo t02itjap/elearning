@@ -64,7 +64,7 @@ class DATABASE_CONFIG {
 		'persistent' => false,
 		'host' => 'localhost',
 		'login' => 'root',
-		'password' => '123456',
+		'password' => '',
 		'database' => 'elearning',
 		'prefix' => 'tb_',
 		'encoding' => 'utf8',
@@ -78,6 +78,6 @@ class DATABASE_CONFIG {
 		'password' => 'password',
 		'database' => 'elearning',
 		'prefix' => '',
-		//'encoding' => 'utf8',
+		'encoding' => 'utf8',
 	);
 }
