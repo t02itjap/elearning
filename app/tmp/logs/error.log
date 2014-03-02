@@ -592,3 +592,242 @@ Request URL: /elearning/lessions
 Stack Trace:
 #0 /opt/lampp/htdocs/elearning/app/webroot/index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
 #1 {main}
+2014-02-28 08:20:41 Error: [MissingControllerException] Controller class StudentsController could not be found.
+Exception Attributes: array (
+  'class' => 'StudentsController',
+  'plugin' => NULL,
+)
+Request URL: /elearning/students
+Stack Trace:
+#0 C:\xampp\htdocs\elearning\app\webroot\index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2014-02-28 12:08:00 Error: [MissingActionException] Action UsersController::missPass() could not be found.
+Exception Attributes: array (
+  'controller' => 'UsersController',
+  'action' => 'missPass',
+)
+Request URL: /elearning/users/missPass
+Stack Trace:
+#0 C:\xampp\htdocs\elearning\lib\Cake\Routing\Dispatcher.php(185): Controller->invokeAction(Object(CakeRequest))
+#1 C:\xampp\htdocs\elearning\lib\Cake\Routing\Dispatcher.php(160): Dispatcher->_invoke(Object(UsersController), Object(CakeRequest), Object(CakeResponse))
+#2 C:\xampp\htdocs\elearning\app\webroot\index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#3 {main}
+2014-02-28 15:41:29 Error: Fatal Error (1): Call to undefined method AuthComponent::authenticate() in [C:\xampp\htdocs\elearning\app\Controller\UsersController.php, line 16]
+2014-02-28 15:41:29 Error: [FatalErrorException] Call to undefined method AuthComponent::authenticate()
+Request URL: /elearning/users/login
+Stack Trace:
+#0 C:\xampp\htdocs\elearning\lib\Cake\Error\ErrorHandler.php(203): ErrorHandler::handleFatalError(1, 'Call to undefin...', 'C:\xampp\htdocs...', 16)
+#1 [internal function]: ErrorHandler::handleError(1, 'Call to undefin...', 'C:\xampp\htdocs...', 16, Array)
+#2 C:\xampp\htdocs\elearning\lib\Cake\Core\App.php(929): call_user_func('ErrorHandler::h...', 1, 'Call to undefin...', 'C:\xampp\htdocs...', 16, Array)
+#3 C:\xampp\htdocs\elearning\lib\Cake\Core\App.php(902): App::_checkFatalError()
+#4 [internal function]: App::shutdown()
+#5 {main}
+2014-02-28 15:41:46 Error: Fatal Error (1): Call to undefined method AuthComponent::authenticate() in [C:\xampp\htdocs\elearning\app\Controller\UsersController.php, line 16]
+2014-02-28 15:41:46 Error: [FatalErrorException] Call to undefined method AuthComponent::authenticate()
+Request URL: /elearning/users/login
+Stack Trace:
+#0 C:\xampp\htdocs\elearning\lib\Cake\Error\ErrorHandler.php(203): ErrorHandler::handleFatalError(1, 'Call to undefin...', 'C:\xampp\htdocs...', 16)
+#1 [internal function]: ErrorHandler::handleError(1, 'Call to undefin...', 'C:\xampp\htdocs...', 16, Array)
+#2 C:\xampp\htdocs\elearning\lib\Cake\Core\App.php(929): call_user_func('ErrorHandler::h...', 1, 'Call to undefin...', 'C:\xampp\htdocs...', 16, Array)
+#3 C:\xampp\htdocs\elearning\lib\Cake\Core\App.php(902): App::_checkFatalError()
+#4 [internal function]: App::shutdown()
+#5 {main}
+2014-02-28 15:44:23 Error: Fatal Error (1): Call to undefined method AuthComponent::authenticate() in [C:\xampp\htdocs\elearning\app\Controller\UsersController.php, line 16]
+2014-02-28 15:44:23 Error: [FatalErrorException] Call to undefined method AuthComponent::authenticate()
+Request URL: /elearning/users/login
+Stack Trace:
+#0 C:\xampp\htdocs\elearning\lib\Cake\Error\ErrorHandler.php(203): ErrorHandler::handleFatalError(1, 'Call to undefin...', 'C:\xampp\htdocs...', 16)
+#1 [internal function]: ErrorHandler::handleError(1, 'Call to undefin...', 'C:\xampp\htdocs...', 16, Array)
+#2 C:\xampp\htdocs\elearning\lib\Cake\Core\App.php(929): call_user_func('ErrorHandler::h...', 1, 'Call to undefin...', 'C:\xampp\htdocs...', 16, Array)
+#3 C:\xampp\htdocs\elearning\lib\Cake\Core\App.php(902): App::_checkFatalError()
+#4 [internal function]: App::shutdown()
+#5 {main}
+2014-02-28 16:39:38 Error: [CakeException] Authentication adapter "fields" was not found.
+Request URL: /elearning/users/login
+Stack Trace:
+#0 C:\xampp\htdocs\elearning\lib\Cake\Controller\Component\AuthComponent.php(747): AuthComponent->constructAuthenticate()
+#1 C:\xampp\htdocs\elearning\lib\Cake\Controller\Component\AuthComponent.php(597): AuthComponent->identify(Object(CakeRequest), Object(CakeResponse))
+#2 C:\xampp\htdocs\elearning\app\Controller\UsersController.php(43): AuthComponent->login()
+#3 [internal function]: UsersController->login()
+#4 C:\xampp\htdocs\elearning\lib\Cake\Controller\Controller.php(490): ReflectionMethod->invokeArgs(Object(UsersController), Array)
+#5 C:\xampp\htdocs\elearning\lib\Cake\Routing\Dispatcher.php(185): Controller->invokeAction(Object(CakeRequest))
+#6 C:\xampp\htdocs\elearning\lib\Cake\Routing\Dispatcher.php(160): Dispatcher->_invoke(Object(UsersController), Object(CakeRequest), Object(CakeResponse))
+#7 C:\xampp\htdocs\elearning\app\webroot\index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#8 {main}
+2014-02-28 16:47:51 Error: [CakeException] Authentication adapter "fields" was not found.
+Request URL: /elearning/users/login
+Stack Trace:
+#0 C:\xampp\htdocs\elearning\lib\Cake\Controller\Component\AuthComponent.php(747): AuthComponent->constructAuthenticate()
+#1 C:\xampp\htdocs\elearning\lib\Cake\Controller\Component\AuthComponent.php(597): AuthComponent->identify(Object(CakeRequest), Object(CakeResponse))
+#2 C:\xampp\htdocs\elearning\app\Controller\UsersController.php(43): AuthComponent->login()
+#3 [internal function]: UsersController->login()
+#4 C:\xampp\htdocs\elearning\lib\Cake\Controller\Controller.php(490): ReflectionMethod->invokeArgs(Object(UsersController), Array)
+#5 C:\xampp\htdocs\elearning\lib\Cake\Routing\Dispatcher.php(185): Controller->invokeAction(Object(CakeRequest))
+#6 C:\xampp\htdocs\elearning\lib\Cake\Routing\Dispatcher.php(160): Dispatcher->_invoke(Object(UsersController), Object(CakeRequest), Object(CakeResponse))
+#7 C:\xampp\htdocs\elearning\app\webroot\index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#8 {main}
+2014-02-28 16:59:05 Error: [MissingControllerException] Controller class LoginController could not be found.
+Exception Attributes: array (
+  'class' => 'LoginController',
+  'plugin' => NULL,
+)
+Request URL: /elearning/login
+Stack Trace:
+#0 C:\xampp\htdocs\elearning\app\webroot\index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#1 {main}
+2014-03-01 09:45:25 Error: [MissingActionException] Action UsersController::missPass() could not be found.
+Exception Attributes: array (
+  'controller' => 'UsersController',
+  'action' => 'missPass',
+)
+Request URL: /elearning/users/missPass
+Stack Trace:
+#0 C:\xampp\htdocs\elearning\lib\Cake\Routing\Dispatcher.php(185): Controller->invokeAction(Object(CakeRequest))
+#1 C:\xampp\htdocs\elearning\lib\Cake\Routing\Dispatcher.php(160): Dispatcher->_invoke(Object(UsersController), Object(CakeRequest), Object(CakeResponse))
+#2 C:\xampp\htdocs\elearning\app\webroot\index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#3 {main}
+2014-03-01 20:44:49 Error: [MissingActionException] Action UsersController::index() could not be found.
+Exception Attributes: array (
+  'controller' => 'UsersController',
+  'action' => 'index',
+)
+Request URL: /elearning/users
+Stack Trace:
+#0 C:\xampp\htdocs\elearning\lib\Cake\Routing\Dispatcher.php(185): Controller->invokeAction(Object(CakeRequest))
+#1 C:\xampp\htdocs\elearning\lib\Cake\Routing\Dispatcher.php(160): Dispatcher->_invoke(Object(UsersController), Object(CakeRequest), Object(CakeResponse))
+#2 C:\xampp\htdocs\elearning\app\webroot\index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#3 {main}
+2014-03-01 20:46:04 Error: [MissingActionException] Action UsersController::index() could not be found.
+Exception Attributes: array (
+  'controller' => 'UsersController',
+  'action' => 'index',
+)
+Request URL: /elearning/users
+Stack Trace:
+#0 C:\xampp\htdocs\elearning\lib\Cake\Routing\Dispatcher.php(185): Controller->invokeAction(Object(CakeRequest))
+#1 C:\xampp\htdocs\elearning\lib\Cake\Routing\Dispatcher.php(160): Dispatcher->_invoke(Object(UsersController), Object(CakeRequest), Object(CakeResponse))
+#2 C:\xampp\htdocs\elearning\app\webroot\index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#3 {main}
+2014-03-01 20:48:10 Error: [MissingActionException] Action UsersController::home() could not be found.
+Exception Attributes: array (
+  'controller' => 'UsersController',
+  'action' => 'home',
+)
+Request URL: /elearning/users/home
+Stack Trace:
+#0 C:\xampp\htdocs\elearning\lib\Cake\Routing\Dispatcher.php(185): Controller->invokeAction(Object(CakeRequest))
+#1 C:\xampp\htdocs\elearning\lib\Cake\Routing\Dispatcher.php(160): Dispatcher->_invoke(Object(UsersController), Object(CakeRequest), Object(CakeResponse))
+#2 C:\xampp\htdocs\elearning\app\webroot\index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#3 {main}
+2014-03-01 21:08:19 Error: [MissingActionException] Action UsersController::index() could not be found.
+Exception Attributes: array (
+  'controller' => 'UsersController',
+  'action' => 'index',
+)
+Request URL: /elearning/users
+Stack Trace:
+#0 C:\xampp\htdocs\elearning\lib\Cake\Routing\Dispatcher.php(185): Controller->invokeAction(Object(CakeRequest))
+#1 C:\xampp\htdocs\elearning\lib\Cake\Routing\Dispatcher.php(160): Dispatcher->_invoke(Object(UsersController), Object(CakeRequest), Object(CakeResponse))
+#2 C:\xampp\htdocs\elearning\app\webroot\index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#3 {main}
+2014-03-01 21:08:28 Error: [MissingActionException] Action UsersController::home() could not be found.
+Exception Attributes: array (
+  'controller' => 'UsersController',
+  'action' => 'home',
+)
+Request URL: /elearning/users/home
+Stack Trace:
+#0 C:\xampp\htdocs\elearning\lib\Cake\Routing\Dispatcher.php(185): Controller->invokeAction(Object(CakeRequest))
+#1 C:\xampp\htdocs\elearning\lib\Cake\Routing\Dispatcher.php(160): Dispatcher->_invoke(Object(UsersController), Object(CakeRequest), Object(CakeResponse))
+#2 C:\xampp\htdocs\elearning\app\webroot\index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#3 {main}
+2014-03-02 07:48:05 Error: [CakeException] Authentication adapter "loginAction" was not found.
+Request URL: /elearning/users/login
+Stack Trace:
+#0 C:\xampp\htdocs\elearning\lib\Cake\Controller\Component\AuthComponent.php(747): AuthComponent->constructAuthenticate()
+#1 C:\xampp\htdocs\elearning\lib\Cake\Controller\Component\AuthComponent.php(597): AuthComponent->identify(Object(CakeRequest), Object(CakeResponse))
+#2 C:\xampp\htdocs\elearning\app\Controller\UsersController.php(51): AuthComponent->login()
+#3 [internal function]: UsersController->login()
+#4 C:\xampp\htdocs\elearning\lib\Cake\Controller\Controller.php(490): ReflectionMethod->invokeArgs(Object(UsersController), Array)
+#5 C:\xampp\htdocs\elearning\lib\Cake\Routing\Dispatcher.php(185): Controller->invokeAction(Object(CakeRequest))
+#6 C:\xampp\htdocs\elearning\lib\Cake\Routing\Dispatcher.php(160): Dispatcher->_invoke(Object(UsersController), Object(CakeRequest), Object(CakeResponse))
+#7 C:\xampp\htdocs\elearning\app\webroot\index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#8 {main}
+2014-03-02 07:49:20 Error: [CakeException] Authentication adapter "loginAction" was not found.
+Request URL: /elearning/users/login
+Stack Trace:
+#0 C:\xampp\htdocs\elearning\lib\Cake\Controller\Component\AuthComponent.php(747): AuthComponent->constructAuthenticate()
+#1 C:\xampp\htdocs\elearning\lib\Cake\Controller\Component\AuthComponent.php(597): AuthComponent->identify(Object(CakeRequest), Object(CakeResponse))
+#2 C:\xampp\htdocs\elearning\app\Controller\UsersController.php(49): AuthComponent->login()
+#3 [internal function]: UsersController->login()
+#4 C:\xampp\htdocs\elearning\lib\Cake\Controller\Controller.php(490): ReflectionMethod->invokeArgs(Object(UsersController), Array)
+#5 C:\xampp\htdocs\elearning\lib\Cake\Routing\Dispatcher.php(185): Controller->invokeAction(Object(CakeRequest))
+#6 C:\xampp\htdocs\elearning\lib\Cake\Routing\Dispatcher.php(160): Dispatcher->_invoke(Object(UsersController), Object(CakeRequest), Object(CakeResponse))
+#7 C:\xampp\htdocs\elearning\app\webroot\index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#8 {main}
+2014-03-02 07:49:32 Error: [CakeException] Authentication adapter "loginAction" was not found.
+Request URL: /elearning/users/login
+Stack Trace:
+#0 C:\xampp\htdocs\elearning\lib\Cake\Controller\Component\AuthComponent.php(747): AuthComponent->constructAuthenticate()
+#1 C:\xampp\htdocs\elearning\lib\Cake\Controller\Component\AuthComponent.php(597): AuthComponent->identify(Object(CakeRequest), Object(CakeResponse))
+#2 C:\xampp\htdocs\elearning\app\Controller\UsersController.php(49): AuthComponent->login()
+#3 [internal function]: UsersController->login()
+#4 C:\xampp\htdocs\elearning\lib\Cake\Controller\Controller.php(490): ReflectionMethod->invokeArgs(Object(UsersController), Array)
+#5 C:\xampp\htdocs\elearning\lib\Cake\Routing\Dispatcher.php(185): Controller->invokeAction(Object(CakeRequest))
+#6 C:\xampp\htdocs\elearning\lib\Cake\Routing\Dispatcher.php(160): Dispatcher->_invoke(Object(UsersController), Object(CakeRequest), Object(CakeResponse))
+#7 C:\xampp\htdocs\elearning\app\webroot\index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#8 {main}
+2014-03-02 07:53:16 Error: [MissingActionException] Action UsersController::index() could not be found.
+Exception Attributes: array (
+  'controller' => 'UsersController',
+  'action' => 'index',
+)
+Request URL: /elearning/users
+Stack Trace:
+#0 C:\xampp\htdocs\elearning\lib\Cake\Routing\Dispatcher.php(185): Controller->invokeAction(Object(CakeRequest))
+#1 C:\xampp\htdocs\elearning\lib\Cake\Routing\Dispatcher.php(160): Dispatcher->_invoke(Object(UsersController), Object(CakeRequest), Object(CakeResponse))
+#2 C:\xampp\htdocs\elearning\app\webroot\index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#3 {main}
+2014-03-02 07:59:35 Error: [MissingActionException] Action UsersController::home() could not be found.
+Exception Attributes: array (
+  'controller' => 'UsersController',
+  'action' => 'home',
+)
+Request URL: /elearning/users/home
+Stack Trace:
+#0 C:\xampp\htdocs\elearning\lib\Cake\Routing\Dispatcher.php(185): Controller->invokeAction(Object(CakeRequest))
+#1 C:\xampp\htdocs\elearning\lib\Cake\Routing\Dispatcher.php(160): Dispatcher->_invoke(Object(UsersController), Object(CakeRequest), Object(CakeResponse))
+#2 C:\xampp\htdocs\elearning\app\webroot\index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#3 {main}
+2014-03-02 08:00:22 Error: [MissingActionException] Action UsersController::home() could not be found.
+Exception Attributes: array (
+  'controller' => 'UsersController',
+  'action' => 'home',
+)
+Request URL: /elearning/users/home
+Stack Trace:
+#0 C:\xampp\htdocs\elearning\lib\Cake\Routing\Dispatcher.php(185): Controller->invokeAction(Object(CakeRequest))
+#1 C:\xampp\htdocs\elearning\lib\Cake\Routing\Dispatcher.php(160): Dispatcher->_invoke(Object(UsersController), Object(CakeRequest), Object(CakeResponse))
+#2 C:\xampp\htdocs\elearning\app\webroot\index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#3 {main}
+2014-03-02 08:02:35 Error: Fatal Error (4): syntax error, unexpected ';' in [C:\xampp\htdocs\elearning\app\View\Users\index.ctp, line 4]
+2014-03-02 08:02:35 Error: [FatalErrorException] syntax error, unexpected ';'
+Request URL: /elearning/users
+Stack Trace:
+#0 C:\xampp\htdocs\elearning\lib\Cake\Error\ErrorHandler.php(203): ErrorHandler::handleFatalError(4, 'syntax error, u...', 'C:\xampp\htdocs...', 4)
+#1 [internal function]: ErrorHandler::handleError(4, 'syntax error, u...', 'C:\xampp\htdocs...', 4, Array)
+#2 C:\xampp\htdocs\elearning\lib\Cake\Core\App.php(929): call_user_func('ErrorHandler::h...', 4, 'syntax error, u...', 'C:\xampp\htdocs...', 4, Array)
+#3 C:\xampp\htdocs\elearning\lib\Cake\Core\App.php(902): App::_checkFatalError()
+#4 [internal function]: App::shutdown()
+#5 {main}
+2014-03-02 08:03:14 Error: [MissingActionException] Action UsersController::home() could not be found.
+Exception Attributes: array (
+  'controller' => 'UsersController',
+  'action' => 'home',
+)
+Request URL: /elearning/users/home
+Stack Trace:
+#0 C:\xampp\htdocs\elearning\lib\Cake\Routing\Dispatcher.php(185): Controller->invokeAction(Object(CakeRequest))
+#1 C:\xampp\htdocs\elearning\lib\Cake\Routing\Dispatcher.php(160): Dispatcher->_invoke(Object(UsersController), Object(CakeRequest), Object(CakeResponse))
+#2 C:\xampp\htdocs\elearning\app\webroot\index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#3 {main}
