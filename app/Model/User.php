@@ -1,6 +1,7 @@
 <?php
 class User extends AppModel {
 	var $name = 'User';
+
         public $hasMany = array(
             'TestHistory' => array(
                 'className' => 'TestHistory'
@@ -19,4 +20,14 @@ class User extends AppModel {
         );
          * 
          */
+
+	var $primaryKey = 'id';
+    
+    function checkUserExist($username){
+               	$result = $this->find("count", array(
+                               	"conditions" => array("user_name" => $username)
+               	));
+               	return $result ;
+       	}
+
 }
