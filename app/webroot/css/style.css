@@ -1,26 +1,877 @@
-.class{
-	clear: right;
-	border: 1px solid blueviolet;
-	margin: 5px auto;
-	padding: 5px;
-	overflow: hidden;
+/* Reset Css*/
+
+html, body, div, span, applet, object, iframe,
+h1, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+margin: 0;
+padding: 0;
+border: 0;
+font: inherit;
+vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+display: block;
 }
 
-.class li{
+/*BODY*/
+
+body { 
+    margin: auto;
+    background: gray;
+    font: 62.5% "Times New Roman",Tohama,sansans-serif
+        }
+
+h4 {
+    font-style: italic;
+    text-align: left
+}
+
+p {
+    text-indent: 20px;
+    text-align: justify
+}
+
+blockquote,q {
+    quotes: none;
+}
+
+blockquote:before,blockquote:after,q:before,q:after{
+    content: '';
+    content: none;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+ul {
+    list-style: none;
+}
+
+a:link {
+    color: #3D4B51;
+    text-decoration: none;
+}
+
+a:hover {
+    font-weight: bold;
+    background-color: white;
+    border-radius: 5px;
+}
+
+a:visited {
+    color: orange;
+    text-decoration: none;
+}
+
+a:active {
+    color: #662D91
+}
+
+#container {
+    margin: auto;
+   width: 960px; 
+   background-color: #CDEAEC;
+   border: 1px solid red;
+}
+
+/*Header style*/
+#header {
+    overflow: hidden;
+    margin: 10px;
+}
+
+#header img {
+    width: 500px;
+    height: 100px;
+    border :1px solid green;
+    border-radius: 5px;
+    float :left
+}
+
+#header ul {
+    float: right;
+    margin: 10px;
+}
+
+#header li {
+    display: inline;
+}
+
+#header li a {
+    padding: 5px;
+    font-size: 14px;
+}
+
+/*Body*/
+#body {
+    overflow: hidden;
+    margin: 10px;
+}
+
+/*Main nav */
+
+#main_nav {
+    float: left;
+    font-size:1.2em;
+    background:#b4e007;
+    padding:10px;
+    margin-left: 10px;
+    width: 685px;
+    border-radius: 5px;
+}
+
+#main_nav li{
+display :inline;
+}
+
+#main_nav li a{
+padding :5px;
+text-decoration:none;
+color:#191919;
+font-weight:bold;
+border-right: 2px solid black;
+}
+
+#main_nav li a:hover{
+background:#FF7e00;
+color:white;
+font-size: 1em;
+text-decoration:none;
+border-radius:5px;
+}
+
+/*Slide bar*/
+#slide_bar {
+    float: left;
+    padding: 10px;
+    width: 200px;
+}
+
+#search {
+    border: 1px solid green;
+    border-radius: 5px;
+    height: 100px;
+}
+
+#search input[name="search"]{
+    width: 190px;
+} 
+
+#search input[type="submit"]{
+    float: right;
+    margin-top: 5px;
+    margin-right: 5px;
+}
+
+#acc_info {
+    border: 1px solid green;
+    border-radius: 5px;
+    height: 200px;
+    margin-bottom: 5px;
+    overflow: hidden;
+}
+
+#acc_info img {
+    float: left;
+    margin: 5px auto;
+    margin-left: 5px;
+    width: 80px;
+    height: 100px;
+    border: 1px solid green;
+}
+
+#acc_info p {
+    float: left;
+    margin-top: 5px;
+}
+
+#acc_info ul {
+    clear: left;
+    list-style: circle;
+    margin-left: 20px;
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+/*Category*/
+#category {
+    border: 1px solid green;
+    border-radius: 5px;
+    height: 100px;
+    margin-top: 10px;
+    padding-top: 10px;
+}
+
+#category label {
+    font-size: 1.5em;
+    font-weight: bold;
+    text-decoration: underline;
+    margin: 10px;
+}
+
+#category ul {
+    list-style: circle;
+    padding-left: 20px;
+    padding-top: 10px;
+}
+
+#category ul li {
+    font-size: 1.3em;
+}
+
+/*Main content*/
+#main_content {
+    float: left;
+    border-radius: 5px;
+    border: 1px solid green;
+    padding: 10px;
+    margin-left: 10px;
+    width: 685px;
+}
+
+#arr_type {
+    float: right;
+    margin-bottom: 5px;
+}
+
+#main_content .class {
+    clear: right;
+    border: 1px solid blueviolet;
+    margin: 5px auto;
+    padding: 5px;
+    overflow: hidden;
+}
+
+#main_content .class li{
+    font-weight: bold;   
+}
+#main_content .class li a{
+    float: right;
+    font-size: 1.2em;
+    padding-left: 5px;
+    margin-left: 5px;
+    border: 1px solid gray;
+    padding-right: 5px;
+    border-radius: 5px;
+}
+
+#main_content .cate {
+    float: right;
+    margin-right: 80px;
+}
+
+/*Footer*/
+#footer {
+    background: #7ca45a;
+    padding: 10px;
+    font-size: 1.5em;
+    overflow: hidden;
+}
+
+#footer div.footer_info {
+    float: left;
+    width: 300px;
+    position: relative;
+    left: 100px;
+}
+
+/*Register page*/
+
+#register_info {
+    border: 1px solid green;
+    margin-bottom: 10px;
+}
+#register_info h4 {
+    margin: 5px;
+}
+#register_info table {
+    margin-bottom: 5px;
+}
+#register_info table input[type="text"] {
+    margin-bottom: 5px;
+    padding: 3px;
+    width: 400px;
+}
+/* Khanh */
+#register_info table input[type="password"] {
+    margin-bottom: 5px;
+    padding: 3px;
+    width: 400px;
+}
+/*end Khanh */
+#register_info td {
+    font-weight: bold;
+    background-color: #CDEAEC;
+}
+#register_info .must_info {
+    
+}
+
+#register_info span{
+    color: red;
+}
+
+#rule {
+    border: 1px solid green;
+    margin-bottom: 10px;
+}
+
+#rule h4 {
+    font-size: 1.5em;
+}
+
+#rule span {
+    color: red;
+}
+
+#rule label{
+    font-weight: bold;
+}
+
+#submit {
+    float: right;
+}
+
+/*Login page*/
+#login {
+    margin: 150px 160px 200px 50px;
+}
+
+#login table input {
+    margin-bottom: 5px;
+    margin-left: 7px;
+    padding: 3px;
+    width: 395px;
+}
+
+#login table td{
+    font-weight: bold;
+}
+
+#login input[type="submit"] {
+    float: right;
+    margin-left: 5px;
+}
+
+/*Forgot password*/
+#forgot_pass h2 {
+    margin-top: 150px;
+    margin-bottom: 200px;
+    margin-left: 100px;
+    font-size: 2em;
+}
+
+/*Q&A*/
+#q_a ul {
+    margin-bottom: 10px;
+}
+#q_a ul li {
+    display: inline;
+    margin-right: 20px;
+}
+
+#q_a ul li a{
+    font-size: 2em;
+}
+
+#q_a img {
+    width: 600px;
+    padding-left: 50px;
+}
+
+/*Change account infomation*/
+#change_info {
+    border: 1px solid green;
+    margin-top: 30px;
+    margin-bottom: 50px;
+}
+#change_info h4 {
+    margin: 5px;
+}
+#change_info table {
+    margin-left: 10px;
+    margin-bottom: 5px;
+}
+#change_info table input[type="text"] {
+    margin-bottom: 5px;
+    margin-left: 20px;
+    padding: 3px;
+    height: 12px;
+    width: 400px;
+}
+#change_info td {
+    font-weight: bold;
+}
+
+#change_info table p {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    padding: 3px;
+    height: 12px;
+    width: 400px;
+}
+/*kakin*/
+#kakin table {
+    border: 1px solid green;
+    margin: 20px;
+    margin-bottom: 10px;
+}
+
+#kakin table tr td {
+    padding-left: 100px;
+    width: 200px;
+    height: 20px;
+    font-size: 1.2em;
+    font-weight: bold;
+    border-left: 1px solid green;
+    border-bottom: 1px dotted green;
+}
+
+#kakin form input {
+    float: right;
+    margin-right: 20px;
+}
+
+/*rekishi*/
+#rekishi table {
+    border: 1px solid green;
+    margin: 20px;
+    margin-bottom: 10px;
+}
+
+#rekishi table tr td {
+    padding-left: 150px;
+    width: 300px;
+    height: 20px;
+    font-size: 1.2em;
+    font-weight: bold;
+    border-left: 1px solid green;
+    border-bottom: 1px dotted green;
+}
+
+#rekishi form input {
+    float: right;
+    margin-right: 20px;
+}
+
+/*Test*/
+#test_id {
+    font-size: 2em;
+    font-weight: bold;
+    margin-left: 50px;
+    margin-bottom: 20px;
+}
+#clock {
+    float: right;
+    font-size: 1.5em;
+    font-weight: bold;
+    padding: 5px;
+    border: 2px solid green;
+    margin-bottom: 20px;
+}
+
+#test {
+    clear: right;
+    margin-left: 20px;
+    border:1px solid green;
+    padding-left: 20px;
+    margin-bottom: 10px;
+}
+
+#test .question {
+    font-size: 1.5em;
+    line-height: 10px;
+    margin: 5px;
+}
+
+#test .question input[type="radio"]{
+    font-size: 0.8em;
+    padding: 0px;
+    margin: auto
+}
+
+#test .question li h4 {
+    font-weight: bold;
+}
+
+/*Student result*/
+#s_result table{
+    border: 1px solid green;
+    margin-left: 30px;
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+
+#s_result table tr td {
+    width: 100px;
+    height: 20px;
+    font-size: 1.2em;
+    font-weight: bold;
+    border-left: 1px solid green;
+    border-bottom: 1px dotted green;
+}
+
+/*Start study*/
+
+#start_study {
+    border:1px solid green;
+    padding: 10px;
+    overflow: hidden;
+}
+
+#start_study .ml {
+    font-size: 1.5em;
+    padding-bottom: 5px;
+    font-weight: bold;
+}
+
+#start_study .doc {
+    float: right;
+    margin-right: 500px;
+    font-size: 1.3em;
+    /*border: 1px solid green;*/
+}
+
+#start_study .test {
+    float: right;
+    font-size: 1.3em;
+    clear: right;
+    margin-right: 490px;
+    margin-top: 0px;
+}
+
+/*Comment*/
+
+#comment {
+    border: 1px solid green;
+    margin-top: 10px;
+}
+
+#comment .comment {
+    height: 60px;
+    width: 700px;
+}
+
+#comment .comment img {
+    height: 50px;
+    width: 50px;
+    padding: 5px;
+}
+
+#comment .comment span {
+    border: 2px solid green;
+    float:  right;
+    height: 40px;
+    width: 580px;
+    margin-top: 10px;
+    margin-right: 50px;
+}
+
+#comment .child1_comment {
+    height: 60px;
+    width: 650px;
+    overflow: hidden;
+}
+
+#comment .child1_comment img {
+    height: 50px;
+    width: 50px;
+    margin-left: 70px;
+}
+
+#comment .child1_comment span {
+    border: 2px solid green;
+    float:  right;
+    height: 40px;
+    width: 520px;
+    margin-top: 5px;
+    margin-left: auto;
+    clear: left;
+}
+
+#new_comment {
+    height: 60px;
+    width: 650px;
+}
+
+#new_comment textarea {
+    height: 25px;
+    width: 580px;
+    border: 1px solid green;
+    margin-left: 65px;
+}
+
+#new_comment form {
+    float: right;
+}
+
+/*Document content*/
+
+#doc_name {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+#doc_content {
+    border: 1px solid green;
+    height: 300px;
+    width: 500px;
+    margin-left: 70px;
+}
+
+#resize {
+    float:right;
+    margin-right: 20px;
+}
+/*Test result*/
+
+#test_result {
+    font-size: 1.5em;
+    font-weight: bold;
+    border: 1px solid green;
+    margin-left: 20px;
+    margin-bottom: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+#true {
+    margin: 20px;
+    font-size: 1.5em;
+    font-weight: bold;
+    color: blue;
+}
+#false {
+    margin: 20px;
+    font-size: 1.5em;
+    font-weight: bold;
+    color: red;
+}
+
+/*Create class*/
+#create_class {
+    border: 1px solid green;
+    margin-bottom: 10px;
+}
+
+#create_class input {
+    width: 420px;
+}
+
+#create_class span{
+    color: red;
+    }
+
+#create_class td{
+    font-size: 1.3em;
+    font-weight: bold;
+    padding-left: 5px;
+    padding-bottom: 5px;
+}
+
+#create_class textarea {
+    width: 420px;
+    height: 100px;
+}
+
+#create_class button {
+    
+}
+
+/*Class result*/
+#class_result table{
+    border: 1px solid green;
+    margin-left: 30px;
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+
+#class_result table tr td {
+    width: 150px;
+    height: 20px;
+    font-size: 1.2em;
+    font-weight: bold;
+    border-left: 1px solid green;
+    border-bottom: 1px dotted green;
+    }
+
+/*Change class*/
+#change_class {
+    border: 1px solid green;
+    margin-bottom: 10px;
+}
+
+#change_class input {
+    width: 420px;
+}
+
+#change_class td{
+    font-size: 1.3em;
+    font-weight: bold;
+    padding-left: 5px;
+    padding-bottom: 5px;
+}
+
+#change_class textarea {
+    width: 420px;
+    height: 100px;
+}
+
+/*Hoc sinh result*/
+#hs_result table{
+    border: 1px solid green;
+    margin-left: 30px;
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+
+#hs_result table tr td {
+    width: 200px;
+    height: 20px;
+    font-size: 1.2em;
+    font-weight: bold;
+    border-left: 1px solid green;
+    border-bottom: 1px dotted green;
+    }
+/*Manage tool*/
+#manage_tool {
+    border: 1px solid green;
+}
+
+#manage_tool table {
+    margin-top: 70px;
+    margin-bottom: 100px;
+}
+#manage_tool table td {
+    width: 200px;
+    padding-bottom: 10px;
+    padding-left: 70px;
+    font-size: 1.3em;
+}
+#manage_tool table td a{
+    font-weight: bold;
+    padding: 3px;
+}
+
+#manage_tool table td img {
+    width: 50px;
+    height: 70px;
+    padding-left: 10px;
+    border: 2px solid green;
+    border-radius: 10px;
+}
+
+/*Change value*/
+#var_val {
+    border: 1px solid green;
+    margin-bottom: 10px;
+}
+
+#ip_manager {
+    padding: 10px;
+}
+
+#ip_manager table td{
+    height: 20px;
+    width: 100px;
+    font-size: 1.2em;
+    font-weight: bold;
+    padding-left: 20px;
+}
+
+#session {
+    padding: 10px;
+}
+
+#session span,#money_percent span {
+    font-size: 1.2em;
+    font-weight: bold;
+    padding-left: 20px;
+}
+
+#money_percent {
+    padding: 10px;
+}
+
+/*Account manage*/
+#acc_manage {
+    border: 1px solid green;
+    padding: 5px;
+}
+
+#acc_manage span {
+    font-size: 1.3em;
+}
+
+#acc_manage h4 {
+    font-size: 1.5em;
+    text-decoration: underline;
+    margin-top: 10px;
+}
+
+#acc_manage select {
+    float: right;
+    margin-right: 20px;
+}
+
+#acc_manage table {
+    clear: right;
+    border: 1px solid green;
+}
+
+#acc_manage table td {
+    width: 130px;
+    border-bottom: 1px dotted green;
+    border-right: 1px solid green;
+    height: 15px;
+}
+
+#summary table{
+    border: 1px solid green;
+    margin-left: 30px;
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+
+#summary table tr td {
+    width: 150px;
+    height: 20px;
+    font-size: 1.2em;
+    font-weight: bold;
+    border-left: 1px solid green;
+    border-bottom: 1px dotted green;
+    }
+#money_manage table{
+    border: 1px solid green;
+}
+
+#money_manage table td{
+    width: 130px;
+    border-bottom: 1px dotted green;
+    border-right: 1px solid green;
+    height: 15px;
+}
+
+/* By Khanh */
+#page-title {
+	background-color: #CDEAEC;
+	border-left:solid 7px #4573d5 !important;
+	padding-left: 5px;
 	font-weight: bold;
 }
-
-.class li a{
-	float: right;
-	font-size: 1.2em;
-	padding-left: 5px;
-	margin-left: 5px;
-	border: 1px solid gray;
-	padding-right: 5px;
-	border-radius: 5px;
-}
-
-.cate{
-	float: right;
-	margin-right: 80px;
-}
+/* end by Khanh*/

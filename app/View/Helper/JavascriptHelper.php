@@ -11,7 +11,6 @@
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  */
- 
 /**
  * Javascript Helper class for easy use of JavaScript.
  *
@@ -43,7 +42,6 @@ class JavascriptHelper extends AppHelper {
  * @access public
  */
 	var $safe = false;
-	
 /**
  * HTML tags used by this helper.
  *
