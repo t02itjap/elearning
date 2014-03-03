@@ -1,4 +1,5 @@
 <?php
+
 debug($lessons);
 echo $this->Html->css('style'); 
 foreach ($lessons as $lesson): 

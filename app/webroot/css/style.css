@@ -1,0 +1,26 @@
+.class{
+	clear: right;
+	border: 1px solid blueviolet;
+	margin: 5px auto;
+	padding: 5px;
+	overflow: hidden;
+}
+
+.class li{
+	font-weight: bold;
+}
+
+.class li a{
+	float: right;
+	font-size: 1.2em;
+	padding-left: 5px;
+	margin-left: 5px;
+	border: 1px solid gray;
+	padding-right: 5px;
+	border-radius: 5px;
+}
+
+.cate{
+	float: right;
+	margin-right: 80px;
+}

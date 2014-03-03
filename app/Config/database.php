@@ -78,6 +78,6 @@ class DATABASE_CONFIG {
 		'password' => 'password',
 		'database' => 'elearning',
 		'prefix' => '',
-		//'encoding' => 'utf8',
+		'encoding' => 'utf8',
 	);
 }
