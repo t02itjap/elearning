@@ -6,7 +6,7 @@
        echo '<li>'.$value['User']['user_name'].'</li>';
        echo '<li>'.$value['Test']['lesson_id'].'</li>';
        echo '<li>'.$value['Lesson']['lesson_name'].'</li>';
-       echo '----------';
+       echo 'View Test Result';
    }
    echo '</ul>';
 

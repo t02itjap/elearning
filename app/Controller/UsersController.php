@@ -82,10 +82,14 @@ App::uses('DboSource','Model/Datasource');
         	var $uses = array ('User','TestHistory','Test','Lesson');
 	
 	public function index(){
-                $data = $this->Test->TestHistory->find('all',
+                
+ }
+
+public function viewtestresult() {
+    $data = $this->Test->TestHistory->find('all',
                         array(
                             'conditions'=>array(
-                                'TestHistory.user_id'=>'2',//thay cai 2 = $this->Auth->user('id')
+                                'TestHistory.user_id'=>'2' //$this->Auth->user('id')
                                )
                             )
                         );
@@ -105,5 +109,4 @@ App::uses('DboSource','Model/Datasource');
 	}
 
         
- }
-
+}
