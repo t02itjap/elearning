@@ -1174,6 +1174,7 @@ Stack Trace:
 =======
 >>>>>>> c8a3a390c7a5d85caaf6bbb6d72cef49494377bd
 >>>>>>> master
+<<<<<<< HEAD
 2014-03-03 08:33:12 Error: Fatal Error (64): Cannot redeclare UsersController::$uses in [C:\xampp\htdocs\elearning\app\Controller\UsersController.php, line 76]
 2014-03-03 08:33:12 Error: [FatalErrorException] Cannot redeclare UsersController::$uses
 Request URL: /elearning/users/register
@@ -1194,3 +1195,36 @@ Stack Trace:
 #3 C:\xampp\htdocs\elearning\lib\Cake\Core\App.php(902): App::_checkFatalError()
 #4 [internal function]: App::shutdown()
 #5 {main}
+=======
+2014-03-03 08:04:25 Error: [MissingTableException] Table tb_test_histories for model TestHistory was not found in datasource default.
+Exception Attributes: array (
+  'table' => 'tb_test_histories',
+  'class' => 'TestHistory',
+  'ds' => 'default',
+)
+Request URL: /elearning/users/register
+Stack Trace:
+#0 C:\xampp\htdocs\elearning\lib\Cake\Model\Model.php(3496): Model->setSource('test_histories')
+#1 C:\xampp\htdocs\elearning\lib\Cake\Model\Datasource\DboSource.php(1063): Model->getDataSource()
+#2 C:\xampp\htdocs\elearning\lib\Cake\Model\Model.php(2900): DboSource->read(Object(User), Array)
+#3 C:\xampp\htdocs\elearning\lib\Cake\Model\Model.php(2872): Model->_readDataSource('count', Array)
+#4 C:\xampp\htdocs\elearning\app\Model\User.php(29): Model->find('count', Array)
+#5 C:\xampp\htdocs\elearning\app\Controller\UsersController.php(64): User->checkUserExist('test1')
+#6 [internal function]: UsersController->register()
+#7 C:\xampp\htdocs\elearning\lib\Cake\Controller\Controller.php(490): ReflectionMethod->invokeArgs(Object(UsersController), Array)
+#8 C:\xampp\htdocs\elearning\lib\Cake\Routing\Dispatcher.php(185): Controller->invokeAction(Object(CakeRequest))
+#9 C:\xampp\htdocs\elearning\lib\Cake\Routing\Dispatcher.php(160): Dispatcher->_invoke(Object(UsersController), Object(CakeRequest), Object(CakeResponse))
+#10 C:\xampp\htdocs\elearning\app\webroot\index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#11 {main}
+2014-03-03 08:06:38 Error: [MissingActionException] Action UsersController::regester() could not be found.
+Exception Attributes: array (
+  'controller' => 'UsersController',
+  'action' => 'regester',
+)
+Request URL: /elearning/users/regester
+Stack Trace:
+#0 C:\xampp\htdocs\elearning\lib\Cake\Routing\Dispatcher.php(185): Controller->invokeAction(Object(CakeRequest))
+#1 C:\xampp\htdocs\elearning\lib\Cake\Routing\Dispatcher.php(160): Dispatcher->_invoke(Object(UsersController), Object(CakeRequest), Object(CakeResponse))
+#2 C:\xampp\htdocs\elearning\app\webroot\index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#3 {main}
+>>>>>>> 4d475ce2a6112bfcdf16c8e49d30f3edf51d2f30
