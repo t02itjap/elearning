@@ -45,7 +45,7 @@ class UsersController extends AppController {
 				$this->Session->setFlash ( "Hello" . $this->Auth->user ( 'user_name' ) );
 				$this->redirect ( $this->Auth->redirect () );
 			} else {
-				$this->Session->setFlash ( 'ãƒ¡ãƒ¼ãƒ«ã�¨ã�‹ãƒ‘ãƒ¼ã‚¹ãƒ¯ãƒ¼ãƒ‰ã�¨ã�‹é–“é�•ã�„ã�§ã�™' );
+				$this->Session->setFlash ( 'メールとかパースワードとか間違いです' );
 			}
 		}
 	}
