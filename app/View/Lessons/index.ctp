@@ -1,9 +1,5 @@
 <?php
-<<<<<<< HEAD
 debug($lessons);
-=======
-print_r($lessons);
->>>>>>> master
 echo $this->Html->css('style'); 
 foreach ($lessons as $lesson): 
 ?>
@@ -18,8 +14,4 @@ foreach ($lessons as $lesson):
 			<li><a href='#' class='see'>見る</a></li>
 		</ul>
 	</div>
-<<<<<<< HEAD
 <?php endforeach; ?>
-=======
-<?php endforeach; ?>
->>>>>>> master

@@ -1159,6 +1159,7 @@ Stack Trace:
 #1 C:\xampp\htdocs\elearning\lib\Cake\Routing\Dispatcher.php(160): Dispatcher->_invoke(Object(UsersController), Object(CakeRequest), Object(CakeResponse))
 #2 C:\xampp\htdocs\elearning\app\webroot\index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
 #3 {main}
+<<<<<<< HEAD
 2014-03-02 18:29:01 Error: [MissingActionException] Action UsersController::missPass() could not be found.
 Exception Attributes: array (
   'controller' => 'UsersController',
@@ -1170,4 +1171,6 @@ Stack Trace:
 #1 /opt/lampp/htdocs/elearning/lib/Cake/Routing/Dispatcher.php(160): Dispatcher->_invoke(Object(UsersController), Object(CakeRequest), Object(CakeResponse))
 #2 /opt/lampp/htdocs/elearning/app/webroot/index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
 #3 {main}
+=======
+>>>>>>> c8a3a390c7a5d85caaf6bbb6d72cef49494377bd
 >>>>>>> master

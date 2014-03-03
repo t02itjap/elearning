@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <?php
 class UsersController extends AppController {
 	var $uses = array ('User');
@@ -8,16 +7,7 @@ class UsersController extends AppController {
 	public function index(){
 		$data = $this->User->find('all');
                 $this->set('data',$data);
+                $this->set('lessons', $this->Lesson->getLessons());
 	}
 }
-=======
-<?php 
-class LessonsController extends AppController{
-	public function index() {
-		//var_dump(lessons);
-		$this->set('lessons', $this->Lesson->getLessons());
-		
-	}
-}
-?>
->>>>>>> master
+

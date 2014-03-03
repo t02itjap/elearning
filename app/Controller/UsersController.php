@@ -78,6 +78,7 @@ App::uses('DboSource','Model/Datasource');
                 exit();
         }
 
+
         	var $uses = array ('User','TestHistory','Test','Lesson');
 	
 	public function index(){
