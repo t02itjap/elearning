@@ -23,14 +23,13 @@ $cakeDescription = __d('cake_dev', 'CakePHP: the rapid development php framework
 <head>
 	<?php echo $this->Html->charset(); ?>
 	<title>
-		<?php echo $cakeDescription ?>:
 		<?php echo $title_for_layout; ?>
 	</title>
 	<?php
 		echo $this->Html->meta('icon');
 
-		echo $this->Html->css('cake.generic');
-
+		echo $this->Html->css(array('cake.generic','style'));
+		echo $this->Html->script(array('jquery-1.4.4.min.js'));
 		echo $this->fetch('meta');
 		echo $this->fetch('css');
 		echo $this->fetch('script');
@@ -38,24 +37,19 @@ $cakeDescription = __d('cake_dev', 'CakePHP: the rapid development php framework
 </head>
 <body>
 	<div id="container">
-		<div id="header">
-			<h1><?php echo $this->Html->link($cakeDescription, 'http://cakephp.org'); ?></h1>
-		</div>
-		<div id="content">
-
-			<?php echo $this->Session->flash(); ?>
-
+		<?php echo $this->element('header');?>
+		<div id="body">
+        	<div id="slide_bar">
+        		<?php echo $this->element('acc_info');?>
+        		<?php echo $this->element('search');?>
+        		<?php echo $this->element('category');?>
+        	</div>
+        	<?php echo $this->element('teacher_menu');?>
+		<div id="main_content">
+			<h2 id='page-title'><?php echo $title_for_layout; ?></h2><br>
 			<?php echo $this->fetch('content'); ?>
 		</div>
-		<div id="footer">
-			<?php echo $this->Html->link(
-					$this->Html->image('cake.power.gif', array('alt' => $cakeDescription, 'border' => '0')),
-					'http://www.cakephp.org/',
-					array('target' => '_blank', 'escape' => false)
-				);
-			?>
-		</div>
+		<?php echo $this->element('footer');?>
 	</div>
-	<?php echo $this->element('sql_dump'); ?>
 </body>
 </html>
