@@ -831,3 +831,41 @@ Stack Trace:
 #1 C:\xampp\htdocs\elearning\lib\Cake\Routing\Dispatcher.php(160): Dispatcher->_invoke(Object(UsersController), Object(CakeRequest), Object(CakeResponse))
 #2 C:\xampp\htdocs\elearning\app\webroot\index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
 #3 {main}
+2014-03-02 21:06:22 Error: [MissingHelperException] Helper class AuthHelper could not be found.
+Exception Attributes: array (
+  'class' => 'AuthHelper',
+  'plugin' => false,
+)
+Request URL: /elearning/users
+Stack Trace:
+#0 C:\xampp\htdocs\elearning\lib\Cake\View\HelperCollection.php(63): HelperCollection->load('Auth')
+#1 C:\xampp\htdocs\elearning\lib\Cake\View\View.php(818): HelperCollection->__isset('Auth')
+#2 C:\xampp\htdocs\elearning\app\View\Users\index.ctp(5): View->__get('Auth')
+#3 C:\xampp\htdocs\elearning\lib\Cake\View\View.php(929): include('C:\xampp\htdocs...')
+#4 C:\xampp\htdocs\elearning\lib\Cake\View\View.php(891): View->_evaluate('C:\xampp\htdocs...', Array)
+#5 C:\xampp\htdocs\elearning\lib\Cake\View\View.php(460): View->_render('C:\xampp\htdocs...')
+#6 C:\xampp\htdocs\elearning\lib\Cake\Controller\Controller.php(952): View->render(NULL, NULL)
+#7 C:\xampp\htdocs\elearning\lib\Cake\Routing\Dispatcher.php(192): Controller->render()
+#8 C:\xampp\htdocs\elearning\lib\Cake\Routing\Dispatcher.php(160): Dispatcher->_invoke(Object(UsersController), Object(CakeRequest), Object(CakeResponse))
+#9 C:\xampp\htdocs\elearning\app\webroot\index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#10 {main}
+2014-03-02 22:40:48 Error: [MissingTableException] Table tb_aros for model Aro was not found in datasource default.
+Exception Attributes: array (
+  'table' => 'tb_aros',
+  'class' => 'Aro',
+  'ds' => 'default',
+)
+Request URL: /elearning/users/login
+Stack Trace:
+#0 C:\xampp\htdocs\elearning\lib\Cake\Model\Model.php(3496): Model->setSource('aros')
+#1 C:\xampp\htdocs\elearning\lib\Cake\Model\Model.php(800): Model->getDataSource()
+#2 C:\xampp\htdocs\elearning\app\Controller\UsersController.php(34): Model->__call('findByAlias', Array)
+#3 C:\xampp\htdocs\elearning\app\Controller\UsersController.php(34): Aro->findByAlias('Admin')
+#4 C:\xampp\htdocs\elearning\app\Controller\UsersController.php(15): UsersController->install()
+#5 [internal function]: UsersController->beforeFilter(Object(CakeEvent))
+#6 C:\xampp\htdocs\elearning\lib\Cake\Event\CakeEventManager.php(247): call_user_func(Array, Object(CakeEvent))
+#7 C:\xampp\htdocs\elearning\lib\Cake\Controller\Controller.php(674): CakeEventManager->dispatch(Object(CakeEvent))
+#8 C:\xampp\htdocs\elearning\lib\Cake\Routing\Dispatcher.php(182): Controller->startupProcess()
+#9 C:\xampp\htdocs\elearning\lib\Cake\Routing\Dispatcher.php(160): Dispatcher->_invoke(Object(UsersController), Object(CakeRequest), Object(CakeResponse))
+#10 C:\xampp\htdocs\elearning\app\webroot\index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#11 {main}
