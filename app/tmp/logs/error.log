@@ -1185,3 +1185,59 @@ Stack Trace:
 #1 C:\xampp\htdocs\elearning\lib\Cake\Routing\Dispatcher.php(160): Dispatcher->_invoke(Object(UsersController), Object(CakeRequest), Object(CakeResponse))
 #2 C:\xampp\htdocs\elearning\app\webroot\index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
 #3 {main}
+2014-03-04 09:29:34 Error: [MissingModelException] Bill
+Request URL: /elearning/student/getHistories
+Stack Trace:
+#0 C:\xampp\htdocs\elearning\lib\Cake\Controller\Controller.php(1079): PaginatorComponent->paginate('Bill', Array, Array)
+#1 C:\xampp\htdocs\elearning\app\Controller\StudentController.php(27): Controller->paginate('Bill')
+#2 [internal function]: StudentController->getHistories()
+#3 C:\xampp\htdocs\elearning\lib\Cake\Controller\Controller.php(490): ReflectionMethod->invokeArgs(Object(StudentController), Array)
+#4 C:\xampp\htdocs\elearning\lib\Cake\Routing\Dispatcher.php(185): Controller->invokeAction(Object(CakeRequest))
+#5 C:\xampp\htdocs\elearning\lib\Cake\Routing\Dispatcher.php(160): Dispatcher->_invoke(Object(StudentController), Object(CakeRequest), Object(CakeResponse))
+#6 C:\xampp\htdocs\elearning\app\webroot\index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#7 {main}
+2014-03-04 09:30:20 Error: [MissingModelException] Bill
+Request URL: /elearning/student/getHistories
+Stack Trace:
+#0 C:\xampp\htdocs\elearning\lib\Cake\Controller\Controller.php(1079): PaginatorComponent->paginate('Bill', Array, Array)
+#1 C:\xampp\htdocs\elearning\app\Controller\StudentController.php(27): Controller->paginate('Bill')
+#2 [internal function]: StudentController->getHistories()
+#3 C:\xampp\htdocs\elearning\lib\Cake\Controller\Controller.php(490): ReflectionMethod->invokeArgs(Object(StudentController), Array)
+#4 C:\xampp\htdocs\elearning\lib\Cake\Routing\Dispatcher.php(185): Controller->invokeAction(Object(CakeRequest))
+#5 C:\xampp\htdocs\elearning\lib\Cake\Routing\Dispatcher.php(160): Dispatcher->_invoke(Object(StudentController), Object(CakeRequest), Object(CakeResponse))
+#6 C:\xampp\htdocs\elearning\app\webroot\index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#7 {main}
+2014-03-04 09:30:36 Error: [MissingModelException] Bill
+Request URL: /elearning/student/getHistories
+Stack Trace:
+#0 C:\xampp\htdocs\elearning\lib\Cake\Controller\Controller.php(1079): PaginatorComponent->paginate('Bill', Array, Array)
+#1 C:\xampp\htdocs\elearning\app\Controller\StudentController.php(27): Controller->paginate('Bill')
+#2 [internal function]: StudentController->getHistories()
+#3 C:\xampp\htdocs\elearning\lib\Cake\Controller\Controller.php(490): ReflectionMethod->invokeArgs(Object(StudentController), Array)
+#4 C:\xampp\htdocs\elearning\lib\Cake\Routing\Dispatcher.php(185): Controller->invokeAction(Object(CakeRequest))
+#5 C:\xampp\htdocs\elearning\lib\Cake\Routing\Dispatcher.php(160): Dispatcher->_invoke(Object(StudentController), Object(CakeRequest), Object(CakeResponse))
+#6 C:\xampp\htdocs\elearning\app\webroot\index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#7 {main}
+2014-03-04 09:30:40 Error: [MissingModelException] Bill
+Request URL: /elearning/student/getHistories
+Stack Trace:
+#0 C:\xampp\htdocs\elearning\lib\Cake\Controller\Controller.php(1079): PaginatorComponent->paginate('Bill', Array, Array)
+#1 C:\xampp\htdocs\elearning\app\Controller\StudentController.php(27): Controller->paginate('Bill')
+#2 [internal function]: StudentController->getHistories()
+#3 C:\xampp\htdocs\elearning\lib\Cake\Controller\Controller.php(490): ReflectionMethod->invokeArgs(Object(StudentController), Array)
+#4 C:\xampp\htdocs\elearning\lib\Cake\Routing\Dispatcher.php(185): Controller->invokeAction(Object(CakeRequest))
+#5 C:\xampp\htdocs\elearning\lib\Cake\Routing\Dispatcher.php(160): Dispatcher->_invoke(Object(StudentController), Object(CakeRequest), Object(CakeResponse))
+#6 C:\xampp\htdocs\elearning\app\webroot\index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#7 {main}
+2014-03-04 09:32:13 Error: [MissingViewException] View file "C:\xampp\htdocs\elearning\app\View\Student\get_histories.ctp" is missing.
+Exception Attributes: array (
+  'file' => 'C:\\xampp\\htdocs\\elearning\\app\\View\\Student\\get_histories.ctp',
+)
+Request URL: /elearning/student/getHistories
+Stack Trace:
+#0 C:\xampp\htdocs\elearning\lib\Cake\View\View.php(457): View->_getViewFileName(NULL)
+#1 C:\xampp\htdocs\elearning\lib\Cake\Controller\Controller.php(952): View->render(NULL, NULL)
+#2 C:\xampp\htdocs\elearning\lib\Cake\Routing\Dispatcher.php(192): Controller->render()
+#3 C:\xampp\htdocs\elearning\lib\Cake\Routing\Dispatcher.php(160): Dispatcher->_invoke(Object(StudentController), Object(CakeRequest), Object(CakeResponse))
+#4 C:\xampp\htdocs\elearning\app\webroot\index.php(108): Dispatcher->dispatch(Object(CakeRequest), Object(CakeResponse))
+#5 {main}
