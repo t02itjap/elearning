@@ -7,3 +7,6 @@ app/[Cc]onfig/core.php
 app/[Cc]onfig/database.php
 !empty
 /nbproject/private/
+tmp
+/.settings/
+
