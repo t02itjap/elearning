@@ -133,7 +133,7 @@ public function viewtestresult() {
                 $lesson_id = Array();
                 foreach($data as $k=>$value){
                     $lesson_id[] = $value['Test']['lesson_id'];
-                } 
+                }
                 $lesson_name = Array();
                 foreach($lesson_id as $id){
                     $lesson_name[] = $this->Lesson->findById($id);

@@ -8,3 +8,5 @@ app/[Cc]onfig/database.php
 !empty
 /nbproject/private/
 tmp
+/.settings/
+
