@@ -360,6 +360,7 @@ border-radius:5px;
 
 #login table td{
     font-weight: bold;
+    background-color: #CDEAEC;
 }
 
 #login input[type="submit"] {
