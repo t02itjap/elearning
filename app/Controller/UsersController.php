@@ -59,7 +59,6 @@ class UsersController extends AppController {
 				'bank_account_code' => $data['User']['bank_code'],
 				'address' => $data['User']['address'],
 				'phone_number' => $data['User']['phone_number'],
-				'profile_img' => $data['User']['profile_img']['name'],
 			));
 			if($data['User']['user_type'] == 2){
 				$question = base64_encode($data['User']['question']);
@@ -71,7 +70,6 @@ class UsersController extends AppController {
 			}
 			if ($this->User->validates ()) {
 				if($data['User']['user_type'] == 3){
-					move_uploaded_file($data['User']['profile_img']['tmp_name'], WWW_ROOT . 'img/profile_img'. DS . $data['User']['profile_img']['name']);
 					$this->User->save();
 					$user = $this->User->find('first',array(
 							'fields' => array('id'),
@@ -85,7 +83,6 @@ class UsersController extends AppController {
 				}
 				else{					
 					if($this->Verifycode->validates()){
-						move_uploaded_file($data['User']['profile_img']['tmp_name'], WWW_ROOT . 'img/profile_img'. DS . $data['User']['profile_img']['name']);
 						$this->User->save();
 						$user = $this->User->find('first',array(
 							'fields' => array('id'),
