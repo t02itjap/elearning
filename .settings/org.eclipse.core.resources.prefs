@@ -1,4 +1,8 @@
-#Mon Mar 03 14:51:09 ICT 2014
+#Wed Mar 05 12:29:25 ICT 2014
 eclipse.preferences.version=1
+encoding//app/Controller/StudentsController.php=UTF-8
 encoding//app/Controller/UsersController.php=UTF-8
+encoding//app/Model/User.php=UTF-8
+encoding//app/View/Students/change_info.ctp=UTF-8
+encoding//app/View/Users/login.ctp=UTF-8
 encoding//app/View/Users/register.ctp=UTF-8

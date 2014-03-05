@@ -7,17 +7,15 @@ App::uses ( 'DboSource', 'Model/Datasource' );
 
 class UsersController extends AppController {
 	public $name = "Users";
-	var $uses = array ('User', 'TestHistory', 'Test', 'Lesson' );
+	var $uses = array ('User', 'TestHistory', 'Test', 'Lesson','InitialUser','Verifycode','InitialVerifycode');
 	var $helpers = array('Html', 'Form', 'Editor');
-	public $components = array ("RequestHandler" );
-	
+	public $components = array ('RequestHandler');
 	public function beforeFilter() {
 		parent::beforeFilter ();
 		$this->layout = 'before_login';
 		$this->Auth->authenticate = array ('Form' => array ('userModel' => 'User', 'fields' => array ('username' => 'user_name', 'password' => 'password' ) )//'scope' => array('User.')
 		 );
 		$this->Auth->allow ( array ('home', 'login', 'register' ) );
-		$this->set ( "title_for_layout", "Elearing" );
 	}
 	
 	public function login() {
@@ -26,22 +24,14 @@ class UsersController extends AppController {
 			$this->redirect ( $this->Auth->redirect () );
 		
 		//
-		if (empty ( $this->data )) {
-			$cookie = $this->Cookie->read ( 'Auth.User' );
-			if (! is_null ( $cookie )) {
-				if ($this->Auth->login ( $cookie )) {
-					$this->redirect ( $this->Auth->redirect () );
-				}
-			}
-		}
 		if ($this->request->is ( 'post' )) {
 			$this->loadModel ( "User" );
+			$this->request->data['User']['password'] = $this->request->data['User']['user_name'].$this->request->data['User']['password'].'sha1';
 			if ($this->Auth->login ()) {
 				if ($this->Auth->user ( "level" ) === 1) {
 					echo "admin";
 				} else
 					echo "user";
-				$this->Cookie->write ( 'Auth.User', $this->Auth->user (), true, '1209600' );
 				$this->Session->setFlash ( "Hello" . $this->Auth->user ( 'user_name' ) );
 				$this->redirect ( $this->Auth->redirect () );
 			} else {
@@ -52,20 +42,78 @@ class UsersController extends AppController {
 	
 	function register() {
 		$this->set ( 'title_for_layout', '登録' );
-		$this->set ( compact ( 'userType', 'questionList' ) );
+		$forPass = 'sha1';
 		if (isset ( $this->request->data ['submit_data'] )) {
 			$data = $this->request->data;
+			$birthDate = $data['User']['birth_year'].'-'.$data['User']['birth_month'].'-'.$data['User']['birth_date'];
 			debug ( $data );
-			$this->User->set ( $data ['User'] );
+			$password = sha1($data['User']['user_name'].$data['User']['password'].$forPass);
+			$this->User->set (array(
+				'user_name'=> $data['User']['user_name'],
+				'real_name' => $data['User']['real_name'],
+				'password' => $password,
+				'email' => $data['User']['email'],
+				'birth_date' => $birthDate,
+				'user_name' => $data['User']['user_name'],
+				'level' => $data['User']['user_type'],
+				'bank_account_code' => $data['User']['bank_code'],
+				'address' => $data['User']['address'],
+				'phone_number' => $data['User']['phone_number'],
+				'profile_img' => $data['User']['profile_img']['name'],
+			));
+			if($data['User']['user_type'] == 2){
+				$question = base64_encode($data['User']['question']);
+				$verifycode = sha1( $data['User']['user_name'].$data['User']['verifycode'].$forPass);
+				$this->Verifycode->set (array(
+					'question' => $data['User']['question'],
+					'verifycode' => $data['User']['verifycode'],
+				));
+			}
 			if ($this->User->validates ()) {
-				$this->User->create ();
-				if ($this->User->save ( $data ['User'], false )) {
-					$this->redirect ( array ('action' => 'login' ) );
+				if($data['User']['user_type'] == 3){
+					move_uploaded_file($data['User']['profile_img']['tmp_name'], WWW_ROOT . 'img/profile_img'. DS . $data['User']['profile_img']['name']);
+					$this->User->save();
+					$user = $this->User->find('first',array(
+							'fields' => array('id'),
+							'conditions' => array('User.user_name' => $data['User']['user_name'] )
+					));
+					$this->InitialUser->set(array(
+						'user_id' => $user['User']['id'],
+						'initial_password' => $password,
+					));
+					$this->InitialUser->save();
 				}
+				else{					
+					if($this->Verifycode->validates()){
+						move_uploaded_file($data['User']['profile_img']['tmp_name'], WWW_ROOT . 'img/profile_img'. DS . $data['User']['profile_img']['name']);
+						$this->User->save();
+						$user = $this->User->find('first',array(
+							'fields' => array('id'),
+							'conditions' => array('User.user_name' => $data['User']['user_name'] )
+						));
+						$this->InitialUser->set(array(
+							'user_id' => $user['User']['id'],
+							'initial_password' => $password,
+						));
+						$this->InitialUser->save();
+						$this->Verifycode->set(array(
+							'user_id' => $user['User']['id'],
+							'question' => $question,
+							'verifycode' => $verifycode,
+						));
+						$this->Verifycode->save();
+						$this->InitialVerifycode->set(array(
+							'user_id' => $user['User']['id'],
+							'question' => $question,
+							'verifycode' => $verifycode,
+						));
+						$this->InitialVerifycode->save();
+					}
+				}
+				$this->redirect(array('controller' => 'Users', 'action' => 'login'));
 			}
 		}
 	}
-	
 	public function logout() {
 		$this->Cookie->destroy ();
 		$this->Auth->logout ();
