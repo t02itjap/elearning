@@ -35,7 +35,7 @@ class UsersController extends AppController {
 				$this->Session->setFlash ( "Hello" . $this->Auth->user ( 'user_name' ) );
 				$this->redirect ( $this->Auth->redirect () );
 			} else {
-				$this->Session->setFlash ( 'ãƒ¡ãƒ¼ãƒ«ã�¨ã�‹ãƒ‘ãƒ¼ã‚¹ãƒ¯ãƒ¼ãƒ‰ã�¨ã�‹é–“é�•ã�„ã�§ã�™' );
+				$this->Session->setFlash ( 'メールとかパースワードとか間違いです' );
 			}
 		}
 	}
@@ -120,23 +120,33 @@ class UsersController extends AppController {
 		$this->redirect ( $this->Auth->logoutRedirect );
 		exit ();
 	}
-	public function index() {
-		$data = $this->Test->TestHistory->find ( 'all', array ('conditions' => array ('TestHistory.user_id' => '2' )//thay cai 2 = $this->Auth->user('id')
- ) );
-		$lesson_id = Array ();
-		foreach ( $data as $k => $value ) {
-			$lesson_id [] = $value ['Test'] ['lesson_id'];
-		}
-		$lesson_name = Array ();
-		foreach ( $lesson_id as $id ) {
-			$lesson_name [] = $this->Lesson->findById ( $id );
-		}
-		for($i = 0; $i < count ( $lesson_name ); $i ++) {
-			$data [$i] ['Lesson'] = $lesson_name [$i] ['Lesson'];
-		}
-		$this->set ( 'data', $data );
 	
+	public function index(){
+                
+ }
+
+public function viewtestresult() {
+    $data = $this->Test->TestHistory->find('all',
+                        array(
+                            'conditions'=>array(
+                                'TestHistory.user_id'=>'2' //$this->Auth->user('id')
+                               )
+                            )
+                        );
+                $lesson_id = Array();
+                foreach($data as $k=>$value){
+                    $lesson_id[] = $value['Test']['lesson_id'];
+                } 
+                $lesson_name = Array();
+                foreach($lesson_id as $id){
+                    $lesson_name[] = $this->Lesson->findById($id);
+                }
+                for($i=0;$i<count($lesson_name);$i++){
+                    $data[$i]['Lesson'] =$lesson_name[$i]['Lesson'];
+                }
+                $this->set('data',$data);
+                 
 	}
 
+        
 }
-

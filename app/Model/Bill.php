@@ -1,5 +1,21 @@
 <?php 
 class Bill extends AppModel{
+	//Thang viet
+	var $name = 'Bill';
+	var $primaryKey = 'id';
+	public $hasMany = array(
+		'LearnHistory' => array(
+			'className' => 'LearnHistory',
+			'foreignKey' => 'bill_id'
+			)
+		);
+	public $belongsTo = array(
+		'Lesson' => array(
+			'className' => 'Lesson',
+			'foreignKey' => 'lesson_id'
+			)
+		);
+	//Het phan Thang viet
 	public function getBills($user_id=null){
 		$condition=array(
 			'joins'=>array(
