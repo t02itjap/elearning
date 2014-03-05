@@ -1,0 +1,175 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+	<meta name="author" content="tiendq" />
+
+	<title>授業を作る</title>
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+</head>
+
+<body>
+<div id="container">    
+    <div id="header">
+        <img src="" width="500px" height="100px" alt="代表画像"/>
+        <ul>
+            <li><a href="#">ログアウト</a></li>
+            <li><a href="#">Q&A </a></li>
+        </ul>
+        
+    </div><!--End #header-->
+    <div id="body">
+        
+        <div id="slide_bar">
+            <div id="acc_info">
+                <img src="" alt="アバター"/>
+                <p>ユーザネーム</p><br />
+                <p>名前</p><br />
+                <ul>
+                    <li><a href="">個人情報を変更</a></li>
+                    <li><a href="">報酬情報</a></li>
+                    <li><a href="">パスワード変更</a></li>
+                    <li><a href="">Verifyコード変更</a></li>
+                </ul>
+            </div><!--End #acc_info-->
+            <div id="search">
+            <h4>探したい授業情報を下に入力</h4>
+            <form action="#" method="post">
+                <input type="text" name="search" />
+                <select>
+                    <option>名称</option>
+                </select>
+                <input type="submit" name="submit" value="検索"/>
+            </form>
+            </div><!--End #search-->
+            
+            <div id="category">
+            <form action="" method="get">
+            <label><em>カテゴリ</em></label>
+            <ul>
+                <li><a href="">インタネット</a></li>
+                <li><a href="">ゲーム</a></li>
+                <li><a href="">サッカー</a></li>
+            </ul>
+            </form> 
+        </div><!--End #category-->
+        </div><!--End #slide_bar-->
+        <div id="main_nav">
+            <ul>
+                <li><a href="#">ホームページ</a></li>
+                <li><a href="#">授業リスト</a></li>
+                <li><a href="#">学生の試験結果</a></li>
+                <li><a href="#">授業を作る</a></li>
+            </ul>
+        
+        </div><!--End #main_nav-->
+        
+        <div id="main_content">
+            <div id="change_class">
+                <h3>授業管理</h3>
+                <table>
+                    <tr>
+                        <td>授業名</td>
+                        <td><input type="text"/></td>
+                        
+                    </tr>
+                            <tr>
+                        <td><span>＊</span>カテゴリー</td>
+                        <td>
+                            <ul>
+                                <li><input type="checkbox"value="" checked="true"/>インタネット　　　　　　<input type="checkbox" value=""/>インタネット</li>
+                                <li><input type="checkbox"value=""/>インタネット　　　　　　<input type="checkbox" value=""/>インタネット</li>
+                                <li><input type="checkbox"value="" checked="true"/>インタネット　　　　　　<input type="checkbox" value=""/>インタネット</li>
+                            </ul>
+                         </td>
+                         
+                         <td>
+                            <button>カテゴリー追加</button>
+                         </td>   
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td style="padding-left: 300px;">
+                            <p>ページ<<<a href="">1</a>,<a href="">2</a>,<a href="">3</a>>></p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>説明</td>
+                        <td><textarea></textarea></td>
+                        
+                    </tr>
+                    <tr>
+                        <td>資料１</td>
+                        <td><a href="" style="text-decoration: underline;">資料１</a></td>
+                        <td><button>変更</button></td>
+                    </tr>
+                    <tr>
+                        <td>資料２</td>
+                        <td><a href="" style="text-decoration: underline;">資料2</a></td>
+                        <td><button>変更</button></td>
+                    </tr>
+                    <tr>
+                        <td><button>資料追加</button></td>
+                    </tr>
+                    <tr>
+                        <td>テスト１</td>
+                        <td><a href="" style="text-decoration: underline;">テスト１　時間：３０分</a></td>
+                        <td><button>変更</button></td>
+                    </tr>
+                    <tr>
+                        <td>テスト２</td>
+                        <td><a href="" style="text-decoration: underline;">テスト2　時間：３０分</a></td>
+                        <td><button>変更</button></td>
+                    </tr>
+                    
+                    <tr>
+                        <td><button>テスト追加</button></td>
+                    </tr>
+                </table>
+            </div><!--End #change_class-->
+            <div id="submit">
+                <input type="submit" name="ok" value="授業削除" style="color: white;background: black;"/>
+                <input type="submit" name="ok" value="作成"/>
+                <input type="submit" name="cancel" value="キャセル"/>
+            </div><!--End #submit-->
+            <br /><br />
+            <div id="comment">
+                    <div class="comment">
+                        <img src="" alt="アバター"/>
+                        <span class="comment_content"></span>
+                    </div>
+                        <div class="comment">
+                            <img src="" alt="アバター"/>
+                            <span class="comment_content"></span>
+                        </div>
+                    <div id="new_comment">
+                        <textarea></textarea>
+                        <form>
+                            <input type="submit" value="ポスト"/>
+                        </form>
+                    </div><!--End #new_comment-->
+                </div><!--End #comment-->
+            </div><!--End #main_content-->
+             </div><!--End #body-->
+             
+            <div id="footer">
+                <div class="footer_info">
+                    <p><em>E-learning システム</em></p>
+                </div><!--End .footer_info-->
+                
+                <div class="footer_info">
+                    <p>&copy;Copyright</p>
+                </div><!--End .footer_info-->
+                
+                <div class="footer_info">
+                    <ul>
+                        <li><h4>サポートの電話番号</h4></li>
+                        <li><h4>サポートのメール</h4></li> 
+                    </ul>
+                </div><!--End .footer_info-->
+            </div><!--End #footer-->
+</div><!--End #container-->
+
+</body>
+</html>
