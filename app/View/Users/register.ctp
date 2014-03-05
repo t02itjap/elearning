@@ -139,15 +139,6 @@ echo $this->Form->create ( 'User', array ('type' => 'file' ) )?>
 																													?>
                             </td>
 	</tr>
-	<tr>
-		<td>プロフィール写真</td>
-		<td>
-								<?php
-								echo $this->Form->input ( 'profile_img', array ('type' => 'file', 'label' => false, 'id' => ' profile_img' ) );
-								?>
-                            </td>
-	</tr>
-
 </table>
 </div>
 <!--End #register_info-->

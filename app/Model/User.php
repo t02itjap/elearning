@@ -73,11 +73,5 @@ class User extends AppModel {
 				'message' => 'ngay sinh khong hop le'
 			),
 		),
-		'profile_img' => array(
-			'check name' => array(
-				'rule' => 'isUnique',
-				'message' => 'ten file da ton tai',
-			)
-		),
 	);
 }
