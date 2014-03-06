@@ -1,8 +1,23 @@
-#Wed Mar 05 12:29:25 ICT 2014
+#Thu Mar 06 22:40:02 ICT 2014
 eclipse.preferences.version=1
+encoding//app/Controller/AdminsController.php=UTF-8
 encoding//app/Controller/StudentsController.php=UTF-8
+encoding//app/Controller/TeachersController.php=UTF-8
 encoding//app/Controller/UsersController.php=UTF-8
 encoding//app/Model/User.php=UTF-8
+encoding//app/View/Admins/register_new_manager.ctp=UTF-8
+encoding//app/View/Elements/acc_info.ctp=UTF-8
+encoding//app/View/Elements/before_login_header.ctp=UTF-8
+encoding//app/View/Elements/before_login_menu.ctp=UTF-8
+encoding//app/View/Elements/category.ctp=UTF-8
+encoding//app/View/Elements/footer.ctp=UTF-8
+encoding//app/View/Elements/header.ctp=UTF-8
+encoding//app/View/Elements/main_menu.ctp=UTF-8
+encoding//app/View/Elements/manager_menu.ctp=UTF-8
+encoding//app/View/Elements/search.ctp=UTF-8
+encoding//app/View/Elements/student_menu.ctp=UTF-8
+encoding//app/View/Elements/teacher_menu.ctp=UTF-8
 encoding//app/View/Students/change_info.ctp=UTF-8
+encoding//app/View/Teachers/change_info.ctp=UTF-8
 encoding//app/View/Users/login.ctp=UTF-8
 encoding//app/View/Users/register.ctp=UTF-8

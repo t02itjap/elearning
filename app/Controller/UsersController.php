@@ -46,7 +46,6 @@ class UsersController extends AppController {
 		if (isset ( $this->request->data ['submit_data'] )) {
 			$data = $this->request->data;
 			$birthDate = $data['User']['birth_year'].'-'.$data['User']['birth_month'].'-'.$data['User']['birth_date'];
-			debug ( $data );
 			$password = sha1($data['User']['user_name'].$data['User']['password'].$forPass);
 			$this->User->set (array(
 				'user_name'=> $data['User']['user_name'],
@@ -54,7 +53,6 @@ class UsersController extends AppController {
 				'password' => $password,
 				'email' => $data['User']['email'],
 				'birth_date' => $birthDate,
-				'user_name' => $data['User']['user_name'],
 				'level' => $data['User']['user_type'],
 				'bank_account_code' => $data['User']['bank_code'],
 				'address' => $data['User']['address'],
@@ -112,7 +110,7 @@ class UsersController extends AppController {
 		}
 	}
 	public function logout() {
-		$this->Cookie->destroy ();
+		$this->Session->destroy ();
 		$this->Auth->logout ();
 		$this->redirect ( $this->Auth->logoutRedirect );
 		exit ();

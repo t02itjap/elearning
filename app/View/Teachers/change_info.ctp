@@ -6,7 +6,7 @@ echo $this->Form->create ( 'User', array ('type' => 'post' ) );
                     <table>
                         <tr>
                             <td>ユーザネーム</td>
-                            <td><p id="user_name"><?php echo $student['User']['user_name']?></p></td>
+                            <td><p id="user_name"><?php echo $teacher['User']['user_name']?></p></td>
                         </tr>
                         <tr>
                             <td>メール</td>
@@ -18,7 +18,7 @@ echo $this->Form->create ( 'User', array ('type' => 'post' ) );
                             			'type' => 'text',
                             			'class' => 'must_info',
                             			'id' => 'email',
-                            			'value' => $student['User']['email']
+                            			'value' => $teacher['User']['email']
                             		));
                         		?>
                         	</td>	
@@ -33,7 +33,7 @@ echo $this->Form->create ( 'User', array ('type' => 'post' ) );
                             			'type' => 'text',
                             			'class' => 'must_info',
                             			'id' => 'phone_number',
-                            			'value' => $student['User']['phone_number']
+                            			'value' => $teacher['User']['phone_number']
                             		));
                         		?>
                             </td>
@@ -49,14 +49,14 @@ echo $this->Form->create ( 'User', array ('type' => 'post' ) );
                             			'type' => 'text',
                             			'class' => 'must_info',
                             			'id' => 'address',
-                            			'value' => $student['User']['address']
+                            			'value' => $teacher['User']['address']
                             		));
                         		?>                            
                             </td>
                         </tr>
 
                         <tr>
-                            <td>クレジットカード番号</td>
+                            <td>銀行口座番号</td>
                             <td>
                             	<?php
                                     echo $this->Form->input ( 'bank_account_code', array (
@@ -65,7 +65,7 @@ echo $this->Form->create ( 'User', array ('type' => 'post' ) );
                             			'type' => 'text',
                             			'class' => 'must_info',
                             			'id' => 'bank_account_code',
-                            			'value' => $student['User']['bank_account_code']
+                            			'value' => $teacher['User']['bank_account_code']
                             		));
                         		?>
                         	</td>
