@@ -134,12 +134,49 @@ public function viewtestresult() {
                 foreach($data as $k=>$value){
                     $lesson_id[] = $value['Test']['lesson_id'];
                 }
+<<<<<<< HEAD
                 $lesson_name = Array();
                 foreach($lesson_id as $id){
                     $lesson_name[] = $this->Lesson->findById($id);
                 }
                 for($i=0;$i<count($lesson_name);$i++){
                     $data[$i]['Lesson'] =$lesson_name[$i]['Lesson'];
+=======
+        if ($this->request->is('post')) {
+            $this->loadModel("User");
+            if ($this->Auth->login()) {
+                if(!$this->Auth->user("approve_flag")=== 1){
+                    
+                }else{
+                    pr($this->Auth->user());die();
+                    if($this->Auth->user("level") === 1 ){
+                         $level = "admin";
+                    }if($this->Auth->user("level") === 2 ){
+                        $level = "teacher";
+                    }    
+                    else $level = "user";
+                    $this->Cookie->write('Auth.User', $this->Auth->user(), true, '1209600');
+                    $this->Session->setFlash("Hello"." ".$level." ".$this->Auth->user('user_name'));
+                    $this->redirect($this->Auth->redirect());
+                    }
+                } else {
+                    $this->Session->setFlash('ユーザネームとかパースワードとか間違いです');
+                }
+        }
+    }
+    
+    function register(){
+                $this->loadModel("User");
+                if($this->request->isPost()){
+                        $data = $this->request->data;
+                        if($this->User->checkUserExist($data["User"]["user_name"]) ==0){
+                                $data["User"]["password"] = Security::hash($data["User"]["password"], 'md5', false);
+                                $this->User->save($data);
+                                $this->Session->setFlash("登録は成功でおめでとうございます。");
+                                $this->redirect(array("action" => "login"));
+                        }else
+                              $this->Session->setFlash("ゆーざネームが利用された。");
+>>>>>>> tiendq
                 }
                 $this->set('data',$data);
                  
