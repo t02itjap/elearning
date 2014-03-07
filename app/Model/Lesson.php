@@ -31,7 +31,7 @@ class Lesson extends AppModel{
 				'type'=>'INNER',
 				'conditions'=>array(
 					'User.id=Lesson.create_user_id',
-					'User.id'=>2	
+					'User.id'=>25	
 					)
 				)
 			),
