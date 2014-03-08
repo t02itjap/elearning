@@ -54,13 +54,13 @@ echo $this->Form->create ( 'User', array ('type' => 'file' ) )?>
 			<td>
 				<?php
 				echo $this->Form->input ( 're_password', array ('div' => false, 'label' => false, 'type' => 'password', 'class' => 'must_info', 'id' => 're_password' ) );
-				
+
 				?>
 			</td>
 		</tr>
 		<tr>
-			
-			
+
+
 			<tr>
 				<td><span>*</span>メール</td>
 				<td>
@@ -76,14 +76,14 @@ echo $this->Form->create ( 'User', array ('type' => 'file' ) )?>
 				<td>
 					日： <?php
 					echo $this->Form->input ( 'birth_date', array ('label' => false, 'class' => 'input-small', 'options' => $birthDayOptions, 'div' => false, 'id' => 'birth-date', 'empty' => '-' ) );
-					
+
 					?>
 					月： <?php
 					echo $this->Form->input ( 'birth_month', array ('label' => false, 'class' => 'input-small', 'options' => $birthMonthOptions, 'id' => 'birth-month', 'div' => false, 'empty' => '-' ) );
 					?>
 					年：<?php
 					echo $this->Form->input ( 'birth_year', array ('label' => false, 'class' => 'input-small', 'options' => $birthYearOptions, 'id' => 'birth-year', 'div' => false, 'empty' => '-' ) );
-					?> 
+					?>
 				</td>
 			</tr>
 			<!-- end ngay thang nam sinh -->
