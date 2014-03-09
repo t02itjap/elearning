@@ -134,14 +134,14 @@ public function viewtestresult() {
                 foreach($data as $k=>$value){
                     $lesson_id[] = $value['Test']['lesson_id'];
                 }
-<<<<<<< HEAD
-                $lesson_name = Array();
-                foreach($lesson_id as $id){
-                    $lesson_name[] = $this->Lesson->findById($id);
-                }
-                for($i=0;$i<count($lesson_name);$i++){
-                    $data[$i]['Lesson'] =$lesson_name[$i]['Lesson'];
-=======
+//<<<<<<< HEAD
+//                $lesson_name = Array();
+//                foreach($lesson_id as $id){
+//                    $lesson_name[] = $this->Lesson->findById($id);
+//                }
+//                for($i=0;$i<count($lesson_name);$i++){
+//                    $data[$i]['Lesson'] =$lesson_name[$i]['Lesson'];
+//=======
         if ($this->request->is('post')) {
             $this->loadModel("User");
             if ($this->Auth->login()) {
@@ -165,22 +165,22 @@ public function viewtestresult() {
         }
     }
     
-    function register(){
-                $this->loadModel("User");
-                if($this->request->isPost()){
-                        $data = $this->request->data;
-                        if($this->User->checkUserExist($data["User"]["user_name"]) ==0){
-                                $data["User"]["password"] = Security::hash($data["User"]["password"], 'md5', false);
-                                $this->User->save($data);
-                                $this->Session->setFlash("登録は成功でおめでとうございます。");
-                                $this->redirect(array("action" => "login"));
-                        }else
-                              $this->Session->setFlash("ゆーざネームが利用された。");
->>>>>>> tiendq
-                }
-                $this->set('data',$data);
-                 
-	}
+//    function register(){
+//                $this->loadModel("User");
+//                if($this->request->isPost()){
+//                        $data = $this->request->data;
+//                        if($this->User->checkUserExist($data["User"]["user_name"]) ==0){
+//                                $data["User"]["password"] = Security::hash($data["User"]["password"], 'md5', false);
+//                                $this->User->save($data);
+//                                $this->Session->setFlash("登録は成功でおめでとうございます。");
+//                                $this->redirect(array("action" => "login"));
+//                        }else
+//                              $this->Session->setFlash("ゆーざネームが利用された。");
+//>>>>>>> tiendq
+//                }
+//                $this->set('data',$data);
+//                 
+//	}
 
         
 }
