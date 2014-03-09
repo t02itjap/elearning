@@ -610,10 +610,10 @@ border-radius:5px;
 }
 
 #new_comment textarea {
-    height: 25px;
-    width: 580px;
-    border: 1px solid green;
-    margin-left: 65px;
+height: 25px;
+width: 572px;
+border: 1px solid green;
+margin-left: 33px;
 }
 
 #new_comment form {
@@ -876,3 +876,12 @@ border-radius:5px;
 	font-weight: bold;
 }
 /* end by Khanh*/
+/*Phi*/
+.comment_content{
+color: black;
+font-size: 12px;
+}
+.btn{
+    float: right;
+}
+/*end Phi*/
