@@ -13,7 +13,20 @@ class StudentsController extends AppController {
 	public function beforeFilter() {
 		parent::beforeFilter ();
 		$this->layout = 'student';
+        $this->Auth->authorize = 'controller';
 	}
+    
+    function isAuthorized(){
+        if($this->Auth->user('level') == 3)
+            return true;
+            else
+                {
+                    $this->Session->setFlash("Access deny");
+                    $this->redirect($this->redirect(array("controller"=>"users","action"=>"logout")));
+                    return false;  
+                }   
+    }
+    
 	public function change_info(){
 		$this->set('title_for_layout', '個人情報を変更する');
 		$student = $this->User->find('first', array(
@@ -21,5 +34,9 @@ class StudentsController extends AppController {
 		));
 		$this->set(compact('student'));
 	}
+    
+    public function home(){
+        debug($this->Auth->user());
+    }
 }
 ?>
