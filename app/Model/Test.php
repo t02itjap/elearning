@@ -16,5 +16,6 @@ class Test extends AppModel{
             'className' => 'Lesson'
             )
         );
+    
 }
 ?>
