@@ -29,7 +29,7 @@ class Lesson extends AppModel{
 			'foreignKey'=>'create_user_id'
 			),
 		'Categorie'=>array(
-			'className'=>'Categorie',
+			'className'=>'Category',
 			'foreignKey'=>'category_id'
 			)
 		);

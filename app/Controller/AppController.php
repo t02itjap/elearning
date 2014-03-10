@@ -33,7 +33,7 @@ App::uses('Controller', 'Controller');
 class AppController extends Controller {
 	var $uses = array ('User','Category');
 	var $helpers = array('Html', 'Form', 'Editor');
-    public $components = array( 'RequestHandler',
+    var $components = array( 'RequestHandler',
                                 'Acl',
                                 'Session',
                                 'Auth' => array(
@@ -52,8 +52,8 @@ class AppController extends Controller {
     public function beforeFilter(){
         parent::beforeFilter();
         $this->Auth->allow(array('view_all_lessons', 'lessons_by_category', 'search_result'));
+        if (isset($this->params['requested'])) $this->Auth->allow($this->action); 
     }
-
     public function category(){
     	$categoryList = $this->Category->find('all');
     	if (!empty($this->request->params['requested'])) {

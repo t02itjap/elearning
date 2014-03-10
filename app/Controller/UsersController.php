@@ -13,15 +13,10 @@ class UsersController extends AppController {
 	public function beforeFilter() {
 		parent::beforeFilter ();
 		$this->layout = 'before_login';
-		//$this->Auth->authenticate = array ('Form' => array ('userModel' => 'User', 'fields' => array ('username' => 'user_name', 'password' => 'password','role' => 'level') )//'scope' => array('User.')
 		$this->Auth->allow ( array ('home', 'login', 'register' ) );
 		
 	}
-	
-	
-	
 	public function login() {
-	   //debug($this->Auth->user());die();
 		//logged in user
 		if ($this->Auth->user ())
 			$this->loginRedirect($this->Auth->user("level"));
@@ -31,7 +26,6 @@ class UsersController extends AppController {
         //xu ly khi nguoi dung an login
 		if ($this->request->is ( 'post' )) {
 			$this->loadModel ( "User" );
-           //debug($this->request->data);
             //tao chuoi password de so sanh
 			$this->request->data['User']['password'] = $this->request->data['User']['user_name'].$this->request->data['User']['password'].'sha1';
 			//dung username va password
