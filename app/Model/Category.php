@@ -1,9 +1,6 @@
-<?php
-/* 
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+<?php 
 class Category extends AppModel{
-    var $name = 'Category';
+	var $name = 'Category';
+	var $primaryKey = 'id';
 }
 ?>

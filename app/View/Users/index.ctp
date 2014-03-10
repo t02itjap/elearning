@@ -9,10 +9,5 @@
 //       echo 'View Test Result';
 //   }
 //   echo '</ul>';
-
-    echo $this->Session->flash();
-    echo $this->Html->link("viewtestresult",array("controller" => "users","action" => "viewtestresult"));
-    echo "</br>";
-    echo $this->Html->link("logout",array("controller" => "users","action" => "logout"));
-    
+	//$this->redirect(array('controller'=>'lessons', 'action'=>'view_all_lessons'));
 ?>
