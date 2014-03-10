@@ -96,7 +96,7 @@ if($('.confirm_accept').length) {
 					}
 					else
 						alert('Accept failed! Try agian!');
-					window.location = 'http://	localhost/elearning/lessons/manage_lessons';
+					window.location = 'http://localhost/elearning/lessons/manage_lessons';
 				}
 			});
 		}
@@ -130,7 +130,7 @@ if($('.confirm_remove').length) {
 					}
 					else
 						alert('Remove failed! Try agian!');
-					window.location = 'http://	localhost/elearning/lessons/manage_lessons';
+					window.location = 'http://localhost/elearning/lessons/manage_lessons';
 				}
 			});
 		}

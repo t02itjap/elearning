@@ -159,11 +159,11 @@ class UsersController extends AppController {
 
 	public function get_user_request($user_id=null){
 		$this->showLayout();
-		$user_id=6;
+		$user_id=7;
 		$user=$this->User->find('all', array(
 			'fields'=>array('User.id', 'User.user_name', 'User.real_name', 'User.reg_date', 'User.level', 'User.birth_date', 
 				'User.phone_number', 'User.email', 'User.phone_number', 'User.address', 'User.bank_account_code'),
-			'conditions'=>array('User.id'=>$user_id)
+			'conditions'=>array('User.id'=>$user_id, 'User.approve_flag'=>false)
 			));
 		$user=$user[0]['User'];
 		$this->set('requestUser', $user);

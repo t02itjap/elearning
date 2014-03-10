@@ -1,6 +1,6 @@
 <?php
 class LessonsController extends AppController {
-	var $uses = array('User', 'Lesson', 'Bill');
+	var $uses = array('User', 'Lesson', 'Bill', 'LessonOfCategory');
 	var $components = array('Session');
 	//var $helpers = array('Ajax','Javascript');
 
@@ -9,11 +9,11 @@ class LessonsController extends AppController {
 	$data= array();
 >>>>>>> 2be1f5077ad250cac8ce44b372e03e0dc8dbebab
 */
-	function beforeFilter(){
-		parent::beforeFilter();
-		$this->layout= "student";
+function beforeFilter(){
+	parent::beforeFilter();
+	//$this->layout= "student";
 		$this->Auth->authenticate = array ('Form' => array ('userModel' => 'User', 'fields' => array ('username' => 'user_name', 'password' => 'password' ) )//'scope' => array('User.')
-		 );
+			);
 		$this->Auth->allow ( array ('home', 'login', 'register' ) );
 	}
 	public function index(){
@@ -22,19 +22,21 @@ class LessonsController extends AppController {
 	//ユーザのホームページにある授業リスト
 	public function view_all_lessons(){
 		//先生のホームページに別の先生のすべて授業だけ
+		//debug($this->LessonOfCategory->getLIdAndCName());die();
 		if($this->Auth->User('level')==2){
 			$this->paginate = array(
-			'limit'=>1,
-			'fields'=> array('Lesson.id', 'Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'Lesson.category_id', 'User.user_name', 'Categorie.category_name'),
-			'conditions'=>array('Lesson.create_user_id !='=>$this->Auth->User('id'))
-			);
+				'limit'=>1,
+				'fields'=> array('Lesson.id', 'Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'User.user_name'),
+				'conditions'=>array('Lesson.create_user_id !='=>$this->Auth->User('id'), 'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false)
+				);
 		}
 		//先生のホームページにシステムのすべて授業
 		else{
 			$this->paginate = array(
-			'limit'=>1,
-			'fields'=> array('Lesson.id', 'Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'Lesson.category_id', 'User.user_name', 'Categorie.category_name')
-			);	
+				'limit'=>1,
+				'fields'=> array('Lesson.id', 'Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'User.user_name'),
+				'conditions'=>array('Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false)
+				);	
 		}
 		
 		$lessons = $this->paginate('Lesson');
@@ -48,19 +50,19 @@ class LessonsController extends AppController {
 		//先生たちが自分で作った授業
 		if($this->Auth->User('level')==2){
 			$this->paginate = array(
-			'limit'=>1,
-			'fields'=> array('Lesson.id', 'Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'Lesson.category_id', 'User.user_name', 'Categorie.category_name'),
-			'conditions'=>array('Lesson.create_user_id'=>$this->Auth->User('id'), 'Lesson.lock_flag'=>false)
-			);
+				'limit'=>1,
+				'fields'=> array('Lesson.id', 'Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'User.user_name'),
+				'conditions'=>array('Lesson.create_user_id'=>$this->Auth->User('id'), 'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false)
+				);
 			$this->set('title_for_layout', '作った授業リスト');
 		}
 		//管理者が管理するシステムのすべて授業
 		else{
 			$this->paginate = array(
-			'limit'=>1,
-			'fields'=> array('Lesson.id', 'Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'Lesson.category_id', 'User.user_name', 'Categorie.category_name'),
-			'conditions'=>array('Lesson.lock_flag'=>false)
-			);
+				'limit'=>1,
+				'fields'=> array('Lesson.id', 'Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'User.user_name'),
+				'conditions'=>array('Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false)
+				);
 			$this->set('title_for_layout', '授業リスト');	
 		}
 		
@@ -71,17 +73,25 @@ class LessonsController extends AppController {
 	}
 
 	//カテゴリで検索された授業
-	public function lessons_by_category($category=null){
+	public function lessons_by_category($category_id=null, $category_name=null){
 		//debug($this->Auth->User());
+		//debug($category_id);die();
+		$lIdAndCName=$this->LessonOfCategory->getLIdAndCName();
+		//debug($lIdAndCName);die();
+		$lessons_id = Array();
+		foreach($lIdAndCName as $key){
+			if($key['LessonOfCategory']['category_id']==$category_id)
+				$lessons_id[] = $key['LessonOfCategory']['lesson_id'];
+		}
 		$this->paginate = array(
 			'limit'=>1,
-			'fields'=> array('Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'Lesson.create_user_id', 'Lesson.category_id', 'User.user_name', 'Categorie.category_name'),
-			'conditions'=>array('Categorie.category_name'=>$category)
+			'fields'=> array('Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'Lesson.create_user_id', 'User.user_name'),
+			'conditions'=>array('Lesson.id'=>$lessons_id, 'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false)
 			);
 		$lessons = $this->paginate('Lesson');
 		$this->set ( compact ( 'lessons' ));
-		$this->showLayout();	
-		$this->set('title_for_layout', $category.'カテゴリを含む授業');
+		$this->showLayout();
+		$this->set('title_for_layout', $category_name.'カテゴリを含む授業');
 	}
 
 	//検索ボックスで検索された授業
@@ -99,35 +109,40 @@ class LessonsController extends AppController {
 		}
 
 		switch ($type) {
-		   	case 'teacher':
-		   		$this->paginate = array(
-					'limit'=>1,
-					'fields'=> array('Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'Lesson.category_id', 'Lesson.create_user_id', 'User.user_name', 'Categorie.category_name'),
-					'conditions'=>array('User.user_name LIKE'=>'%'.$keyword.'%')
+			case 'teacher':
+			$this->paginate = array(
+				'limit'=>1,
+				'fields'=> array('Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'Lesson.create_user_id', 'User.user_name'),
+				'conditions'=>array('User.user_name LIKE'=>'%'.$keyword.'%', 'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false)
 				);
-		   		break;
+			break;
 
-		   	case 'lesson':
-		   		$this->paginate = array(
-					'limit'=>1,
-					'fields'=> array('Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'Lesson.create_user_id', 'Lesson.category_id', 'User.user_name', 'Categorie.category_name'),
-					'conditions'=>array('Lesson.lesson_name LIKE'=>'%'.$keyword.'%')
+			case 'lesson':
+			$this->paginate = array(
+				'limit'=>1,
+				'fields'=> array('Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'Lesson.create_user_id', 'User.user_name'),
+				'conditions'=>array('Lesson.lesson_name LIKE'=>'%'.$keyword.'%', 'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false)
 				);
-		   		break;
+			break;
 
-		   	case 'category':
-				$this->paginate = array(
-					'limit'=>1,
-					'fields'=> array('Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'Lesson.create_user_id', 'Lesson.category_id', 'User.user_name', 'Categorie.category_name'),
-					'conditions'=>array('Categorie.category_name LIKE'=>'%'.$keyword.'%')
+			case 'category':
+			$lIdAndCName=$this->LessonOfCategory->getLIdAndCName1($keyword);
+			$lessons_id = Array();
+			foreach($lIdAndCName as $key){
+				$lessons_id[] = $key['LessonOfCategory']['lesson_id'];
+			}
+			$this->paginate = array(
+				'limit'=>1,
+				'fields'=> array('Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'Lesson.create_user_id', 'User.user_name'),
+				'conditions'=>array('Lesson.id'=>$lessons_id, 'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false)
 				);
-		   		break;
+			break;
 
-		   	default:
+			default:
 		   		# code...
-		   		break;
-		   }
-	    $lessons = $this->paginate('Lesson');
+			break;
+		}
+		$lessons = $this->paginate('Lesson');
 		$this->set ( compact ( 'lessons' ));
 		$this->showLayout();
 		$this->set('title_for_layout', '検索結果');  
@@ -138,20 +153,20 @@ class LessonsController extends AppController {
 		if($this->Auth->loggedIn()){
 			switch ($this->Auth->User('level')) {
 				case '1':
-					$this->layout = 'manager';
-					break;
+				$this->layout = 'manager';
+				break;
 				
 				case '2':
-					$this->layout = 'teacher';
-					break;
+				$this->layout = 'teacher';
+				break;
 
 				case '3':
-					$this->layout = 'student';
-					break;
+				$this->layout = 'student';
+				break;
 
 				default:
 					# code...
-					break;
+				break;
 			}
 			$this->set('level', $this->Auth->User('level'));
 		}
@@ -173,12 +188,12 @@ class LessonsController extends AppController {
 
 
 	function title_report($id=null) {
-	
-	$success=false;
-	$count=$this->Lesson->find('count', array(
+
+		$success=false;
+		$count=$this->Lesson->find('count', array(
 			'conditions'=>array('Lesson.title_reporters LIKE'=>'%'.$this->Auth->User('id').'%', 'Lesson.id'=>$id)		
 			));
-	if($count==0){
+		if($count==0){
 			$result=$this->Lesson->find('all', array(
 				'fields'=>array('Lesson.title_reporters', 'Lesson.title_violation'),
 				'conditions'=>array('Lesson.id'=>$id)
@@ -190,19 +205,19 @@ class LessonsController extends AppController {
 			else
 				$title_reporters=$result[0]['Lesson']['title_reporters'].','.$this->Auth->User('id');
 			$sql='update tb_lessons
-					set title_reporters="'.$title_reporters.'",
-						title_violation=true
-					where id='.$id;
+			set title_reporters="'.$title_reporters.'",
+			title_violation=true
+			where id='.$id;
 
 			$this->Lesson->query($sql);
 			$success=true;
 		}
-	
+
 	// output JSON on AJAX request
 		if($this->RequestHandler->isAjax()) {
 			$this->autoRender = $this->layout = false;
 			echo json_encode(array('success'=>($success==true) ? FALSE : TRUE, 'lesson_id'=>$id));
-		exit;
+			exit;
 		}		
 	}
 
@@ -213,8 +228,8 @@ class LessonsController extends AppController {
 			));
 		if($count!=0){
 			$sql='update tb_lessons
-					set lock_flag=true
-					where id='.$id;
+			set delete_flag=true
+			where id='.$id;
 
 			$this->Lesson->query($sql);
 			$success=true;
@@ -223,7 +238,7 @@ class LessonsController extends AppController {
 		if($this->RequestHandler->isAjax()) {
 			$this->autoRender = $this->layout = false;
 			echo json_encode(array('success'=>($success==true) ? FALSE : TRUE, 'lesson_id'=>$id));
-		exit;
+			exit;
 		}
 	}
 
@@ -235,9 +250,9 @@ class LessonsController extends AppController {
 		}
 		$this->paginate = array(
 			'limit'=>1,
-			'fields'=> array('Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'Lesson.category_id', 'User.user_name', 'Categorie.category_name'),
-			'conditions'=>array('Lesson.id'=>$idArray)
-		);
+			'fields'=> array('Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'User.user_name'),
+			'conditions'=>array('Lesson.id'=>$idArray, 'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false)
+			);
 		//debug($idArray);die();
 		$lessons = $this->paginate('Lesson');
 		$this->set ( compact ( 'lessons' ));
