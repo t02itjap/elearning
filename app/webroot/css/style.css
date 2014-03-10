@@ -404,25 +404,20 @@ border-radius:5px;
     margin: 5px;
 }
 #change_info table {
-    margin-left: 10px;
-    margin-bottom: 5px;
+
 }
 #change_info table input[type="text"] {
-    margin-bottom: 5px;
-    margin-left: 20px;
-    padding: 3px;
-    height: 12px;
     width: 400px;
 }
 #change_info td {
-    font-weight: bold;
+	background-color: #CDEAEC;
+    font-weight: bold;    
 }
 
 #change_info table p {
     margin-top: 5px;
     margin-bottom: 5px;
     padding: 3px;
-    height: 12px;
     width: 400px;
 }
 /*kakin*/

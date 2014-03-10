@@ -1,10 +1,11 @@
+<?php 
+$categoryList = $this->requestAction('app/category');
+?>
         <div id="category">
-            <form action="" method="get">
             <label><em>カテゴリ</em></label>
             <ul>
-                <li><a href="">インタネット</a></li>
-                <li><a href="">ゲーム</a></li>
-                <li><a href="">サッカー</a></li>
+            <?php for($i = 0; $i < count($categoryList); $i++){?>
+                <li><?php echo $this->Html->link($categoryList[$i]['Category']['category_name'], array('controller' =>'','action' => ''));?></li>
+            <?php }?>
             </ul>
-            </form> 
         </div><!--End #category-->

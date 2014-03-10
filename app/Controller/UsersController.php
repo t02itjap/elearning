@@ -16,7 +16,10 @@ class UsersController extends AppController {
 		$this->Auth->authenticate = array ('Form' => array ('userModel' => 'User', 'fields' => array ('username' => 'user_name', 'password' => 'password' ) )//'scope' => array('User.')
 		 );
 		$this->Auth->allow ( array ('home', 'login', 'register' ) );
+		
 	}
+	
+	
 	
 	public function login() {
 		//logged in user
@@ -46,7 +49,6 @@ class UsersController extends AppController {
 		if (isset ( $this->request->data ['submit_data'] )) {
 			$data = $this->request->data;
 			$birthDate = $data['User']['birth_year'].'-'.$data['User']['birth_month'].'-'.$data['User']['birth_date'];
-			debug ( $data );
 			$password = sha1($data['User']['user_name'].$data['User']['password'].$forPass);
 			$this->User->set (array(
 				'user_name'=> $data['User']['user_name'],
@@ -54,7 +56,6 @@ class UsersController extends AppController {
 				'password' => $password,
 				'email' => $data['User']['email'],
 				'birth_date' => $birthDate,
-				'user_name' => $data['User']['user_name'],
 				'level' => $data['User']['user_type'],
 				'bank_account_code' => $data['User']['bank_code'],
 				'address' => $data['User']['address'],
@@ -101,8 +102,8 @@ class UsersController extends AppController {
 						$this->Verifycode->save();
 						$this->InitialVerifycode->set(array(
 							'user_id' => $user['User']['id'],
-							'question' => $question,
-							'verifycode' => $verifycode,
+							'initial_question' => $question,
+							'initial_verifycode' => $verifycode,
 						));
 						$this->InitialVerifycode->save();
 					}
@@ -112,7 +113,7 @@ class UsersController extends AppController {
 		}
 	}
 	public function logout() {
-		$this->Cookie->destroy ();
+		$this->Session->destroy ();
 		$this->Auth->logout ();
 		$this->redirect ( $this->Auth->logoutRedirect );
 		exit ();

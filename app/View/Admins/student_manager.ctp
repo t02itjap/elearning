@@ -68,20 +68,6 @@
                         		?>
                         	</td>
                         </tr>
-                        <tr>
-                            <td>現在パスワード確認</td>
-                            <td>
-                                <?php
-                                    echo $this->Form->input ( 'password', array (
-                            			'div' => false,
-                            			'label' => false,
-                            			'type' => 'password',
-                            			'class' => 'must_info',
-                            			'id' => 'password',
-                            		));
-                        		?>
-                            </td>
-                        </tr>
                     </table>
                     </div><!--End #change_info-->
                     <div id="submit">
@@ -91,6 +77,16 @@
 									'name' => 'data[delete_student]',
 									'class' => 'link-button',
 									'onClick' => "return confirm('このアカウントを削除したいですか?')",
+									'escape' => false,
+									'title' => '確認'
+									));
+							?>
+							<?php
+                            echo $this->Form->button('リセットパスワード',
+								array(
+									'name' => 'data[reset_password]',
+									'class' => 'link-button',
+									'onClick' => "return confirm('このアカウントのパスワードをリセットしたいですか?')",
 									'escape' => false,
 									'title' => '確認'
 									));

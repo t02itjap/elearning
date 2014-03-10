@@ -1,6 +1,9 @@
+<?php 
+$user = $this->requestAction('app/acc_info');
+?>
             <div id="acc_info">
                 <img src="" alt="アバター"/>
-                <p>ユーザネーム</p><br />
+                <p><?php echo $user['User']['user_name']?></p><br />
                 <p>ログイン時間</p><br />
                 <p>勉強しているコーマ</p><br />
                 <ul>

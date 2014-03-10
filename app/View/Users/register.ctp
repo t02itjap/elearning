@@ -72,7 +72,7 @@ echo $this->Form->create ( 'User', array ('type' => 'file' ) )?>
 
 	<!--ngay thang nam sinh-->
 	<tr>
-		<td>誕生日</td>
+		<td><span>*</span>誕生日</td>
 		<td>
 							日： <?php
 							echo $this->Form->input ( 'birth_date', array ('label' => false, 'class' => 'input-small', 'options' => $birthDayOptions, 'div' => false, 'id' => 'birth-date', 'empty' => '-' ) );
