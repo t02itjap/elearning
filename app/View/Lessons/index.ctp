@@ -1,5 +1,5 @@
 <?php
-print_r($lessons);
+debug($lessons);
 echo $this->Html->css('style'); 
 foreach ($lessons as $lesson): 
 ?>

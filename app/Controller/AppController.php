@@ -37,7 +37,16 @@ class AppController extends Controller {
                                 'Cookie',
                                 'Auth' => array(
                                                 'loginRedirect' => array('controller' => 'users','action' => 'index'),
-                                                'logoutRedirect' => array('controller' => 'users','action' => 'login')));
+                                                'logoutRedirect' => array('controller' => 'users','action' => 'login'),
+                                                'authenticate' => array(
+                                                    "Form" => array(
+                                                        'userModel' => 'User',
+                                                        "fields" => array(
+                                                            'username' => "user_name",
+                                                            'password' => "password")
+                                                            )
+                                                            )
+                                                            ));
     
     public function beforeFilter(){
         parent::beforeFilter();
