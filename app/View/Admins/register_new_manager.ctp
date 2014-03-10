@@ -44,38 +44,45 @@ echo $this->Form->create ( 'User', array ('type' => 'file' ) )?>
 	<tr>
 		<td><span>*</span>パスワード</td>
 		<td>
-        	<?php
+            <?php
 				echo $this->Form->input ( 'password', array ('div' => false, 'label' => false, 'type' => 'password', 'class' => 'must_info', 'id' => 'password' ) );
 			?>
-        </td>
+         </td>
 	</tr>
 	<tr>
 		<td><span>*</span>確認パスワード</td>
 		<td>
             <?php
-				echo $this->Form->input ( 're_password', array ('div' => false, 'label' => false, 'type' => 'password', 'class' => 'must_info', 'id' => 're_password' ) );																	
+
+				echo $this->Form->input ( 're_password', array ('div' => false, 'label' => false, 'type' => 'password', 'class' => 'must_info', 'id' => 're_password' ) );																										
 			?>
-        </td>
+                            </td>
 	</tr>
 	<tr>
-		<td>IPアドレス</td>
+		<td><span>*</span>ipアドレス</td>
+
 		<td>
             <?php
 				echo $this->Form->input ( 'ip_address', array ('div' => false, 'label' => false, 'type' => 'text', 'class' => 'must_info', 'id' => 'ip_address' ) );
 			?>
         </td>
-	</tr>
+    </tr>
+    <?php
+    	If(isset($ipAddressErr)){
+					echo '<tr><td></td><td><font color = "#8A0808">'.$ipAddressErr.'</font></td></tr>';
+		}
+	?>
 	<tr>
 		<td><span>*</span>メール</td>
 		<td>
             <?php
-				echo $this->Form->input ( 'email', array ('div' => false, 'label' => false, 'type' => 'text', 'class' => 'must_info', 'id' => 'email' ) );
+				echo $this->Form->input ( 'email', array ('div' => false, 'label' => false, 'type' => 'text', 'class' => 'must_info', 'id' => 'mail' ) );
 			?>
         </td>
 	</tr>
 	<!--ngay thang nam sinh-->
 	<tr>
-		<td>誕生日</td>
+		<td><span>*</span>誕生日</td>
 		<td>
 			日： <?php
 			echo $this->Form->input ( 'birth_date', array ('label' => false, 'class' => 'input-small', 'options' => $birthDayOptions, 'div' => false, 'id' => 'birth-date', 'empty' => '-' ) );
@@ -87,13 +94,13 @@ echo $this->Form->create ( 'User', array ('type' => 'file' ) )?>
 			年：<?php
 			echo $this->Form->input ( 'birth_year', array ('label' => false, 'class' => 'input-small', 'options' => $birthYearOptions, 'id' => 'birth-year', 'div' => false, 'empty' => '-' ) );
 			?> 
-         </td>
+        </td>
 	</tr>
 	<!-- end ngay thang nam sinh -->
 	<tr>
 		<td><span>*</span>アドレス</td>
 		<td>
-        	<?php
+            <?php
 				echo $this->Form->input ( 'address', array ('div' => false, 'label' => false, 'type' => 'text', 'class' => 'must_info', 'id' => 'address' ) );
 			?>
         </td>
@@ -110,13 +117,11 @@ echo $this->Form->create ( 'User', array ('type' => 'file' ) )?>
 </div>
 <!--End #register_info-->
 <div id="submit">
-            <?php
-				echo $this->Form->button ( '登録', array ('type' => 'submit', 'name' => 'data[submit_data]', 'id' => 'submit_button' ) );
-			?>
-            <?php
-				echo $this->Form->button ( 'リセット', array ('type' => 'reset' ) );
-			?>
-                </div>
+	<?php
+		echo $this->Form->button ( '登録', array ('type' => 'submit', 'name' => 'data[submit_data]', 'id' => 'submit_button' ) );
+		echo $this->Form->button ( 'リセット', array ('type' => 'reset' ) );
+	?>
+</div>
 <!--End #submit-->
 <?php
 echo $this->Form->end ()?>

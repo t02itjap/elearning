@@ -30,19 +30,16 @@ class StudentsController extends AppController {
 	public function change_info(){
 		$forPass = 'sha1';
 		$this->set('title_for_layout', '個人情報を変更する');
+		$forPass = 'sha1';
 		$student = $this->User->find('first', array(
 			'conditions' => array('User.id' => $this->Auth->user('id')),
 		));
 		$this->set(compact('student'));
-		if(isset ( $this->request->data ['submit_data'] )){
+		if(isset($this->request->data['submit_data'])){
 			$data = $this->request->data;
 			$checkPassword = sha1($student['User']['user_name'].$data['User']['password'].$forPass);
-			if($checkPassword != $student['User']['password']){
-				$this->Session->setFlash('インプットパスワードが間違い');
-				$this->redirect(array('controller' => 'Students', 'action' => 'change_info'));
-			}
-			else{
-				if($student['User']['email'] == $data['User']['email'] && $student['User']['bank_account_code'] == $data['User']['bank_account_code'] && $student['User']['address'] == $data['User']['address'] && $student['User']['phone_number'] == $data['User']['phone_number']){
+			if($checkPassword == $student['User']['password']){ 
+				if($student['User']['email'] == $data['User']['email'] && $student['User']['phone_number'] == $data['User']['phone_number'] && $student['User']['address'] == $data['User']['address'] && $student['User']['bank_account_code'] == $data['User']['bank_account_code']){
 					$this->Session->setFlash('情報を変更しなかった。');
 					$this->redirect(array('controller' => 'Students', 'action' => 'change_info'));
 				}
@@ -60,24 +57,25 @@ class StudentsController extends AppController {
 					if($this->User->validates()){
 						$this->User->id = $student['User']['id'];
 						if($this->User->save()){
-						$this->Session->setFlash('変更することが成功。');
-						$this->redirect(array('controller' => 'Students', 'action' => 'change_info'));
+							$this->Session->setFlash('情報を変更することが成功です。');
+							$this->redirect(array('controller' => 'Students', 'action' => 'change_info'));
 						}
 					}
-					else{
-						$this->Session->setFlash('インプット情報が合式じゃなかった');
-					}
-				}
+				}	
+			}
+			else{
+				$this->Session->setFlash('インプットパスワードが間違い');
+				$this->redirect(array('controller' => 'Students', 'action' => 'change_info'));
 			}
 		}
-		if(isset ( $this->request->data ['delete_student'] )){
+		if(isset($this->request->data['delete_student'])){
 			$this->User->set(array(
 				'status_flag' => 0,
 			));
 			$this->User->id = $student['User']['id'];
 			if($this->User->save()){
 				$this->Session->destroy();
-				$this->Session->setFlash('あなたのアカウントは今、ロックです。　再開けるために、管理者に連絡してください。');
+				$this->Session->setFlash('あなたのアカウントが今ロックです、再開けるために、管理者に連絡してください。');
 				$this->redirect(array('controller' => 'Users', 'action' => 'login'));
 			}
 		}

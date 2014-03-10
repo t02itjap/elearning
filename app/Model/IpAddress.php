@@ -1,17 +1,17 @@
 <?php
 class IpAddress extends AppModel {
 	var $name = 'IpAddress';
-	var $primaryKey = 'ip_adress';
+	var $primaryKey = 'id';
 	public $validate = array(
 		'ip_address' => array(
 			'check ip' => array(
-				'rule' => array('ip'),
+				'rule' => array('ip','IPv4'),
 				'message' => 'ip khong hop le',
 			),
-			'check exist' => array(
-				'rule' => 'isUnique',
-				'message' => 'ip nay da duoc su dung',
-			),	
+			'notempty' => array(
+				'rule' => array('notempty'),
+				'message' => 'hay nhap dia chi ip cua manager nay',
+			),
 		),
 	);
 }

@@ -31,11 +31,11 @@ App::uses('Controller', 'Controller');
  * @link		http://book.cakephp.org/2.0/en/controllers.html#the-app-controller
  */
 class AppController extends Controller {
-    var $uses = array ('Categorie');
+	var $uses = array ('User','Category');
+	var $helpers = array('Html', 'Form', 'Editor');
     public $components = array( 'RequestHandler',
                                 'Acl',
                                 'Session',
-                                'Cookie',
                                 'Auth' => array(
                                                 'loginRedirect' => array('controller' => 'users','action' => 'index'),
                                                 'logoutRedirect' => array('controller' => 'users','action' => 'login'),
@@ -56,6 +56,22 @@ class AppController extends Controller {
         $this->set('user', $this->Auth->User());
     }
 
+    public function category(){
+    	$categoryList = $this->Category->find('all');
+    	if (!empty($this->request->params['requested'])) {
+    		return $categoryList;
+		}
+    	$this->set(compact('categoryList'));
+    }
+    public function acc_info(){
+    	$user = $this->User->find('first', array(
+    		'conditions' => array('id' => $this->Auth->user('id')),
+    	));
+    	if (!empty($this->request->params['requested'])) {
+    		return $user;
+		}
+    	$this->set(compact('user'));
+    }
     
     
     

@@ -1,4 +1,4 @@
-<?php echo $this->Session->flash();?>-->
+<?php echo $this->Session->flash();?>
 <?php echo $this->Form->create('User',array('type'=>'post'))?>
                     <div id="change_info">
                     <table>
@@ -68,20 +68,6 @@
                         		?>
                         	</td>
                         </tr>
-                        <tr>
-                            <td>現在パスワード確認</td>
-                            <td>
-                                <?php
-                                    echo $this->Form->input ( 'password', array (
-                            			'div' => false,
-                            			'label' => false,
-                            			'type' => 'password',
-                            			'class' => 'must_info',
-                            			'id' => 'password',
-                            		));
-                        		?>
-                            </td>
-                        </tr>
                     </table>
                     </div><!--End #change_info-->
                     <div id="submit">
@@ -91,6 +77,26 @@
 									'name' => 'data[delete_teacher]',
 									'class' => 'link-button',
 									'onClick' => "return confirm('このアカウントを削除したいですか?')",
+									'escape' => false,
+									'title' => '確認'
+									));
+							?>
+							<?php
+                            echo $this->Form->button('リセットパスワード',
+								array(
+									'name' => 'data[reset_password]',
+									'class' => 'link-button',
+									'onClick' => "return confirm('このアカウントのパスワードをリセットしたいですか?')",
+									'escape' => false,
+									'title' => '確認'
+									));
+							?>
+							<?php
+                            echo $this->Form->button('リセットVerifyコード',
+								array(
+									'name' => 'data[reset_verifycode]',
+									'class' => 'link-button',
+									'onClick' => "return confirm('このアカウントのVerifyコードをリセットしたいですか?')",
 									'escape' => false,
 									'title' => '確認'
 									));
