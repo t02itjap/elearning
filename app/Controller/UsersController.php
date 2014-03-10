@@ -36,9 +36,8 @@ class UsersController extends AppController {
 			         $this->Session->setFlash ( "Tai khoan " . $this->Auth->user ('user_name')." chua active.Hay lien he voi quan ly." );
 			         $this->redirect($this->Auth->logout());
                  }
-                 $this->loginRedirect($this->Auth->user('level'));
 			     $this->Session->setFlash ( "Hello" . $this->Auth->user ( 'user_name' ) );
-				
+				 $this->redirect(array("controller" => "Lessons","action" => "view_all_lessons"));
 			} 
             //sai username hoac password
             else {
@@ -67,8 +66,7 @@ class UsersController extends AppController {
                     if($this->request->data['User']['level']==3){
                         $missPass = "IP da bi block";
                     }
-                    if($this->request->data['User']['level']==2) {
-                        
+                    if($this->request->data['User']['level']==2) {                        
                     }
                 }
                 }
@@ -77,18 +75,6 @@ class UsersController extends AppController {
 			}
 		}
 	}
-    
-    protected function loginRedirect($level){
-        //$level != null
-        if ($level == 1) {
-					   $this->redirect(array("controller" => "admins","action" => "home"));
-				} if($level== 2){
-					   $this->redirect(array("controller" => "teachers","action" => "home"));
-                       }else {
-                        $this->redirect(array("controller" => "students","action" => "home"));
-                       }
-        
-    }
 	
 	public function register() {
 		$this->set ( 'title_for_layout', '登録' );
