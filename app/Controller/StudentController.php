@@ -24,8 +24,8 @@ class StudentController extends AppController {
                         'field' => array('Lesson.lesson_name', 'LearnHistory.learn_date')
 			//'order' => 'LearnHistory.learn_date'
 			);
-		$histories = $this->paginate('Bill');
-		$this->set ( compact ( 'histories' ));
+		$data = $this->paginate('Bill');
+		$this->set ( compact ( 'data' ));
 	}
 	//Het phan Thang viet
 }

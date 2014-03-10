@@ -30,6 +30,7 @@ $cakeDescription = __d('cake_dev', 'CakePHP: the rapid development php framework
 
 		echo $this->Html->css(array('cake.generic','style'));
 		echo $this->Html->script(array('jquery-1.4.4.min.js'));
+		echo $this->Html->script(array('script-common.js'));
 		echo $this->fetch('meta');
 		echo $this->fetch('css');
 		echo $this->fetch('script');
@@ -40,14 +41,15 @@ $cakeDescription = __d('cake_dev', 'CakePHP: the rapid development php framework
 		<?php echo $this->element('header');?>
 		<div id="body">
         	<div id="slide_bar">
-        		<?php echo $this->element('acc_info');?>
-        		<?php echo $this->element('search');?>
-        		<?php echo $this->element('category');?>
+        		<?php echo $this->element('manager_acc_info');?>
+        		<?php //echo $this->element('search');?>
+        		<?php //echo $this->element('category');?>
         	</div>
         	<?php echo $this->element('manager_menu');?>
-		<div id="main_content">
-			<h2 id='page-title'><?php echo $title_for_layout; ?></h2><br>
-			<?php echo $this->fetch('content'); ?>
+			<div id="main_content">
+				<h2 id='page-title'><?php echo $title_for_layout; ?></h2><br>
+				<?php echo $this->fetch('content'); ?>
+			</div>
 		</div>
 		</div>
 		<?php echo $this->element('footer');?>

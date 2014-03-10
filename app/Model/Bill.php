@@ -13,9 +13,25 @@ class Bill extends AppModel{
 		'Lesson' => array(
 			'className' => 'Lesson',
 			'foreignKey' => 'lesson_id'
+			),
+		'User' => array(
+			'className'=> 'User',
+			'foreignKey'=> 'user_id'
 			)
 		);
 	//Het phan Thang viet
+
+	public function getLearnedLessonsId($user_id=null){
+		//debug($this->Auth->User('id'));die();
+		$learnedLessons=$this->find('all', array(
+			'fields'=>array('Bill.lesson_id'),
+			'conditions'=>array('Bill.user_id'=>$user_id),
+			'group'=>'Bill.lesson_id'
+			));
+		//debug($learnedLessons);die();
+		return $learnedLessons;
+	}
+
 	public function getBills($user_id=null){
 		$condition=array(
 			'joins'=>array(

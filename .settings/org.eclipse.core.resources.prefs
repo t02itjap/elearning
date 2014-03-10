@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 #Thu Mar 06 22:40:02 ICT 2014
+=======
+>>>>>>> aff918e36ab7593d6fa4e84ef80a718bfae65f56
 eclipse.preferences.version=1
 encoding//app/Controller/AdminsController.php=UTF-8
 encoding//app/Controller/StudentsController.php=UTF-8
@@ -18,6 +21,12 @@ encoding//app/View/Elements/search.ctp=UTF-8
 encoding//app/View/Elements/student_menu.ctp=UTF-8
 encoding//app/View/Elements/teacher_menu.ctp=UTF-8
 encoding//app/View/Students/change_info.ctp=UTF-8
+<<<<<<< HEAD
 encoding//app/View/Teachers/change_info.ctp=UTF-8
+=======
+encoding//app/View/Teachers/change_verify.ctp=UTF-8
+encoding//app/View/Teachers/summary.ctp=UTF-8
+>>>>>>> aff918e36ab7593d6fa4e84ef80a718bfae65f56
 encoding//app/View/Users/login.ctp=UTF-8
 encoding//app/View/Users/register.ctp=UTF-8
+encoding/<project>=UTF-8

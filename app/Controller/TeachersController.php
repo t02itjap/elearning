@@ -7,13 +7,51 @@ App::uses ( 'DboSource', 'Model/Datasource' );
 
 class TeachersController extends AppController {
 	public $name = "Teachers";
-	var $uses = array ('User');
+	var $uses = array('User', 'Test', 'Lesson', 'Bill');
 	var $helpers = array('Html', 'Form', 'Editor');
 	public $components = array ('RequestHandler');
 	public function beforeFilter() {
 		parent::beforeFilter ();
 		$this->layout = 'teacher';
+        $this->Auth->authorize = 'controller';
 	}
+    public function isAuthorized()
+    {
+        if ($this->Auth->user('level') == 2)
+            return true;
+        else {
+            $this->Session->setFlash("Access deny");
+            $this->redirect($this->redirect(array("controller" => "users", "action" =>
+                    "logout")));
+            return false;
+        }
+    }
+    public function summary($id = null)
+    {
+        $lesson = $this->Lesson->find('first', array('conditions' => array('id' => $id),
+                'fields' => array('viewers','voters')));
+        $snum = $this->Bill->find("count",array(
+                                            'conditions'=>array(
+                                                    'lesson_id'=> $id),
+                                            'group' => array(
+                                                    'user_id')));
+        $students = $this->Bill->find("all",array(
+                                            'conditions'=>array(
+                                                    'lesson_id'=> $id),
+                                            'fields'=> array(
+                                                    'user_id','learn_date')));
+        $this->set('lesson',$lesson);
+        $this->set('snum',$snum);
+        $i=-1;
+        foreach($students as $s)
+            {
+                $i++;
+                $info = $this->User->field('user_name',array('id'=>$s['Bill']['user_id']));
+                $students[$i]['Bill']['user_name']=$info;
+            }
+        
+        $this->set(compact('students'));
+    }
 	public function change_info(){
 		$forPass = 'sha1';
 		$this->set('title_for_layout', '個人情報を変更する');
@@ -69,5 +107,13 @@ class TeachersController extends AppController {
 			}
 		}
 	}
+    function changeVerify() {
+    	
+    }
+
+    function home()
+    {
+        //debug($this->Auth->user());
+    }
 }
 ?>

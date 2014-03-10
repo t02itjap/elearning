@@ -1,61 +1,72 @@
-<?php
 
-echo $this->Html->script("inputcheck");
+<?php
+echo $this->Html->script(array('jquery.validate'));
 echo $this->Form->create("User", array(
                                         "url" => array("controller" => "users","action" => "login"),
                                         "type" => "post",
-                                        "onSubmit" => "return checkForm()",
                                         "id" =>"formLogin",
                                         "class" => "form1"
                                         ));
 echo $this->Session->flash();
+if($missPass)
+    echo $this->Html->tag("h2",$missPass);
 echo $this->Html->tag("h1","ログイン");
+$userType[1] = "管理者";
+$userType[2] = "先生";
+$userType[3] = "学生";
+
+echo $this->Form->input("user_type",array(
+                                    "label" => "Select user type",
+                                    "type" =>"select",
+                                    "options" =>$userType,
+                                    "id" => "user_type"));
 echo $this->Form->input("user_name",  array(
                                 "label" => false,
                                 "type"  => "text",
-                                "placeholder" => "ユーザネーム"
+                                //"name" => "uname",
+                                "placeholder" => "ユーザネーム",
+                                "class" => "must"
 ));
 
 echo $this->Form->input("password",  array(
                                 "label" => false,
                                 "type"  => "password",
-                                "placeholder" => "パスワード"
+                                //"name" => "pass",
+                                "placeholder" => "パスワード",
+                                "class" => "must"
 ));
 
-echo $this->Form->button("リセット", array("type" => "reset"));
-echo $this->Html->link("パスワード忘れた",array("action" => "missPass"));
+echo $this->Form->button("リセット", array("type" => "reset","id" => "btnSubmit"));
+echo $this->Html->link("パスワード忘れた",array("action" => "#"));
 echo $this->Form->end("ログイン", array(
-                       	"label" => false,
-                        "onclick" => "return checkForm()"
+                       	"label" => false
        	));
         ?>
         
-<script>
-
-InvalidInputHelper(document.getElementById("UserUserName"), {
-    emptyText: "ユーザネームを入力してください"
-
-});
-InvalidInputHelper(document.getElementById("UserPassword"), {
-    defaultText: "パースワードを入力してください",
-    emptyText: "パースワードを入力してください",
-});
-
-function checkForm(){
-        var uname = document.getElementById("UserUserName");
-        if($(uname).val() == ""){
-                uname.setCustomValidity("ユーザネームを入力してください");
-                return false;
-        }else{
-                uname.setCustomValidity("");
-        }
-        var pass = document.getElementById("UserPassword");
-        if($(pass).val() == ""){
-                pass.setCustomValidity("パースワードを入力してください");
-                return false;
-        }else{
-                pass.setCustomValidity("");
-                }
-        return true;
-}
-</script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("#formLogin").validate();
+        $("#UserUserName").rules("add", {
+         required:true,
+         messages: {
+                required: "ユーザネームを入力する"
+         }
+        });
+        $("#UserPassword").rules("add", {
+         required:true,
+         messages: {
+                required: "パスワードを入力する"
+         }
+      });       
+               //,
+//               errorPlacement: function(error, element) {
+//			if ( element.is(":radio") )
+//				error.appendTo( element.parent().next().next() );
+//			else if ( element.is(":checkbox") )
+//				error.appendTo ( element.next() );
+//			else
+//				error.appendTo( element.parent().next() );
+//		},
+            
+         });
+      </script>

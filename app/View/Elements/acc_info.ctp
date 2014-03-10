@@ -1,8 +1,7 @@
             <div id="acc_info">
                 <img src="" alt="アバター"/>
-                <p>ユーザネーム</p><br />
-                <p>ログイン時間</p><br />
-                <p>勉強しているコーマ</p><br />
+                <p>ユーザネーム: <?php echo '<br>'.$user['user_name']; ?></p><br />
+                <p>名前: <?php echo $user['real_name']; ?></p><br />
                 <ul>
                     <li><a href="">個人情報を変更</a></li>
                     <li><a href="">学習の歴史</a></li>
