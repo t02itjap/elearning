@@ -24,8 +24,7 @@ echo $this->Form->input ( "user_type", array (
 		"label" => "Select user type",
 		"type" => "select",
 		"options" => $userType,
-		"id" => "user_type",
-		"div" => 'false' 
+		"id" => "user_type"
 ) );
 echo $this->Form->input ( "user_name", array (
 		"label" => false,

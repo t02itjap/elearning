@@ -1,10 +1,10 @@
-<?php echo $this->Session->flash();?>
+<?php echo $this->Session->flash();?>-->
 <?php echo $this->Form->create('User',array('type'=>'post'))?>
                     <div id="change_info">
                     <table>
                         <tr>
                             <td>ユーザネーム</td>
-                            <td><p id="user_name"><?php echo $student['User']['user_name']?></p></td>
+                            <td><p><?php echo $teacher['User']['user_name']?></p></td>
                         </tr>
                         <tr>
                             <td>メール</td>
@@ -16,7 +16,7 @@
                             			'type' => 'text',
                             			'class' => 'must_info',
                             			'id' => 'email',
-                            			'value' => $student['User']['email']
+                            			'value' => $teacher['User']['email']
                             		));
                         		?>
                         	</td>	
@@ -31,7 +31,7 @@
                             			'type' => 'text',
                             			'class' => 'must_info',
                             			'id' => 'phone_number',
-                            			'value' => $student['User']['phone_number']
+                            			'value' => $teacher['User']['phone_number']
                             		));
                         		?>
                             </td>
@@ -47,14 +47,14 @@
                             			'type' => 'text',
                             			'class' => 'must_info',
                             			'id' => 'address',
-                            			'value' => $student['User']['address']
+                            			'value' => $teacher['User']['address']
                             		));
                         		?>                            
                             </td>
                         </tr>
 
                         <tr>
-                            <td>クレジットカード番号</td>
+                            <td>銀行口座番号</td>
                             <td>
                             	<?php
                                     echo $this->Form->input ( 'bank_account_code', array (
@@ -63,7 +63,7 @@
                             			'type' => 'text',
                             			'class' => 'must_info',
                             			'id' => 'bank_account_code',
-                            			'value' => $student['User']['bank_account_code']
+                            			'value' => $teacher['User']['bank_account_code']
                             		));
                         		?>
                         	</td>
@@ -88,7 +88,7 @@
                             <?php
                             echo $this->Form->button('アカウントを削除',
 								array(
-									'name' => 'data[delete_student]',
+									'name' => 'data[delete_teacher]',
 									'class' => 'link-button',
 									'onClick' => "return confirm('このアカウントを削除したいですか?')",
 									'escape' => false,

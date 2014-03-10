@@ -227,7 +227,7 @@ border-radius:5px;
 #category ul {
     list-style: circle;
     padding-left: 20px;
-    padding-top: 10px;
+    padding-top: 0px;
 }
 
 #category ul li {
@@ -260,6 +260,7 @@ border-radius:5px;
 #main_content .class li{
     font-weight: bold;   
 }
+
 #main_content .class li a{
     float: right;
     font-size: 1.2em;
@@ -270,11 +271,35 @@ border-radius:5px;
     border-radius: 5px;
 }
 
-#main_content .cate {
+#main_content .class .confirm_report{
+    float: right;
+    font-size: 1.2em;
+    padding-left: 5px;
+    margin-left: 5px;
+    border: 1px solid gray;
+    padding-right: 5px;
+    border-radius: 5px;
+}
+
+#main_content .class .confirm_delete{
+    float: right;
+    font-size: 1.2em;
+    padding-left: 5px;
+    margin-left: 5px;
+    border: 1px solid gray;
+    padding-right: 5px;
+    border-radius: 5px;
+}
+
+#main_content .# {
     float: right;
     margin-right: 80px;
 }
 
+#main_content .cate{
+    float: right;
+    margin-right: 80px;
+}
 /*Footer*/
 #footer {
     background: #7ca45a;
@@ -405,25 +430,20 @@ border-radius:5px;
     margin: 5px;
 }
 #change_info table {
-    margin-left: 10px;
-    margin-bottom: 5px;
+
 }
 #change_info table input[type="text"] {
-    margin-bottom: 5px;
-    margin-left: 20px;
-    padding: 3px;
-    height: 12px;
     width: 400px;
 }
 #change_info td {
-    font-weight: bold;
+	background-color: #CDEAEC;
+    font-weight: bold;    
 }
 
 #change_info table p {
     margin-top: 5px;
     margin-bottom: 5px;
     padding: 3px;
-    height: 12px;
     width: 400px;
 }
 /*kakin*/
@@ -611,10 +631,10 @@ border-radius:5px;
 }
 
 #new_comment textarea {
-    height: 25px;
-    width: 580px;
-    border: 1px solid green;
-    margin-left: 65px;
+height: 25px;
+width: 572px;
+border: 1px solid green;
+margin-left: 33px;
 }
 
 #new_comment form {
@@ -877,3 +897,12 @@ border-radius:5px;
 	font-weight: bold;
 }
 /* end by Khanh*/
+/*Phi*/
+.comment_content{
+color: black;
+font-size: 12px;
+}
+.btn{
+    float: right;
+}
+/*end Phi*/
