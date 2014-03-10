@@ -16,5 +16,6 @@
 	echo $this->Form->select('type', $options, $attributes, array('div'=>false));
 	echo "<br>";
     echo $this->Form->submit('検索', array('div'=>false));
+    echo $this->Form->end();
 ?>
 </div>
