@@ -14,13 +14,14 @@ class TeachersController extends AppController
         "User",
         "Test",
         "Lesson",
-        "Bill");
+        "Bill",
+    	"BannedStudent"
+    );
     public $components = array("RequestHandler");
 
     public function beforeFilter()
     {
         parent::beforeFilter();
-        //$this->loadModel("User");
         $this->layout = 'teacher';
         $this->Auth->authorize = "controller";
 
@@ -54,6 +55,7 @@ class TeachersController extends AppController
                                                     'lesson_id'=> $id),
                                             'fields'=> array(
                                                     'user_id','learn_date')));
+        
         $this->set('lesson',$lesson);
         $this->set('snum',$snum);
         $i=-1;
@@ -65,7 +67,28 @@ class TeachersController extends AppController
             }
         
         $this->set(compact('students'));
-        //debug($students);
+        $this->paginate =array('limit'=>10,
+        		'conditions'=> array(
+        			'BannedStudent.teacher_id'=>$id,
+        ));
+        
+        debug($this->paginate('BannedStudent'));
+        //kiem tra xem co hoc sinh ko
+        if(isset($this->request->data)){
+        	if($ban= $this->User->find('first',array(
+        									'conditions'=>array(
+        											'user_name'=>$data['ban']))))
+        	{
+        		$this->BannedStudent->create();
+        		$data = array('BannedStudent'=> array(
+        									'teacher_id' => $this->Auth->user('user_name'),
+        									'student_id' => $ban['User']['user_name']								
+        		));
+        		$this->BannedStudent->save($data);
+        	}else {
+        		$this->Session->setFlash('KO co student nao???');
+        	}
+        }
     }
     
     function changeVerify() {
