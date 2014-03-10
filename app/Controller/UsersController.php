@@ -51,39 +51,42 @@ class UsersController extends AppController {
 			         $this->Session->setFlash ( "Tai khoan " . $this->Auth->user ('user_name')." chua active.Hay lien he voi quan ly." );
 			         $this->redirect($this->Auth->logout());
                  }
-                 $this->loginRedirect($this->Auth->user('level'));
 			     $this->Session->setFlash ( "Hello" . $this->Auth->user ( 'user_name' ) );
-				
+				 $this->redirect(array("controller" => "Lessons","action" => "view_all_lessons"));
 			} 
             //sai username hoac password
             else {
 				$this->Session->setFlash ( 'ユーザネームとかパースワードとか間違いです' );
-				// luu so lan nhap sai vao session
-				if ($this->Session->read ( 'login_fail' )) {
-					$login_fail = $this->Session->read ( 'login_fail' ) + 1;
-				} else {
-					$login_fail = 1;
-				}
-				$this->Session->write ( "login_fail", $login_fail, 5 );
-				if ($this->Session->read ( 'login_fail' ) < 4) {
-					$missPass = "Da nhap sai " . $this->Session->read ( 'login_fail' ) . " lan";
-				} else if ($this->Session->read ( 'login_fail' ) == 4) {
-					if ($this->request->data ['User'] ['level'] == 3) {
-						$missPass = "IP bi block trong 30 phut";
-					}
-					if ($this->request->data ['User'] ['level'] == 2) {
-					}
-					$missPass = "IP dang bi block";
-				} else {
-					if ($this->Session->read ( 'login_fail' ) == 4) {
-						if ($this->request->data ['User'] ['level'] == 3) {
-							$missPass = "IP da bi block";
-						}
-						if ($this->request->data ['User'] ['level'] == 2) {
-						}
-					}
-				}
-				$this->set ( compact ( 'missPass' ) );
+                //luu so lan nhap sai vao session
+                if($this->Session->read('login_fail'))
+                {
+                    $login_fail = $this->Session->read('login_fail') + 1;
+                }else{
+                    $login_fail = 1;
+                }
+                $this->Session->write("login_fail",$login_fail,5);
+                if($this->Session->read('login_fail')<4){
+                $missPass = "Da nhap sai ".$this->Session->read('login_fail')." lan";
+                }else 
+                    if($this->Session->read('login_fail')==4 ){
+                    if($this->request->data['User']['level']==3){
+                        $missPass = "IP bi block trong 30 phut";
+                    }
+                    if($this->request->data['User']['level']==2) {
+                        
+                    }
+                    $missPass = "IP dang bi block";
+                }else{
+                    if($this->Session->read('login_fail')==4 ){
+                    if($this->request->data['User']['level']==3){
+                        $missPass = "IP da bi block";
+                    }
+                    if($this->request->data['User']['level']==2) {                        
+                    }
+                }
+                }
+                $this->set(compact('missPass'));
+ 
 			}
 		}
 	}
