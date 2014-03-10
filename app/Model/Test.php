@@ -17,7 +17,6 @@ class Test extends AppModel{
             'className' => 'Lesson'
             )
         );
-
     public function getTests($lesson_id){
         $condition = array(
             'conditions'=>array('lesson_id'=>$lesson_id)
