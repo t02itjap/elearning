@@ -1,7 +1,7 @@
 <?php
 //debug($data);
 ?>
-
+大丈夫です
 <div>
     <table class='table table-striped' style='table-layout: fixed'>
         <thead>

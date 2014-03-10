@@ -1,9 +1,10 @@
-                <form action="" method="">
+<?php echo $this->Session->flash();?>
+<?php echo $this->Form->create('User',array('type'=>'post'))?>
                     <div id="change_info">
                     <table>
                         <tr>
                             <td>ユーザネーム</td>
-                            <td><p><?php echo $student['User']['user_name']?></p></td>
+                            <td><p id="user_name"><?php echo $student['User']['user_name']?></p></td>
                         </tr>
                         <tr>
                             <td>メール</td>
@@ -74,7 +75,7 @@
                                     echo $this->Form->input ( 'password', array (
                             			'div' => false,
                             			'label' => false,
-                            			'type' => 'text',
+                            			'type' => 'password',
                             			'class' => 'must_info',
                             			'id' => 'password',
                             		));
@@ -85,13 +86,9 @@
                     </div><!--End #change_info-->
                     <div id="submit">
                             <?php
-                            echo $this->Html->link('アカウントを削除',
-                            	array(
-                            		'controller' => 'Students',
-                            		'action' => 'delete_student',
-                            		$student['User']['id'],
-									),
+                            echo $this->Form->button('アカウントを削除',
 								array(
+									'name' => 'data[delete_student]',
 									'class' => 'link-button',
 									'onClick' => "return confirm('このアカウントを削除したいですか?')",
 									'escape' => false,
@@ -102,7 +99,8 @@
                             echo $this->Form->button ( '作成', array (
                             	'type' => 'submit',
                             	'name' => 'data[submit_data]',
+                            	'class' => 'link-button',
                             	'id' => 'submit_button' ) );
                             ?>
                         </div><!--End #submit-->
-                </form>
+<?php echo $this->Form->end();?>
