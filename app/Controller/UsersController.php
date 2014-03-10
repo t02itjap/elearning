@@ -13,13 +13,7 @@ class UsersController extends AppController {
 	public function beforeFilter() {
 		parent::beforeFilter ();
 		$this->layout = 'before_login';
-<<<<<<< HEAD
 		//$this->Auth->authenticate = array ('Form' => array ('userModel' => 'User', 'fields' => array ('username' => 'user_name', 'password' => 'password','role' => 'level') )//'scope' => array('User.')
-//		 );
-=======
-		$this->Auth->authenticate = array ('Form' => array ('userModel' => 'User', 'fields' => array ('username' => 'user_name', 'password' => 'password' ) )//'scope' => array('User.')
-			);
->>>>>>> c22536fe5eb4a13c9686e49d153d169d71d9e0ef
 		$this->Auth->allow ( array ('home', 'login', 'register' ) );
 	}
 	
@@ -37,7 +31,6 @@ class UsersController extends AppController {
            //debug($this->request->data);
             //tao chuoi password de so sanh
 			$this->request->data['User']['password'] = $this->request->data['User']['user_name'].$this->request->data['User']['password'].'sha1';
-<<<<<<< HEAD
 			//dung username va password
             if ($this->Auth->login ()) {
                 //debug($this->Auth->user());die();
@@ -100,24 +93,7 @@ class UsersController extends AppController {
         
     }
 	
-	function register() {
-=======
-			if ($this->Auth->login ()) {
-				if ($this->Auth->user ( "level" ) === 1) {
-					echo "admin";
-				} else
-				echo "user";
-				//$this->Session->setFlash ( "Hello" . $this->Auth->user ( 'user_name' ) );
-				//$this->redirect ( $this->Auth->redirectUrl () );
-				$this->redirect(array('controller'=>'lessons', 'action'=>'view_all_lessons'));
-			} else {
-				$this->Session->setFlash ( 'メールとかパースワードとか間違いです' );
-			}
-		}
-	}
-
 	public function register() {
->>>>>>> c22536fe5eb4a13c9686e49d153d169d71d9e0ef
 		$this->set ( 'title_for_layout', '登録' );
 		$forPass = 'sha1';
 		if (isset ( $this->request->data ['submit_data'] )) {
@@ -196,12 +172,8 @@ class UsersController extends AppController {
 	}
 	
 	public function index(){
-<<<<<<< HEAD
          if ($this->Auth->user ())
 			$this->loginRedirect($this->Auth->user("level"));       
- }
-=======
-
 	}
 
 	public function get_user_request($user_id=null){
@@ -365,13 +337,56 @@ public function viewtestresult() {
                 foreach($data as $k=>$value){
                     $lesson_id[] = $value['Test']['lesson_id'];
                 }
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+        if ($this->request->is('post')) {
+            $this->loadModel("User");
+            if ($this->Auth->login()) {
+                if(!$this->Auth->user("approve_flag")=== 1){
+                    
+                }else{
+                    pr($this->Auth->user());die();
+                    if($this->Auth->user("level") === 1 ){
+                         $level = "admin";
+                    }if($this->Auth->user("level") === 2 ){
+                        $level = "teacher";
+                    }    
+                    else $level = "user";
+                    $this->Cookie->write('Auth.User', $this->Auth->user(), true, '1209600');
+                    $this->Session->setFlash("Hello"." ".$level." ".$this->Auth->user('user_name'));
+                    $this->redirect($this->Auth->redirect());
+                    }
+                } else {
+                    $this->Session->setFlash('ユーザネームとかパースワードとか間違いです');
+                }
+        }
+    }
+    
+    function register(){
+                $this->loadModel("User");
+                if($this->request->isPost()){
+                        $data = $this->request->data;
+                        if($this->User->checkUserExist($data["User"]["user_name"]) ==0){
+                                $data["User"]["password"] = Security::hash($data["User"]["password"], 'md5', false);
+                                $this->User->save($data);
+                                $this->Session->setFlash("登録は成功でおめでとうございます。");
+                                $this->redirect(array("action" => "login"));
+                        }else
+                              $this->Session->setFlash("ゆーざネームが利用された。");
+=======
+>>>>>>> tiendq
                 $lesson_name = Array();
                 foreach($lesson_id as $id){
                     $lesson_name[] = $this->Lesson->findById($id);
                 }
                 for($i=0;$i<count($lesson_name);$i++){
                     $data[$i]['Lesson'] =$lesson_name[$i]['Lesson'];
+<<<<<<< HEAD
 >>>>>>> 2be1f5077ad250cac8ce44b372e03e0dc8dbebab
+=======
+>>>>>>> master
+>>>>>>> tiendq
                 }
                 $this->set('data',$data);
                  
