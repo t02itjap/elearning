@@ -9,7 +9,7 @@
 <?php 
 	//form search
     echo $this->Form->create('Lesson',array('controller'=>'lessons','action'=>'search_result'));
-    echo $this->Form->input('授業を検索ために下にキーワード入力してください', array('div'=>false));
+    echo $this->Form->input('keyword', array('div'=>false));
     //them vao dong ben duoi de tao selectbox cho group
     $options = array('teacher' => '先生名', 'lesson' => '授業名', 'category' => 'カテゴリ');
     $attributes=array('empty'=>false);
