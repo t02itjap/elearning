@@ -31,6 +31,7 @@ App::uses('Controller', 'Controller');
  * @link		http://book.cakephp.org/2.0/en/controllers.html#the-app-controller
  */
 class AppController extends Controller {
+    var $uses = array ('Categorie');
     public $components = array( 'RequestHandler',
                                 'Acl',
                                 'Session',
@@ -41,7 +42,11 @@ class AppController extends Controller {
     
     public function beforeFilter(){
         parent::beforeFilter();
+        $this->Auth->allow(array('view_all_lessons', 'lessons_by_category', 'search_result'));
+        $this->set('categories',$this->Categorie->getAllCategories());
+        $this->set('user', $this->Auth->User());
     }
+
     
     
     
