@@ -20,3 +20,12 @@
        	}
        	exports.InvalidInputHelper = InvalidInputHelper;
 })(window);
+
+//function addfile(){
+//    var parenttbl = document.getElementById("1234");
+//    var newel = document.createElement('td');
+//    //var elementid = document.getElementsByTagName("td").length
+//    //newel.setAttribute('id',elementid);
+//    newel.innerHTML = "New Inserted"
+//    parenttbl.appendChild(newel);
+//}

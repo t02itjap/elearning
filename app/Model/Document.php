@@ -2,6 +2,21 @@
 class Document extends AppModel{
 	var $name = 'Document';
 	var $primaryKey = 'id';
+        
+        public $validate = array(
+        'file_link' => array(
+            'extension' => array(
+                'rule' => array('extension', array('pdf','jpg','png','gif','jpeg')),
+                'message' => 'Only pdf or image files',
+            ),
+            'existed_file' => array(
+                'rule' => 'isUnique',
+                'required' => true,
+                'allowEmpty' => false,
+                'message' => 'This file has been existed',
+            ),
+        )
+    );
 	public function getDocuments($id){
 		$condition =array(
 			'conditions'=>array('Document.id'=>$id),

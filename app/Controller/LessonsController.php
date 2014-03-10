@@ -21,4 +21,3 @@ class LessonsController extends AppController {
 			
 	}
 }
-
