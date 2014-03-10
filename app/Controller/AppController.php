@@ -31,16 +31,44 @@ App::uses('Controller', 'Controller');
  * @link		http://book.cakephp.org/2.0/en/controllers.html#the-app-controller
  */
 class AppController extends Controller {
-    public $components = array( 'RequestHandler',
+	var $uses = array ('User','Category');
+	var $helpers = array('Html', 'Form', 'Editor');
+    var $components = array( 'RequestHandler',
                                 'Acl',
                                 'Session',
-                                'Cookie',
                                 'Auth' => array(
                                                 'loginRedirect' => array('controller' => 'users','action' => 'index'),
-                                                'logoutRedirect' => array('controller' => 'users','action' => 'login')));
+                                                'logoutRedirect' => array('controller' => 'users','action' => 'login'),
+                                                'authenticate' => array(
+                                                    "Form" => array(
+                                                        'userModel' => 'User',
+                                                        "fields" => array(
+                                                            'username' => "user_name",
+                                                            'password' => "password")
+                                                            )
+                                                            )
+                                                            ));
     
     public function beforeFilter(){
         parent::beforeFilter();
+        $this->Auth->allow(array('view_all_lessons', 'lessons_by_category', 'search_result'));
+        if (isset($this->params['requested'])) $this->Auth->allow($this->action); 
+    }
+    public function category(){
+    	$categoryList = $this->Category->find('all');
+    	if (!empty($this->request->params['requested'])) {
+    		return $categoryList;
+		}
+    	$this->set(compact('categoryList'));
+    }
+    public function acc_info(){
+    	$user = $this->User->find('first', array(
+    		'conditions' => array('id' => $this->Auth->user('id')),
+    	));
+    	if (!empty($this->request->params['requested'])) {
+    		return $user;
+		}
+    	$this->set(compact('user'));
     }
     
     

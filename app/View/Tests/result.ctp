@@ -16,6 +16,7 @@
                     <h4 id =<?='Question'.$i?> name=<?=$i?>> <?=$i.'.'.$q["Q($i)"]->question.'('.$q["Q($i)"]->mark.'点)'?> </h4><br>
                     <?php $j = 0; foreach ($q["Q($i)"]->answers as $key => $a):?>
                     <?php $j++; 
+                    if (!isset($listUserAnswers[$i])) $listUserAnswers[$i]=0;
                     if ($j==$listUserAnswers[$i]){
                         if ($j==$listCorrectAnswers[$i]){
                                 // Check and Red

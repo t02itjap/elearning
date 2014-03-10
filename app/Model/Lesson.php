@@ -13,58 +13,71 @@ class Lesson extends AppModel{
 			'classname' => 'Bill',
 			'foreignKey' => 'lesson_id'
 			)
+		);
+/*
+	public $hasMany = array(
+		'User' => array(
+			'className' => 'User'
+			// >>>>>>> 2be1f5077ad250cac8ce44b372e03e0dc8dbebab
+			)
             //Het phan Thang viet
-		);
-/*        
-        public $hasMany = array(
-            'User' => array(
-                'className' => 'User'
-            )
-        );
- */
-public function getLessons(){
-	$condition=array(
-		'joins'=>array(
-			array(
-				'table'=>'tb_users',
-				'alias'=>'User',
-				'type'=>'INNER',
-				'conditions'=>array(
-					'User.id=Lesson.create_user_id',
-					'User.id'=>25	
-					)
-				)
+		);*/
+
+	public $belongsTo = array(
+		'User'=> array(
+			'className'=>'User',
+			'foreignKey'=>'create_user_id'
 			),
-		'fields'=> array('Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'Lesson.category_id', 'User.user_name')
+		'Categorie'=>array(
+			'className'=>'Category',
+			'foreignKey'=>'category_id'
+			)
 		);
-	return $this->find('all', $condition);
-}
-public function getComments($lesson_id){
-	$condition = array(
-		'joins'=>array(
-			array(
-				'table'=>'tb_comments',
-				'alias'=>'c',
-				'type'=>'INNER',
-				'conditions'=>array(
-					'c.lession_id=Lesson.id'
+
+	public function getLessons(){
+		$condition=array(
+			'joins'=>array(
+				array(
+					'table'=>'tb_users',
+					'alias'=>'User',
+					'type'=>'INNER',
+					'conditions'=>array(
+						'User.id=Lesson.create_user_id',
+						'User.id'=>25	
+						)
 					)
-				)
-			),
-		'joins'=>array(
-			array(
-				'table'=>'tb_users',
-				'alias'=>'u',
-				'type'=>'INNER',
-				'conditions'=>array(
-					'u.id=c.user_ id'
+				),
+			'fields'=> array('Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'Lesson.category_id', 'User.user_name')
+			);
+		return $this->find('all', $condition);
+	}
+	public function getComments($lesson_id){
+		$condition = array(
+			'joins'=>array(
+				array(
+					'table'=>'tb_comments',
+					'alias'=>'c',
+					'type'=>'INNER',
+					'conditions'=>array(
+						'c.lession_id=Lesson.id'
+						)
 					)
-				)
-			),
-		'fields'=>array('c.comment','u.user_name'),
-		'conditions'=>array('Lesson.id'=>$lession_id)
-		);
-	return $this->find('all',$condition);
+				),
+			'joins'=>array(
+				array(
+					'table'=>'tb_users',
+					'alias'=>'u',
+					'type'=>'INNER',
+					'conditions'=>array(
+						'u.id=c.user_ id'
+						)
+					)
+				),
+			'fields'=>array('c.comment','u.user_name'),
+			'conditions'=>array('Lesson.id'=>$lession_id)
+			);
+		return $this->find('all',$condition);
+	}
 }
-}
+// >>>>>>> 2be1f5077ad250cac8ce44b372e03e0dc8dbebab
 ?>

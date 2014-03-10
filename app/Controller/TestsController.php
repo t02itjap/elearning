@@ -42,7 +42,7 @@ class TestsController extends AppController{
 			$totalScore = 0;
 			$totalCorrectAnswers = 0;
 			for ($i=1; $i <= $leng; $i++) { 
-				if ($userAnswers[$i]==$ans[$i]){
+				if (isset($userAnswers[$i]) && $userAnswers[$i]==$ans[$i]){
 					$totalScore+=$mark[$i];
 					$totalCorrectAnswers++;
 				}
