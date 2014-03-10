@@ -1,6 +1,6 @@
 <?php 
-class Categorie extends AppModel{
-	var $name = 'Categorie';
+class Category extends AppModel{
+	var $name = 'Category';
 	var $primaryKey = 'id';
 
 	public function getAllCategories(){

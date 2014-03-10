@@ -8,7 +8,7 @@
     ?>
 	    <li>
 		<?php 
-			$category_name=$category['Categorie']['category_name'];
+			$category_name=$category['Category']['category_name'];
 			echo $this->Html->link($category_name, array(
 				'controller'=>'lessons', 
 				'action'=>'lessons_by_category', 
