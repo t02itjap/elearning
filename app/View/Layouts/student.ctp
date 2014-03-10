@@ -49,6 +49,7 @@ $cakeDescription = __d('cake_dev', 'CakePHP: the rapid development php framework
 			<h2 id='page-title'><?php echo $title_for_layout; ?></h2><br>
 			<?php echo $this->fetch('content'); ?>
 		</div>
+                    <?php echo $this->element("sql_dump");?>
 		<?php echo $this->element('footer');?>
 	</div>
 </body>
