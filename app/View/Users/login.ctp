@@ -13,8 +13,6 @@ echo $this->Form->create ( "User", array (
 		"class" => "form1" 
 ) );
 echo $this->Session->flash ();
-if ($missPass)
-	echo $this->Html->tag ( "h2", $missPass );
 echo $this->Html->tag ( "h1", "ログイン" );
 // $userType[1] = "管理者";
 $userType [2] = "先生";
@@ -74,16 +72,7 @@ echo $this->Form->end ( "ログイン", array (
 
       	$("#missPass").click(function(){
 			alert("Lien he quan ly de reset mat khau");
-      	});       
-               //,
-//               errorPlacement: function(error, element) {
-//			if ( element.is(":radio") )
-//				error.appendTo( element.parent().next().next() );
-//			else if ( element.is(":checkbox") )
-//				error.appendTo ( element.next() );
-//			else
-//				error.appendTo( element.parent().next() );
-//		},
+      	});      
             
          });
 </script>
