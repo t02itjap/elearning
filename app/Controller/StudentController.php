@@ -15,17 +15,4 @@ class StudentController extends AppController {
 		$studentList = $this->paginate('User');
 		$this->set ( compact ( 'studentList' ));
 	}
-	//Thang viet
-	public function getHistories() {
-		$this->set ( 'title_for_layout', 'Lich su hoc tap' );
-		$this->paginate = array (
-                        'limit' => 10, 
-			'conditions' => array('Bill.user_id' => $this->Auth->user('id')),
-                        'field' => array('Lesson.lesson_name', 'LearnHistory.learn_date')
-			//'order' => 'LearnHistory.learn_date'
-			);
-		$data = $this->paginate('Bill');
-		$this->set ( compact ( 'data' ));
-	}
-	//Het phan Thang viet
 }
