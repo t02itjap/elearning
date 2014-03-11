@@ -347,7 +347,7 @@ class AdminsController extends AppController {
 				if(isset($this->request->data['result'])){
 					$time = $this->request->data['Admins'];
 					$monthyear = $time['year']."-".$time['month']."%";
-					debug($monthyear);
+					// debug($monthyear);
 				}
 
 				$data = $this->Bill->find('all', array(
@@ -365,7 +365,7 @@ class AdminsController extends AppController {
 							)
 						)
 					);
-					$data[$i]['user']=$user['User'];
+					// $data[$i]['user']=$user['User'];
 				}
 				$this->set('userInfors',$data);
 			}
