@@ -19,6 +19,6 @@ echo $this->Form->create('Tests',array('type' => 'post', 'controller'=>'tests','
 </ul>
 </div>
 <?php 
-echo $this->Form->button('終わる', array ('type' => 'submit', 'name' => 'data[result]','class'=>'btn','id'=>"btn-save"));
+echo $this->Form->button('表示', array ('type' => 'submit', 'name' => 'data[result]','class'=>'btn','id'=>"btn-save"));
 echo $this->Form->end();
 ?>

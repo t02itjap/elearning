@@ -2,6 +2,13 @@
 class Document extends AppModel{
 	var $name = 'Document';
 	var $primaryKey = 'id';
+
+	var $belongsTo = array(
+		'User'=>array(
+			'className'=>'User',
+			'foreignKey'=> 'create_user_id'
+			)
+		);
         
         public $validate = array(
         'file_link' => array(
