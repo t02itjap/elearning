@@ -27,10 +27,6 @@ class Lesson extends AppModel{
 		'User'=> array(
 			'className'=>'User',
 			'foreignKey'=>'create_user_id'
-			),
-		'Categorie'=>array(
-			'className'=>'Category',
-			'foreignKey'=>'category_id'
 			)
 		);
 
@@ -79,5 +75,4 @@ class Lesson extends AppModel{
 		return $this->find('all',$condition);
 	}
 }
-// >>>>>>> 2be1f5077ad250cac8ce44b372e03e0dc8dbebab
 ?>

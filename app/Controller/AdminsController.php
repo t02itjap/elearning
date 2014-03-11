@@ -32,42 +32,6 @@ class AdminsController extends AppController {
 				'address' => $data['User']['address'],
 				'phone_number' => $data['User']['phone_number'],
 				));
-//<<<<<<< HEAD
-//			if ($this->User->validates ()) {
-//				if($data['User']['ip_address']!=''){
-//					$this->IpAddress->set(array('ip_address' => $data['User']['ip_address']));
-//					if($this->IpAddress->validates()){
-//						$this->User->save();
-//						$this->Ipaddress->save();
-//						$user = $this->User->find('first',array(
-//							'fields' => array('id'),
-//							'conditions' => array('User.user_name' => $data['User']['user_name'] )
-//						));
-//						$this->InitialUser->set(array(
-//							'user_id' => $user['User']['id'],
-//							'initial_password' => $password,
-//						));
-//						$this->InitialUser->save();
-//						$this->redirect(array('controller' => 'Admins', 'action' => 'index'));
-//					}
-//				}
-//				else{
-//					$this->User->save();
-//					$user = $this->User->find('first',array(
-//						'fields' => array('id'),
-//						'conditions' => array('User.user_name' => $data['User']['user_name'] )
-//					));
-//					$this->InitialUser->set(array(
-//						'user_id' => $user['User']['id'],
-//						'initial_password' => $password,
-//					));
-//					$this->InitialUser->save();
-//						$this->redirect(array('controller' => 'Admins', 'action' => 'index'));
-//				}
-//				}
-//		}
-//	}     
-//=======
 			$this->IpAddress->set(array('ip_address' => $data['User']['ip_address']));
 			if ($this->User->validates () && $this->IpAddress->validates()) {
 				$this->User->save();

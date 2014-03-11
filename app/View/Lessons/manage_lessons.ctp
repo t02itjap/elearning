@@ -14,7 +14,6 @@ if($result['count']>=1):
 	?>
 	<div class='class' id='<?php echo $lesson['Lesson']['id']; ?>'>
 		<ul class='ultest'>
-			<li class='cate'>カテゴリ：<?php echo $lesson['Categorie']['category_name']; ?></li>
 			<li>授業名：<?php echo $lesson['Lesson']['lesson_name']; ?></li>
 			<li>作った日：<?php echo $lesson['Lesson']['create_date']; ?></li>
 			<li>説明：<?php echo $lesson['Lesson']['description']; ?></li>
@@ -33,8 +32,7 @@ if($result['count']>=1):
 		    array('class'=>'confirm_delete')
 			);
 			echo "</li>";
-			if($level==2)
-				echo "<li><a href='#' class='see'>情報サマリー</a></li>";
+			echo "<li><a href='#' class='see'>情報サマリー</a></li>";
 			?>
 		</ul>
 	</div>
