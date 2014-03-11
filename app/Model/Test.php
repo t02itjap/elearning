@@ -5,6 +5,22 @@
  */
 class Test extends AppModel{
     var $name="Test";
+    
+    public $validate = array(
+        'file_link' => array(
+            'extension' => array(
+                'rule' => array('extension', array('docx')),
+                'message' => 'Only tsv files',
+            ),
+            'existed_file' => array(
+                'rule' => 'isUnique',
+                'required' => true,
+                'allowEmpty' => false,
+                'message' => 'This file has been existed',
+            ),
+        )
+    );
+    
     public $hasMany = array(
         'TestHistory' => array(
             'className' => 'TestHistory',

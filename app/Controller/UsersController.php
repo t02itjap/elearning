@@ -1,10 +1,11 @@
 <?php
-App::uses ( 'DboSource', 'Model/Datasource' );
+
+App::uses('DboSource', 'Model/Datasource');
+
 /**
  * Common controller for login,logout,...
  * 
  */
-
 class UsersController extends AppController {
 	public $name = "Users";
 	var $uses = array ('User', 'TestHistory', 'Test', 'Lesson','InitialUser','Verifycode','InitialVerifycode');
@@ -114,6 +115,8 @@ class UsersController extends AppController {
 						'initial_password' => $password,
 						));
 					$this->InitialUser->save();
+					$this->Session->setFlash('アカウントを登録することが成功。');
+					$this->redirect(array('controller' => 'Users', 'action' => 'login'));
 				}
 				else{					
 					if($this->Verifycode->validates()){
@@ -139,9 +142,15 @@ class UsersController extends AppController {
 							'initial_verifycode' => $verifycode,
 						));
 						$this->InitialVerifycode->save();
+						$this->Session->setFlash('アカウントを登録することが成功。');
+						$this->redirect(array('controller' => 'Users', 'action' => 'login'));
 					}
-				}
-				$this->redirect(array('controller' => 'Users', 'action' => 'login'));
+					else{
+						if(isset($this->Verifycode->validationErrors['question'])) $questionErr = $this->Verifycode->validationErrors['question']['0'];
+						if(isset($this->Verifycode->validationErrors['verifycode'])) $answerErr = $this->Verifycode->validationErrors['verifycode']['0'];
+						$this->set(compact('questionErr','answerErr'));
+					}
+				}			
 			}
 		}
 	}

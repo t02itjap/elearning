@@ -60,25 +60,6 @@ echo $this->Form->create ( 'User', array ('type' => 'file' ) )?>
 			</td>
 		</tr>
 		<tr>
-	<!--ngay thang nam sinh-->
-	<tr>
-		<td><span>*</span>誕生日</td>
-		<td>
-							日： <?php
-							echo $this->Form->input ( 'birth_date', array ('label' => false, 'class' => 'input-small', 'options' => $birthDayOptions, 'div' => false, 'id' => 'birth-date', 'empty' => '-' ) );
-							
-							?>
-							月： <?php
-							echo $this->Form->input ( 'birth_month', array ('label' => false, 'class' => 'input-small', 'options' => $birthMonthOptions, 'id' => 'birth-month', 'div' => false, 'empty' => '-' ) );
-							?>
-							年：<?php
-							echo $this->Form->input ( 'birth_year', array ('label' => false, 'class' => 'input-small', 'options' => $birthYearOptions, 'id' => 'birth-year', 'div' => false, 'empty' => '-' ) );
-							?> 
-                            </td>
-	</tr>
-	<!-- end ngay thang nam sinh -->
-
-
 			<tr>
 				<td><span>*</span>メール</td>
 				<td>
@@ -106,6 +87,7 @@ echo $this->Form->create ( 'User', array ('type' => 'file' ) )?>
 					?>
 				</td>
 			</tr>
+			<?php if(isset($questionErr)) echo '<tr><td></td><td><font color = "#8A0808">'.$questionErr.'</font></td></tr>';?>
 			<tr id="ans">
 				<td><span>*</span>答え</td>
 				<td>
@@ -114,6 +96,7 @@ echo $this->Form->create ( 'User', array ('type' => 'file' ) )?>
 					?>
 				</td>
 			</tr>
+			<?php if(isset($answerErr)) echo '<tr><td></td><td><font color = "#8A0808">'.$answerErr.'</font></td></tr>';?>
 			<td id="bank"><span>*</span>銀行口座</td>
 			<td id="regedit" hidden='true'><span>*</span>クレジットカード番号</td>
 			<td>
@@ -146,7 +129,7 @@ echo $this->Form->create ( 'User', array ('type' => 'file' ) )?>
 <div id="rule">
 	<h4><span>*</span>システムの使用要求</h4>
 	<?php
-	echo $this->Form->input ( 'agree', array ('type' => 'checkbox', 'label' => '賛成', 'id' => 'agree_rule' ) );
+	echo $this->Form->input ( 'agree', array ('type' => 'checkbox', 'label' => '賛成', 'id' => 'agree_rule', 'checked' => false ) );
 	?>
 </div>
 <!--End #rule-->
@@ -165,6 +148,13 @@ echo $this->Form->end ()?>
 <!-- end form -->
 <script type="text/javascript">
 $(document).ready(function(){
+	var value = $("#user_type").val();
+	if(value == 3){
+		$("#bank").hide();
+		$("#regedit").show();
+		$("#quest").hide();
+		$("#ans").hide();
+	}
 	$("#agree_rule").click(function(){
 		var checked = $(this).attr("checked");
 		if(checked == true && $("#re_password").val() == $("#password").val()){

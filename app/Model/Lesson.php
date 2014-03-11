@@ -75,5 +75,4 @@ class Lesson extends AppModel{
 		return $this->find('all',$condition);
 	}
 }
-// >>>>>>> 2be1f5077ad250cac8ce44b372e03e0dc8dbebab
 ?>
