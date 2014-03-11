@@ -47,10 +47,10 @@
                         }
                     }
                     ?>
-                <?php endforeach; ?>
-            </div>
-        </li>
-    <?php endforeach; ?>
-</ul>
-</div>
+                    <?php endforeach; ?>
+                </div>
+            </li>
+        <?php endforeach; ?>
+        </ul>
+    </div>
 </div><!--End #main_content-->

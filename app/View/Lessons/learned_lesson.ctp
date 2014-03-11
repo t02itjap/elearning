@@ -11,7 +11,6 @@ foreach ($lessons as $lesson):
 ?>
 	<div class='class'>
 		<ul>
-			<li class='cate'>カテゴリ：<?php echo $lesson['Categorie']['category_name']; ?></li>
 			<li>授業名：<?php echo $lesson['Lesson']['lesson_name']; ?></li>
 			<li>作った日：<?php echo $lesson['Lesson']['create_date']; ?></li>
 			<li>説明：<?php echo $lesson['Lesson']['description']; ?></li>

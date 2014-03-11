@@ -10,3 +10,4 @@ app/[Cc]onfig/database.php
 tmp
 /.settings/
 
+/.metadata/
