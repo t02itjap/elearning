@@ -7,7 +7,7 @@ App::uses ( 'DboSource', 'Model/Datasource' );
 
 class TeachersController extends AppController {
 	public $name = "Teachers";
-	var $uses = array ('User', 'Test', 'Lesson', 'Bill' );
+	var $uses = array ('User', 'Test', 'Lesson', 'Bill','Verifycode');
 	var $helpers = array ('Html', 'Form', 'Editor' );
 	public $components = array ('RequestHandler' );
 	public function beforeFilter() {
@@ -81,7 +81,41 @@ class TeachersController extends AppController {
 		}
 	}
 	function changeVerify() {
+		$id = $this->Auth->user('id');
+		$teacher = $this->Verifycode->find('first',array('conditions'=>array('user_id'=>$id)));
+		$this->set(compact('teacher'));
+		
+		if($this->request->is('post')){
+			$data = $this->request->data;
+			if(sha1($this->Auth->user('user_name').$data['User']['verifycode1'].'sha1')==$teacher['Verifycode']['verifycode']){
+				if($data['User']['verifycode2']==$data['User']['verifycode3']){
+					$this->Verifycode->id = $this->Auth->user('id');
+					$this->Verifycode->set('verifycode',sha1($this->Auth->user('user_name').$data['User']['verifycode2'].'sha1'));
+					$this->Verifycode->save();
+					$this->Session->setFlash('change thanh cong');
+				}else{
+					$this->Session->setFlash('ma xac nhan sai');
+				}
+			}else{
+				$this->Session->setFlash('ma hien tai sai');
+			}
+		}
+	}
 	
+	function changePass() {
+		if ($this->request->is ( 'post' )) {
+			$data = $this->request->data;
+			if (sha1 ( $this->Auth->user ( 'user_name' ) . $data ['User'] ['pass1'] . 'sha1' ) == $this->Auth->user ( 'password' )) {
+				if ($data ['User'] ['pass2'] == $data ['User'] ['pass3']) {
+					$this->User->id = $this->Auth->user ( 'id' );
+					$this->User->set ( 'password', $data ['User'] ['pass2'] );
+					$this->User->save();
+					$this->Session->setFlash('thanh cong');
+				} else
+					$this->Session->setFlash ( 'pass xac nhan sai' );
+			} else
+				$this->Session->setFlash ( 'pass hien tai sai' );
+		}
 	}
 	
 	function home() {
