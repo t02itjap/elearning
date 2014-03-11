@@ -5,6 +5,7 @@
             e.preventDefault();
             //オートローディングページを防ぐ
             $('#formCreateNewCategory').show();                         //入力ボックスが表示され
+            $('#createCategory').unbind('click');
             $('#createCategory').on('click',function(e){
                 e.preventDefault();
                 var name= $('#nameCategory').val();
@@ -13,22 +14,26 @@
                     url: "<?php echo $this->webroot . 'Teachers/createNewCategory' ?>",
                     data: { name: name}
                 }) .done(function(data) {
-                    
+                    var data =  $.parseJSON(data);
+                    //console.log( data);
                     $('#listCategory').append('<li><label>'+name+'</label><input type="checkbox" value="'+data['id']+'" ></li>');
                 });
                 //すぐにカテゴリ情報を取得し、ページ上に表示され、自動ロードを無視
                 $('#formCreateNewCategory').hide();                     //入力ボックスを非表示
             });
         });
-        $('#1234').on('click',function(e){
+        $('#addNewFile').on('click',function(e){
             e.preventDefault();
-            var parenttbl = document.getElementById("1234");
-            var newel = document.createElement('td');
-            //var elementid = document.getElementsByTagName("td").length
-            //newel.setAttribute('id',elementid);
-            newel.innerHTML = "New Inserted"
-            parenttbl.appendChild(newel);
+            console.log('abc');
+            var tmp = 
+            '<label for="fileDocument">Pdf or Image</label>'+
+            '<input id="fileDocument" type="file" name="data[Lesson][file_link_document][]">';
+            $('#fileArray').append(tmp);
         });
+//        $('#fileTrigger').on('click',function(){
+//           //$(this).hide();
+//           $('#fileDocument').trigger('click');
+//        });
     });
 </script>
 
@@ -60,9 +65,9 @@
                         'label' => false,
                     ));
                     ?>
-                    
-                <!--教師のユーザーからの授業名を取得-->
-                
+
+                    <!--教師のユーザーからの授業名を取得-->
+
                 </td>
             </tr>
             <tr>
@@ -75,19 +80,19 @@
                             echo '<li>';
                             echo $this->Form->checkbox('Category', array(
                                 'value' => $category['Category']['id'],
-                                'name' => 'data[Lesson][category'.$category['Category']['id'].']',
+                                'name' => 'data[Lesson][category' . $category['Category']['id'] . ']',
                             ));
                             echo '</li>';
                         }
                         ?>
-                        
+
                         <!--教師のユーザーからの授業名を取得-->
-                        
+
                     </ul>
                 </td>
 
                 <td>
-                    <button id="createNewCategory">カテゴリー追加</button>
+                    <button id="createNewCategory" type="button">カテゴリー追加</button>
 
                 </td>   
             </tr>
@@ -107,24 +112,27 @@
             <tr>
                 <td><span>＊</span>説明</td>
                 <td>
-                        <?php
-                        echo $this->Form->input('Name', array(
-                            'type' => 'textarea',
-                            'name' => 'data[Lesson][Description]',
-                            'label' => false,
-                        ));
-                        ?>
-                    
+                    <?php
+                    echo $this->Form->input('Name', array(
+                        'type' => 'textarea',
+                        'name' => 'data[Lesson][Description]',
+                        'label' => false,
+                    ));
+                    ?>
+
                     <!--教師のユーザーからの授業の説明を取得-->
-                    
-                    </td>
+
+                </td>
             </tr>
             <tr>
                 <td><span>＊</span>資料１</td>
-                <td>
+                <td id="fileArray">
+<!--                    <button id="fileTrigger">File</button>-->
+                    <label for="fileDocument">Pdf or Image</label>
+                    <input id="fileDocument" type="file" name="data[Lesson][file_link_document][]">
                     <?php
-                    echo $this->Form->input('file_link_document', array('type' => 'file', 'label' => 'Pdf or Image'));
-                                                        //アップロードファイル選択するフォームを作成
+                    
+                    //アップロードファイル選択するフォームを作成
                     if (isset($err))
                         echo $err;                      //もしあれば、エラーを表示
                     ?>
@@ -132,14 +140,14 @@
 
             </tr>
             <tr>
-                <td><button id="1234">資料追加</button></td>
+                <td><button id="addNewFile">資料追加</button></td>
             </tr>
             <tr>
                 <td><span>＊</span>テスト１</td>
                 <td>
                     <?php
                     echo $this->Form->input('file_link_test', array('type' => 'file', 'label' => 'Only tsv'));
-                                                        //アップロードファイル選択するフォームを作成
+                    //アップロードファイル選択するフォームを作成
                     if (isset($err1))
                         echo $err1;                     //もしあれば、エラーを表示
                     ?>
