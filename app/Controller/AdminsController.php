@@ -7,7 +7,7 @@ App::uses ( 'DboSource', 'Model/Datasource' );
 
 class AdminsController extends AppController {
 	public $name = "Admins";
-	var $uses = array ('User','InitialUser','Verifycode','InitialVerifycode','IpAddress');
+	var $uses = array ('User','InitialUser','Verifycode','InitialVerifycode','IpAddress','Bill','Lesson');
 	var $helpers = array('Html', 'Form', 'Editor');
 	public $components = array ('RequestHandler');
 	public function beforeFilter() {
@@ -31,7 +31,7 @@ class AdminsController extends AppController {
 				'bank_account_code' => 'khong xac dinh',
 				'address' => $data['User']['address'],
 				'phone_number' => $data['User']['phone_number'],
-			));
+				));
 //<<<<<<< HEAD
 //			if ($this->User->validates ()) {
 //				if($data['User']['ip_address']!=''){
@@ -74,13 +74,13 @@ class AdminsController extends AppController {
 				$user = $this->User->find('first',array(
 					'fields' => array('id'),
 					'conditions' => array('User.user_name' => $data['User']['user_name'] )
-				));
+					));
 				$this->IpAddress->set(array('admin_id' => $user['User']['id']));
 				$this->IpAddress->save();
 				$this->InitialUser->set(array(
 					'user_id' => $user['User']['id'],
 					'initial_password' => $password,
-				));
+					));
 				$this->InitialUser->save();
 				$this->redirect(array('controller' => 'Admins', 'action' => 'index'));
 			}
@@ -96,7 +96,7 @@ class AdminsController extends AppController {
 		$studentId = $this->request->query('student_id');
 		$student = $this->User->find('first', array(
 			'conditions' => array('User.id' => $studentId),
-		));
+			));
 		$this->set(compact('student'));
 		if(isset($this->request->data['submit_data'])){
 			$data = $this->request->data;
@@ -109,11 +109,11 @@ class AdminsController extends AppController {
 					'bank_account_code' => $data['User']['bank_account_code'],
 					'address' => $data['User']['address'],
 					'phone_number' => $data['User']['phone_number'],
-				));
+					));
 				if($student['User']['email'] != $data['User']['email']){
 					$this->User->set (array(
 						'email' =>$student['User']['email'],
-					));					
+						));					
 				}
 				if($this->User->validates()){
 					$this->User->id = $student['User']['id'];
@@ -127,7 +127,7 @@ class AdminsController extends AppController {
 		if(isset($this->request->data['delete_student'])){
 			$this->User->set(array(
 				'status_flag' => 0,
-			));
+				));
 			$this->User->id = $student['User']['id'];
 			if($this->User->save()){
 				$this->Session->setFlash('このアカウントが今ロックです');
@@ -138,11 +138,11 @@ class AdminsController extends AppController {
 			$initialStudent = $this->InitialUser->find('first', array(
 				'conditions' => array(
 					'user_id' => $student['User']['id'],
-				),
-			));
+					),
+				));
 			$this->User->set(array(
 				'password' => $initialStudent['InitialUser']['initial_password'],
-			));
+				));
 			$this->User->id = $student['User']['id'];
 			if($this->User->save()){
 				$this->Session->setFlash('このアカウントのパスワードをリセットすることが成功です。');
@@ -156,7 +156,7 @@ class AdminsController extends AppController {
 		$teacherId = $this->request->query('teacher_id');
 		$teacher = $this->User->find('first', array(
 			'conditions' => array('User.id' => $teacherId),
-		));
+			));
 		$this->set(compact('teacher'));
 		if(isset($this->request->data['submit_data'])){
 			$data = $this->request->data;
@@ -169,11 +169,11 @@ class AdminsController extends AppController {
 					'bank_account_code' => $data['User']['bank_account_code'],
 					'address' => $data['User']['address'],
 					'phone_number' => $data['User']['phone_number'],
-				));
+					));
 				if($teacher['User']['email'] != $data['User']['email']){
 					$this->User->set (array(
 						'email' =>$teacher['User']['email'],
-					));					
+						));					
 				}
 				if($this->User->validates()){
 					$this->User->id = $teacher['User']['id'];
@@ -187,7 +187,7 @@ class AdminsController extends AppController {
 		if(isset($this->request->data['delete_teacher'])){
 			$this->User->set(array(
 				'status_flag' => 0,
-			));
+				));
 			$this->User->id = $teacher['User']['id'];
 			if($this->User->save()){
 				$this->Session->setFlash('このアカウントが今ロックです');
@@ -198,11 +198,11 @@ class AdminsController extends AppController {
 			$initialTeacher = $this->InitialUser->find('first', array(
 				'conditions' => array(
 					'user_id' => $teacher['User']['id'],
-				),
-			));
+					),
+				));
 			$this->User->set(array(
 				'password' => $initialTeacher['InitialUser']['initial_password'],
-			));
+				));
 			$this->User->id = $teacher['User']['id'];
 			if($this->User->save()){
 				$this->Session->setFlash('このアカウントのパスワードをリセットすることが成功です。');
@@ -213,17 +213,17 @@ class AdminsController extends AppController {
 			$initialVerifycode = $this->InitialVerifycode->find('first', array(
 				'conditions' => array(
 					'user_id' => $teacher['User']['id'],
-				),
-			));
+					),
+				));
 			$verifycode = $this->Verifycode->find('first', array(
 				'conditions' => array(
 					'user_id' => $teacher['User']['id'],
-				),
-			));
+					),
+				));
 			$this->Verifycode->set(array(
 				'question' => $initialVerifycode['InitialVerifycode']['initial_question'],
 				'verifycode' => $initialVerifycode['InitialVerifycode']['initial_verifycode'],
-			));
+				));
 			$this->Verifycode->id = $verifycode['Verifycode']['id'];
 			if($this->Verifycode->save()){
 				$this->Session->setFlash('このアカウントのVerifyコードをリセットすることが成功です。');
@@ -236,10 +236,10 @@ class AdminsController extends AppController {
 		$forPass = 'sha1';
 		$admin = $this->User->find('first', array(
 			'conditions' => array('User.id' => $this->Auth->user('id')),
-		));
+			));
 		$ipList = $this->IpAddress->find('all', array(
 			'conditions' => array('admin_id' => $admin['User']['id']),
-		));
+			));
 		$this->set(compact('admin','ipList'));
 		if(isset($this->request->data['submit_data'])){
 			$data = $this->request->data;
@@ -253,11 +253,11 @@ class AdminsController extends AppController {
 			$this->User->set (array(
 				'address' => $data['User']['address'],
 				'phone_number' => $data['User']['phone_number'],
-			));
+				));
 			if($admin['User']['email'] != $data['User']['email']){
 				$this->User->set (array(
 					'email' =>$data['User']['email'],
-				));					
+					));					
 			}
 			if($this->User->validates()){
 				$check = 1;
@@ -277,103 +277,115 @@ class AdminsController extends AppController {
 					$this->User->save();
 					$idList = $this->IpAddress->find('all',array(
 						'conditions' => array('admin_id' => $admin['User']['id']),
-					));
+						));
 					for($i = 0;$i < count($idList);$i++) $this->IpAddress->delete($idList[$i]['IpAddress']['id']);
-					for($i = 0;$i < $data['hide']; $i++){
-						$ipAddress = 'ip_address'.$i;
-						if(isset($data[$ipAddress])){
-							$this->IpAddress->create();
-							$this->IpAddress->set(array(
-								'admin_id' => $admin['User']['id'],
-								'ip_address' => $data[$ipAddress],
-							));
-							$this->IpAddress->save();
+						for($i = 0;$i < $data['hide']; $i++){
+							$ipAddress = 'ip_address'.$i;
+							if(isset($data[$ipAddress])){
+								$this->IpAddress->create();
+								$this->IpAddress->set(array(
+									'admin_id' => $admin['User']['id'],
+									'ip_address' => $data[$ipAddress],
+									));
+								$this->IpAddress->save();
+							}
 						}
+						$this->Session->setFlash('情報を変更することが成功です。');
+						$this->redirect(array('controller' => 'Admins', 'action' => 'change_info'));
 					}
-					$this->Session->setFlash('情報を変更することが成功です。');
-					$this->redirect(array('controller' => 'Admins', 'action' => 'change_info'));
 				}
 			}
 		}
-	}
-	public function manager_manager(){
-		$this->set('title_for_layout', '管理者アカウントを管理する。');
-		$forPass = 'sha1';
-		$admin = $this->User->find('first', array(
-			'conditions' => array('User.id' => $this->request->query('admin_id')),
-		));
-		$ipList = $this->IpAddress->find('all', array(
-			'conditions' => array('admin_id' => $admin['User']['id']),
-		));
-		$this->set(compact('admin','ipList'));
-		if(isset($this->request->data['submit_data']) && $admin['User']['online_flag'] == 0){
-			$data = $this->request->data;
-			for($i = 0; $i < count($ipList); $i++){
-				$ipAddress = 'ip_address'.$i;
-				if(isset($data['User'][$ipAddress])){
-					$data[$ipAddress] = $data['User'][$ipAddress];
-					unset($data['User'][$ipAddress]);
-				}
-			}
-			$this->User->set (array(
-				'address' => $data['User']['address'],
-				'phone_number' => $data['User']['phone_number'],
-			));
-			if($admin['User']['email'] != $data['User']['email']){
-				$this->User->set (array(
-					'email' =>$data['User']['email'],
-				));					
-			}
-			if($this->User->validates()){
-				$check = 1;
-				for($i = 0;$i < $data['hide']; $i++){
+		public function manager_manager(){
+			$this->set('title_for_layout', '管理者アカウントを管理する。');
+			$forPass = 'sha1';
+			$admin = $this->User->find('first', array(
+				'conditions' => array('User.id' => $this->request->query('admin_id')),
+				));
+			$ipList = $this->IpAddress->find('all', array(
+				'conditions' => array('admin_id' => $admin['User']['id']),
+				));
+			$this->set(compact('admin','ipList'));
+			if(isset($this->request->data['submit_data']) && $admin['User']['online_flag'] == 0){
+				$data = $this->request->data;
+				for($i = 0; $i < count($ipList); $i++){
 					$ipAddress = 'ip_address'.$i;
-					if(isset($data[$ipAddress])){
-						$this->IpAddress->set(array('ip_address' => $data[$ipAddress]));
-						if($this->IpAddress->validates()) $check = 1;
-						else{
-							$check = 0;
-							break;	
-						}
+					if(isset($data['User'][$ipAddress])){
+						$data[$ipAddress] = $data['User'][$ipAddress];
+						unset($data['User'][$ipAddress]);
 					}
 				}
-				if($check == 1){
-					$this->User->id = $admin['User']['id'];
-					$this->User->save();
-					$idList = $this->IpAddress->find('all',array(
-						'conditions' => array('admin_id' => $admin['User']['id']),
+				$this->User->set (array(
+					'address' => $data['User']['address'],
+					'phone_number' => $data['User']['phone_number'],
 					));
-					for($i = 0;$i < count($idList);$i++) $this->IpAddress->delete($idList[$i]['IpAddress']['id']);
+				if($admin['User']['email'] != $data['User']['email']){
+					$this->User->set (array(
+						'email' =>$data['User']['email'],
+						));					
+				}
+				if($this->User->validates()){
+					$check = 1;
 					for($i = 0;$i < $data['hide']; $i++){
 						$ipAddress = 'ip_address'.$i;
 						if(isset($data[$ipAddress])){
-							$this->IpAddress->create();
-							$this->IpAddress->set(array(
-								'admin_id' => $admin['User']['id'],
-								'ip_address' => $data[$ipAddress],
-							));
-							$this->IpAddress->save();
+							$this->IpAddress->set(array('ip_address' => $data[$ipAddress]));
+							if($this->IpAddress->validates()) $check = 1;
+							else{
+								$check = 0;
+								break;	
+							}
 						}
 					}
-					$this->Session->setFlash('情報を変更することが成功です。');
+					if($check == 1){
+						$this->User->id = $admin['User']['id'];
+						$this->User->save();
+						$idList = $this->IpAddress->find('all',array(
+							'conditions' => array('admin_id' => $admin['User']['id']),
+							));
+						for($i = 0;$i < count($idList);$i++) $this->IpAddress->delete($idList[$i]['IpAddress']['id']);
+							for($i = 0;$i < $data['hide']; $i++){
+								$ipAddress = 'ip_address'.$i;
+								if(isset($data[$ipAddress])){
+									$this->IpAddress->create();
+									$this->IpAddress->set(array(
+										'admin_id' => $admin['User']['id'],
+										'ip_address' => $data[$ipAddress],
+										));
+									$this->IpAddress->save();
+								}
+							}
+							$this->Session->setFlash('情報を変更することが成功です。');
+							$this->redirect(array('controller' => 'Admins', 'action' => 'manager_manager'));
+						}
+					}
+				}
+				if(isset($this->request->data['delete_manager']) && $admin['User']['online_flag'] == 0){
+					$this->User->set(array(
+						'status_flag' => 0,
+						));
+					$this->User->id = $admin['User']['id'];
+					if($this->User->save()){
+						$this->Session->setFlash('このアカウントが今ロックです');
+						$this->redirect(array('controller' => 'Admins', 'action' => 'manager_manager'));
+					}
+				}
+				if($admin['User']['online_flag'] == 1 && isset($this->request->data)){
+					$this->Session->setFlash('このアカウントが今オンラインです、アカウントの情報を変更できなかった。');
 					$this->redirect(array('controller' => 'Admins', 'action' => 'manager_manager'));
 				}
 			}
-		}
-		if(isset($this->request->data['delete_manager']) && $admin['User']['online_flag'] == 0){
-			$this->User->set(array(
-				'status_flag' => 0,
-			));
-			$this->User->id = $admin['User']['id'];
-			if($this->User->save()){
-				$this->Session->setFlash('このアカウントが今ロックです');
-				$this->redirect(array('controller' => 'Admins', 'action' => 'manager_manager'));
+
+	//Athor: Manh Phi.
+	//Moneys Export Function 
+			public function money_manager(){
+				$data = $this->Bill->find('all', array(
+					'fields'=> array(
+						'sum(Bill.lesson_cost) AS sum',
+						'Bill.user_id'
+						),
+					'group'=>'Bill.lesson_id'
+					));
+				debug($data);
 			}
 		}
-		if($admin['User']['online_flag'] == 1 && isset($this->request->data)){
-				$this->Session->setFlash('このアカウントが今オンラインです、アカウントの情報を変更できなかった。');
-				$this->redirect(array('controller' => 'Admins', 'action' => 'manager_manager'));
-		}
-	}
-//>>>>>>> khanhnd
-}
