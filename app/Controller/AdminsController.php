@@ -7,7 +7,7 @@ App::uses ( 'DboSource', 'Model/Datasource' );
 
 class AdminsController extends AppController {
 	public $name = "Admins";
-	var $uses = array ('User','InitialUser','Verifycode','InitialVerifycode','IpAddress','Bill','Lesson');
+	var $uses = array ('User','InitialUser','Verifycode','InitialVerifycode','IpAddress','Bill','Lesson', 'Document');
 	var $helpers = array('Html', 'Form', 'Editor');
 	public $components = array ('RequestHandler');
 	public function beforeFilter() {
@@ -342,14 +342,217 @@ class AdminsController extends AppController {
 
 	//Athor: Manh Phi.
 	//Moneys Export Function 
-			public function money_manager(){
+			public function managerMoney(){
+				$monthyear="";
+				if(isset($this->request->data['result'])){
+					$time = $this->request->data['Admins'];
+					$monthyear = $time['year']."-".$time['month']."%";
+					debug($monthyear);
+				}
+
 				$data = $this->Bill->find('all', array(
-					'fields'=> array(
-						'sum(Bill.lesson_cost) AS sum',
-						'Bill.user_id'
-						),
-					'group'=>'Bill.lesson_id'
+					'fields'=> array('sum(Bill.lesson_cost) AS sum','Bill.user_id'),
+					'group'=>'Bill.lesson_id',
+					'conditions' => array(
+						'Bill.learn_date LIKE ' => $monthyear
+						)
 					));
-				debug($data);
+				for ($i=0; $i < count($data); $i++) { 
+					$user = $this->User->find('first',array(
+						'fields'=> array('real_name','phone_number','address','bank_account_code'),
+						'conditions'=>array(
+							'User.id'=>$data[$i]['Bill']['user_id']
+							)
+						)
+					);
+					$data[$i]['user']=$user['User'];
+				}
+				$this->set('userInfors',$data);
 			}
+
+			//Huong Viet
+			public function getAccount(){
+
+				if(!empty($this->data)&&$this->data['User']['user_name']!=null){
+        //neu co thi truy van du lieu dua vao bien $users
+					$count=$this->User->find('count',array('conditions'=>array('user_name LIKE '=>'%'.$this->data['User']['user_name'].'%','User.approve_flag'=> 1)));
+            //goi du lieu tu controller len view
+					if($count!=0)
+					{
+                //$this->set('users',$users);
+
+
+						$this->paginate = array(
+							'limit' => 10,
+							'field' => array('User.id', 'User.user_name', 'User.real_name'),
+							'conditions'=>array('user_name LIKE '=>'%'.$this->data['User']['user_name'].'%','User.approve_flag'=> 1
+								));
+						$data = $this->paginate('User');
+						$this->set('data', $data);            
+					}
+					else
+						$this->set('message', '結果がない');   
+					
+				}
+
+				else{
+					$this->paginate = array(
+						'limit' => 10,
+						'conditions' => array(
+							'User.approve_flag'=> 1
+							),
+						'field' => array('User.id', 'User.user_name', 'User.real_name')
+
+						);
+					$data = $this->paginate('User');
+					$this->set('data', $data);
+				}
+				
+				
+			}
+
+
+
+			public function getDocument(){
+
+
+				if(isset($this->request->data['delete_file'])){
+					debug($data['delete_file']);die();
+				}
+				if(!empty($this->data)&&$this->data['Document']['file_name']!=null){
+        //neu co thi truy van du lieu dua vao bien $users
+					$count=$this->Document->find('count',array('conditions'=>array('file_name LIKE '=>'%'.$this->data['Document']['file_name'].'%')));
+            //goi du lieu tu controller len view
+					if($count!=0)
+					{
+
+						$this->paginate = array(
+							'limit' => 10,
+							'conditions'=>array('file_name LIKE '=>'%'.$this->data['Document']['file_name'].'%'
+								));
+						$data = $this->paginate('Document');
+						$this->set('data', $data);            
+					}
+					else
+						$this->set('message', '結果がない');   
+					
+				}
+
+				else{
+					$this->paginate = array(
+						'limit' => 10,
+						);
+					$data = $this->paginate('Document');
+            //debug($data); die();
+					$this->set('data', $data);
+				}
+
+			}
+
+
+			public function getConfirmAccount(){
+
+
+				if(!empty($this->data)&&$this->data['User']['user_name']!=null){
+        //neu co thi truy van du lieu dua vao bien $users
+					$count=$this->User->find('count',array('conditions'=>array('user_name LIKE '=>'%'.$this->data['User']['user_name'].'%','User.approve_flag'=> 0)));
+            //goi du lieu tu controller len view
+					if($count!=0)
+					{
+                //$this->set('users',$users);
+
+
+						$this->paginate = array(
+							'limit' => 10,
+							'field' => array('User.id', 'User.user_name', 'User.real_name'),
+							'conditions'=>array('user_name LIKE '=>'%'.$this->data['User']['user_name'].'%','User.approve_flag'=> 0
+								));
+						$data = $this->paginate('User');
+						$this->set('data', $data);            
+					}
+					else
+						$this->set('message', '結果がない');   
+					
+				}
+
+				else{
+					$this->paginate = array(
+						'limit' => 10,
+						'conditions' => array(
+							'User.approve_flag'=> 0
+							),
+						'field' => array('User.id', 'User.user_name', 'User.real_name')
+						);
+					$data = $this->paginate('User');
+            //debug($data); die();
+					$this->set('data', $data);
+				}
+				
+			}
+
+
+
+			public function getLesson(){
+
+				if(!empty($this->data)&&$this->data['Lesson']['lesson_name']!=null){
+        //neu co thi truy van du lieu dua vao bien $users
+					$count=$this->Lesson->find('count',array('conditions'=>array('lesson_name LIKE '=>'%'.$this->data['Lesson']['lesson_name'].'%')));
+            //goi du lieu tu controller len view
+					if($count!=0)
+					{
+                //$this->set('users',$users);
+
+
+						$this->paginate = array(
+							'limit' => 10,
+							'conditions'=>array('lesson_name LIKE '=>'%'.$this->data['Lesson']['lesson_name'].'%'
+								));
+						$data = $this->paginate('Lesson');
+						$this->set('data', $data);            
+					}
+					else
+						$this->set('message', '結果がない');   
+					
+				}
+
+				else{
+					$this->paginate = array(
+						'limit' => 10,
+						);
+					$data = $this->paginate('Lesson');
+            //debug($data); die();
+					$this->set('data', $data);
+				}
+			}
+
+
+			public function delete_document() {
+				if(isset($this->request->data['delete_file'])){
+                //debug($this->request->data['hide']);
+					$count = $this->request->data['hide'];
+					$this->Document->id = $count;
+					$this->Document->delete();
+					$this->redirect(array('controller' => 'admins', 'action' => 'getDocument'));
+				}
+				if(isset($this->request->data['block_file'])){
+               // debug($this->request->data['hide']);die();
+					$count = $this->request->data['hide'];
+					$this->Document->id = $count;
+					if($this->Document->lock_flag==0){
+						$this->Document->set(array(
+							'lock_flag' => 1,
+							));
+					}
+					
+					if($this->Document->lock_flag==1){
+						$this->Document->set(array(
+							'lock_flag' => 0,
+							));
+					}
+
+					$this->Document->save();
+					$this->redirect(array('controller' => 'admins', 'action' => 'getDocument'));
+				}
+			}
+
 		}
