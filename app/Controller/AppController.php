@@ -59,6 +59,7 @@ class AppController extends Controller {
     	if (!empty($this->request->params['requested'])) {
     		return $categoryList;
 		}
+        
     	$this->set(compact('categoryList'));
     }
     public function acc_info(){
