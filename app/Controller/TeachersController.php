@@ -84,28 +84,31 @@ class TeachersController extends AppController {
 	}
     
     public function createNewCategory() {
-        echo 'abccccc';
+//      新しいカテゴリを作成する機能
         if (isset($_POST['name'])) {
             var_dump($_POST['name']);
-            $data = array('category_name' => $_POST['name']);
-            $this->Category->create();
-            $this->Category->save($data);
+            $data = array('category_name' => $_POST['name']);   //新しいデータベースを作成
+            $this->Category->create();                          
+            $this->Category->save($data);                       //データベースにデータを保存する
             //$this->set('id', $this->Category->id);
             $category = $this->Category->find('first', array('conditions' => array('category_name' => $_POST['name'])));
             $data['id'] = $category['Category']['id'];
             //$this->Category->id;
             $data['name'] = $_POST['name'];
+            //カテゴリテーブルの情報を取得する
         }
 
-        die;
+        die; //デバッグのため停止
     }
 
     public function create_course() {
+        //新しいレッスンを作成する 
         $categories = $this->Category->find('all');
         $this->set('categories', $categories);
-        if (isset($this->request->data['ok'])) {
+        //カテゴリテーブルを取得
+        if (isset($this->request->data['ok'])) {                //教師のユーザーのクリックを提出した場合
 
-            debug($this->request->data);
+            debug($this->request->data);                        //データがプログラマに表示さ
             $data = $this->request->data;
             $this->Lesson->set(array(
                 'lesson_name' => $data['Lesson']['Name'],
@@ -113,12 +116,15 @@ class TeachersController extends AppController {
                 'create_user_id' => $this->Auth->user('id'),
                 'create_date' => date('Y/m/d H:i:s'),
                 ));
+            //新しいレッスンのテーブルのデータベースを作成する 
             $this->Lesson->save();
+            //データベースにデータを保存する
 
             $uploadData = $data['Lesson']['file_link_document'];
             $this->Document->set(array(
                 'file_link' => $uploadData['name'],
                 ));
+            //新しいドキュメントのテーブルのデータベースを作成する 
             if ($this->Document->validates()) {
                 $this->Document->save();
                 move_uploaded_file($uploadData['tmp_name'], WWW_ROOT . 'files/data' . DS . $uploadData['name']);
@@ -126,11 +132,14 @@ class TeachersController extends AppController {
                 $err = $this->Document->validationErrors['file_link']['0'];
                 $this->set(compact('err'));
             }
+            
+            //検証]をチェックし、新しいドキュメントをアップロードする 
 
             $uploadData1 = $data['Lesson']['file_link_test'];
             $this->Test->set(array(
                 'file_link' => $uploadData1['name'],
                 ));
+            //新しいテストのテーブルのデータベースを作成する 
             if ($this->Test->validates()) {
                 $this->Test->save();
                 move_uploaded_file($uploadData1['tmp_name'], WWW_ROOT . 'files/data' . DS . $uploadData1['name']);
@@ -138,6 +147,7 @@ class TeachersController extends AppController {
                 $err1 = $this->Test->validationErrors['file_link']['0'];
                 $this->set(compact('err1'));
             }
+            //検証]をチェックし、新しいテストをアップロードする 
         }
     }
 

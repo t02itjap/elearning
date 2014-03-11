@@ -3,7 +3,8 @@
         $('#formCreateNewCategory').hide();
         $('#createNewCategory').on('click',function(e){
             e.preventDefault();
-            $('#formCreateNewCategory').show();
+            //オートローディングページを防ぐ
+            $('#formCreateNewCategory').show();                         //入力ボックスが表示され
             $('#createCategory').on('click',function(e){
                 e.preventDefault();
                 var name= $('#nameCategory').val();
@@ -15,7 +16,8 @@
                     
                     $('#listCategory').append('<li><label>'+name+'</label><input type="checkbox" value="'+data['id']+'" ></li>');
                 });
-                $('#formCreateNewCategory').hide();
+                //すぐにカテゴリ情報を取得し、ページ上に表示され、自動ロードを無視
+                $('#formCreateNewCategory').hide();                     //入力ボックスを非表示
             });
         });
         $('#1234').on('click',function(e){
@@ -58,6 +60,9 @@
                         'label' => false,
                     ));
                     ?>
+                    
+                <!--教師のユーザーからの授業名を取得-->
+                
                 </td>
             </tr>
             <tr>
@@ -75,6 +80,9 @@
                             echo '</li>';
                         }
                         ?>
+                        
+                        <!--教師のユーザーからの授業名を取得-->
+                        
                     </ul>
                 </td>
 
@@ -106,6 +114,9 @@
                             'label' => false,
                         ));
                         ?>
+                    
+                    <!--教師のユーザーからの授業の説明を取得-->
+                    
                     </td>
             </tr>
             <tr>
@@ -113,12 +124,12 @@
                 <td>
                     <?php
                     echo $this->Form->input('file_link_document', array('type' => 'file', 'label' => 'Pdf or Image'));
+                                                        //アップロードファイル選択するフォームを作成
                     if (isset($err))
-                        echo $err;
+                        echo $err;                      //もしあれば、エラーを表示
                     ?>
                 </td>
-<!--                <td><input type="text"/></td>
-                <td><button id="uploadFileDocument">アップロードファイル選択</button></td>-->
+
             </tr>
             <tr>
                 <td><button id="1234">資料追加</button></td>
@@ -128,8 +139,9 @@
                 <td>
                     <?php
                     echo $this->Form->input('file_link_test', array('type' => 'file', 'label' => 'Only tsv'));
+                                                        //アップロードファイル選択するフォームを作成
                     if (isset($err1))
-                        echo $err1;
+                        echo $err1;                     //もしあれば、エラーを表示
                     ?>
                 </td>
 <!--                <td><input type="text"/></td>
