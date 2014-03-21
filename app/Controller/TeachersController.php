@@ -161,6 +161,68 @@ class TeachersController extends AppController {
                 //debug($upData);
                 $this->Document->create();
                 //新しいドキュメントのテーブルのデータベースを作成する 
+                if ($this->Document->validates()) {
+                    $this->Document->set(array(
+                        'file_link' => $upData['name'],
+                        'file_name'=> $upData['name'],
+                        'create_user_id'=>$this->Auth->user('id'),
+                        'lesson_id'=>$lesson_id
+                    ));
+                    $this->Document->save();
+                    move_uploaded_file($upData['tmp_name'], WWW_ROOT . 'files/data' . DS . $upData['name']);
+                } else {
+                    $err = $this->Document->validationErrors['file_link']['0'];
+                    $this->set(compact('err'));
+                }
+            }
+            //検証]をチェックし、新しいドキュメントをアップロードする 
+
+            $uploadData1 = $data['Lesson']['file_link_test'];
+            foreach ($uploadData1 as $upData) {
+                //debug($upData);
+                $this->Test->create();
+                //新しいドキュメントのテーブルのデータベースを作成する 
+                if ($this->Test->validates()) {
+                    $this->Test->set(array(
+                        'file_link' => $upData['name'],
+                        'file_name'=> $upData['name'],
+                        'create_user_id'=>$this->Auth->user('id'),
+                        'lesson_id'=>$lesson_id
+                    ));
+                    $this->Test->save();
+                    move_uploaded_file($upData['tmp_name'], WWW_ROOT . 'files/data' . DS . $upData['name']);
+                } else {
+                    $err1 = $this->Test->validationErrors['file_link']['0'];
+                    $this->set(compact('err1'));
+                }
+            }
+            //検証]をチェックし、新しいテストをアップロードする 
+        }
+    }
+    
+    public function manage_course() {
+        //新しいレッスンを作成する 
+        $categories = $this->Category->find('all');
+        $this->set('categories', $categories);
+        //カテゴリテーブルを取得
+        if (isset($this->request->data['ok'])) {                //教師のユーザーのクリックを提出した場合
+            //debug($this->request->data);                        //データがプログラマに表示さ
+            $data = $this->request->data;
+            $this->Lesson->set(array(
+                'lesson_name' => $data['Lesson']['Name'],
+                'description' => $data['Lesson']['Description'],
+                'create_user_id' => $this->Auth->user('id'),
+                'create_date' => date('Y/m/d H:i:s'),
+            ));
+            //新しいレッスンのテーブルのデータベースを作成する 
+            $this->Lesson->save();
+            $lesson_id = $this->Lesson->id;
+            //データベースにデータを保存する
+            $uploadData = $data['Lesson']['file_link_document'];
+            foreach ($uploadData as $upData) {
+                //debug($upData);
+                $this->Document->create();
+                //新しいドキュメントのテーブルのデータベースを作成する 
                 //if ($this->Document->validates()) {
                     $this->Document->set(array(
                         'file_link' => $upData['name'],

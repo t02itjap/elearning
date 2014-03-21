@@ -9,7 +9,7 @@ class Test extends AppModel{
     public $validate = array(
         'file_link' => array(
             'extension' => array(
-                'rule' => array('extension', array('docx')),
+                'rule' => array('extension', array('tsv')),
                 'message' => 'Only tsv files',
             ),
             'existed_file' => array(
