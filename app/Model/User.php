@@ -74,4 +74,26 @@ class User extends AppModel {
 			),
 		),
 	);
+	//tai khoan co level 1 admin ko
+	public function isAdmin($id){
+		return ($this->field('level',array('id'=>$id)) == 1);
+	}
+	//tai khoan co level 2 teacher ko
+	public function isTeacher($id){
+		return ($this->field('level',array('id'=>$id)) == 2);
+	}
+	//tai khoan co level 3 student ko
+	public function isStudent($id){
+		return ($this->field('level',array('id'=>$id)) == 3);
+	}
+	//kiem tra tai khoan hien co online hay ko
+	public function isOnline($uname,$pass){
+		$user = $this->find('first',array('user_name'=>$uname,'password'=>$pass));
+		if(!empty($user)){
+			return $user['User']['online_flag']== 1;
+		}		
+	}
+	public function foo(){
+		
+	}
 }

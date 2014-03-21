@@ -23,21 +23,81 @@ class TeachersController extends AppController {
         }
     }
 
-    public function summary($id = null) {
-        $lesson = $this->Lesson->find('first', array('conditions' => array('id' => $id), 'fields' => array('viewers', 'voters')));
-        $snum = $this->Bill->find("count", array('conditions' => array('lesson_id' => $id), 'group' => array('user_id')));
-        $students = $this->Bill->find("all", array('conditions' => array('lesson_id' => $id), 'fields' => array('user_id', 'learn_date')));
-        $this->set('lesson', $lesson);
-        $this->set('snum', $snum);
-        $i = - 1;
-        foreach ($students as $s) {
-            $i ++;
-            $info = $this->User->field('user_name', array('id' => $s ['Bill'] ['user_id']));
-            $students [$i] ['Bill'] ['user_name'] = $info;
-        }
-
-        $this->set(compact('students'));
-    }
+public function summary($id = 1) {
+		// get lesson summary info
+		$lesson = $this->Lesson->find ( 'first', array (
+				'conditions' => array (
+						'Lesson.id' => $id 
+				),
+				'fields' => array (
+						'viewers',
+						'voters' 
+				) 
+		) );
+		$snum = $this->Bill->find ( "count", array (
+				'conditions' => array (
+						'lesson_id' => $id 
+				),
+				'group' => array (
+						'user_id' 
+				) 
+		) );
+		
+		// get learned student
+		$this->paginate = array (
+				'limit'=>5,
+				'fields' => array (
+						'user_id',
+						'learn_date' 
+				),
+				'conditions' => array (
+						'lesson_id' => $id 
+				) 
+		);
+		
+		$students = $this->paginate('Bill');
+		$this->set ( 'lesson', $lesson );
+		$this->set ( 'snum', $snum );
+		$i = - 1;
+		foreach ( $students as $s ) {
+			$i ++;
+			$info = $this->User->field ( 'user_name', array (
+					'id' => $s ['Bill'] ['user_id'] 
+			) );
+			$students [$i] ['Bill'] ['user_name'] = $info;
+		}
+		
+		$this->set ( compact ( 'students' ) );
+		// get ban student list
+		$banList = $this->BannedStudent->find ( "all", array (
+				'conditions' => array (
+						'teacher_id' => $this->Auth->user ( 'id' ) 
+				) 
+		) );
+		$this->set ( compact ( 'banList' ) );
+		
+		// block button action
+		if ($this->request->is ( 'post' )) {
+			$ban = $this->request->data;
+			if (! $this->BannedStudent->isBanned ( $ban ['BannedStudent'] ['StudentName'] ) && $stu = $this->User->find ( 'first', array (
+					'conditions' => array (
+							'user_name' => $ban ['BannedStudent'] ['StudentName'],
+							'level' => 3 
+					) 
+			) )) {
+				$this->BannedStudent->create ();
+				$this->BannedStudent->set ( array (
+						'teacher_id' => $this->Auth->user ( 'id' ),
+						'student_id' => $stu ['User'] ['id'],
+						'reason' => $ban ['BannedStudent'] ['Reason'] 
+				) );
+				$this->BannedStudent->save ();
+				$this->Session->setFlash ( 'ブロックが成功した' );
+			} else {
+				$this->Session->setFlash ( "ユーザネームが存在しない" );
+			}
+		}
+	}
 
     public function change_info() {
         $this->set('title_for_layout', '個人情報を変更する');
@@ -80,43 +140,43 @@ class TeachersController extends AppController {
         }
     }
 
-    function changeVerify() {
-        $id = $this->Auth->user('id');
-        $teacher = $this->Verifycode->find('first', array('conditions' => array('user_id' => $id)));
-        $this->set(compact('teacher'));
+function changeVerify() {
+		$id = $this->Auth->user ( 'id' );
+		$teacher = $this->Verifycode->find ( 'first', array (
+				'conditions' => array (
+						'user_id' => $id 
+				) 
+		) );
+		$this->set ( compact ( 'teacher' ) );
+		
+		if ($this->request->is ( 'post' )) {
+			$data = $this->request->data;
+			if (sha1 ( $this->Auth->user ( 'user_name' ) . $data ['User'] ['verifycode1'] . 'sha1' ) == $teacher ['Verifycode'] ['verifycode']) {
+				$this->Verifycode->id = $this->Auth->user ( 'id' );
+				$this->Verifycode->set ( 'verifycode', sha1 ( $this->Auth->user ( 'user_name' ) . $data ['User'] ['verifycode2'] . 'sha1' ) );
+				$this->Verifycode->save ();
+				$this->Session->setFlash ( 'Verifyコード変更が成功した' );
+			} else {
+				$this->Session->setFlash ( '現在Verifyコードが間違う' );
+			}
+		}
+	}
 
-        if ($this->request->is('post')) {
-            $data = $this->request->data;
-            if (sha1($this->Auth->user('user_name') . $data['User']['verifycode1'] . 'sha1') == $teacher['Verifycode']['verifycode']) {
-                if ($data['User']['verifycode2'] == $data['User']['verifycode3']) {
-                    $this->Verifycode->id = $this->Auth->user('id');
-                    $this->Verifycode->set('verifycode', sha1($this->Auth->user('user_name') . $data['User']['verifycode2'] . 'sha1'));
-                    $this->Verifycode->save();
-                    $this->Session->setFlash('change thanh cong');
-                } else {
-                    $this->Session->setFlash('ma xac nhan sai');
-                }
-            } else {
-                $this->Session->setFlash('ma hien tai sai');
-            }
-        }
-    }
-
-    function changePass() {
-        if ($this->request->is('post')) {
-            $data = $this->request->data;
-            if (sha1($this->Auth->user('user_name') . $data ['User'] ['pass1'] . 'sha1') == $this->Auth->user('password')) {
-                if ($data ['User'] ['pass2'] == $data ['User'] ['pass3']) {
-                    $this->User->id = $this->Auth->user('id');
-                    $this->User->set('password', $data ['User'] ['pass2']);
-                    $this->User->save();
-                    $this->Session->setFlash('thanh cong');
-                } else
-                    $this->Session->setFlash('pass xac nhan sai');
-            } else
-                $this->Session->setFlash('pass hien tai sai');
-        }
-    }
+function changePass() {
+		if ($this->request->is ( 'post' )) {
+			$data = $this->request->data;
+			// debug($this->Auth->user('password'));
+			if (sha1 ( $this->Auth->user ( 'user_name' ) . $data ['User'] ['pass1'] . 'sha1' ) == $this->User->field ( 'password', array (
+					'id' => $this->Auth->user ( 'id' ) 
+			) )) {
+				$this->User->id = $this->Auth->user ( 'id' );
+				$this->User->set ( 'password', sha1 ( $this->Auth->user ( 'user_name' ) . $data ['User'] ['pass2'] . 'sha1' ) );
+				$this->User->save ();
+				$this->Session->setFlash ( 'パスワード変更が成功した' );
+			} else
+				$this->Session->setFlash ( '現在パスワードが間違う' );
+		}
+	}
 
     function home() {
         //debug($this->Auth->user());
@@ -289,5 +349,3 @@ class TeachersController extends AppController {
     }
 
 }
-
-?>

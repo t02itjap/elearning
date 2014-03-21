@@ -32,16 +32,13 @@ class StudentsController extends AppController {
     function changePass() {
     	if ($this->request->is ( 'post' )) {
     		$data = $this->request->data;
-    		if (sha1 ( $this->Auth->user ( 'user_name' ) . $data ['User'] ['pass1'] . 'sha1' ) == $this->Auth->user ( 'password' )) {
-    			if ($data ['User'] ['pass2'] == $data ['User'] ['pass3']) {
+    		if (sha1 ( $this->Auth->user ( 'user_name' ) . $data ['User'] ['pass1'] . 'sha1' ) == $this->User->field("password",array("id"=>$this->Auth->user("id")))) {
     				$this->User->id = $this->Auth->user ( 'id' );
     				$this->User->set ( 'password', $data ['User'] ['pass2'] );
     				$this->User->save();
-    				$this->Session->setFlash('thanh cong');
-    			} else
-    				$this->Session->setFlash ( 'pass xac nhan sai' );
+    				$this->Session->setFlash('パスワード変更が成功した');
     		} else
-    			$this->Session->setFlash ( 'pass hien tai sai' );
+    			$this->Session->setFlash ( '現在パスワードが間違う' );
     	}
     }
     

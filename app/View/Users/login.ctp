@@ -19,10 +19,10 @@ $userType [2] = "先生";
 $userType [3] = "学生";
 
 echo $this->Form->input ( "user_type", array (
-		"label" => "Select user type",
+		"label" => "アカウントタイプを選択する",
 		"type" => "select",
 		"options" => $userType,
-		"id" => "user_type"
+		"id" => "user_type" 
 ) );
 echo $this->Form->input ( "user_name", array (
 		"label" => false,
@@ -42,8 +42,7 @@ echo $this->Form->input ( "password", array (
 ) );
 
 echo $this->Form->button ( "リセット", array (
-		"type" => "reset",
-		"id" => "btnSubmit" 
+		"type" => "reset"		
 ) );
 echo $this->Form->button ( "パスワード忘れた", array (
 		"id" => "missPass",
@@ -71,7 +70,7 @@ echo $this->Form->end ( "ログイン", array (
       	});
 
       	$("#missPass").click(function(){
-			alert("Lien he quan ly de reset mat khau");
+			alert("パスワードをリセットため、管理者に連絡する");
       	});      
             
          });
