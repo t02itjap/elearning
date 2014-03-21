@@ -4,10 +4,10 @@ App::uses('DboSource', 'Model/Datasource');
 
 /**
  * User controller for login,logout,...
- * 
  */
 class StudentsController extends AppController {
 	public $name = "Students";
+// <<<<<<< HEAD
 	var $uses = array ('User', 'LearnHistory', 'Bill', 'Lesson', 'Test', 'TestHistory');
 	var $helpers = array('Html', 'Form', 'Editor','Csv');
 	public $components = array ('RequestHandler');
@@ -27,6 +27,22 @@ class StudentsController extends AppController {
             $this->redirect($this->redirect(array("controller"=>"users","action"=>"logout")));
             return false;  
         }   
+    }
+    
+    function changePass() {
+    	if ($this->request->is ( 'post' )) {
+    		$data = $this->request->data;
+    		if (sha1 ( $this->Auth->user ( 'user_name' ) . $data ['User'] ['pass1'] . 'sha1' ) == $this->Auth->user ( 'password' )) {
+    			if ($data ['User'] ['pass2'] == $data ['User'] ['pass3']) {
+    				$this->User->id = $this->Auth->user ( 'id' );
+    				$this->User->set ( 'password', $data ['User'] ['pass2'] );
+    				$this->User->save();
+    				$this->Session->setFlash('thanh cong');
+    			} else
+    				$this->Session->setFlash ( 'pass xac nhan sai' );
+    		} else
+    			$this->Session->setFlash ( 'pass hien tai sai' );
+    	}
     }
     
     public function change_info(){

@@ -18,7 +18,7 @@ class Bill extends AppModel{
 			'className'=> 'User',
 			'foreignKey'=> 'user_id'
 			)
-		);
+	);
 	//Het phan Thang viet
 
 	public function getLearnedLessonsId($user_id=null){
