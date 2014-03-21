@@ -365,7 +365,7 @@ class AdminsController extends AppController {
 							)
 						)
 					);
-					// $data[$i]['user']=$user['User'];
+					$data[$i]['user']=$user['User'];
 				}
 				$this->set('userInfors',$data);
 			}
