@@ -20,7 +20,7 @@ class CommentsController extends Controller{
 	//if ($this->Comment->validates()) {
 		$this->Comment->save();
 	//}
-		$this->redirect(array('controller' => 'documents', 'action' => 'index'));
+		echo 'a';
 // 	# code...
  }
 // else echo "???";
