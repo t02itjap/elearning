@@ -105,6 +105,7 @@ class StudentsController extends AppController {
 
     //Thang viet
     public function getHistories() {
+        //勉強のデータを取る
         $this->set('title_for_layout', 'Lich su hoc tap');
         $this->paginate = array(
             'limit' => 10,
@@ -117,19 +118,40 @@ class StudentsController extends AppController {
     }
 
     public function getFees() {
-        $time = date('Y-m');
+//        $time = date('Y-m');
+//        if ($this->request->is('post')) {
+//            $year = $this->data['YearMonth']['year']['year'];
+//            $month = $this->data['YearMonth']['month']['month'];
+//            $time = $year . '-' . $month;
+//        }
+        
+        
         if ($this->request->is('post')) {
             $year = $this->data['YearMonth']['year']['year'];
             $month = $this->data['YearMonth']['month']['month'];
-            $time = $year . '-' . $month;
+            if ($year != "" && $month != "") {
+                $time = $year . '-' . $month;
+            } else {
+                $time = date('Y-m');
+            }
+
+            $this->Session->write('time', $time);
         }
+        $time = $this->Session->read('time');
         //debug($time);
+        if (empty($time)) {
+            $time = date('Y-m');
+            $this->Session->write('time', $time);
+        }
+        
+        
         $temp2 = $this->Bill->find('all', array(
             'conditions' => array(
                 'Bill.user_id' => $this->Auth->user('id'),
                 'Bill.learn_date LIKE ' => $time . '%',
                 )
             ));
+        
         $this->set('temp2', $temp2);
         $sum = 0;
         foreach ($temp2 as $item) {
@@ -146,18 +168,14 @@ class StudentsController extends AppController {
                 )
             );
         $data = $this->paginate('Bill');
-        $this->set('data', $data);
+        //$this->set('data', $data);
         //debug($data);
-        $this->set('time', $time);
+        $this->Session->write('data', $data);
+        
     }
 
     public function getTestHistories() {
-//            $this->TestHistory->recursive = 2;
-//            $data = $this->TestHistory->find('all', array(
-//                'conditions' => array('TestHistory.user_id' => $this->Auth->user('id'))
-//            ));
-//            $this->set('data', $data);
-//            //debug($data);
+
         $this->TestHistory->recursive = 2;
         $this->paginate = array(
             'limit' => 10,

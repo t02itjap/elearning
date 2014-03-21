@@ -1,13 +1,11 @@
-<h2>------課金情報------</h2>
-<h4 style="font-size: 1.3em; margin-left: 10px;">見たい報酬情報の時間を選択します。</h4>
+<h2>報酬情報</h2>
+<h4 style="font-size: 1.3em;">見たい報酬情報の時間を選択します。</h4>
 <?php
-//debug($data);
-//フォルムを作る
-//echo $this->Form->create('YearMonth');
-//echo $this->Form->year('year', 2013, date('Y'));
-//echo $this->Form->month('month');
-//echo $this->Form->end('Submit');
+//echo $this->Html->script(array('jquery.validate', 'additional-methods', 'jquery.validate.min', 'additional-methods.min'));
 
+//debug($data);
+//debug($rate);
+//debug($this->Session->read('testData'));
 $data = $this->Session->read('data');
 $time = $this->Session->read('time');
 if (empty($time)) {
@@ -20,15 +18,15 @@ echo "年";
 echo $this->Form->month('month', array('id' => 'month_id', 'value' => date('M', strtotime($time))));
 echo "月";
 echo $this->Form->end('表示');
-
 ?>
+
 <div>
     <table class='table table-striped' style='table-layout: fixed'>
         <thead>
             <tr>
-                <th><?php echo $this->Paginator->sort('Bill.learn_date', 'タイム'); ?></th>
                 <th><?php echo $this->Paginator->sort('Lesson.lesson_name', '授業名'); ?></th>
-                <th><?php echo $this->Paginator->sort('Bill.lesson_cost', '学費'); ?></th>
+                <th>学生数</th>
+                <th>報酬</th>
             </tr>
         </thead>
         <tbody>	
@@ -36,9 +34,9 @@ echo $this->Form->end('表示');
             foreach ($data as $item) {
                 ?>
                 <tr>
-                    <td class='content-center'><?php echo $item['Bill']['learn_date']; ?></td>
                     <td class='content-center'><?php echo $item['Lesson']['lesson_name']; ?></td>
-                    <td class='content-center'><?php echo $item['Bill']['lesson_cost']; ?></td>
+                    <td class='content-center'><?php echo $item[0]['COUNT']; ?></td>
+                    <td class='content-center'><?php echo $item[0]['SUM']; ?></td>
                 </tr>
                 <?php
             }
@@ -46,6 +44,7 @@ echo $this->Form->end('表示');
         </tbody>	
     </table>
 </div>
+
 <div class="paging btn-group">
     <?php
     //ページングする
@@ -62,11 +61,20 @@ echo $this->Form->end('表示');
     ));
 ?>
 
-<p>合計課金: <?php echo $sum; ?></p>
-
+<p>合計報酬: <?php echo $sum; ?></p>
 <?php
-//echo $this->Form->create('User', array('action' => 'login'));
-//echo $this->Form->button('Download', array('type' => 'button','action' => '/students/exportBill/'.$time));
-//echo '<a href="localhost/elearning/students/exportBill/'.$time.'">Visit W3Schools</a>';
-echo $this->Html->Link('Download', array('class' => 'link-button', 'controller' => 'students', 'action' => 'exportBill', $time));
+echo $this->Html->Link('Download', array('class' => 'link-button', 'controller' => 'admins', 'action' => 'exportBill', $time));
 ?>
+<!--<script>
+    $(document).ready(function() {
+
+        $("#YearMonth_id").validate();
+        $("#year_id").rules("add", {
+            required: true
+        });
+        $("#month_id").rules("add", {
+            required: true
+        });
+    });
+
+</script>-->
