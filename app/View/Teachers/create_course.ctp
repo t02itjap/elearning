@@ -11,7 +11,7 @@
                 var name= $('#nameCategory').val();
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo $this->webroot . 'Teachers/createNewCategory' ?>",
+                    url: "<?php echo $this->webroot . 'Teachers/uploadNewDocument' ?>",
                     data: { name: name}
                 }) .done(function(data) {
                     var data =  $.parseJSON(data);
@@ -32,8 +32,8 @@
         $('#addNewTest').on('click',function(e){
             e.preventDefault();
             var tmp = 
-                '<label for="fileDocument">Only tsv</label>'+
-                '<input id="fileDocument" type="file" name="data[Lesson][file_link_document][]">';
+                '<label for="fileTest">Only tsv</label>'+
+                '<input id="fileTest" type="file" name="data[Lesson][file_link_test][]">';
             $('#fileArrayTest').append(tmp);
         });
         //        $('#fileTriggerDocument').on('click',function(){
@@ -44,6 +44,12 @@
         //           $(this).hide();
         //           $('#fileTest').trigger('click');
         //        });
+        $("#agree_rule").on('click',function(){
+            if($(this).is(':checked'))
+                $("#submit_button").prop('disabled', false);  // checked
+            else
+                $('#submit_button').prop('disabled', true);
+        });
     });
 </script>
 
@@ -73,7 +79,7 @@
             <tr>
                 <td><span>＊</span>カテゴリー</td>
                 <td>
-                    <ul id="listCategory">
+                    <ul id="listCategory" style="overflow-y: scroll; height:200px;">
                         <?php
                         foreach ($categories as $category) {
                             echo '<label>' . $category['Category']['category_name'] . '</label>';
@@ -90,10 +96,13 @@
 
                     </ul>
                 </td>
-
                 <td>
                     <button id="createNewCategory" type="button">カテゴリー追加</button>
+                </td>
+
+
             <tr>
+
             <div id="formCreateNewCategory">
 
                 <input type="text" id="nameCategory"/>
@@ -103,12 +112,7 @@
 
             </td>   
             </tr>
-            <tr>
-                <td></td>
-                <td style="padding-left: 300px;">
-                    <p>ページ<<<a href="">1</a>,<a href="">2</a>,<a href="">3</a>>></p>
-                </td>
-            </tr>
+
 
             <tr>
                 <td><span>＊</span>説明</td>
@@ -128,7 +132,7 @@
             <tr>
                 <td><span>＊</span>資料１</td>
                 <td id="fileArrayDocument">
-<!--                    <button id="fileTriggerDocument">ファイル選択</button>-->
+                    <!--                    <button id="fileTriggerDocument">ファイル選択</button>-->
                     <label for="fileDocument">Pdf or Image</label>
                     <input id="fileDocument" type="file" name="data[Lesson][file_link_document][]">
                     <?php
@@ -165,21 +169,21 @@
     </div><!--End #create_class-->
     <div id="rule">
         <h4><span>＊</span>&copy;Copyright 要求</h4>
-        //<?php
-//	echo $this->Form->input ( 'agree', array ('type' => 'checkbox', 'label' => '賛成', 'id' => 'agree_rule', 'checked' => false ) );
-//	?>
-        <label><input type="checkbox" value="賛成" />賛成</label>
+        <?php
+        echo $this->Form->input('agree', array('type' => 'checkbox', 'label' => '賛成', 'id' => 'agree_rule'));
+        ?>
+<!--        <label><input type="checkbox" value="賛成" />賛成</label>-->
     </div><!--End #rule-->
 
     <div id="submit">
-        //<?php
-//	echo $this->Form->button ( '作成', array ('type' => 'submit', 'name' => 'data[ok]', 'disabled' => 'fuck', 'id' => 'submit_button' ) );
-//	?>
-        //<?php
-//	echo $this->Form->button ( 'リセット', array ('type' => 'reset' ) );
-//	?>
-        <input type="submit" name="data[ok]" value="作成"/>
-        <input type="submit" name="cancel" value="キャセル"/>
+        <?php
+        echo $this->Form->button('作成', array('type' => 'submit', 'name' => 'data[ok]', 'disabled' => 'disabled', 'id' => 'submit_button'));
+        ?>
+        <?php
+        echo $this->Form->button('リセット', array('type' => 'reset'));
+        ?>
+<!--        <input type="submit" name="data[ok]" value="作成"/>
+        <input type="submit" name="cancel" value="キャセル"/>-->
     </div><!--End #submit-->
 </div><!--End #main_content-->
 

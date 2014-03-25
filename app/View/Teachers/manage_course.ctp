@@ -22,8 +22,131 @@
                 $('#formCreateNewCategory').hide();                     //入力ボックスを非表示
             });
         });
+        //22-3-2014
+        $('.changeDocument').on('click',function(e){
+            e.preventDefault();
+            $(this).hide();
+            var buttonAdd= $(this);
+            var documentId = $(this).attr('document_id');
+            var hiddenDocument = $(this).parents().prev('td');
+            hiddenDocument.show();
+            var file = hiddenDocument.find('input');
+            var file_old_name = file.attr('old_name');
+            var upload = hiddenDocument.find('.submitNewDocument');
+            upload.unbind('click');
+            upload.on('click',function(e){
+                e.preventDefault();
+                var tmpdata = new FormData();
+                $.each(file[0].files, function(i, file) {
+                    tmpdata.append('file-'+i, file);                   
+                });
+                $.ajax({
+                    url: "<?php echo $this->webroot . 'teachers/uploadNewDocument' ?>",
+                    data: tmpdata,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    type: 'POST',
+                    success: function(data){
+                        if(data){
+                            $.ajax({
+                                url: "<?php echo $this->webroot . 'teachers/updateNewDocument' ?>",
+                                data: {
+                                    old_name:file_old_name,
+                                    id : documentId,
+                                    newName : file.val()
+                                },
+                                type: 'GET',
+                                beforeSend: function(){
+                                    upload.parents('tr').find('img').show();
+                                },
+                                success: function(){
+                                    upload.parents('tr').find('a').text(file.val());
+                                    file.val('');
+                                    hiddenDocument.hide();
+                                    buttonAdd.show();
+                                    upload.parents('tr').find('img').hide();
+                                }
+                            });
+                        } else {
+                            alert('File sai dinh dang hoac da bi trung, moi nhap lai');
+                        }
+                    }
+                });
+                
+            });
+        });
         
+        $('.changeTest').on('click',function(e){
+            e.preventDefault();
+            $(this).hide();
+            var buttonAdd= $(this);
+            var testId = $(this).attr('test_id');
+            var hiddenTest = $(this).parents().prev('td');
+            hiddenTest.show();
+            var file = hiddenTest.find('input');
+            var file_old_name = file.attr('old_name');
+            var upload = hiddenTest.find('.submitNewTest');
+            upload.unbind('click');
+            upload.on('click',function(e){
+                e.preventDefault();
+                var tmpdata = new FormData();
+                $.each(file[0].files, function(i, file) {
+                    tmpdata.append('file-'+i, file);                   
+                });
+                $.ajax({
+                    url: "<?php echo $this->webroot . 'teachers/uploadNewTest' ?>",
+                    data: tmpdata,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    type: 'POST',
+                    success: function(data){
+                        if(data){
+                            $.ajax({
+                                url: "<?php echo $this->webroot . 'teachers/updateNewTest' ?>",
+                                data: {
+                                    old_name:file_old_name,
+                                    id : testId,
+                                    newName : file.val()
+                                },
+                                type: 'GET',
+                                beforeSend: function(){
+                                    upload.parents('tr').find('img').show();
+                                },
+                                success: function(){
+                                    upload.parents('tr').find('a').text(file.val());
+                                    file.val('');
+                                    hiddenTest.hide();
+                                    buttonAdd.show();
+                                    upload.parents('tr').find('img').hide();
+                                }
+                            });
+                        } else {
+                            alert('File sai dinh dang hoac da bi trung, moi nhap lai');
+                        }
+                    }
+                });
+                
+            });
+        });
+        
+        $('#addNewDocument').on('click',function(e){
+            e.preventDefault();
+            var tmp = 
+                '<label for="fileDocument">Pdf or Image</label>'+
+                '<input id="fileDocument" type="file" name="data[Lesson][file_link_document][]">';
+            $('#fileArrayDocument').append(tmp);
+        });
+        $('#addNewTest').on('click',function(e){
+            e.preventDefault();
+            var tmp = 
+                '<label for="fileTest">Only TSV</label>'+
+                '<input id="fileTest" type="file" name="data[Lesson][file_link_test][]">';
+            $('#fileArrayTest').append(tmp);
+        });
     });
+    
 </script>
 
 <div id="main_content">
@@ -51,7 +174,7 @@
             <tr>
                 <td>カテゴリー</td>
                 <td>
-                    <ul id="listCategory">
+                    <ul id="listCategory" style="overflow-y: scroll; height:200px;">
                         <?php
                         foreach ($categories as $category) {
                             echo '<label>' . $category['Category']['category_name'] . '</label>';
@@ -68,9 +191,9 @@
 
                     </ul>
                 </td>
-
                 <td>
                     <button id="createNewCategory" type="button">カテゴリー追加</button>
+                </td>
             <tr>
             <div id="formCreateNewCategory">
 
@@ -80,12 +203,6 @@
             </tr>
 
             </td>   
-            </tr>
-            <tr>
-                <td></td>
-                <td style="padding-left: 300px;">
-                    <p>ページ<<<a href="">1</a>,<a href="">2</a>,<a href="">3</a>>></p>
-                </td>
             </tr>
 
             <tr>
@@ -103,7 +220,7 @@
 
                 </td>
             </tr>
-            <tr>
+<!--            <tr>
                 <td>資料１</td>
                 <td><a href="" style="text-decoration: underline;">資料１</a></td>
                 <td><button>変更</button></td>
@@ -112,11 +229,39 @@
                 <td>資料２</td>
                 <td><a href="" style="text-decoration: underline;">資料2</a></td>
                 <td><button>変更</button></td>
+            </tr>-->
+            <?php
+            foreach ($dataLesson as $data) {
+                echo '<tr>';
+                echo '<td>';
+                echo '<a href="#" style="text-decoration: underline;overflow-x:scroll; height:24px; width=50px " >';
+                echo $data['Document']['file_name'];
+                echo '</a>';
+                echo '</td>';
+                echo '<td class="hiddenDocument" style="display:none">';
+                echo '<input type="file" old_name ="' . $data['Document']['file_name'] . '" id="' . $data['Document']['id'] . '"/>';
+                echo '<button class="submitNewDocument">';
+                echo 'Upload';
+                echo '</button>';
+                echo '</td>';
+                echo '<td>';
+                echo '<button class="changeDocument" document_id ="' . $data['Document']['id'] . '">';
+                echo '変更';
+                echo '</button>';
+                echo '</td>';
+                echo '<td>';
+                echo '<img style="display:none"  width="24" height="24" src= "' . $this->webroot . 'img/loading.gif" >';
+                echo '</td>';
+                echo '</tr>';
+            }
+            ?>
+            <tr id="fileArrayDocument">
+                
             </tr>
             <tr>
-                <td><button>資料追加</button></td>
+                <td><button id="addNewDocument">資料追加</button></td>
             </tr>
-            <tr>
+<!--            <tr>
                 <td>テスト１</td>
                 <td><a href="" style="text-decoration: underline;">テスト１　時間：３０分</a></td>
                 <td><button>変更</button></td>
@@ -125,16 +270,43 @@
                 <td>テスト２</td>
                 <td><a href="" style="text-decoration: underline;">テスト2　時間：３０分</a></td>
                 <td><button>変更</button></td>
+            </tr>-->
+            <?php
+            foreach ($dataTest as $data) {
+                echo '<tr>';
+                echo '<td>';
+                echo '<a href="#" style="text-decoration: underline;overflow-x:scroll; height:24px; width=50px " >';
+                echo $data['Test']['file_name'];
+                echo '</a>';
+                echo '</td>';
+                echo '<td class="hiddenTest" style="display:none">';
+                echo '<input type="file" old_name ="' . $data['Test']['file_name'] . '" id="' . $data['Test']['id'] . '"/>';
+                echo '<button class="submitNewTest">';
+                echo 'Upload';
+                echo '</button>';
+                echo '</td>';
+                echo '<td>';
+                echo '<button class="changeTest" document_id ="' . $data['Test']['id'] . '">';
+                echo '変更';
+                echo '</button>';
+                echo '</td>';
+                echo '<td>';
+                echo '<img style="display:none"  width="24" height="24" src= "' . $this->webroot . 'img/loading.gif" >';
+                echo '</td>';
+                echo '</tr>';
+            }
+            ?>
+            <tr id="fileArrayTest">
+                
             </tr>
-
             <tr>
-                <td><button>テスト追加</button></td>
+                <td><button id="addNewTest">テスト追加</button></td>
             </tr>
         </table>
     </div><!--End #change_class-->
     <div id="submit">
-        <input type="submit" name="ok" value="授業削除" style="color: white;background: black;"/>
-        <input type="submit" name="ok" value="作成"/>
+        <input type="submit" name="data[delete]" value="授業削除" style="color: white;background: black;"/>
+        <input type="submit" name="data[ok]" value="作成"/>
         <input type="submit" name="cancel" value="キャセル"/>
     </div><!--End #submit-->
     <br /><br />
