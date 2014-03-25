@@ -23,21 +23,98 @@ class TeachersController extends AppController {
         }
     }
 
-    public function summary($id = null) {
-        $lesson = $this->Lesson->find('first', array('conditions' => array('id' => $id), 'fields' => array('viewers', 'voters')));
-        $snum = $this->Bill->find("count", array('conditions' => array('lesson_id' => $id), 'group' => array('user_id')));
-        $students = $this->Bill->find("all", array('conditions' => array('lesson_id' => $id), 'fields' => array('user_id', 'learn_date')));
-        $this->set('lesson', $lesson);
-        $this->set('snum', $snum);
-        $i = - 1;
-        foreach ($students as $s) {
-            $i++;
-            $info = $this->User->field('user_name', array('id' => $s ['Bill'] ['user_id']));
-            $students [$i] ['Bill'] ['user_name'] = $info;
-        }
-
-        $this->set(compact('students'));
-    }
+//<<<<<<< HEAD
+//    public function summary($id = null) {
+//        $lesson = $this->Lesson->find('first', array('conditions' => array('id' => $id), 'fields' => array('viewers', 'voters')));
+//        $snum = $this->Bill->find("count", array('conditions' => array('lesson_id' => $id), 'group' => array('user_id')));
+//        $students = $this->Bill->find("all", array('conditions' => array('lesson_id' => $id), 'fields' => array('user_id', 'learn_date')));
+//        $this->set('lesson', $lesson);
+//        $this->set('snum', $snum);
+//        $i = - 1;
+//        foreach ($students as $s) {
+//            $i++;
+//            $info = $this->User->field('user_name', array('id' => $s ['Bill'] ['user_id']));
+//            $students [$i] ['Bill'] ['user_name'] = $info;
+//        }
+//
+//        $this->set(compact('students'));
+//    }
+//=======
+public function summary($id = 1) {
+		// get lesson summary info
+		$lesson = $this->Lesson->find ( 'first', array (
+				'conditions' => array (
+						'Lesson.id' => $id 
+				),
+				'fields' => array (
+						'viewers',
+						'voters' 
+				) 
+		) );
+		$snum = $this->Bill->find ( "count", array (
+				'conditions' => array (
+						'lesson_id' => $id 
+				),
+				'group' => array (
+						'user_id' 
+				) 
+		) );
+		
+		// get learned student
+		$this->paginate = array (
+				'limit'=>5,
+				'fields' => array (
+						'user_id',
+						'learn_date' 
+				),
+				'conditions' => array (
+						'lesson_id' => $id 
+				) 
+		);
+		
+		$students = $this->paginate('Bill');
+		$this->set ( 'lesson', $lesson );
+		$this->set ( 'snum', $snum );
+		$i = - 1;
+		foreach ( $students as $s ) {
+			$i ++;
+			$info = $this->User->field ( 'user_name', array (
+					'id' => $s ['Bill'] ['user_id'] 
+			) );
+			$students [$i] ['Bill'] ['user_name'] = $info;
+		}
+		
+		$this->set ( compact ( 'students' ) );
+		// get ban student list
+		$banList = $this->BannedStudent->find ( "all", array (
+				'conditions' => array (
+						'teacher_id' => $this->Auth->user ( 'id' ) 
+				) 
+		) );
+		$this->set ( compact ( 'banList' ) );
+		
+		// block button action
+		if ($this->request->is ( 'post' )) {
+			$ban = $this->request->data;
+			if (! $this->BannedStudent->isBanned ( $ban ['BannedStudent'] ['StudentName'] ) && $stu = $this->User->find ( 'first', array (
+					'conditions' => array (
+							'user_name' => $ban ['BannedStudent'] ['StudentName'],
+							'level' => 3 
+					) 
+			) )) {
+				$this->BannedStudent->create ();
+				$this->BannedStudent->set ( array (
+						'teacher_id' => $this->Auth->user ( 'id' ),
+						'student_id' => $stu ['User'] ['id'],
+						'reason' => $ban ['BannedStudent'] ['Reason'] 
+				) );
+				$this->BannedStudent->save ();
+				$this->Session->setFlash ( 'ブロックが成功した' );
+			} else {
+				$this->Session->setFlash ( "ユーザネームが存在しない" );
+			}
+		}
+	}
 
     public function change_info() {
         $this->set('title_for_layout', '個人情報を変更する');
@@ -80,43 +157,82 @@ class TeachersController extends AppController {
         }
     }
 
-    function changeVerify() {
-        $id = $this->Auth->user('id');
-        $teacher = $this->Verifycode->find('first', array('conditions' => array('user_id' => $id)));
-        $this->set(compact('teacher'));
+//<<<<<<< HEAD
+//    function changeVerify() {
+//        $id = $this->Auth->user('id');
+//        $teacher = $this->Verifycode->find('first', array('conditions' => array('user_id' => $id)));
+//        $this->set(compact('teacher'));
+//
+//        if ($this->request->is('post')) {
+//            $data = $this->request->data;
+//            if (sha1($this->Auth->user('user_name') . $data['User']['verifycode1'] . 'sha1') == $teacher['Verifycode']['verifycode']) {
+//                if ($data['User']['verifycode2'] == $data['User']['verifycode3']) {
+//                    $this->Verifycode->id = $this->Auth->user('id');
+//                    $this->Verifycode->set('verifycode', sha1($this->Auth->user('user_name') . $data['User']['verifycode2'] . 'sha1'));
+//                    $this->Verifycode->save();
+//                    $this->Session->setFlash('change thanh cong');
+//                } else {
+//                    $this->Session->setFlash('ma xac nhan sai');
+//                }
+//            } else {
+//                $this->Session->setFlash('ma hien tai sai');
+//            }
+//        }
+//    }
+//
+//    function changePass() {
+//        if ($this->request->is('post')) {
+//            $data = $this->request->data;
+//            if (sha1($this->Auth->user('user_name') . $data ['User'] ['pass1'] . 'sha1') == $this->Auth->user('password')) {
+//                if ($data ['User'] ['pass2'] == $data ['User'] ['pass3']) {
+//                    $this->User->id = $this->Auth->user('id');
+//                    $this->User->set('password', $data ['User'] ['pass2']);
+//                    $this->User->save();
+//                    $this->Session->setFlash('thanh cong');
+//                } else
+//                    $this->Session->setFlash('pass xac nhan sai');
+//            } else
+//                $this->Session->setFlash('pass hien tai sai');
+//        }
+//    }
+//=======
+function changeVerify() {
+		$id = $this->Auth->user ( 'id' );
+		$teacher = $this->Verifycode->find ( 'first', array (
+				'conditions' => array (
+						'user_id' => $id 
+				) 
+		) );
+		$this->set ( compact ( 'teacher' ) );
+		
+		if ($this->request->is ( 'post' )) {
+			$data = $this->request->data;
+			if (sha1 ( $this->Auth->user ( 'user_name' ) . $data ['User'] ['verifycode1'] . 'sha1' ) == $teacher ['Verifycode'] ['verifycode']) {
+				$this->Verifycode->id = $this->Auth->user ( 'id' );
+				$this->Verifycode->set ( 'verifycode', sha1 ( $this->Auth->user ( 'user_name' ) . $data ['User'] ['verifycode2'] . 'sha1' ) );
+				$this->Verifycode->save ();
+				$this->Session->setFlash ( 'Verifyコード変更が成功した' );
+			} else {
+				$this->Session->setFlash ( '現在Verifyコードが間違う' );
+			}
+		}
+	}
 
-        if ($this->request->is('post')) {
-            $data = $this->request->data;
-            if (sha1($this->Auth->user('user_name') . $data['User']['verifycode1'] . 'sha1') == $teacher['Verifycode']['verifycode']) {
-                if ($data['User']['verifycode2'] == $data['User']['verifycode3']) {
-                    $this->Verifycode->id = $this->Auth->user('id');
-                    $this->Verifycode->set('verifycode', sha1($this->Auth->user('user_name') . $data['User']['verifycode2'] . 'sha1'));
-                    $this->Verifycode->save();
-                    $this->Session->setFlash('change thanh cong');
-                } else {
-                    $this->Session->setFlash('ma xac nhan sai');
-                }
-            } else {
-                $this->Session->setFlash('ma hien tai sai');
-            }
-        }
-    }
-
-    function changePass() {
-        if ($this->request->is('post')) {
-            $data = $this->request->data;
-            if (sha1($this->Auth->user('user_name') . $data ['User'] ['pass1'] . 'sha1') == $this->Auth->user('password')) {
-                if ($data ['User'] ['pass2'] == $data ['User'] ['pass3']) {
-                    $this->User->id = $this->Auth->user('id');
-                    $this->User->set('password', $data ['User'] ['pass2']);
-                    $this->User->save();
-                    $this->Session->setFlash('thanh cong');
-                } else
-                    $this->Session->setFlash('pass xac nhan sai');
-            } else
-                $this->Session->setFlash('pass hien tai sai');
-        }
-    }
+function changePass() {
+		if ($this->request->is ( 'post' )) {
+			$data = $this->request->data;
+			// debug($this->Auth->user('password'));
+			if (sha1 ( $this->Auth->user ( 'user_name' ) . $data ['User'] ['pass1'] . 'sha1' ) == $this->User->field ( 'password', array (
+					'id' => $this->Auth->user ( 'id' ) 
+			) )) {
+				$this->User->id = $this->Auth->user ( 'id' );
+				$this->User->set ( 'password', sha1 ( $this->Auth->user ( 'user_name' ) . $data ['User'] ['pass2'] . 'sha1' ) );
+				$this->User->save ();
+				$this->Session->setFlash ( 'パスワード変更が成功した' );
+			} else
+				$this->Session->setFlash ( '現在パスワードが間違う' );
+		}
+	}
 
     function home() {
         //debug($this->Auth->user());
@@ -156,6 +272,7 @@ class TeachersController extends AppController {
                 'create_date' => date('Y/m/d H:i:s'),
             ));
             //新しいレッスンのテーブルのデータベースを作成する 
+
             $this->Lesson->save();
             $lesson_id = $this->Lesson->id;
             //データベースにデータを保存する
@@ -178,6 +295,17 @@ class TeachersController extends AppController {
                     $err = 'File sai dinh dang hoac da bi trung, moi nhap lai';
                     $this->set(compact('err'));
                 }
+//=======
+//            $this->Document->set(array(
+//                'file_link' => $uploadData['name'],
+//            ));
+//            if ($this->Document->validates()) {
+//                $this->Document->save();
+//                move_uploaded_file($uploadData['tmp_name'], WWW_ROOT . 'files/data' . DS . $uploadData['name']);
+//            } else {
+//                $err = $this->Document->validationErrors['file_link']['0'];
+//                $this->set(compact('err'));
+//>>>>>>> master
             }
             //検証]をチェックし、新しいドキュメントをアップロードする 
 
@@ -324,6 +452,17 @@ class TeachersController extends AppController {
                 $check = TRUE;
                 //upload file moi
                 move_uploaded_file($_FILES['file-0']['tmp_name'], $uploadfile);
+//=======
+//            $this->Test->set(array(
+//                'file_link' => $uploadData1['name'],
+//            ));
+//            if ($this->Test->validates()) {
+//                $this->Test->save();
+//                move_uploaded_file($uploadData1['tmp_name'], WWW_ROOT . 'files/data' . DS . $uploadData1['name']);
+//            } else {
+//                $err1 = $this->Test->validationErrors['file_link']['0'];
+//                $this->set(compact('err1'));
+//>>>>>>> master
             }
             echo $check;
         }
@@ -388,12 +527,29 @@ class TeachersController extends AppController {
     public function getSalary() {
         $temp = $this->ChangeableValue->find('first', array('conditions' => array('id' => 2)));
         $rate = $temp['ChangeableValue']['current_value'];
-        $time = date('Y-m');
+        //$time = date('Y-m');
         if ($this->request->is('post')) {
             $year = $this->data['YearMonth']['year']['year'];
             $month = $this->data['YearMonth']['month']['month'];
-            $time = $year . '-' . $month;
+            if ($year != "" && $month != "") {
+                $time = $year . '-' . $month;
+            } else {
+                $time = date('Y-m');
+            }
+
+            $this->Session->write('time', $time);
         }
+        $time = $this->Session->read('time');
+        //debug($time);
+        if (empty($time)) {
+            $time = date('Y-m');
+            $this->Session->write('time', $time);
+        }
+
+//        debug($time);
+//        debug(date('Y', strtotime($time)));
+//        debug(date('M', strtotime($time)));
+        //$this->set('time', $time);
         $temp2 = $this->Bill->find('all', array(
             'conditions' => array(
                 'Lesson.create_user_id' => $this->Auth->user('id'),
@@ -407,13 +563,15 @@ class TeachersController extends AppController {
                 'Bill.lesson_cost'
             ),
             'group' => 'Bill.lesson_id'
-                ));
+//                ));
+
+        ));
         $sum = 0;
         foreach ($temp2 as $item) {
             $sum += $item[0]['SUM'];
         }
         $this->set('sum', $sum);
-        debug($temp2);
+        //debug($temp2);
         $this->paginate = array(
             'limit' => 10,
             'conditions' => array(
@@ -424,10 +582,33 @@ class TeachersController extends AppController {
             'group' => 'Bill.lesson_id'
         );
         $data = $this->paginate('Bill');
-        $this->set('data', $data);
+        //$this->set('data', $data);
+        $this->Session->write('data', $data);
         $sum = 0;
     }
 
-}
 
-?>
+    function exportBill($time) {
+        $temp = $this->ChangeableValue->find('first', array('conditions' => array('id' => 2)));
+        $rate = $temp['ChangeableValue']['current_value'];
+
+        $temp2 = $this->Bill->find('all', array(
+            'conditions' => array(
+                'Lesson.create_user_id' => $this->Auth->user('id'),
+                'Bill.learn_date LIKE ' => $time . '%'
+            ),
+            'fields' => array(
+                'count(Bill.lesson_id) AS COUNT',
+                'sum(Bill.lesson_cost *' . $rate . '/100) AS SUM',
+                'Lesson.lesson_name',
+                'Bill.learn_date',
+                'Bill.lesson_cost'
+            ),
+            'group' => 'Bill.lesson_id'
+        ));
+        //debug($temp2);die;
+        $this->set('temp2', $temp2);
+        $this->layout = null;
+        $this->autoLayout = false;
+    }
+}

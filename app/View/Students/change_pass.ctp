@@ -16,7 +16,8 @@
                             			'div' => false,
                             			'label' => false,
                             			'type' => 'password',
-                            			'class' => 'must_info'
+                            			'class' => 'must_info',
+										'name'=>'data[User][pass1]'
                             		));
                         		?>
 				</td>
@@ -29,7 +30,8 @@
                             			'div' => false,
                             			'label' => false,
                             			'type' => 'password',
-                            			'class' => 'must_info'
+                            			'class' => 'must_info',
+										'name'=>'data[User][pass2]'
                             		));
                         		?>
 				</td>
@@ -42,7 +44,8 @@
                             			'div' => false,
                             			'label' => false,
                             			'type' => 'password',
-                            			'class' => 'must_info'
+                            			'class' => 'must_info',
+										'name'=>'data[User][pass3]'
                             		));
                         		?>
 				</td>
@@ -54,24 +57,44 @@
 
 <script>
 $(document).ready(function(){
-    $("#UserChangePassForm").validate();
-    $("#UserPass1").rules("add", {
-     required:true,
-     messages: {
-            required: "ユーザネームを入力する"
-     }
-    });
-    $("#UserPass2").rules("add", {
-     required:true,
-     messages: {
-            required: "パスワードを入力する"
-     }
-  	});
-    $("#UserPass3").rules("add", {
-        required:true,
-        messages: {
-               required: "パスワードを入力する"
-        }
-     	});
+  var validator = $("#UserChangePassForm").validate(
+		  {
+			  rules: {
+				  'data[User][pass1]':{
+					  required:true,
+					  minlength:6,
+					  maxlength:15
+				  },
+				  'data[User][pass2]':{
+					  required:true,
+					  minlength:6,
+					  maxlength:15
+				  },
+				  'data[User][pass3]':{
+					  required:true,
+					  minlength:6,
+					  maxlength:15,
+					  equalTo:"#UserPass2"
+				  }
+			  },
+			  messages:{
+				  'data[User][pass1]':{
+					  required:"現在パスワードを入力する",
+					  minlength:"６文字以上、入力する",
+					  maxlength:"１５文字以下、入力する"
+				  },
+				  'data[User][pass2]':{
+					  required:"新しいパスワードを入力する",
+					  minlength:"６文字以上、入力する",
+					  maxlength:"１５文字以下、入力する"
+				  },
+				  'data[User][pass3]':{
+					  required:"新しいパスワードの確認を入力する",
+					  minlength:"６文字以上、入力する",
+					  maxlength:"１５文字以下、入力する",
+					  equalTo:"上のようなパスワードを入力する"
+				  },
+			  }
+		  });
 });
 </script>
