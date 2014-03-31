@@ -6,9 +6,9 @@
     <table class='table table-striped' style='table-layout: fixed'>
         <thead>
             <tr>
-                <th><?php echo $this->Paginator->sort('Lesson.lesson_name', 'Lesson Name'); ?></th>
-                <th>So hoc sinh tham gia</th>
-                <th>So tien thu duoc</th>
+                <th><?php echo $this->Paginator->sort('Lesson.lesson_name', '授業名'); ?></th>
+                <th>学生数</th>
+                <th>手数料</th>
             </tr>
         </thead>
         <tbody>	

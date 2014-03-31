@@ -32,7 +32,8 @@
                             			'div' => false,
                             			'label' => false,
                             			'type' => 'text',
-                            			'class' => 'must_info'
+                            			'class' => 'must_info',
+										'name' => 'data[User][verifycode1]'
                             		));
                         		?>
 				</td>
@@ -45,7 +46,8 @@
                             			'div' => false,
                             			'label' => false,
                             			'type' => 'text',
-                            			'class' => 'must_info'
+                            			'class' => 'must_info',
+										'name' => 'data[User][verifycode2]'
                             		));
                         		?>
 				</td>
@@ -58,7 +60,8 @@
                             			'div' => false,
                             			'label' => false,
                             			'type' => 'text',
-                            			'class' => 'must_info'
+                            			'class' => 'must_info',
+										'name' => 'data[User][verifycode3]'
                             		));
                         		?>
 				</td>
@@ -69,24 +72,44 @@
 </div><!--End #main_content-->
 <script>
 $(document).ready(function(){
-    $("#UserChangeVerifyForm").validate();
-    $("#UserVerifycode1").rules("add", {
-     required:true,
-     messages: {
-            required: "ユーザネームを入力する"
-     }
-    });
-    $("#UserVerifycode2").rules("add", {
-     required:true,
-     messages: {
-            required: "パスワードを入力する"
-     }
-  	});
-    $("#UserVerifycode3").rules("add", {
-        required:true,
-        messages: {
-               required: "パスワードを入力する"
-        }
-     	});
+  var validator = $("#UserChangeVerifyForm").validate(
+		  {
+			  rules: {
+				  'data[User][verifycode1]':{
+					  required:true,
+					  minlength:6,
+					  maxlength:15
+				  },
+				  'data[User][verifycode2]':{
+					  required:true,
+					  minlength:6,
+					  maxlength:15
+				  },
+				  'data[User][verifycode3]':{
+					  required:true,
+					  minlength:6,
+					  maxlength:15,
+					  equalTo:"#UserVerifycode2"
+				  }
+			  },
+			  messages:{
+				  'data[User][verifycode1]':{
+					  required:"現在Verifyコードを入力する",
+					  minlength:"６文字以上、入力する",
+					  maxlength:"１５文字以下、入力する"
+				  },
+				  'data[User][verifycode2]':{
+					  required:"新しいVerifyコードを入力する",
+					  minlength:"６文字以上、入力する",
+					  maxlength:"１５文字以下、入力する"
+				  },
+				  'data[User][verifycode3]':{
+					  required:"新しいVerifyコードの確認を入力する",
+					  minlength:"６文字以上、入力する",
+					  maxlength:"１５文字以下、入力する",
+					  equalTo:"上のようなVerifyコードを入力する"
+				  },
+			  }
+		  });
 });
 </script>

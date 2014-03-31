@@ -6,11 +6,12 @@
     <table class='table table-striped' style='table-layout: fixed'>
         <thead>
             <tr>
-                <th><?php echo $this->Paginator->sort('Test.Lesson.lesson_name', 'Ten bai hoc'); ?></th>
-                <th><?php echo $this->Paginator->sort('Test.file_name', 'Ten bai test'); ?></th>
-                <th><?php echo $this->Paginator->sort('TestHistory.test_date', 'Ngay lam test'); ?></th>
-                <th><?php echo $this->Paginator->sort('TestHistory.score', 'Ket qua'); ?></th>
-                <th><?php echo "Xem chi tiet"; ?></th>
+<!--                <th><?php echo $this->Paginator->sort('Test.Lesson.lesson_name', '授業名'); ?></th>-->
+                <th><?php echo '授業名'; ?></th>
+                <th><?php echo $this->Paginator->sort('Test.file_name', 'テスト名'); ?></th>
+                <th><?php echo $this->Paginator->sort('TestHistory.test_date', 'テスト時間'); ?></th>
+                <th><?php echo $this->Paginator->sort('TestHistory.score', '結果'); ?></th>
+                <th><?php echo "具体的に見る"; ?></th>
             </tr>
         </thead>
         <tbody>	
@@ -22,7 +23,7 @@
                     <td class='content-center'><?php echo $item['Test']['file_name']; ?></td>
                     <td class='content-center'><?php echo $item['TestHistory']['test_date']; ?></td>
                     <td class='content-center'><?php echo $item['TestHistory']['score']; ?></td>
-                    <td class='content-center'><?php echo "link"; ?></td>
+                    <td class='content-center'><?php echo $this->Html->link("見る", array('controller' => 'students','action'=> 'xxx', $item['TestHistory']['id']), array( 'class' => 'button'));?></td>
                 </tr>
                 <?php
             }
@@ -31,17 +32,18 @@
     </table>
 </div>
 <p>
-<?php
-echo $this->Paginator->counter(array(
-    'format' => __('Kết quả tìm được có {:count} bản ghi bắt đầu từ {:start}  〜 {:end} 　（{:page}/{:pages}）')
-));
-?>	
-</p>
-
 <div class="paging btn-group">
-<?php
-echo $this->Paginator->prev(__('Trước'), array('class' => 'btn'), null, array('class' => 'prev disabled btn'));
-echo $this->Paginator->numbers(array('separator' => '', 'class' => 'btn', 'currentClass' => 'disabled'));
-echo $this->Paginator->next(__('Sau'), array('class' => 'btn'), null, array('class' => 'next disabled btn'));
-?>
+    <?php
+    //ページングする
+    echo $this->Paginator->first('最初へ');//di den trang dau tien
+    echo $this->Paginator->prev(__('前へ'), array('class' => 'btn'), null, array('class' => 'prev disabled btn'));
+    echo $this->Paginator->numbers(array('separator' => '', 'class' => 'btn', 'currentClass' => 'disabled'));
+    echo $this->Paginator->next(__('次へ'), array('class' => 'btn'), null, array('class' => 'next disabled btn'));
+    echo $this->Paginator->last('最後へ');//di den trang cuoi cung
+    ?>
 </div>
+<?php
+    echo $this->Paginator->counter(array(
+        'format' => __('結果は {:count} レコード {:start}  〜 {:end} 　（{:page}/{:pages}）')
+    ));
+?>

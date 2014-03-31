@@ -7,7 +7,8 @@ echo $this->Html->script ( array (
 echo $this->Session->flash ();
 echo $this->Form->create('Verifycode',array('type'=>'post',"url" => array (
 				"controller" => "users",
-				"action" => "teacherLogin" 
+				"action" => "teacherLogin" ,
+				$teacher['Verifycode']['user_id']
 		)));
 echo $this->Form->input('question',array('type'=>'text','value'=>base64_decode($teacher['Verifycode']['question']),'disabled'=>true));
 echo $this->Form->input('verifycode',array('type'=>'text'));

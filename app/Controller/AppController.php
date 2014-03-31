@@ -31,7 +31,7 @@ App::uses('Controller', 'Controller');
  * @link		http://book.cakephp.org/2.0/en/controllers.html#the-app-controller
  */
 class AppController extends Controller {
-	var $uses = array ('User','Category');
+	var $uses = array ('User','Category','ChangeableValue');
 	var $helpers = array('Html', 'Form', 'Editor');
     var $components = array( 'RequestHandler',
                                 'Acl',
@@ -44,13 +44,17 @@ class AppController extends Controller {
                                                         'userModel' => 'User',
                                                         "fields" => array(
                                                             'username' => "user_name",
-                                                            'password' => "password")
+                                                            'password' => "password"),
+                                                    	"scope" => array(
+                                                    		"approve_flag"=>1,
+                                                    		"status_flag"=>1 )
                                                             )
                                                             )
                                                             ));
     
     public function beforeFilter(){
         parent::beforeFilter();
+        $this->set("sessiontime",$this->ChangeableValue->field('current_value',array('id'=>1)));
         $this->Auth->allow(array('view_all_lessons', 'lessons_by_category', 'search_result'));
         if (isset($this->params['requested'])) $this->Auth->allow($this->action); 
     }
