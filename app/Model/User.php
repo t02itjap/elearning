@@ -74,4 +74,12 @@ class User extends AppModel {
 			),
 		),
 	);
+	
+	//kiem tra tai khoan hien co online hay ko
+	public function isOnline($uname,$pass){
+		$user = $this->find('first',array('user_name'=>$uname,'password'=>$pass));
+		if(!empty($user)){
+			return $user['User']['online_flag']== 1;
+		}
+	}
 }

@@ -13,7 +13,8 @@ class UsersController extends AppController {
 			'InitialUser',
 			'Verifycode',
 			'InitialVerifycode',
-			'LockedUser' 
+			'LockedUser',
+			'ChangeableValue' 
 	);
 	var $helpers = array (
 			'Html',
@@ -31,72 +32,117 @@ class UsersController extends AppController {
 				'login',
 				'register',
 				'teacherLogin',
-				'teacherName',
-				'ChangeableValue'
+				'teacherName' 
 		) );
 	}
-	public function login() {
+	public function login() {		
 		// logged in user
 		if ($this->Auth->user ())
 			$this->redirect ( array (
 					"controller" => "Lessons",
 					"action" => "view_all_lessons" 
 			) );
-		// xu ly khi nguoi dung an login
+			// xu ly khi nguoi dung an login
 		if ($this->request->is ( 'post' )) {
-			$this->loadModel ( "User" );
+			$data = $this->request->data;
 			// tao chuoi password de so sanh
-			$this->request->data ['User'] ['password'] = $this->request->data ['User'] ['user_name'] . $this->request->data ['User'] ['password'] . 'sha1';
-			// dung username va password
-			if ($this->Auth->login ()) {
-				// debug($this->Auth->user());die();
-				// check active user
-				if ($this->Auth->user ( "approve_flag" ) == 0) {
-					$this->Session->setFlash ( "Tai khoan " . $this->Auth->user ( 'user_name' ) . " chua active.Hay lien he voi quan ly." );
-					$this->redirect ( $this->Auth->logout () );
+			$data ['User'] ['password'] = $data ['User'] ['user_name'] . $data ['User'] ['password'] . 'sha1';
+			
+			$user = $this->User->find ( 'first', array (
+					"conditions" => array (
+							'user_name' => $data ['User'] ['user_name'],
+							'password' => sha1 ( $data ['User'] ['password'] ) 
+					) 
+			) );
+
+			// kiem tra IP dang bi block
+			$guest = $this->LockedUser->find ( 'first', array (
+					'conditions' => array (
+							'ip_address' => $this->request->clientIp () 
+					) 
+			) );
+			if ($guest) {
+				if ($guest ['LockedUser'] ['count'] > 3) {
+					if ($this->request->data ['User'] ['user_type'] == 2) {
+						$this->redirect ( 'teacherName' );
+					} else if ($this->request->data ['User'] ['user_type'] == 3) {
+						if ($guest ['LockedUser'] ['lock_flg'] == 1) {
+							if ($time = (strtotime ( date ( "Y/m/d H:i:s" ) ) - strtotime ( $guest ['LockedUser'] ['lock_start_time'] )) < 60*$this->ChangeableValue->field ( 'current_value', array (
+									'id' => 5 
+							) )) {
+								$this->Session->setFlash ( 'IP が '.$this->ChangeableValue->field("current_value",array('id'=>5)). ' 分間に'. 'ブロックしている' );
+								$this->redirect ( 'login' );
+							} else {
+								$this->LockedUser->delete ( $guest ['LockedUser'] ['id'] );
+								$this->redirect ( 'login' );
+							}
+						} else {
+							$this->LockedUser->id = $guest ['LockedUser'] ['id'];
+							$this->LockedUser->set ( array (
+									'lock_flg' => 1,
+									'lock_start_time' => date ( "Y/m/d H:i:s" ) 
+							) );
+							$this->LockedUser->save ();
+							$this->Session->setFlash ( 'IP が初めにブロックしている' );
+							$this->redirect ( 'login' );
+						}
+					}
 				}
-				$this->Session->setFlash ( "Hello" . $this->Auth->user ( 'user_name' ) );
+			}
+			
+			if (! empty ( $user )) {
+				// kiem tra user active
+				if ($user ['User'] ['approve_flag'] == 0) {
+					$this->Session->setFlash ( __ ( 'アカウントがまだ確認しない' ) );
+					$this->redirect ( 'login' );
+				}
+				//kiem tra chon loai tai khoan
+				if($user['User']['level']!=$data['User']['user_type']){
+					$this->Session->setFlash('アカウントタイプを選択することが間違う');
+					$this->redirect('login');
+				}
+				// kiem tra lastIP
+				if ($user ['User'] ['level'] == 2 && $user ['User'] ['ip_address'] != $this->request->clientIp ()) {
+					$this->Session->setFlash ( __ ( '最後のログインIPと比べて違う' ) );
+					$this->redirect ( array (
+							'controller' => 'Users',
+							'action' => 'teacherLogin',
+							$user ['User'] ['id']
+					) );
+				}
+				// kiem tra admin IP
+				if ($user ['User'] ['level'] == 1 && $user ['User'] ['ip_address'] != $this->request->clientIp ()) {
+					$this->Session->setFlash ( "IPアドレスが間違う" );
+					$this->redirect ( "login" );
+				}
+			}
+			
+			// login
+			$this->request->data['User']['password'] = $data['User']['password'];
+			if ($this->Auth->login ()) {
+				// save current IP
+				$this->User->id = $this->Auth->user ( 'id' );
+				$this->User->set ( array (
+						'ip_address' => $this->request->clientIp () 
+				) );
+				$this->User->save ();
+				$this->Session->setFlash ( "Hello　" . $this->Auth->user ( 'user_name' ) );
+				//xoa lock ip
+				$this->LockedUser->deleteAll ( array (
+						'ip_address' => $this->request->clientIp () 
+				) );
+				// redirect to homepage
 				$this->redirect ( array (
 						"controller" => "Lessons",
 						"action" => "view_all_lessons" 
 				) );
-			} 			
-			// sai username hoac password
+			} 			// sai username hoac password
 			else {
-				$guest = $this->LockedUser->find ( 'first', array (
-						'conditions' => array (
-								'ip_address' => $this->request->clientIp () 
-						) 
-				) );
 				if ($guest) {
-					if ($guest ['LockedUser'] ['count'] == 3) {
-						if ($this->request->data ['User'] ['user_type'] == 2) {
-							$this->redirect ( 'teacherName' );
-						} else if ($this->request->data ['User'] ['user_type'] == 3) {
-							if ($guest ['LockedUser'] ['lock_flg'] == 1) {
-								
-								if ($time = (strtotime(date ( "Y/m/d H:i:s")) - strtotime($guest ['LockedUser'] ['lock_start_time'])) < 1800) {
-									$this->Session->setFlash('IP dang bi block');
-								} else {
-									$this->LockedUser->delete ( $guest ['LockedUser'] ['id'] );
-									$this->redirect ( 'login' );
-								}
-							} else {
-								$this->LockedUser->id = $guest ['LockedUser'] ['id'];
-								$this->LockedUser->set ( array (
-										'lock_flg' => 1,
-										'lock_start_time' => date ( "Y/m/d H:i:s" ) 
-								) );
-								$this->LockedUser->save ();
-								$this->Session->setFlash('IP dang bi block');
-							}
-						}
-					} else {
-						$this->LockedUser->id = $guest ['LockedUser'] ['id'];
-						$this->LockedUser->set ( 'count', $guest ['LockedUser'] ['count'] + 1 );
-						$this->LockedUser->save ();
-						$this->Session->setFlash('Nhap sai pass '.($guest['LockedUser']['count']+1).' lan');
-					}
+					$this->LockedUser->id = $guest ['LockedUser'] ['id'];
+					$this->LockedUser->set ( 'count', $guest ['LockedUser'] ['count'] + 1 );
+					$this->LockedUser->save ();
+					$this->Session->setFlash ( 'パスワードを入力間違うことが　' . ($guest ['LockedUser'] ['count'] + 1) . ' 回だ' );
 				} else {
 					$this->LockedUser->create ();
 					$this->LockedUser->set ( array (
@@ -105,8 +151,62 @@ class UsersController extends AppController {
 							'lock_flg' => 0 
 					) );
 					$this->LockedUser->save ();
-					$this->Session->setFlash('Nhap sai pass 1 lan');
+					$this->Session->setFlash ( 'パスワードを入力間違うことが１回だ' );
 				}
+			}
+		}
+	}
+	public function teacherName() {
+		if ($this->request->is ( "post" )) {
+			if ($guest = $this->User->find ( 'first', array (
+					'conditions' => array (
+							'user_name' => $this->request->data ['User'] ['username'],
+							'level' => 2 
+					) 
+			) )) {
+				$this->redirect ( array (
+						'controller' => 'Users',
+						'action' => 'teacherLogin',
+						$guest ['User'] ['id'] 
+				) );
+			} else
+				$this->Session->setFlash ( 'ユーザネームが間違う' );
+		}
+	}
+	public function teacherLogin($id) {
+		$teacher = $this->Verifycode->find ( 'first', array (
+				'conditions' => array (
+						'user_id' => $id 
+				) 
+		) );
+		$this->set ( compact ( 'teacher' ) );
+		if ($this->request->is ( 'post' )) {
+			$verifycode = $this->request->data;
+			$verifycode = sha1 ( $this->User->field ( 'user_name', array (
+					'id' => $id 
+			) ) . $verifycode ['Verifycode'] ['verifycode'] . 'sha1' );
+			if ($verifycode == $teacher ['Verifycode'] ['verifycode']) {
+				$this->request->data = $this->User->find ( 'all', array (
+						'conditions' => array (
+								'id' => $id 
+						) 
+				) );
+				
+				$this->Auth->login ();
+				//save lastIP
+				$this->User->id = $id;
+				$this->User->set(array('ip_addres'=>$this->request->clientIp()));
+				$this->User->save();
+				
+				$this->redirect ( array (
+						"controller" => "Lessons",
+						"action" => "view_all_lessons" 
+				) );
+				$this->LockedUser->deleteAll ( array (
+						'ip_address' => $this->request->clientIp () 
+				) );
+			} else {
+				$this->Session->setFlash ( 'Verifyコードが間違う' );
 			}
 		}
 	}
@@ -180,48 +280,25 @@ class UsersController extends AppController {
 								'initial_verifycode' => $verifycode 
 						) );
 						$this->InitialVerifycode->save ();
+					} 					// <<<<<<< HEAD
+					  // }
+					  // $this->redirect ( array (
+					  // 'controller' => 'Users',
+					  // 'action' => 'login'
+					  // ) );
+					  // =======
+					else {
+						if (isset ( $this->Verifycode->validationErrors ['question'] ))
+							$questionErr = $this->Verifycode->validationErrors ['question'] ['0'];
+						if (isset ( $this->Verifycode->validationErrors ['verifycode'] ))
+							$answerErr = $this->Verifycode->validationErrors ['verifycode'] ['0'];
+						$this->set ( compact ( 'questionErr', 'answerErr' ) );
 					}
 				}
-				$this->redirect ( array (
-						'controller' => 'Users',
-						'action' => 'login' 
-				) );
+				// >>>>>>> d52c32d939ece3dfe183202eb9b19dbd6cb5b7be
 			}
 		}
 	}
-	
-	public function teacherName(){
-		if($this->request->is("post"))
-			if($guest=$this->User->find('first',array('conditions'=>array('user_name'=>$this->request->data['User']['username'],
-					'level'=>2
-			))))
-			{
-				$this->redirect(array('controller'=>'Users','action'=>'teacherLogin',$guest['User']['id']));	
-			}
-			else 
-				$this->Session->setFlash('Sai username');
-	}
-	
-	public function teacherLogin($id){
-		$teacher = $this->Verifycode->find('first',array('conditions'=>array('user_id'=>$id)));
-		$this->set(compact('teacher'));
-		if($this->request->is('post')){
-			$verifycode = $this->request->data;
-			$verifycode = sha1($this->User->field('user_name',array('id'=>$id)).$verifycode['verifycode'].'sha1');
-			if($verifycode == $teacher['Verifycode']['verifycode']){
-				$this->request->data = $this->User->find('all',array('conditions'=>array('id'=>$id)));
-				$this->Auth->login();
-				$this->redirect ( array (
-						"controller" => "Lessons",
-						"action" => "view_all_lessons"
-				) );
-			}else {
-				$this->Session->setFlash('Sai verifycode');
-			}
-// 			$this->request->data['VerifyCode']['verifycode'] = 
-		}
-	}
-	
 	public function logout() {
 		$this->Session->destroy ();
 		$this->Auth->logout ();
@@ -232,9 +309,10 @@ class UsersController extends AppController {
 		if ($this->Auth->user ())
 			$this->loginRedirect ( $this->Auth->user ( "level" ) );
 	}
+	// <<<<<<< HEAD
 	public function get_user_request($user_id = null) {
 		$this->showLayout ();
-		$user_id = 6;
+		$user_id = 7;
 		$user = $this->User->find ( 'all', array (
 				'fields' => array (
 						'User.id',
@@ -250,7 +328,8 @@ class UsersController extends AppController {
 						'User.bank_account_code' 
 				),
 				'conditions' => array (
-						'User.id' => $user_id 
+						'User.id' => $user_id,
+						'User.approve_flag' => false 
 				) 
 		) );
 		$user = $user [0] ['User'];
@@ -258,6 +337,34 @@ class UsersController extends AppController {
 		// debug($user);die();
 		if ($user ['level'] == 2)
 			$this->set ( 'title_for_layout', '先生アカウント' );
+			// =======
+			// public function get_user_request($user_id = null) {
+			// $this->showLayout ();
+			// $user_id = 6;
+			// $user = $this->User->find ( 'all', array (
+			// 'fields' => array (
+			// 'User.id',
+			// 'User.user_name',
+			// 'User.real_name',
+			// 'User.reg_date',
+			// 'User.level',
+			// 'User.birth_date',
+			// 'User.phone_number',
+			// 'User.email',
+			// 'User.phone_number',
+			// 'User.address',
+			// 'User.bank_account_code'
+			// ),
+			// 'conditions' => array (
+			// 'User.id' => $user_id
+			// )
+			// ) );
+			// $user = $user [0] ['User'];
+			// $this->set ( 'requestUser', $user );
+			// // debug($user);die();
+			// if ($user ['level'] == 2)
+			// $this->set ( 'title_for_layout', '先生アカウント' );
+			// >>>>>>> tiendq
 		else
 			$this->set ( 'title_for_layout', '学生アカウント' );
 	}

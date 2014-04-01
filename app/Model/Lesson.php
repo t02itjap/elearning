@@ -27,10 +27,6 @@ class Lesson extends AppModel{
 		'User'=> array(
 			'className'=>'User',
 			'foreignKey'=>'create_user_id'
-			),
-		'Categorie'=>array(
-			'className'=>'Category',
-			'foreignKey'=>'category_id'
 			)
 		);
 
