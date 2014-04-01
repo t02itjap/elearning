@@ -35,20 +35,20 @@ class AdminsController extends AppController {
                 'bank_account_code' => 'khong xac dinh',
                 'address' => $data['User']['address'],
                 'phone_number' => $data['User']['phone_number'],
-            ));
+                ));
             $this->IpAddress->set(array('ip_address' => $data['User']['ip_address']));
             if ($this->User->validates() && $this->IpAddress->validates()) {
                 $this->User->save();
                 $user = $this->User->find('first', array(
                     'fields' => array('id'),
                     'conditions' => array('User.user_name' => $data['User']['user_name'])
-                ));
+                    ));
                 $this->IpAddress->set(array('admin_id' => $user['User']['id']));
                 $this->IpAddress->save();
                 $this->InitialUser->set(array(
                     'user_id' => $user['User']['id'],
                     'initial_password' => $password,
-                ));
+                    ));
                 $this->InitialUser->save();
                 $this->redirect(array('controller' => 'Admins', 'action' => 'index'));
             }
@@ -65,7 +65,7 @@ class AdminsController extends AppController {
         $studentId = $this->request->query('student_id');
         $student = $this->User->find('first', array(
             'conditions' => array('User.id' => $studentId),
-        ));
+            ));
         $this->set(compact('student'));
         if (isset($this->request->data['submit_data'])) {
             $data = $this->request->data;
@@ -77,11 +77,11 @@ class AdminsController extends AppController {
                     'bank_account_code' => $data['User']['bank_account_code'],
                     'address' => $data['User']['address'],
                     'phone_number' => $data['User']['phone_number'],
-                ));
+                    ));
                 if ($student['User']['email'] != $data['User']['email']) {
                     $this->User->set(array(
                         'email' => $student['User']['email'],
-                    ));
+                        ));
                 }
                 if ($this->User->validates()) {
                     $this->User->id = $student['User']['id'];
@@ -95,7 +95,7 @@ class AdminsController extends AppController {
         if (isset($this->request->data['delete_student'])) {
             $this->User->set(array(
                 'status_flag' => 0,
-            ));
+                ));
             $this->User->id = $student['User']['id'];
             if ($this->User->save()) {
                 $this->Session->setFlash('このアカウントが今ロックです');
@@ -106,11 +106,11 @@ class AdminsController extends AppController {
             $initialStudent = $this->InitialUser->find('first', array(
                 'conditions' => array(
                     'user_id' => $student['User']['id'],
-                ),
-            ));
+                    ),
+                ));
             $this->User->set(array(
                 'password' => $initialStudent['InitialUser']['initial_password'],
-            ));
+                ));
             $this->User->id = $student['User']['id'];
             if ($this->User->save()) {
                 $this->Session->setFlash('このアカウントのパスワードをリセットすることが成功です。');
@@ -125,7 +125,7 @@ class AdminsController extends AppController {
         $teacherId = $this->request->query('teacher_id');
         $teacher = $this->User->find('first', array(
             'conditions' => array('User.id' => $teacherId),
-        ));
+            ));
         $this->set(compact('teacher'));
         if (isset($this->request->data['submit_data'])) {
             $data = $this->request->data;
@@ -137,11 +137,11 @@ class AdminsController extends AppController {
                     'bank_account_code' => $data['User']['bank_account_code'],
                     'address' => $data['User']['address'],
                     'phone_number' => $data['User']['phone_number'],
-                ));
+                    ));
                 if ($teacher['User']['email'] != $data['User']['email']) {
                     $this->User->set(array(
                         'email' => $teacher['User']['email'],
-                    ));
+                        ));
                 }
                 if ($this->User->validates()) {
                     $this->User->id = $teacher['User']['id'];
@@ -155,7 +155,7 @@ class AdminsController extends AppController {
         if (isset($this->request->data['delete_teacher'])) {
             $this->User->set(array(
                 'status_flag' => 0,
-            ));
+                ));
             $this->User->id = $teacher['User']['id'];
             if ($this->User->save()) {
                 $this->Session->setFlash('このアカウントが今ロックです');
@@ -166,11 +166,11 @@ class AdminsController extends AppController {
             $initialTeacher = $this->InitialUser->find('first', array(
                 'conditions' => array(
                     'user_id' => $teacher['User']['id'],
-                ),
-            ));
+                    ),
+                ));
             $this->User->set(array(
                 'password' => $initialTeacher['InitialUser']['initial_password'],
-            ));
+                ));
             $this->User->id = $teacher['User']['id'];
             if ($this->User->save()) {
                 $this->Session->setFlash('このアカウントのパスワードをリセットすることが成功です。');
@@ -181,17 +181,17 @@ class AdminsController extends AppController {
             $initialVerifycode = $this->InitialVerifycode->find('first', array(
                 'conditions' => array(
                     'user_id' => $teacher['User']['id'],
-                ),
-            ));
+                    ),
+                ));
             $verifycode = $this->Verifycode->find('first', array(
                 'conditions' => array(
                     'user_id' => $teacher['User']['id'],
-                ),
-            ));
+                    ),
+                ));
             $this->Verifycode->set(array(
                 'question' => $initialVerifycode['InitialVerifycode']['initial_question'],
                 'verifycode' => $initialVerifycode['InitialVerifycode']['initial_verifycode'],
-            ));
+                ));
             $this->Verifycode->id = $verifycode['Verifycode']['id'];
             if ($this->Verifycode->save()) {
                 $this->Session->setFlash('このアカウントのVerifyコードをリセットすることが成功です。');
@@ -205,10 +205,10 @@ class AdminsController extends AppController {
         $forPass = 'sha1';
         $admin = $this->User->find('first', array(
             'conditions' => array('User.id' => $this->Auth->user('id')),
-        ));
+            ));
         $ipList = $this->IpAddress->find('all', array(
             'conditions' => array('admin_id' => $admin['User']['id']),
-        ));
+            ));
         $this->set(compact('admin', 'ipList'));
         if (isset($this->request->data['submit_data'])) {
             $data = $this->request->data;
@@ -222,11 +222,11 @@ class AdminsController extends AppController {
             $this->User->set(array(
                 'address' => $data['User']['address'],
                 'phone_number' => $data['User']['phone_number'],
-            ));
+                ));
             if ($admin['User']['email'] != $data['User']['email']) {
                 $this->User->set(array(
                     'email' => $data['User']['email'],
-                ));
+                    ));
             }
             if ($this->User->validates()) {
                 $check = 1;
@@ -247,7 +247,7 @@ class AdminsController extends AppController {
                     $this->User->save();
                     $idList = $this->IpAddress->find('all', array(
                         'conditions' => array('admin_id' => $admin['User']['id']),
-                    ));
+                        ));
                     for ($i = 0; $i < count($idList); $i++)
                         $this->IpAddress->delete($idList[$i]['IpAddress']['id']);
                     for ($i = 0; $i < $data['hide']; $i++) {
@@ -257,7 +257,7 @@ class AdminsController extends AppController {
                             $this->IpAddress->set(array(
                                 'admin_id' => $admin['User']['id'],
                                 'ip_address' => $data[$ipAddress],
-                            ));
+                                ));
                             $this->IpAddress->save();
                         }
                     }
@@ -273,10 +273,10 @@ class AdminsController extends AppController {
         $forPass = 'sha1';
         $admin = $this->User->find('first', array(
             'conditions' => array('User.id' => $this->request->query('admin_id')),
-        ));
+            ));
         $ipList = $this->IpAddress->find('all', array(
             'conditions' => array('admin_id' => $admin['User']['id']),
-        ));
+            ));
         $this->set(compact('admin', 'ipList'));
         if (isset($this->request->data['submit_data']) && $admin['User']['online_flag'] == 0) {
             $data = $this->request->data;
@@ -290,11 +290,11 @@ class AdminsController extends AppController {
             $this->User->set(array(
                 'address' => $data['User']['address'],
                 'phone_number' => $data['User']['phone_number'],
-            ));
+                ));
             if ($admin['User']['email'] != $data['User']['email']) {
                 $this->User->set(array(
                     'email' => $data['User']['email'],
-                ));
+                    ));
             }
             if ($this->User->validates()) {
                 $check = 1;
@@ -315,7 +315,7 @@ class AdminsController extends AppController {
                     $this->User->save();
                     $idList = $this->IpAddress->find('all', array(
                         'conditions' => array('admin_id' => $admin['User']['id']),
-                    ));
+                        ));
                     for ($i = 0; $i < count($idList); $i++)
                         $this->IpAddress->delete($idList[$i]['IpAddress']['id']);
                     for ($i = 0; $i < $data['hide']; $i++) {
@@ -325,7 +325,7 @@ class AdminsController extends AppController {
                             $this->IpAddress->set(array(
                                 'admin_id' => $admin['User']['id'],
                                 'ip_address' => $data[$ipAddress],
-                            ));
+                                ));
                             $this->IpAddress->save();
                         }
                     }
@@ -337,7 +337,7 @@ class AdminsController extends AppController {
         if (isset($this->request->data['delete_manager']) && $admin['User']['online_flag'] == 0) {
             $this->User->set(array(
                 'status_flag' => 0,
-            ));
+                ));
             $this->User->id = $admin['User']['id'];
             if ($this->User->save()) {
                 $this->Session->setFlash('このアカウントが今ロックです');
@@ -357,7 +357,6 @@ class AdminsController extends AppController {
         if (isset($this->request->data['result'])) {
             $time = $this->request->data['Admins'];
             $monthyear = $time['year'] . "-" . $time['month'] . "%";
-// debug($monthyear);
         }
 
         $data = $this->Bill->find('all', array(
@@ -365,22 +364,41 @@ class AdminsController extends AppController {
             'group' => 'Bill.lesson_id',
             'conditions' => array(
                 'Bill.learn_date LIKE ' => $monthyear
-            )
-        ));
+                )
+            ));
         for ($i = 0; $i < count($data); $i++) {
             $user = $this->User->find('first', array(
-                'fields' => array('real_name', 'phone_number', 'address', 'bank_account_code'),
+                'fields' => array('user_name','real_name', 'phone_number', 'address', 'bank_account_code'),
                 'conditions' => array(
                     'User.id' => $data[$i]['Bill']['user_id']
-                )
                     )
+                )
             );
             $data[$i]['user'] = $user['User'];
         }
         $this->set('userInfors', $data);
+        $this->Session->write('userInfors',$data);
     }
 
-//Huong Viet
+    public function exportMoney(){
+        $data = $this->Session->read('userInfors');
+        $date = date('Y-m');        
+        //Write file!
+        $file = fopen('C:\xampp\htdocs\elearning\app\webroot\ELS-UBT-'.$date.'.tsv','w');
+        for ($i=0; $i <count($data) ; $i++) { 
+            $line = $data[$i]['user']['user_name'] . "\t" . $data[$i]['user']['real_name'] . "\t" . $data[$i][0]['sum'] . "\t" . $data[$i]['user']['address'] . "\t" . $data[$i]['user']['phone_number'] . "\t" . '54' . $data[$i]['user']['bank_account_code'] . "\n";
+            fwrite($file,$line);
+        }
+        fwrite($file,'END＿＿＿END＿＿＿END' . "\t" . date('Y') . "\t" . date('n'));
+        fclose($file);
+        $this->response->file('webroot\ELS-UBT-'.$date.'.tsv',array(
+            'download'=>true,
+            'name'=>'ELS-UBT-'.$date.'.tsv'
+            ));
+        return $this->reponse;            
+    }
+
+//Huong Viet`    
     public function getAccount() {
 
         if (!empty($this->data) && $this->data['User']['user_name'] != null) {
@@ -395,11 +413,11 @@ class AdminsController extends AppController {
                     'limit' => 10,
                     'field' => array('User.id', 'User.user_name', 'User.real_name'),
                     'conditions' => array('user_name LIKE ' => '%' . $this->data['User']['user_name'] . '%', 'User.approve_flag' => 1
-                ));
+                        ));
                 $data = $this->paginate('User');
                 $this->set('data', $data);
             } else
-                $this->set('message', '結果がない');
+            $this->set('message', '結果がない');
         }
 
         else {
@@ -407,9 +425,9 @@ class AdminsController extends AppController {
                 'limit' => 10,
                 'conditions' => array(
                     'User.approve_flag' => 1
-                ),
+                    ),
                 'field' => array('User.id', 'User.user_name', 'User.real_name')
-            );
+                );
             $data = $this->paginate('User');
             $this->set('data', $data);
         }
@@ -431,17 +449,17 @@ class AdminsController extends AppController {
                 $this->paginate = array(
                     'limit' => 10,
                     'conditions' => array('file_name LIKE ' => '%' . $this->data['Document']['file_name'] . '%'
-                ));
+                        ));
                 $data = $this->paginate('Document');
                 $this->set('data', $data);
             } else
-                $this->set('message', '結果がない');
+            $this->set('message', '結果がない');
         }
 
         else {
             $this->paginate = array(
                 'limit' => 10,
-            );
+                );
             $data = $this->paginate('Document');
 //debug($data); die();
             $this->set('data', $data);
@@ -463,11 +481,11 @@ class AdminsController extends AppController {
                     'limit' => 10,
                     'field' => array('User.id', 'User.user_name', 'User.real_name'),
                     'conditions' => array('user_name LIKE ' => '%' . $this->data['User']['user_name'] . '%', 'User.approve_flag' => 0
-                ));
+                        ));
                 $data = $this->paginate('User');
                 $this->set('data', $data);
             } else
-                $this->set('message', '結果がない');
+            $this->set('message', '結果がない');
         }
 
         else {
@@ -475,9 +493,9 @@ class AdminsController extends AppController {
                 'limit' => 10,
                 'conditions' => array(
                     'User.approve_flag' => 0
-                ),
+                    ),
                 'field' => array('User.id', 'User.user_name', 'User.real_name')
-            );
+                );
             $data = $this->paginate('User');
 //debug($data); die();
             $this->set('data', $data);
@@ -497,17 +515,17 @@ class AdminsController extends AppController {
                 $this->paginate = array(
                     'limit' => 10,
                     'conditions' => array('lesson_name LIKE ' => '%' . $this->data['Lesson']['lesson_name'] . '%'
-                ));
+                        ));
                 $data = $this->paginate('Lesson');
                 $this->set('data', $data);
             } else
-                $this->set('message', '結果がない');
+            $this->set('message', '結果がない');
         }
 
         else {
             $this->paginate = array(
                 'limit' => 10,
-            );
+                );
             $data = $this->paginate('Lesson');
 //debug($data); die();
             $this->set('data', $data);
@@ -529,13 +547,13 @@ class AdminsController extends AppController {
             if ($this->Document->lock_flag == 0) {
                 $this->Document->set(array(
                     'lock_flag' => 1,
-                ));
+                    ));
             }
 
             if ($this->Document->lock_flag == 1) {
                 $this->Document->set(array(
                     'lock_flag' => 0,
-                ));
+                    ));
             }
 
             $this->Document->save();
@@ -584,16 +602,16 @@ class AdminsController extends AppController {
         $temp2 = $this->Bill->find('all', array(
             'conditions' => array(
                 'Bill.learn_date LIKE ' => $time . '%'
-            ),
+                ),
             'fields' => array(
                 'count(Bill.lesson_id) AS COUNT',
                 'sum(Bill.lesson_cost *' . $rate . '/100) AS SUM',
                 'Lesson.lesson_name',
                 'Bill.learn_date',
                 'Bill.lesson_cost'
-            ),
+                ),
             'group' => 'Bill.lesson_id'
-        ));
+            ));
         $sum = 0;
         foreach ($temp2 as $item) {
             $sum += $item[0]['SUM'];
@@ -604,10 +622,10 @@ class AdminsController extends AppController {
             'limit' => 10,
             'conditions' => array(
                 'Bill.learn_date LIKE ' => $time . '%'
-            ),
+                ),
             'fields' => array('count(Bill.lesson_id) AS COUNT', 'sum(Bill.lesson_cost *' . $rate . '/100) AS SUM', 'Lesson.lesson_name', 'Bill.learn_date', 'Bill.lesson_cost'),
             'group' => 'Bill.lesson_id'
-        );
+            );
         $data = $this->paginate('Bill');
         //$this->set('data', $data);
         $this->Session->write('data', $data);
@@ -652,16 +670,16 @@ class AdminsController extends AppController {
         $temp2 = $this->Bill->find('all', array(
             'conditions' => array(
                 'Bill.learn_date LIKE ' => $time . '%'
-            ),
+                ),
             'fields' => array(
                 'count(Bill.lesson_id) AS COUNT',
                 'sum(Bill.lesson_cost *' . $rate . '/100) AS SUM',
                 'Lesson.lesson_name',
                 'Bill.learn_date',
                 'Bill.lesson_cost'
-            ),
+                ),
             'group' => 'Bill.lesson_id'
-        ));
+            ));
         //debug($temp2);die;
         $this->set('temp2', $temp2);
         $this->layout = null;
@@ -678,7 +696,7 @@ class AdminsController extends AppController {
     			$this->User->save();
     			$this->Session->setFlash('パスワード変更が成功した');
     		} else
-    			$this->Session->setFlash ( '現在パスワードが間違う' );
-    	}
-    }
+           $this->Session->setFlash ( '現在パスワードが間違う' );
+       }
+   }
 }

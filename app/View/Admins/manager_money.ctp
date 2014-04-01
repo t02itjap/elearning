@@ -12,12 +12,11 @@ for($i = 1; $i <= 12; $i ++) {
     }
 }
 ?>
-<div id="main_content">
     <h2>課金情報</h2>
     <div id="money_manage">
        <h4 style="font-size: 1.3em;">見たい課金情報の時間を選択します。</h4>
        <?php
-       echo $this->Form->create('Admins',array('type' => 'post', 'controller'=>'admins','action'=>'managerMoney'));
+       echo $this->Form->create('Admins',array('type' => 'post', 'controller'=>'admins','action'=>'managerMoney','id'=>'form-add'));
        echo $this->Form->input ( 'month', array ('label' => false, 'class' => 'input-small', 'options' => $birthMonthOptions, 'id' => 'birth-month', 'div' => false, 'empty' => '-' ) );
        echo $this->Form->input ( 'year', array ('label' => false, 'class' => 'input-small', 'options' => $birthYearOptions, 'id' => 'birth-year', 'div' => false, 'empty' => '-' ) );
        echo $this->Form->button('表示', array ('type' => 'submit', 'name' => 'data[result]','class'=>'btn','id'=>"btn-save"));
@@ -50,9 +49,14 @@ for($i = 1; $i <= 12; $i ++) {
         </tr>
         <?php } ?>
     </table>
+    <?php
+    ?>
 </div><!--End #money_manage-->
 
 <div id="submit">
-    <input type="submit" name="cancel" value="作成"/>
+        <?php
+       echo $this->Form->create('Admins',array('type' => 'post', 'controller'=>'admins','action'=>'exportMoney'));
+       echo $this->Form->button('作成', array('type' => 'submit', 'name' => 'noname','class'=>'btn','id'=>"btn-save"));
+       echo $this->Form->end();
+       ?>
 </div><!--End #submit-->
-</div><!--End #main_content-->

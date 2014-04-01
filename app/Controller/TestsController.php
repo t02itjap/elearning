@@ -8,13 +8,13 @@ class TestsController extends AppController{
 		//debug($test);
 	}
 	public function index(){
+	}
+	public function test(){
 		$test = $this->Test->loadTestFile(null,null);
 		$this->Session->write('testObject',$test);
 		$this->set('testObject',$test);
-		// $test=$this->Test->loadTestFile(null,null);
-		// debug($test); die();
-		//debug($this->Test->loadTestFile(null,null));
 	}
+
 	public function result(){
 		if(isset($this->request->data['result'])){
 
@@ -55,13 +55,6 @@ class TestsController extends AppController{
 			$this->set('totalCorrectAnswers',$totalCorrectAnswers);
 			$this->set('totalQuestions',$leng);
 			$this->set('mark',$totalScore);
-			// this->set('user',)
-
-			// debug('UserAnswers:');debug($userAnswers);
-			// debug('CorrectAnswers:'); debug($ans);
-			// debug($mark);
-			// debug($totalScore);
-			// die();
 		}
 	}
 }
