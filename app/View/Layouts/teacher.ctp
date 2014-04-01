@@ -25,6 +25,15 @@ $cakeDescription = __d ( 'cake_dev', 'CakePHP: the rapid development php framewo
 		<?php echo $title_for_layout; ?>
 	</title>
 	<?php
+//<<<<<<< HEAD
+//		echo $this->Html->meta('icon');
+//		echo $this->Html->css(array('cake.generic','style'));
+//		echo $this->Html->script(array('jquery-1.4.4.min.js','jquery-1.11.0.min'));
+//		echo $this->Html->script(array('script-common.js'));
+//		echo $this->fetch('meta');
+//		echo $this->fetch('css');
+//		echo $this->fetch('script');
+//=======
 	echo $this->Html->meta ( 'icon' );
 	
 	echo $this->Html->css ( array (
@@ -36,7 +45,8 @@ $cakeDescription = __d ( 'cake_dev', 'CakePHP: the rapid development php framewo
 			'jquery-ui-1.8.4.custom.min' 
 	) );
 	echo $this->Html->script ( array (
-			'jquery-1.7.2.min' 
+			'jquery-1.7.2.min',
+                        'jquery-1.11.0.min'
 	) );
 	echo $this->Html->script ( array (
 			'script-common.js' 

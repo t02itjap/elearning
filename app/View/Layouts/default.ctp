@@ -19,35 +19,7 @@ $cakeDescription = __d('cake_dev', 'CakePHP: the rapid development php framework
 ?>
 <!DOCTYPE html>
 <html>
-<<<<<<< HEAD
-    <head>
-        <?php echo $this->Html->charset(); ?>
-        <title>
-            <?php echo $cakeDescription ?>:
-            <?php echo $title_for_layout; ?>
-        </title>
-        <?php
-        echo $this->Html->meta('icon');
-        
-        echo $this->Html->css('cake.generic');
-        echo $this->Html->css('style');
-        echo $this->Html->script('jquery-1.11.0.min');
-        echo $this->fetch('meta');
-        echo $this->fetch('css');
-        echo $this->fetch('script');
-        ?>
-    </head>
-    <body>
-        <div id="container">
-            <div id="header">
-                <img src="" width="500px" height="100px" alt="代表画像"/>
-                <ul>
-                    <li><a href="#">ログアウト</a></li>
-                    <li><a href="#">Q&A </a></li>
-                </ul>
-            </div>
-            <div id="content">
-=======
+
 <head>
 	<?php echo $this->Html->charset(); ?>
 	<title>
@@ -58,7 +30,7 @@ $cakeDescription = __d('cake_dev', 'CakePHP: the rapid development php framework
 		echo $this->Html->meta('icon');
 
 		echo $this->Html->css('cake.generic');
-
+                echo $this->Html->script(array('jquery-1.4.4.min.js'));
 		echo $this->fetch('meta');
 		echo $this->fetch('css');
 		echo $this->fetch('script');	
@@ -70,7 +42,6 @@ $cakeDescription = __d('cake_dev', 'CakePHP: the rapid development php framework
 			<h1><?php echo $this->Html->link($cakeDescription, 'http://cakephp.org'); ?></h1>
 		</div>
 		<div id="content">
->>>>>>> master
 
                 <?php echo $this->Session->flash(); ?>
 
