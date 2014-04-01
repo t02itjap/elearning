@@ -62,8 +62,8 @@ class UsersController extends AppController {
 					) 
 			) );
 			if ($guest) {
-				if ($guest ['LockedUser'] ['count'] == 3) {
-					if ($this->request->data ['User'] ['user_type'] == 2) {
+				if ($guest ['LockedUser'] ['count'] > 3) {
+			if ($this->request->data ['User'] ['user_type'] == 2) {
 						$this->redirect ( 'teacherName' );
 					} else if ($this->request->data ['User'] ['user_type'] == 3) {
 						if ($guest ['LockedUser'] ['lock_flg'] == 1) {

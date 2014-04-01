@@ -3,10 +3,11 @@
 class TeachersController extends AppController {
 
     public $name = "Teachers";
-    var $uses = array('User', 'Test', 'Lesson', 'Bill', 'Category', 'Document', 'TestHistory', 'ChangeableValue', 'Bill');
+    
+    var $uses = array('User', 'Test', 'Lesson', 'Bill', 'Category', 'Document', 'TestHistory', 'ChangeableValue', 'Bill','BannedStudent');
     var $helpers = array('Html', 'Form', 'Editor');
     public $components = array('Paginator', 'RequestHandler');
-
+    
     public function beforeFilter() {
         parent::beforeFilter();
         $this->layout = 'teacher';
@@ -23,23 +24,6 @@ class TeachersController extends AppController {
         }
     }
 
-//<<<<<<< HEAD
-//    public function summary($id = null) {
-//        $lesson = $this->Lesson->find('first', array('conditions' => array('id' => $id), 'fields' => array('viewers', 'voters')));
-//        $snum = $this->Bill->find("count", array('conditions' => array('lesson_id' => $id), 'group' => array('user_id')));
-//        $students = $this->Bill->find("all", array('conditions' => array('lesson_id' => $id), 'fields' => array('user_id', 'learn_date')));
-//        $this->set('lesson', $lesson);
-//        $this->set('snum', $snum);
-//        $i = - 1;
-//        foreach ($students as $s) {
-//            $i++;
-//            $info = $this->User->field('user_name', array('id' => $s ['Bill'] ['user_id']));
-//            $students [$i] ['Bill'] ['user_name'] = $info;
-//        }
-//
-//        $this->set(compact('students'));
-//    }
-//=======
 public function summary($id = 1) {
 		// get lesson summary info
 		$lesson = $this->Lesson->find ( 'first', array (
@@ -86,11 +70,13 @@ public function summary($id = 1) {
 		
 		$this->set ( compact ( 'students' ) );
 		// get ban student list
-		$banList = $this->BannedStudent->find ( "all", array (
-				'conditions' => array (
-						'teacher_id' => $this->Auth->user ( 'id' ) 
-				) 
-		) );
+		$this->paginate = array('limit'=>5,
+				'conditions'=>array(
+						'teacher_id' => $this->Auth->user ( 'id' )
+		));
+		
+		$banList = $this->paginate('BannedStudent');
+
 		$this->set ( compact ( 'banList' ) );
 		
 		// block button action
@@ -157,45 +143,6 @@ public function summary($id = 1) {
         }
     }
 
-//<<<<<<< HEAD
-//    function changeVerify() {
-//        $id = $this->Auth->user('id');
-//        $teacher = $this->Verifycode->find('first', array('conditions' => array('user_id' => $id)));
-//        $this->set(compact('teacher'));
-//
-//        if ($this->request->is('post')) {
-//            $data = $this->request->data;
-//            if (sha1($this->Auth->user('user_name') . $data['User']['verifycode1'] . 'sha1') == $teacher['Verifycode']['verifycode']) {
-//                if ($data['User']['verifycode2'] == $data['User']['verifycode3']) {
-//                    $this->Verifycode->id = $this->Auth->user('id');
-//                    $this->Verifycode->set('verifycode', sha1($this->Auth->user('user_name') . $data['User']['verifycode2'] . 'sha1'));
-//                    $this->Verifycode->save();
-//                    $this->Session->setFlash('change thanh cong');
-//                } else {
-//                    $this->Session->setFlash('ma xac nhan sai');
-//                }
-//            } else {
-//                $this->Session->setFlash('ma hien tai sai');
-//            }
-//        }
-//    }
-//
-//    function changePass() {
-//        if ($this->request->is('post')) {
-//            $data = $this->request->data;
-//            if (sha1($this->Auth->user('user_name') . $data ['User'] ['pass1'] . 'sha1') == $this->Auth->user('password')) {
-//                if ($data ['User'] ['pass2'] == $data ['User'] ['pass3']) {
-//                    $this->User->id = $this->Auth->user('id');
-//                    $this->User->set('password', $data ['User'] ['pass2']);
-//                    $this->User->save();
-//                    $this->Session->setFlash('thanh cong');
-//                } else
-//                    $this->Session->setFlash('pass xac nhan sai');
-//            } else
-//                $this->Session->setFlash('pass hien tai sai');
-//        }
-//    }
-//=======
 function changeVerify() {
 		$id = $this->Auth->user ( 'id' );
 		$teacher = $this->Verifycode->find ( 'first', array (
@@ -563,8 +510,8 @@ function changePass() {
                 'Bill.lesson_cost'
             ),
             'group' => 'Bill.lesson_id'
-//                ));
 
+//                ));
         ));
         $sum = 0;
         foreach ($temp2 as $item) {
@@ -586,8 +533,6 @@ function changePass() {
         $this->Session->write('data', $data);
         $sum = 0;
     }
-
-
     function exportBill($time) {
         $temp = $this->ChangeableValue->find('first', array('conditions' => array('id' => 2)));
         $rate = $temp['ChangeableValue']['current_value'];
