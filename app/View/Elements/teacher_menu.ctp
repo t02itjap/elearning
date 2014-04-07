@@ -18,8 +18,9 @@
 					    	)
 						); ?>
 				</li>
-                <li><a href="#">学生の試験結果</a></li>
-                <li><a href="#">授業を作る</a></li>
+				<li><?php echo $this->Html->link('学生の試験結果',array('controller'=>'Teachers','action'=>'getStudentTestHistoriesList'))?></li>
+                
+                <li><?php echo $this->Html->link('授業を作る',array('controller'=>'Teachers','action'=>'create_course'))?></li>
             </ul>
         
         </div><!--End #main_nav-->

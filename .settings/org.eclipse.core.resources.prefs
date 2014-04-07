@@ -1,48 +1,32 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-#Thu Mar 06 22:40:02 ICT 2014
-=======
->>>>>>> aff918e36ab7593d6fa4e84ef80a718bfae65f56
-=======
-#Mon Mar 10 01:51:25 ICT 2014
->>>>>>> khanhnd
+#Mon Apr 07 15:18:35 ICT 2014
+=\=\=\=\=\=\=
+<<<<<<<=HEAD
+>>>>>>>=khanhnd
 eclipse.preferences.version=1
 encoding//app/Controller/AdminsController.php=UTF-8
 encoding//app/Controller/StudentsController.php=UTF-8
 encoding//app/Controller/TeachersController.php=UTF-8
 encoding//app/Controller/UsersController.php=UTF-8
 encoding//app/Model/User.php=UTF-8
-<<<<<<< HEAD
-encoding//app/View/Admins/register_new_manager.ctp=UTF-8
-encoding//app/View/Elements/acc_info.ctp=UTF-8
-encoding//app/View/Elements/before_login_header.ctp=UTF-8
-encoding//app/View/Elements/before_login_menu.ctp=UTF-8
-encoding//app/View/Elements/category.ctp=UTF-8
-encoding//app/View/Elements/footer.ctp=UTF-8
-encoding//app/View/Elements/header.ctp=UTF-8
-encoding//app/View/Elements/main_menu.ctp=UTF-8
-encoding//app/View/Elements/manager_menu.ctp=UTF-8
-encoding//app/View/Elements/search.ctp=UTF-8
-encoding//app/View/Elements/student_menu.ctp=UTF-8
-encoding//app/View/Elements/teacher_menu.ctp=UTF-8
-encoding//app/View/Students/change_info.ctp=UTF-8
-<<<<<<< HEAD
-encoding//app/View/Teachers/change_info.ctp=UTF-8
-=======
-encoding//app/View/Teachers/change_verify.ctp=UTF-8
-encoding//app/View/Teachers/summary.ctp=UTF-8
->>>>>>> aff918e36ab7593d6fa4e84ef80a718bfae65f56
-=======
 encoding//app/View/Admins/change_info.ctp=UTF-8
 encoding//app/View/Admins/manager_manager.ctp=UTF-8
 encoding//app/View/Admins/register_new_manager.ctp=UTF-8
 encoding//app/View/Admins/student_manager.ctp=UTF-8
 encoding//app/View/Admins/teacher_manager.ctp=UTF-8
 encoding//app/View/Elements/acc_info.ctp=UTF-8
+encoding//app/View/Elements/before_login_header.ctp=UTF-8
+encoding//app/View/Elements/before_login_menu.ctp=UTF-8
 encoding//app/View/Elements/category.ctp=UTF-8
+encoding//app/View/Elements/footer.ctp=UTF-8
+encoding//app/View/Elements/header.ctp=UTF-8
+encoding//app/View/Elements/manager_menu.ctp=UTF-8
+encoding//app/View/Elements/search.ctp=UTF-8
+encoding//app/View/Elements/student_menu.ctp=UTF-8
+encoding//app/View/Elements/teacher_menu.ctp=UTF-8
 encoding//app/View/Students/change_info.ctp=UTF-8
 encoding//app/View/Teachers/change_info.ctp=UTF-8
->>>>>>> khanhnd
+encoding//app/View/Teachers/change_verify.ctp=UTF-8
+encoding//app/View/Teachers/summary.ctp=UTF-8
 encoding//app/View/Users/login.ctp=UTF-8
 encoding//app/View/Users/register.ctp=UTF-8
 encoding/<project>=UTF-8

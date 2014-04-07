@@ -16,8 +16,6 @@ function beforeFilter(){
 			);
 		$this->Auth->allow ( array ('home', 'login', 'register' ) );
 	}
-	public function index(){
-	}
 
 	//ユーザのホームページにある授業リスト
 	public function view_all_lessons(){
@@ -181,11 +179,6 @@ function beforeFilter(){
 //                 // $thiss->set('index', $this->Lesson->getLessons());
 //               //  $this->redirect(array('controller' => 'Lessons', 'action' => 'sc20'));
 	}
-	public function sc20(){
-		//$this->set(array('controller' => 'Lessons', 'action' => 'sc20'));
-	}
-
-
 
 	function title_report($id=null) {
 

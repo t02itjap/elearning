@@ -37,7 +37,6 @@ foreach ($lessons as $lesson):
 					array('class'=>'confirm_report')
 					);
 				echo "</li>";
-						//echo "<li><a href='#' class='see'>タイトル違反</a></li>";
 				break;
 				
 				case '3':

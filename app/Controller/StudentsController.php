@@ -100,29 +100,7 @@ class StudentsController extends AppController {
         debug($this->Auth->user());
     }
 
-    //Thang viet
-    public function getHistories() {
-        //勉強のデータを取る
-        $this->set('title_for_layout', 'Lich su hoc tap');
-        $this->paginate = array(
-            'limit' => 10,
-            'conditions' => array('Bill.user_id' => $this->Auth->user('id')),
-            'field' => array('Lesson.lesson_name', 'LearnHistory.learn_date')
-                //'order' => 'LearnHistory.learn_date'
-            );
-        $data = $this->paginate('Bill');
-        $this->set(compact('data'));
-    }
-
-    public function getFees() {
-//        $time = date('Y-m');
-//        if ($this->request->is('post')) {
-//            $year = $this->data['YearMonth']['year']['year'];
-//            $month = $this->data['YearMonth']['month']['month'];
-//            $time = $year . '-' . $month;
-//        }
-        
-        
+    public function getFees() {        
         if ($this->request->is('post')) {
             $year = $this->data['YearMonth']['year']['year'];
             $month = $this->data['YearMonth']['month']['month'];

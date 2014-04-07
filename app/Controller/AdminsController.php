@@ -401,36 +401,60 @@ class AdminsController extends AppController {
 //Huong Viet`    
     public function getAccount() {
 
-        if (!empty($this->data) && $this->data['User']['user_name'] != null) {
-//neu co thi truy van du lieu dua vao bien $users
-            $count = $this->User->find('count', array('conditions' => array('user_name LIKE ' => '%' . $this->data['User']['user_name'] . '%', 'User.approve_flag' => 1)));
-//goi du lieu tu controller len view
-            if ($count != 0) {
-//$this->set('users',$users);
+    if(!empty($this->data))
+		{
+			if($this->data['User']['user_name']!=null){
+        //neu co thi truy van du lieu dua vao bien $users
+        	//debug($user_name); 
+        	//debug($this->data['User']['user_name']);die();
+            $count=$this->User->find('count',array('conditions'=>array('user_name LIKE '=>'%'.$this->data['User']['user_name'].'%','User.approve_flag'=> 1)));
+            //goi du lieu tu controller len view
+            if($count!=0)
+            	{
+                //$this->set('users',$users);
 
 
                 $this->paginate = array(
                     'limit' => 10,
                     'field' => array('User.id', 'User.user_name', 'User.real_name'),
-                    'conditions' => array('user_name LIKE ' => '%' . $this->data['User']['user_name'] . '%', 'User.approve_flag' => 1
-                        ));
+                    'conditions'=>array('user_name LIKE '=>'%'.$this->data['User']['user_name'].'%','User.approve_flag'=> 1
+                ));
                 $data = $this->paginate('User');
-                $this->set('data', $data);
-            } else
-            $this->set('message', '結果がない');
-        }
+                $this->set('data', $data);            
+            	}
+            else
+                $this->set('message', 'çµ�æžœã�Œã�ªã�„');   
+             
+            
+        	}
+        	if($this->data['User']['level']!=null){
+        		$this->paginate = array(
+                'limit' => 10,
+                'conditions' => array(
+                    'User.approve_flag'=> 1,'User.level'=>$this->data['User']['level']
+                    ),
+            );
+            $data = $this->paginate('User');
 
-        else {
+            $this->set('data', $data);
+        	}
+
+        	
+
+		}
+        
+        else{
             $this->paginate = array(
                 'limit' => 10,
                 'conditions' => array(
-                    'User.approve_flag' => 1
+                    'User.approve_flag'=> 1
                     ),
                 'field' => array('User.id', 'User.user_name', 'User.real_name')
-                );
+
+            );
             $data = $this->paginate('User');
             $this->set('data', $data);
-        }
+            }
     }
 
     public function getDocument() {
@@ -467,39 +491,63 @@ class AdminsController extends AppController {
     }
 
     public function getConfirmAccount() {
-
-
-        if (!empty($this->data) && $this->data['User']['user_name'] != null) {
-//neu co thi truy van du lieu dua vao bien $users
-            $count = $this->User->find('count', array('conditions' => array('user_name LIKE ' => '%' . $this->data['User']['user_name'] . '%', 'User.approve_flag' => 0)));
-//goi du lieu tu controller len view
-            if ($count != 0) {
-//$this->set('users',$users);
+    if(!empty($this->data))
+		{
+			if($this->data['User']['user_name']!=null){
+        //neu co thi truy van du lieu dua vao bien $users
+        	//debug($user_name); 
+        	//debug($this->data['User']['user_name']);die();
+            $count=$this->User->find('count',array('conditions'=>array('user_name LIKE '=>'%'.$this->data['User']['user_name'].'%','User.approve_flag'=> 0)));
+            //goi du lieu tu controller len view
+            if($count!=0)
+            	{
+                //$this->set('users',$users);
 
 
                 $this->paginate = array(
                     'limit' => 10,
                     'field' => array('User.id', 'User.user_name', 'User.real_name'),
-                    'conditions' => array('user_name LIKE ' => '%' . $this->data['User']['user_name'] . '%', 'User.approve_flag' => 0
-                        ));
+                    'conditions'=>array('user_name LIKE '=>'%'.$this->data['User']['user_name'].'%','User.approve_flag'=> 0
+                ));
                 $data = $this->paginate('User');
-                $this->set('data', $data);
-            } else
-            $this->set('message', '結果がない');
-        }
+                $this->set('data', $data);            
+            	}
+            else
+                $this->set('message', 'çµ�æžœã�Œã�ªã�„');   
+             
+            
+        	}
+        	if($this->data['User']['level']!=null){
+        		$this->paginate = array(
+                'limit' => 10,
+                'conditions' => array(
+                    'User.approve_flag'=> 0,'User.level'=>$this->data['User']['level']
+                    ),
+            );
+            $data = $this->paginate('User');
 
-        else {
+            $this->set('data', $data);
+        	}
+
+        	
+
+		}
+        
+        else{
             $this->paginate = array(
                 'limit' => 10,
                 'conditions' => array(
-                    'User.approve_flag' => 0
+                    'User.approve_flag'=> 0
                     ),
                 'field' => array('User.id', 'User.user_name', 'User.real_name')
-                );
+
+            );
             $data = $this->paginate('User');
-//debug($data); die();
             $this->set('data', $data);
-        }
+            }
+
+        
+       
     }
 
     public function getLesson() {

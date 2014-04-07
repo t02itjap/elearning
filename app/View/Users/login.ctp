@@ -13,7 +13,6 @@ echo $this->Form->create ( "User", array (
 		"class" => "form1" 
 ) );
 echo $this->Session->flash ();
-echo $this->Html->tag ( "h1", "ログイン" );
 // $userType[1] = "管理者";
 $userType [2] = "先生";
 $userType [3] = "学生";

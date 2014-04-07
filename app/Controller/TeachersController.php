@@ -4,7 +4,7 @@ class TeachersController extends AppController {
 
     public $name = "Teachers";
     
-    var $uses = array('User', 'Test', 'Lesson', 'Bill', 'Category', 'Document', 'TestHistory', 'ChangeableValue', 'Bill','BannedStudent');
+    var $uses = array('User', 'Test', 'Lesson', 'Bill', 'Category', 'Document', 'TestHistory', 'ChangeableValue', 'Bill','BannedStudent','Verifycode');
     var $helpers = array('Html', 'Form', 'Editor');
     public $components = array('Paginator', 'RequestHandler');
     
@@ -242,17 +242,6 @@ function changePass() {
                     $err = 'File sai dinh dang hoac da bi trung, moi nhap lai';
                     $this->set(compact('err'));
                 }
-//=======
-//            $this->Document->set(array(
-//                'file_link' => $uploadData['name'],
-//            ));
-//            if ($this->Document->validates()) {
-//                $this->Document->save();
-//                move_uploaded_file($uploadData['tmp_name'], WWW_ROOT . 'files/data' . DS . $uploadData['name']);
-//            } else {
-//                $err = $this->Document->validationErrors['file_link']['0'];
-//                $this->set(compact('err'));
-//>>>>>>> master
             }
             //検証]をチェックし、新しいドキュメントをアップロードする 
 

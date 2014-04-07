@@ -149,7 +149,6 @@
     
 </script>
 
-<div id="main_content">
     <div id="change_class">
         <h3>授業管理</h3>
         <?php
@@ -326,5 +325,4 @@
             </form>
         </div><!--End #new_comment-->
     </div><!--End #comment-->
-</div><!--End #main_content-->
 <?php $this->Form->end(); ?>

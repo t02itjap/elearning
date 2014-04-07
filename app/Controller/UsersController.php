@@ -37,6 +37,7 @@ class UsersController extends AppController {
 	}
 	public function login() {		
 		// logged in user
+		$this->set('title_for_layout', 'ログイン');
 		if ($this->Auth->user ())
 			$this->redirect ( array (
 					"controller" => "Lessons",
@@ -47,23 +48,24 @@ class UsersController extends AppController {
 			$data = $this->request->data;
 			// tao chuoi password de so sanh
 			$data ['User'] ['password'] = $data ['User'] ['user_name'] . $data ['User'] ['password'] . 'sha1';
-			
+			$password = sha1( $data ['User'] ['password']);
 			$user = $this->User->find ( 'first', array (
-					"conditions" => array (
+					'conditions' => array (
 							'user_name' => $data ['User'] ['user_name'],
-							'password' => sha1 ( $data ['User'] ['password'] ) 
+							'password' => $password,
 					) 
 			) );
-
 			// kiem tra IP dang bi block
 			$guest = $this->LockedUser->find ( 'first', array (
 					'conditions' => array (
-							'ip_address' => $this->request->clientIp () 
+							'ip_address' => $this->request->clientIp (),
 					) 
 			) );
-			if ($guest) {
+			if (isset($guest)) {
 				if ($guest ['LockedUser'] ['count'] > 3) {
-			if ($this->request->data ['User'] ['user_type'] == 2) {
+					if ($this->request->data ['User'] ['user_type'] == 2) {
+						echo "check";
+						die();
 						$this->redirect ( 'teacherName' );
 					} else if ($this->request->data ['User'] ['user_type'] == 3) {
 						if ($guest ['LockedUser'] ['lock_flg'] == 1) {
@@ -97,21 +99,18 @@ class UsersController extends AppController {
 					$this->redirect ( 'login' );
 				}
 				//kiem tra chon loai tai khoan
-				if($user['User']['level']!=$data['User']['user_type']){
+				if($user['User']['level']!=$data['User']['user_type'] && $user['User']['level'] != 1){
 					$this->Session->setFlash('アカウントタイプを選択することが間違う');
 					$this->redirect('login');
 				}
 				// kiem tra lastIP
-				if ($user ['User'] ['level'] == 2 && $user ['User'] ['ip_address'] != $this->request->clientIp ()) {
+				if ($user['User']['level'] == 2 && $user['User']['ip_address'] != NULL && $user['User']['ip_address'] != $this->request->clientIp()) {
 					$this->Session->setFlash ( __ ( '最後のログインIPと比べて違う' ) );
-					$this->redirect ( array (
-							'controller' => 'Users',
-							'action' => 'teacherLogin',
-							$user ['User'] ['id']
+					$this->redirect ( array ('controller' => 'Users','action' => 'teacherLogin',$user ['User'] ['id']
 					) );
 				}
 				// kiem tra admin IP
-				if ($user ['User'] ['level'] == 1 && $user ['User'] ['ip_address'] != $this->request->clientIp ()) {
+				if ($user ['User'] ['level'] == 1 && $user ['User']['ip_address'] != $this->request->clientIp ()) {
 					$this->Session->setFlash ( "IPアドレスが間違う" );
 					$this->redirect ( "login" );
 				}
@@ -195,7 +194,7 @@ class UsersController extends AppController {
 				$this->Auth->login ();
 				//save lastIP
 				$this->User->id = $id;
-				$this->User->set(array('ip_addres'=>$this->request->clientIp()));
+				$this->User->set(array('ip_address'=>$this->request->clientIp()));
 				$this->User->save();
 				
 				$this->redirect ( array (
