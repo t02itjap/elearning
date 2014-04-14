@@ -54,7 +54,6 @@
 </script>
 
 
-<div id="main_content">
     <div id="create_class">
         <h3><span>＊</span>は必ずインプットしてください。</h3>
         <?php
@@ -185,6 +184,5 @@
 <!--        <input type="submit" name="data[ok]" value="作成"/>
         <input type="submit" name="cancel" value="キャセル"/>-->
     </div><!--End #submit-->
-</div><!--End #main_content-->
 
 <?php $this->Form->end(); ?>

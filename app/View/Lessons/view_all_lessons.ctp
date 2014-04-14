@@ -51,7 +51,7 @@ foreach ($lessons as $lesson):
 					array('class'=>'confirm_delete')
 					);
 				echo "</li>";
-				echo "<li><a href='#' class='see'>見る</a></li>";
+				echo "<li><a href='".$this->webroot."students/view_lesson_to_learn/".$lesson['Lesson']['id']."' class='see'>見る</a></li>";
 				break;
 
 				default:
