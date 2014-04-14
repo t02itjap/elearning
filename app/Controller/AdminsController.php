@@ -747,4 +747,8 @@ class AdminsController extends AppController {
            $this->Session->setFlash ( '現在パスワードが間違う' );
        }
    }
+	public function manager_home() {
+		$this->layout = 'manager';
+		$this->set ( 'title_for_layout', 'システムの管理ツール' );
+	}
 }

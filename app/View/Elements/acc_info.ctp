@@ -2,8 +2,12 @@
 $user = $this->requestAction('app/acc_info');
 ?>
             <div id="acc_info">
-                <img src="" alt="アバター"/>
-                <p><?php echo $user['User']['user_name']?></p><br />
+                <?php
+                	if($user['User']['level'] == 1) echo $this->Html->image('admin.jpg');
+                	else if($user['User']['level'] == 2) echo $this->Html->image('teacher.jpg');
+                	else echo $this->Html->image('student.jpg', array('id' => 'img'));
+                ?>
+                <p style = "font-size:20px"><?php echo $user['User']['user_name']?></p><br />
                 <p>名前: <?php echo $user['User']['real_name']; ?></p><br />
                 <ul>
                     <?php 
