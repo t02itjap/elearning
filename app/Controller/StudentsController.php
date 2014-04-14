@@ -172,7 +172,8 @@ class StudentsController extends AppController {
         die;
     }
 
-    public function getFees() {
+    public function getFees() {  
+    	$this->set('title_for_layout', '課金情報');      
         if ($this->request->is('post')) {
             $year = $this->data['YearMonth']['year']['year'];
             $month = $this->data['YearMonth']['month']['month'];

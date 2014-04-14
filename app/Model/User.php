@@ -37,7 +37,7 @@ class User extends AppModel {
 				'message' => 'hay nhap mail',
 			),
 			'check validation' => array(
-				'rule' => array('email',true),
+				'rule' => array('email'),
 				'message' => 'mail cua ban khong hop le',
 			),
 			'check exist' => array(
@@ -61,6 +61,14 @@ class User extends AppModel {
 			'notempty' => array(
 				'rule' => array('notempty'),
 				'message' => 'hay nhap so dien thoai',
+			),
+			'min' => array(
+				'rule' => array('minLength', 6),
+				'message' => 'so dien thoai phai co it nhat 6 so ',
+			),
+			'max' => array(
+				'rule' => array('maxLength', 15),
+				'message' => 'so dien thoai khong duoc qua 15 so',
 			),
 		),
 		'birth_date' => array(

@@ -38,11 +38,13 @@ class UsersController extends AppController {
 	public function login() {		
 		// logged in user
 		$this->set('title_for_layout', 'ログイン');
-		if ($this->Auth->user ())
-			$this->redirect ( array (
+		if ($this->Auth->user ()){
+			if($this->Auth->user('level') != 1) $this->redirect ( array (
 					"controller" => "Lessons",
 					"action" => "view_all_lessons" 
 			) );
+			else $this->redirect ( array ("controller" => "Admins","action" => "manager_home" ) );
+		}
 			// xu ly khi nguoi dung an login
 		if ($this->request->is ( 'post' )) {
 			$data = $this->request->data;
@@ -110,10 +112,10 @@ class UsersController extends AppController {
 					) );
 				}
 				// kiem tra admin IP
-				if ($user ['User'] ['level'] == 1 && $user ['User']['ip_address'] != $this->request->clientIp ()) {
-					$this->Session->setFlash ( "IPアドレスが間違う" );
-					$this->redirect ( "login" );
-				}
+				//if ($user ['User'] ['level'] == 1 && $user ['User']['ip_address'] != $this->request->clientIp ()) {
+					//$this->Session->setFlash ( "IPアドレスが間違う" );
+					//$this->redirect ( "login" );
+				//}
 			}
 			
 			// login
@@ -251,6 +253,7 @@ class UsersController extends AppController {
 							'initial_password' => $password 
 					) );
 					$this->InitialUser->save ();
+					$this->redirect ( array ('controller' => 'Users','action' => 'login') );
 				} else {
 					if ($this->Verifycode->validates ()) {
 						$this->User->save ();
@@ -279,13 +282,8 @@ class UsersController extends AppController {
 								'initial_verifycode' => $verifycode 
 						) );
 						$this->InitialVerifycode->save ();
-					} 					// <<<<<<< HEAD
-					  // }
-					  // $this->redirect ( array (
-					  // 'controller' => 'Users',
-					  // 'action' => 'login'
-					  // ) );
-					  // =======
+						$this->redirect ( array ('controller' => 'Users','action' => 'login') );
+					}
 					else {
 						if (isset ( $this->Verifycode->validationErrors ['question'] ))
 							$questionErr = $this->Verifycode->validationErrors ['question'] ['0'];
@@ -294,7 +292,6 @@ class UsersController extends AppController {
 						$this->set ( compact ( 'questionErr', 'answerErr' ) );
 					}
 				}
-				// >>>>>>> d52c32d939ece3dfe183202eb9b19dbd6cb5b7be
 			}
 		}
 	}
@@ -308,7 +305,6 @@ class UsersController extends AppController {
 		if ($this->Auth->user ())
 			$this->loginRedirect ( $this->Auth->user ( "level" ) );
 	}
-	// <<<<<<< HEAD
 	public function get_user_request($user_id = null) {
 		$this->showLayout ();
 		$user_id = 7;
@@ -459,10 +455,6 @@ class UsersController extends AppController {
 				}
 			}
 		}
-	}
-	public function manager_home() {
-		$this->layout = 'manager';
-		$this->set ( 'title_for_layout', 'システムの管理ツール' );
 	}
 	protected function showLayout() {
 		if ($this->Auth->loggedIn ()) {
