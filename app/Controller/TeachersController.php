@@ -4,7 +4,7 @@ class TeachersController extends AppController {
 
     public $name = "Teachers";
     
-    var $uses = array('User', 'Test', 'Lesson', 'Bill', 'Category', 'Document', 'TestHistory', 'ChangeableValue', 'Bill','BannedStudent','Verifycode');
+    var $uses = array('User', 'Test', 'Lesson', 'Bill', 'Category', 'Document', 'TestHistory', 'ChangeableValue', 'Bill','BannedStudent','Verifycode','LessonOfCategory');
     var $helpers = array('Html', 'Form', 'Editor');
     public $components = array('Paginator', 'RequestHandler');
     
@@ -212,6 +212,7 @@ function changePass() {
         if (isset($this->request->data['ok'])) {                //教師のユーザーのクリックを提出した場合
             //debug($this->request->data);                        //データがプログラマに表示さ
             $data = $this->request->data;
+            $this->LessonOfCategory->create();
             $this->Lesson->set(array(
                 'lesson_name' => $data['Lesson']['Name'],
                 'description' => $data['Lesson']['Description'],
