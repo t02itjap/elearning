@@ -1,12 +1,15 @@
 <?php
 //debug($lessons);die();
+
 echo $this->Html->css('style'); 
 echo "<div id='arr_type'>";
+//授業を並べる
 echo "並ぶタイプ：";
 echo $this->Paginator->sort('lesson_name', '授業名');
 echo "&nbsp;-&nbsp;";
 echo $this->Paginator->sort('create_date', '作った日');
 echo "</div>";
+//授業情報を表す
 foreach ($lessons as $lesson): 
 ?>
 	<div class='class'>
@@ -25,16 +28,17 @@ foreach ($lessons as $lesson):
 
 <div class="paging btn-group">
     <?php
-    echo $this->Paginator->first('最初へ');//di den trang dau tien
+    //ページングする
+    echo $this->Paginator->first('最初へ');
     echo $this->Paginator->prev(__('前へ'), array('class' => 'btn'), null, array('class' => 'prev disabled btn'));
     echo $this->Paginator->numbers(array('separator' => '', 'class' => 'btn', 'currentClass' => 'disabled'));
     echo $this->Paginator->next(__('次へ'), array('class' => 'btn'), null, array('class' => 'next disabled btn'));
-    echo $this->Paginator->last('最後へ');//di den trang cuoi cung
+    echo $this->Paginator->last('最後へ');
     ?>
 </div>
 <?php
     echo $this->Paginator->counter(array(
-        'format' => __('Kết quả tìm được có {:count} bản ghi bắt đầu từ {:start}  〜 {:end} 　（{:page}/{:pages}）')
+        'format' => __('結果は {:count} レコード {:start}  〜 {:end} 　（{:page}/{:pages}）')
     ));
 ?>
 	

@@ -19,6 +19,8 @@ class UsersController extends AppController {
 	}
 	public function login() {
 		//logged in user
+		debug($_SERVER);
+		debug($this->request->clientIp());die();
 		if ($this->Auth->user ())
 			$this->loginRedirect($this->Auth->user("level"));
 		//
@@ -166,9 +168,10 @@ class UsersController extends AppController {
 			$this->loginRedirect($this->Auth->user("level"));       
 	}
 
+	//確認待っているユーザアカウント情報を取り出す
 	public function get_user_request($user_id=null){
 		$this->showLayout();
-		$user_id=7;
+		$user_id=30;
 		$user=$this->User->find('all', array(
 			'fields'=>array('User.id', 'User.user_name', 'User.real_name', 'User.reg_date', 'User.level', 'User.birth_date', 
 				'User.phone_number', 'User.email', 'User.phone_number', 'User.address', 'User.bank_account_code'),
@@ -183,6 +186,7 @@ class UsersController extends AppController {
 			$this->set('title_for_layout', '学生アカウント');
 	}
 
+	//ユーザからの登録を確認する
 	public function accept_user($id=null) {
  		//debug($id);die();
 		$this->showLayout();
@@ -207,6 +211,7 @@ class UsersController extends AppController {
 		$this->redirect(array('controller'=>'lessons', 'action'=>'manage_lessons'));
 	}
 
+	//ユーザからの登録を拒否する
 	public function remove_user($id=null) {
  		//debug($id);die();
 		$this->showLayout();

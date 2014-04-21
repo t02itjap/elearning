@@ -51,7 +51,7 @@ class AppController extends Controller {
     
     public function beforeFilter(){
         parent::beforeFilter();
-        $this->Auth->allow(array('view_all_lessons', 'lessons_by_category', 'search_result'));
+        $this->Auth->allow(array('view_all_lessons', 'lessons_by_category', 'search_result1'));
         if (isset($this->params['requested'])) $this->Auth->allow($this->action); 
     }
     public function category(){

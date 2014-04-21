@@ -4,6 +4,8 @@ class Lesson extends AppModel{
 	var $name = 'Lesson';
 	var $primaryKey = 'id';
 	//Het phan Thang viet
+
+	//テストテーブルとビルにリンクを設定する 1-n 関係
 	public $hasMany = array(
 		'Test' => array(
 			'className' => 'Test'
@@ -14,15 +16,8 @@ class Lesson extends AppModel{
 			'foreignKey' => 'lesson_id'
 			)
 		);
-/*
-	public $hasMany = array(
-		'User' => array(
-			'className' => 'User'
-			// >>>>>>> 2be1f5077ad250cac8ce44b372e03e0dc8dbebab
-			)
-            //Het phan Thang viet
-		);*/
 
+	//ユーザにリンクを設定する n-1関係 
 	public $belongsTo = array(
 		'User'=> array(
 			'className'=>'User',
@@ -30,6 +25,7 @@ class Lesson extends AppModel{
 			)
 		);
 
+	//test function in Model
 	public function getLessons(){
 		$condition=array(
 			'joins'=>array(
@@ -47,6 +43,8 @@ class Lesson extends AppModel{
 			);
 		return $this->find('all', $condition);
 	}
+
+	
 	public function getComments($lesson_id){
 		$condition = array(
 			'joins'=>array(

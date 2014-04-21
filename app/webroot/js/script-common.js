@@ -2,11 +2,14 @@
 // on dom ready
 $(document).ready(function(){
 // class exists
+
+
 if($('.confirm_report').length) {
         // add click handler
+     //サーバにタイトル違反をレポートする
 	$('.confirm_report').click(function(){
 		// ask for confirmation
-		var result = confirm('Are you sure you want to report this?');
+		var result = confirm('本当にタイトル違反を報告したい？?');
 
 		// do ajax request
 		if(result) {
@@ -22,10 +25,10 @@ if($('.confirm_report').length) {
 				dataType: "json",
 				success:function(response){
 					if(response.success == false) {
-						alert('Report successed!');
+						alert('報告成功！!');
 					}
 					else
-						alert('Have reported before!');
+						alert('前にもう報告した！!');
 					//alert(response.lesson_id);
 				}
 			});
@@ -36,11 +39,12 @@ if($('.confirm_report').length) {
 	});
 };
 
+//サーバに授業削除をrequestする
 if($('.confirm_delete').length) {
         // add click handler
 	$('.confirm_delete').click(function(){
 		// ask for confirmation
-		var result = confirm('Are you sure you want to delete this?');
+		var result = confirm('本当にこの授業を削除したい？?');
 
 		// do ajax request
 		if(result) {
@@ -56,10 +60,10 @@ if($('.confirm_delete').length) {
 				dataType: "json",
 				success:function(response){
 					if(response.success == false) {
-						alert('Delete successed!');
+						alert('削除成功!');
 					}
 					else
-						alert('Delete failed! Try agian!');
+						alert('削除できなかった！もう一度やってみてくだい！');
 					//alert(response.lesson_id);
 					var div='#'+response.lesson_id;
 					$(div).remove();
@@ -72,11 +76,12 @@ if($('.confirm_delete').length) {
 	});
 };
 
+//サーバにユーザ確認をrequestする
 if($('.confirm_accept').length) {
         // add click handler
 	$('.confirm_accept').click(function(){
 		// ask for confirmation
-		var result = confirm('Are you sure you want to accept this?');
+		var result = confirm('確認したい？');
 
 		// do ajax request
 		if(result) {
@@ -92,10 +97,10 @@ if($('.confirm_accept').length) {
 				dataType: "json",
 				success:function(response){
 					if(response.success == false) {
-						alert('Accept successed!');
+						alert('確認成功！!');
 					}
 					else
-						alert('Accept failed! Try agian!');
+						alert('確認失敗！もう一度やってみてください！');
 					window.location = 'http://localhost/elearning/lessons/manage_lessons';
 				}
 			});
@@ -106,11 +111,12 @@ if($('.confirm_accept').length) {
 	});
 };
 
+//サーバにユーザ拒否をrequestする
 if($('.confirm_remove').length) {
         // add click handler
 	$('.confirm_remove').click(function(){
 		// ask for confirmation
-		var result = confirm('Are you sure you want to remove this?');
+		var result = confirm('拒否したい？');
 
 		// do ajax request
 		if(result) {
@@ -126,10 +132,10 @@ if($('.confirm_remove').length) {
 				dataType: "json",
 				success:function(response){
 					if(response.success == false) {
-						alert('Remove successed!');
+						alert('登録情報を削除した！!');
 					}
 					else
-						alert('Remove failed! Try agian!');
+						alert('削除失敗！もう一度やってみてください！');
 					window.location = 'http://localhost/elearning/lessons/manage_lessons';
 				}
 			});
