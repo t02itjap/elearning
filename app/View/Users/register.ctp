@@ -1,6 +1,6 @@
 <?php
 echo $this->Html->script ( array (
-		'jquery.validate' 
+		'jquery.validate', 'jquery-1.4.4.min.js'
 ) );
 ?>
 
@@ -121,13 +121,16 @@ echo $this->Form->create ( 'User', array ('type' => 'post', 'novalidate' => 'tru
 			</tr>
 			<?php if(isset($answerErr)) echo '<tr><td></td><td><font color = "#8A0808">'.$answerErr.'</font></td></tr>';?>
 			<td id="bank"><span>*</span>銀行口座</td>
-			<td id="regedit" hidden='true'><span>*</span>クレジットカード番号</td>
 			<td>
-				<?php
-				echo $this->Form->input ( 'bank_code', array ('div' => false, 'label' => false, 'type' => 'text', 'class' => 'must_info', 'id' => 'bank_code' ) );
-				?>
+				<?php echo $this->Form->input('bankCodePart1', array('div' => false, 'label' => false, 'type' => 'number','maxlength' => '4' , 'class' => 'must_info only-number', 'id' => 'bankCodePart1' ))?>
 			</td>
-		</tr>
+			<td id="regedit" hidden='true'><span>*</span>クレジットカード番号</td><!--
+<!--			<td>-->
+				//<?php
+				//echo $this->Form->input ( 'bank_code', array ('div' => false, 'label' => false, 'type' => 'text', 'class' => 'must_info', 'id' => 'bank_code' ) );
+				//?>
+<!--			</td>-->
+		--></tr>
 		<td></td>
 		<tr>
 			<td><span>*</span>アドレス</td>
