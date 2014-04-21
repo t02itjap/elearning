@@ -163,7 +163,7 @@ border-radius:5px;
 #search {
     border: 1px solid green;
     border-radius: 5px;
-    height: 100px;
+    height: 150px;
 }
 
 #search input[name="search"]{
@@ -902,12 +902,13 @@ color: black;
 font-size: 12px;
 }
 .btn{
-    float: right;
+    float: left;
     width: 50px;
 }
 /*end Phi*/
 /*khanh*/
-.link-button {
+.link-button, button {
+	margin-top: 5px;
 	-moz-box-shadow:inset 1px 1px 0px -50px #c1ed9c;
 	-webkit-box-shadow:inset 1px 1px 0px -50px #c1ed9c;
 	box-shadow:inset 1px 1px 0px -50px #c1ed9c;
@@ -935,20 +936,67 @@ font-size: 12px;
 	font-size:10px;
 	font-weight:bold;
 	font-style:normal;
-	height:22px;
-	line-height:22px;
 	text-decoration:none;
 	text-align:center;
 	text-shadow:1px 1px 0px #689324;
 	padding: 2px;
 }
-.link-button:hover {
+.link-button, button:hover {
 	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #8cb82b), color-stop(1, #9dce2c) );
 	background:-moz-linear-gradient( center top, #8cb82b 5%, #9dce2c 100% );
 	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#8cb82b', endColorstr='#9dce2c');
 	background-color:#8cb82b;
-}.link-button:active {
+}.link-button, button:active {
 	position:relative;
 	top:1px;
 }
+#keyword {
+	margin-top: 10px;
+	margin-right: 2px;
+}
+.error-message {
+	color: red;
+}
+/** Tables **/
+table {
+	border-right:0;
+	clear: both;
+	color: #333;
+	margin-bottom: 10px;
+	width: 100%;
+}
+th {
+	border:0;
+	border-bottom:2px solid #555;
+	text-align: left;
+	padding:4px;
+}
+th a {
+	display: block;
+	padding: 2px 4px;
+	text-decoration: none;
+}
+th a.asc:after {
+	content: ' ⇣';
+}
+th a.desc:after {
+	content: ' ⇡';
+}
+table tr td {
+	padding: 6px;
+	text-align: left;
+	vertical-align: top;
+	border-bottom:1px solid #ddd;
+}
+table tr:nth-child(even) {
+}
+td.actions {
+	text-align: center;
+	white-space: nowrap;
+}
+table td.actions a {
+	margin: 0px 6px;
+	padding:2px 5px;
+}
+
 /*end khanh*/

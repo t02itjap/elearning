@@ -4,7 +4,6 @@
 
 
 <div id="main_content">
-	<h2>Verifyコード変更する。</h2>
 	<?php echo $this->Session->flash();?>
                 <?php echo $this->Form->create('User',array('type'=>'post'));?>
                     <div id="change_info">

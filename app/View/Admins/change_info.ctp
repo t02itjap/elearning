@@ -28,7 +28,7 @@
                                     echo $this->Form->input ( 'phone_number', array (
                             			'div' => false,
                             			'label' => false,
-                            			'type' => 'text',
+                            			'type' => 'number',
                             			'class' => 'must_info',
                             			'id' => 'phone_number',
                             			'value' => $admin['User']['phone_number']

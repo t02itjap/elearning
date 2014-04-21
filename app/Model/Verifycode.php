@@ -6,13 +6,13 @@ class Verifycode extends AppModel {
 		'question' => array(
 			'notempty' => array(
 				'rule' => array('notempty'),
-				'message' => 'hay nhap cau hoi',
+				'message' => '質問を入力してください。',
 			),
 		),
 		'verifycode' => array(
 			'notempty' => array(
 				'rule' => array('notempty'),
-				'message' => 'hay nhap cau tra loi',
+				'message' => '答えを入力してください。',
 			),
 		)
 	);

@@ -20,7 +20,7 @@ if($result['count']>=1):
 			<li>先生：<?php echo $lesson['User']['user_name']; ?></li>
 			<li>学費：20,000 VND</li>
 			<?php
-			echo "<li><a href='".$this->webroot."teachers/manage_course/".$lesson['Lesson']['id']."' class='see'>見る</a></li>";
+			echo "<li><a href='".$this->webroot."teachers/manage_course/".$lesson['Lesson']['id']."' class='link-button'>見る</a></li>";
 			echo "<li>";
 			echo $this->Html->link(
 		    '削除',
@@ -29,10 +29,11 @@ if($result['count']>=1):
 		        'action' => 'delete_lesson',
 		        $lesson['Lesson']['id']
 		    	),
-		    array('class'=>'confirm_delete')
+		    array('class'=>'confirm_delete link-button')
 			);
 			echo "</li>";
-			echo "<li><a href='#' class='see'>情報サマリー</a></li>";
+			echo '<li>';
+			echo $this->Html->link('情報サマリー', array('controller' => 'Teachers', 'action' => 'summary', $lesson['Lesson']['id']), array('class' => ' link-button'));
 			?>
 		</ul>
 	</div>

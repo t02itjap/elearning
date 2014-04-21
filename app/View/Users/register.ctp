@@ -141,7 +141,7 @@ echo $this->Form->create ( 'User', array ('type' => 'post', 'novalidate' => 'tru
 			<td><span>*</span>電話番号</td>
 			<td>
 				<?php
-				echo $this->Form->input ( 'phone_number', array ('div' => false, 'label' => false, 'type' => 'text', 'class' => 'must_info', 'id' => 'phone_number' ) );
+				echo $this->Form->input ( 'phone_number', array ('div' => false, 'label' => false, 'type' => 'number', 'class' => 'must_info', 'id' => 'phone_number' ) );
 				?>
 			</td>
 		</tr>
@@ -178,9 +178,9 @@ $(document).ready(function(){
 		$("#quest").hide();
 		$("#ans").hide();
 	}
-	$("#phone_number").keypress(function(e){
-        return !(e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57) && e.which != 46);
-	});	
+//	$("#phone_number").keypress(function(e){
+//        return !(e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57) && e.which != 46);
+//	});	
 	$("#agree_rule").click(function(){
 		var checked = $(this).attr("checked");
 		if(checked == true){
@@ -189,7 +189,13 @@ $(document).ready(function(){
 			$("#submit_button").attr("disabled","disabled");
 		}
 	});
-	$("#submit_data").click(function(){
+	$("#submit_button").click(function(){
+        var passwordVal = $("#password").val();
+        var checkVal = $("#re_password").val();
+        if (passwordVal != checkVal ) {
+            $("#re_password").after('<br><span class="error-message">確認パスワードが間違い。</span>');
+            return false;
+        }
 	});
 	$("#user_type").change(function(){
 		var value = $(this).val();

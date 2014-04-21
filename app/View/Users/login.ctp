@@ -1,4 +1,4 @@
-
+<center>
 <?php
 echo $this->Html->script ( array (
 		'jquery.validate' 
@@ -45,13 +45,13 @@ echo $this->Form->button ( "リセット", array (
 ) );
 echo $this->Form->button ( "パスワード忘れた", array (
 		"id" => "missPass",
-		"type" => "button" 
+		"type" => "button"
 ) );
 echo $this->Form->end ( "ログイン", array (
 		"label" => false 
 ) );
 ?>
-
+</center>
 <script type="text/javascript">
     $(document).ready(function(){
         $("#formLogin").validate();

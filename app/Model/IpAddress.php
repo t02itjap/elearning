@@ -6,11 +6,11 @@ class IpAddress extends AppModel {
 		'ip_address' => array(
 			'check ip' => array(
 				'rule' => array('ip','IPv4'),
-				'message' => 'ip khong hop le',
+				'message' => 'ip形態が間違い',
 			),
 			'notempty' => array(
 				'rule' => array('notempty'),
-				'message' => 'hay nhap dia chi ip cua manager nay',
+				'message' => 'ipを入力してください。',
 			),
 		),
 	);

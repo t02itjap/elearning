@@ -23,7 +23,7 @@
                     <td class='content-center'><?php echo $item['Test']['file_name']; ?></td>
                     <td class='content-center'><?php echo $item['TestHistory']['test_date']; ?></td>
                     <td class='content-center'><?php echo $item['TestHistory']['score']; ?></td>
-                    <td class='content-center'><?php echo $this->Html->link("見る", array('controller' => 'students','action'=> 'xxx', $item['TestHistory']['id']), array( 'class' => 'button'));?></td>
+                    <td class='content-center'><?php echo $this->Html->link("見る", array('controller' => 'Tests','action'=> 'result', $item['TestHistory']['id']), array( 'class' => 'button'));?></td>
                 </tr>
                 <?php
             }

@@ -18,7 +18,7 @@ class Document extends AppModel {
         $uploaddir = WWW_ROOT . 'files/';
         $check = FALSE;
         //check file
-        $allowedExts = array("gif", "jpeg", "jpg", "png", "pdf", "mp3", "mp4");
+        $allowedExts = array("gif", "jpeg", "jpg", "png", "pdf", "mp3", "mp4", "wav", "tsv");
         $temp = explode(".", $fileName);
         $extension = end($temp);
         if (in_array($extension, $allowedExts)

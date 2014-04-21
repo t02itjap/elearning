@@ -30,6 +30,7 @@ class StudentsController extends AppController {
     }
 
     function changePass() {
+    	$this->set('title_for_layout', 'パスワードを変更する。');
         if ($this->request->is('post')) {
             $data = $this->request->data;
             if (sha1($this->Auth->user('user_name') . $data ['User'] ['pass1'] . 'sha1') == $this->User->field("password", array("id" => $this->Auth->user("id")))) {

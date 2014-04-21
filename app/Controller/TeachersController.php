@@ -15,7 +15,7 @@ class TeachersController extends AppController {
     }
 
     public function isAuthorized() {
-        if ($this->Auth->user('level') == 2)
+        if ($this->Auth->user('level') == 2 || $this->Auth->user('level') == 1 )
             return true;
         else {
             $this->Session->setFlash("Access deny");
@@ -25,6 +25,7 @@ class TeachersController extends AppController {
     }
 
 public function summary($id = 1) {
+		$this->set ( 'title_for_layout', '授業サマリー' );
 		// get lesson summary info
 		$lesson = $this->Lesson->find ( 'first', array (
 				'conditions' => array (
@@ -35,6 +36,10 @@ public function summary($id = 1) {
 						'voters' 
 				) 
 		) );
+		
+		$lesson ['Lesson'] ['voters'] = explode ( ",", $lesson ['Lesson'] ['voters'] );
+		$lesson ['Lesson'] ['vote_count'] = count ( $lesson ['Lesson'] ['voters'] );
+		
 		$snum = $this->Bill->find ( "count", array (
 				'conditions' => array (
 						'lesson_id' => $id 
@@ -46,7 +51,6 @@ public function summary($id = 1) {
 		
 		// get learned student
 		$this->paginate = array (
-				'limit'=>5,
 				'fields' => array (
 						'user_id',
 						'learn_date' 
@@ -56,7 +60,7 @@ public function summary($id = 1) {
 				) 
 		);
 		
-		$students = $this->paginate('Bill');
+		$students = $this->paginate ( 'Bill' );
 		$this->set ( 'lesson', $lesson );
 		$this->set ( 'snum', $snum );
 		$i = - 1;
@@ -70,36 +74,51 @@ public function summary($id = 1) {
 		
 		$this->set ( compact ( 'students' ) );
 		// get ban student list
-		$this->paginate = array('limit'=>5,
-				'conditions'=>array(
-						'teacher_id' => $this->Auth->user ( 'id' )
-		));
+		$this->paginate = array (
+				'limit' => 5,
+				'conditions' => array (
+						'teacher_id' => $this->Auth->user ( 'id' ) 
+				) 
+		);
 		
-		$banList = $this->paginate('BannedStudent');
-
+		$banList = $this->paginate ( 'BannedStudent' );
+		
 		$this->set ( compact ( 'banList' ) );
 		
 		// block button action
 		if ($this->request->is ( 'post' )) {
-			$ban = $this->request->data;
-			if (! $this->BannedStudent->isBanned ( $ban ['BannedStudent'] ['StudentName'] ) && $stu = $this->User->find ( 'first', array (
-					'conditions' => array (
-							'user_name' => $ban ['BannedStudent'] ['StudentName'],
-							'level' => 3 
-					) 
-			) )) {
-				$this->BannedStudent->create ();
-				$this->BannedStudent->set ( array (
-						'teacher_id' => $this->Auth->user ( 'id' ),
-						'student_id' => $stu ['User'] ['id'],
-						'reason' => $ban ['BannedStudent'] ['Reason'] 
-				) );
-				$this->BannedStudent->save ();
-				$this->Session->setFlash ( 'ブロックが成功した' );
-			} else {
-				$this->Session->setFlash ( "ユーザネームが存在しない" );
+			if (isset ( $this->request->data ['block'] )) {
+				$ban = $this->request->data;
+				if(!$stu = $this->User->find ( 'first', array (
+						'conditions' => array (
+								'user_name' => $ban ['BannedStudent'] ['StudentName'],
+								'level' => 3 
+						) 
+						) ))
+				{
+					$this->Session->setFlash ( "ユーザネームが存在しない" );
+					return ;
+				}
+				if (! $this->BannedStudent->isBanned ( $ban ['BannedStudent'] ['StudentName'] )) {
+					$this->BannedStudent->create ();
+					$this->BannedStudent->set ( array (
+							'teacher_id' => $this->Auth->user ( 'id' ),
+							'student_id' => $stu ['User'] ['id'],
+							'reason' => $ban ['BannedStudent'] ['Reason'] 
+					) );
+					$this->BannedStudent->save ();
+					$this->Session->setFlash ( 'ブロックが成功した' );
+					$this->redirect(array('controller'=>'teachers','action'=>'summary',$lesson['Lesson']['id']));
+				} else {
+					$this->Session->setFlash ( "ユーザネームがブロックした" );
+				}
 			}
 		}
+	}
+	public function unblock($banId,$lessonId){
+		$this->autoRender = false;
+		$this->BannedStudent->delete($banId);
+		$this->redirect(array('controller'=>'Teachers','action'=>'summary',$lessonId));
 	}
 
     public function change_info() {
@@ -166,6 +185,7 @@ function changeVerify() {
 	}
 
 function changePass() {
+	$this->set('title_for_layout', 'パスワードを変更する。');
 		if ($this->request->is ( 'post' )) {
 			$data = $this->request->data;
 			// debug($this->Auth->user('password'));
@@ -188,17 +208,21 @@ function changePass() {
     public function createNewCategory() {
 //      新しいカテゴリを作成する機能
         if (isset($_POST['name'])) {
-            //var_dump($_POST['name']);
-            $data = array('category_name' => $_POST['name']);   //新しいデータベースを作成
-            $this->Category->create();
-            $this->Category->save($data);                       //データベースにデータを保存する
-            //$this->set('id', $this->Category->id);
-            //$category = $this->Category->find('first', array('conditions' => array('category_name' => $_POST['name'])));
-            $data['id'] = $this->Category->id;
-            //$this->Category->id;
-            $data['name'] = $_POST['name'];
-            //カテゴリテーブルの情報を取得する
-            echo json_encode($data);
+            $category = $this->Category->find('first', array(
+            	'conditions' => array( strtolower('category_name') =>  strtolower($_POST['name']))
+            ));
+            if($category){
+            	$data['error'] = 'このカテゴリーが存在でした。';
+            	echo json_encode($data);
+            }
+            else{
+	            $data = array('category_name' => $_POST['name']);   //新しいデータベースを作成
+	            $this->Category->create();
+	            $this->Category->save($data);                       //データベースにデータを保存する
+	            $data['id'] = $this->Category->id;
+	            $data['name'] = $_POST['name'];
+	            echo json_encode($data);
+            }
         }
 
         die; //デバッグのため停止
@@ -220,7 +244,8 @@ function changePass() {
                 'create_date' => date('Y/m/d H:i:s'),
             ));
             //新しいレッスンのテーブルのデータベースを作成する 
-
+			//Khanh fix
+			//end Khanh fix
             $this->Lesson->save();
             $lesson_id = $this->Lesson->id;
             //データベースにデータを保存する

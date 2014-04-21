@@ -38,12 +38,22 @@
         <tbody> 
         <?php
             $sum = 0;
+            $i = 1;
             foreach ($data as $item) {
                     
                     ?>
                     <tr>
-                        <td class='content-center'><?php echo $item['User']['id']; ?></td>
-                        <td class='content-center'><?php echo "<a href='#'>".$item['User']['user_name']."</a>"; ?></td>
+                        <td class='content-center'><?php echo $i++;?></td>
+                        <td class='content-center'>
+                        	<?php
+                        	if($item['User']['level'] == 1)
+                        		echo $this->Html->link($item['User']['user_name'], array('controller' => 'Admins', 'action' => 'manager_manager', $item['User']['id']));
+                        	else if($item['User']['level'] == 2)
+                        		echo $this->Html->link($item['User']['user_name'], array('controller' => 'Admins', 'action' => 'teacherManager', $item['User']['id']));
+                        	else
+                        		echo $this->Html->link($item['User']['user_name'], array('controller' => 'Admins', 'action' => 'student_manager', $item['User']['id']));
+                        	?>
+                        </td>
                         <td class='content-center'><?php echo $item['User']['real_name']; ?></td>
                         <?php
                                 $count = 'khong';

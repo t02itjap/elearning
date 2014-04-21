@@ -19,12 +19,12 @@ class Lesson extends AppModel {
             'foreignKey' => 'lesson_id'
         )
     );
-    public $hasAndBelongsToMany = array(
-		'LessonOfCategory'=> array(
-			'className'=>'LessonOfCategory',
-			'foreignKey'=>'lesson_id'
-			)
-		);
+//    public $hasAndBelongsToMany = array(
+//		'LessonOfCategory'=> array(
+//			'className'=>'LessonOfCategory',
+//			'foreignKey'=>'lesson_id'
+//			)
+//		);
     /*
       public $hasMany = array(
       'User' => array(
@@ -85,6 +85,24 @@ class Lesson extends AppModel {
         );
         return $this->find('all', $condition);
     }
+    public $validate = array(
+		'lesson_name' => array(
+			'notempty' => array(
+				'rule' => array('notempty'),
+				'message' => '授業名を入力してください。',
+			),
+			'check exist' => array(
+				'rule' => 'isUnique',
+				'message' => 'この授業が存在でした。',
+			),
+		),
+		'description' => array(
+			'notempty' => array(
+				'rule' => array('notempty'),
+				'message' => '授業を描いてください。'
+			)
+		)
+	);
 
 }
 

@@ -15,7 +15,7 @@ class TestsController extends AppController{
 		$this->set('testObject',$test);
 	}
 
-	public function result(){
+	public function result($testID){
 		if(isset($this->request->data['result'])){
 
 			//Get List question and Mark from Session
