@@ -113,24 +113,11 @@ function beforeFilter(){
 
 		//start search
 		if($teacher_name!=null&&$course_name==null&&$category_name==null){
-			$keywords=explode('+', $teacher_name);
-			foreach ($keywords as $key) {
-				$condition1[]=array('User.user_name LIKE'=>'%'.$key.'%');
-			}
-								
-			debug($condition1);
-			/*$this->paginate = array(
+			$this->paginate = array(
 				'limit'=>1,
 				'fields'=> array('Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'Lesson.create_user_id', 'User.user_name'),
 				'conditions'=>array('User.user_name LIKE'=>'%'.$teacher_name.'%', 'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false)
 				);
-			*/
-			$conditions=array('OR'=>$condition1, 'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false);
-			debug($this->paginate = array(
-				'limit'=>1,
-				'fields'=> array('Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'Lesson.create_user_id', 'User.user_name'),
-				'conditions'=>$conditions
-				));	
 		}
 		if($teacher_name==null&&$course_name!=null&&$category_name==null){
 			$this->paginate = array(
@@ -205,7 +192,7 @@ function beforeFilter(){
 		$this->showLayout();
 		$this->set('title_for_layout', '検索結果'); 
 	}
-
+	
 	public function search_result2(){
 		$isand=false;
 		if(!empty($this->data)&&$this->request->data['keyword']!=null){
@@ -234,7 +221,7 @@ function beforeFilter(){
 			$isand=false;
 		}
 		
-		debug($keywords);
+		//debug($keywords);
 		switch ($type) {
 			case 'teacher':
 			foreach ($keywords as $key) {
@@ -388,12 +375,6 @@ function beforeFilter(){
 		{
 			$this->layout='before_login';
 		}
-// =======
-// 		// $data = $this->User->find('all');
-//   //               $this->set('data',$data);
-//   //               $this->set('index', $this->Lesson->getLessons());
-//                 // $thiss->set('index', $this->Lesson->getLessons());
-//               //  $this->redirect(array('controller' => 'Lessons', 'action' => 'sc20'));
 	}
 
 	function title_report($id=null) {

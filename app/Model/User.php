@@ -6,72 +6,102 @@ class User extends AppModel {
 		'user_name' => array(
 			'notempty' => array(
 				'rule' => array('notempty'),
-				'message' => 'hay nhap user name',
+				'message' => 'ユーザネームを入力してください。',
 			),
 			'min' => array(
-				'rule' => array('minLength', 4),
-				'message' => 'user name phai co it nhat 4 ki tu ',
+				'rule' => array('minLength', 3),
+				'message' => 'ユーザネームが３キャラクタ以上あらなければなりません',
 			),
 			'max' => array(
 				'rule' => array('maxLength', 16),
-				'message' => 'user name khong duoc qua 16 ki tu',
+				'message' => 'ユーザネームが１６キャラクタ以下あらなければなりません',
 			),
 			'check character' => array(
-				'rule' => '/^[a-z0-9]{4,16}$/i',
-				'message' => 'user name chi chua so va chu cai thuong'
+				'rule' => '/^[a-z0-9]{3,16}$/i',
+				'message' => 'ユーザネームが数と通常キャラクタがあらなければなりません'
 			),
 			'check exist' => array(
 				'rule' => 'isUnique',
-				'message' => 'user name da ton tai',
+				'message' => 'このユーザネームが存在でした。',
 			),
 		),
 		'real_name' => array(
 			'notempty' => array(
 				'rule' => array('notempty'),
-				'message' => 'hay nhap ten that',
+				'message' => '名前を入力してください。',
 			),
 		),
 		'email' => array(
 			'notempty' => array(
 				'rule' => array('notempty'),
-				'message' => 'hay nhap mail',
+				'message' => 'メールを入力してください。',
 			),
 			'check validation' => array(
-				'rule' => array('email',true),
-				'message' => 'mail cua ban khong hop le',
+				'rule' => array('email'),
+				'message' => 'メール形態が間違いです。',
 			),
 			'check exist' => array(
 				'rule' => 'isUnique',
-				'message' => 'email nay da duoc su dung',
+				'message' => 'このメールが存在でした',
 			)
 		),
 		'address' => array(
 			'notempty' => array(
 				'rule' => array('notempty'),
-				'message' => 'hay nhap dia chi',
+				'message' => 'アドレスを入力してください。',
 			),
 		),
 		'bank_accout_code' => array(
 			'notempty' => array(
 				'rule' => array('notempty'),
-				'message' => 'hay nhap ma ngan hang',
+				'message' => '銀行口座あういはクレジットカード番号をにゅうりょくしてください。',
 			),
 		),
 		'phone_number' => array(
 			'notempty' => array(
 				'rule' => array('notempty'),
-				'message' => 'hay nhap so dien thoai',
+				'message' => '電話番号をにゅうりょくしてください。',
+			),
+			'min' => array(
+				'rule' => array('minLength', 6),
+				'message' => '電話番号が６キャラクタ以上あらなければなりません ',
+			),
+			'max' => array(
+				'rule' => array('maxLength', 15),
+				'message' => '電話番号が１５キャラクタ以下あらなければなりません',
 			),
 		),
 		'birth_date' => array(
 			'notempty' => array(
 				'rule' => array('notempty'),
-				'message' => 'hay nhap ngay sinh',
+				'message' => '誕生日をにゅうりょくしてください。',
 			),
 			'check birth date' => array(
 				'rule' => array('date','ymd'),
-				'message' => 'ngay sinh khong hop le'
+				'message' => '誕生日が間違い。'
 			),
 		),
 	);
+	//tai khoan co level 1 admin ko
+	public function isAdmin($id){
+		return ($this->field('level',array('id'=>$id)) == 1);
+	}
+	//tai khoan co level 2 teacher ko
+	public function isTeacher($id){
+		return ($this->field('level',array('id'=>$id)) == 2);
+	}
+	//tai khoan co level 3 student ko
+	public function isStudent($id){
+		return ($this->field('level',array('id'=>$id)) == 3);
+	}
+	//kiem tra tai khoan hien co online hay ko
+	public function isOnline($uname,$pass){
+		$user = $this->find('first',array('user_name'=>$uname,'password'=>$pass));
+		if(!empty($user)){
+			return $user['User']['online_flag']== 1;
+		}		
+	}
+	public function foo(){
+		
+	}
 }

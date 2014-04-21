@@ -27,11 +27,15 @@ if($result['count']>=1):
 				if(isset($level)){
 					switch ($level) {
 						case '1':
-							echo "<li><a href='#' class='see'>見る</a></li>";
+						echo "<li>";
+						echo $this->Html->link('見る',array('controller' => 'Teachers', 'action' => 'manage_course', $lesson['Lesson']['id']), array('class' => 'link-button'));
+						echo "</li>";
 							break;
 
 						case '2':
-							echo "<li><a href='#' class='see'>見る</a></li>";
+						echo "<li>";
+						echo $this->Html->link('見る',array('controller' => 'Teachers', 'action' => 'manage_course', $lesson['Lesson']['id']), array('class' => 'link-button'));
+						echo "</li>";
 							if($this->Session->read('Auth.User.id')==$lesson['Lesson']['create_user_id']){
 								echo $this->Html->link(
 								    '削除',
@@ -62,7 +66,9 @@ if($result['count']>=1):
 							break;
 						
 						case '3':
-							echo "<li><a href='#' class='see'>見る</a></li>";
+						echo "<li>";
+						echo $this->Html->link('見る',array('controller' => 'Students', 'action' => 'view_lesson_to_learn', $lesson['Lesson']['id']), array('class' => 'link-button'));
+						echo "</li>";
 							break;
 
 						default:

@@ -20,20 +20,7 @@ $cakeDescription = __d('cake_dev', 'CakePHP: the rapid development php framework
 ?>
 <!DOCTYPE html>
 <html>
-<head>
-	<?php echo $this->Html->charset(); ?>
-	<title>
-		<?php echo $title_for_layout; ?>
-	</title>
-	<?php
-		echo $this->Html->meta('icon');
-		echo $this->Html->css(array('cake.generic','style'));
-		echo $this->Html->script(array('jquery-1.4.4.min.js'));
-		echo $this->fetch('meta');
-		echo $this->fetch('css');
-		echo $this->fetch('script');
-	?>
-</head>
+<?php echo $this->element('head');?>
 <body>
 	<div id="container">
 		<?php echo $this->element('before_login_header');?>

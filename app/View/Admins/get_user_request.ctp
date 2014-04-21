@@ -51,7 +51,7 @@
     	echo $this->Html->link(
 		    '確認',
 		    array(
-		        'controller' => 'admins',
+		        'controller' => 'Admins',
 		        'action' => 'accept_user',
 		        $requestUser['id']
 		    	),
@@ -61,7 +61,7 @@
     	echo $this->Html->link(
 		    '拒否',
 		    array(
-		        'controller' => 'admins',
+		        'controller' => 'Admins',
 		        'action' => 'remove_user',
 		        $requestUser['id']
 		    	),

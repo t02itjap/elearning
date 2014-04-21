@@ -76,18 +76,17 @@ if($('.confirm_delete').length) {
 	});
 };
 
-//サーバにユーザ確認をrequestする
 if($('.confirm_accept').length) {
-        // add click handler
+       // add click handler
 	$('.confirm_accept').click(function(){
 		// ask for confirmation
-		var result = confirm('確認したい？');
+		var result = confirm('Are you sure you want to accept this?');
 
 		// do ajax request
 		if(result) {
 			//alert('in if result');
 			$.ajaxSetup({
-    			headers: { 'X-Requested-With': 'XMLHttpRequest' }
+   			headers: { 'X-Requested-With': 'XMLHttpRequest' }
 			});
 			$.ajax({
 				type:"POST",
@@ -97,12 +96,13 @@ if($('.confirm_accept').length) {
 				dataType: "json",
 				success:function(response){
 					if(response.success == false) {
-						alert('確認成功！!');
+						alert('Accept successed!');
+						window.location = 'http://localhost/elearning/Admins/getConfirmAccount';
 					}
 					else
-						alert('確認失敗！もう一度やってみてください！');
-					window.location = 'http://localhost/elearning/lessons/manage_lessons';
-				}
+						alert('Accept failed! Try agian!');
+					window.location = 'http://localhost/elearning/Admins/getConfirmAccount';
+				}	
 			});
 		}
 	
@@ -111,18 +111,17 @@ if($('.confirm_accept').length) {
 	});
 };
 
-//サーバにユーザ拒否をrequestする
 if($('.confirm_remove').length) {
-        // add click handler
+       // add click handler
 	$('.confirm_remove').click(function(){
 		// ask for confirmation
-		var result = confirm('拒否したい？');
+		var result = confirm('Are you sure you want to remove this?');
 
 		// do ajax request
 		if(result) {
 			//alert('in if result');
 			$.ajaxSetup({
-    			headers: { 'X-Requested-With': 'XMLHttpRequest' }
+   			headers: { 'X-Requested-With': 'XMLHttpRequest' }
 			});
 			$.ajax({
 				type:"POST",
@@ -132,10 +131,10 @@ if($('.confirm_remove').length) {
 				dataType: "json",
 				success:function(response){
 					if(response.success == false) {
-						alert('登録情報を削除した！!');
+						alert('Remove successed!');
 					}
 					else
-						alert('削除失敗！もう一度やってみてください！');
+						alert('Remove failed! Try agian!');
 					window.location = 'http://localhost/elearning/lessons/manage_lessons';
 				}
 			});

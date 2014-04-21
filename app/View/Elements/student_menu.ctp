@@ -18,7 +18,7 @@
                             )
                         ); ?>
                 </li>
-                <li><a href="#">試験結果</a></li>
+                <li><?php echo $this->Html->link('試験結果',array('controller'=>'Students','action'=>'getTestHistories'))?></li>
             </ul>
         
         </div><!--End #main_nav-->

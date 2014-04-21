@@ -1,5 +1,5 @@
         <div id="main_nav">
             <ul>
-                <li><a href="#">管理ツール</a></li>
+                <li><?php echo $this->Html->link('管理ツール',array('controller'=>'Admins', 'action'=>'manager_home'))?></li>
             </ul>
         </div>

@@ -9,12 +9,10 @@ class TestHistory extends AppModel{
         'User' => array(
             'className' => 'User'
             )
-        );
-    public $hasOne = array(
+        ,
         'Test' => array(
-            'className' => 'Test',
-            'foreignKey' => 'id'
+            'className' => 'Test'
         )
-    );
+        );
 }
 ?>

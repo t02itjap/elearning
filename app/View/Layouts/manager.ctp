@@ -15,41 +15,38 @@
  * @since         CakePHP(tm) v 0.10.0.1076
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
-
-$cakeDescription = __d('cake_dev', 'CakePHP: the rapid development php framework');
+$cakeDescription = __d ( 'cake_dev', 'CakePHP: the rapid development php framework' );
 ?>
 <!DOCTYPE html>
 <html>
-<head>
-	<?php echo $this->Html->charset(); ?>
-	<title>
-		<?php echo $title_for_layout; ?>
-	</title>
-	<?php
-		echo $this->Html->meta('icon');
-
-		echo $this->Html->css(array('cake.generic','style'));
-		echo $this->Html->script(array('jquery-1.4.4.min.js'));
-		echo $this->Html->script(array('script-common.js'));
-		echo $this->fetch('meta');
-		echo $this->fetch('css');
-		echo $this->fetch('script');
-	?>
-</head>
+<?php echo $this->element('head');?>
 <body>
 	<div id="container">
 		<?php echo $this->element('header');?>
 		<div id="body">
-        	<div id="slide_bar">
+			<div id="slide_bar">
         		<?php echo $this->element('acc_info');?>
         	</div>
         	<?php echo $this->element('manager_menu');?>
 			<div id="main_content">
-				<h2 id='page-title'><?php echo $title_for_layout; ?></h2><br>
+				<h2 id='page-title'><?php echo $title_for_layout; ?></h2>
+				<br>
 				<?php echo $this->fetch('content'); ?>
 			</div>
 		</div>
 		<?php echo $this->element('footer');?>
 	</div>
+	<script type="text/javascript" charset="utf-8">
+		  $(document).ready(function(){
+		   $(document).idleTimeout({
+		     inactivity: <?=$sessiontime*1000*60?>, 
+     		 noconfirm: 10000, 
+     		 sessionAlive: 6*60*60*1000,
+     		 alive_url:"/elearning/users/login",
+     		 redirect_url:"/elearning/users/logout",
+     		 logout_url:"/elearning/users/logout"
+		   });
+		  });
+		</script>
 </body>
 </html>

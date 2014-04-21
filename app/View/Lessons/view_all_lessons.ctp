@@ -22,12 +22,16 @@ foreach ($lessons as $lesson):
 		if(isset($level)){
 			switch ($level) {
 				case '3':
-				echo "<li><a href='#' class='see'>見る</a></li>";
+				echo "<li>";
+				echo $this->Html->link('見る',array('controller' => 'Students', 'action' => 'view_lesson_to_learn', $lesson['Lesson']['id']), array('class' => 'link-button'));
+				echo "</li>";
 				break;
 
 				case '2':
-				echo "<li><a href='#' class='see'>見る</a></li>";
+				echo "<li>";
+				echo $this->Html->link('見る',array('controller' => 'Teachers', 'action' => 'manage_course', $lesson['Lesson']['id']), array('class' => 'link-button'));
 						//echo $this->$Html->link('タイトル違反',array('action'=>'titile_report',$lesson['Lesson']['id']),array('class'=>'confirm_report'));
+				echo "</li>";
 				echo "<li>";
 				echo $this->Html->link(
 					'タイトル違反',
@@ -36,10 +40,9 @@ foreach ($lessons as $lesson):
 						'action' => 'title_report',
 						$lesson['Lesson']['id']
 						),
-					array('class'=>'confirm_report')
+					array('class'=>'confirm_report link-button')
 					);
 				echo "</li>";
-						//echo "<li><a href='#' class='see'>タイトル違反</a></li>";
 				break;
 				
 				case '1':
@@ -51,10 +54,12 @@ foreach ($lessons as $lesson):
 						'action' => 'delete_lesson',
 						$lesson['Lesson']['id']
 						),
-					array('class'=>'confirm_delete')
+					array('class'=>'confirm_delete link-button')
 					);
 				echo "</li>";
-				echo "<li><a href='#' class='see'>見る</a></li>";
+				echo "<li>";
+				echo $this->Html->link('見る',array('controller' => 'Teachers', 'action' => 'manage_course', $lesson['Lesson']['id']), array('class' => 'link-button'));
+				echo "</li>";
 				break;
 
 				default:
@@ -62,26 +67,9 @@ foreach ($lessons as $lesson):
 				break;
 			}
 		}
-		else
-			echo "<li><a href='#' class='see'>見る</a></li>";
 		?>
 	</ul>
 </div>
 <?php endforeach; ?>
-
-<div class="paging btn-group">
-	<?php
-	 //ページングする
-    echo $this->Paginator->first('最初へ');//di den trang dau tien
-    echo $this->Paginator->prev(__('前へ'), array('class' => 'btn'), null, array('class' => 'prev disabled btn'));
-    echo $this->Paginator->numbers(array('separator' => '', 'class' => 'btn', 'currentClass' => 'disabled'));
-    echo $this->Paginator->next(__('次へ'), array('class' => 'btn'), null, array('class' => 'next disabled btn'));
-    echo $this->Paginator->last('最後へ');//di den trang cuoi cung
-    ?>
-</div>
-<?php
-echo $this->Paginator->counter(array(
-	'format' => __('結果は {:count} レコード {:start}  〜 {:end} 　（{:page}/{:pages}）')
-	));
-	?>
+<?php $this->element('paging');?>
 	
