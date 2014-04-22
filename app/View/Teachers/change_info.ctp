@@ -57,14 +57,14 @@
                             <td>銀行口座番号</td>
                             <td>
                             	<?php
-                                    echo $this->Form->input ( 'bank_account_code', array (
-                            			'div' => false,
-                            			'label' => false,
-                            			'type' => 'text',
-                            			'class' => 'must_info',
-                            			'id' => 'bank_account_code',
-                            			'value' => $teacher['User']['bank_account_code']
-                            		));
+                            		$bankCode = explode('-',$teacher['User']['bank_account_code']);
+									echo $this->Form->input('bankCodePart1', array('value' => $bankCode[0], 'div' => false, 'label' => false, 'type' => 'text','maxlength' => '4', 'style' => 'width: 32px', 'class' => 'onlyNumber', 'id' => 'bankCodePart1' ));
+									echo "<b style = 'font-size: 20px'> - </b>";
+									echo $this->Form->input('bankCodePart2', array('value' => $bankCode[1],'div' => false, 'label' => false, 'type' => 'text','maxlength' => '3', 'style' => 'width: 24px', 'class' => 'onlyNumber', 'id' => 'bankCodePart2' ));
+									echo "<b style = 'font-size: 20px'> - </b>";
+									echo $this->Form->input('bankCodePart3', array('value' => $bankCode[2],'div' => false, 'label' => false, 'type' => 'text','maxlength' => '1', 'style' => 'width: 8px', 'class' => 'onlyNumber', 'id' => 'bankCodePart3' ));
+									echo "<b style = 'font-size: 20px'> - </b>";
+									echo $this->Form->input('bankCodePart4', array('value' => $bankCode[3],'div' => false, 'label' => false, 'type' => 'text','maxlength' => '7', 'style' => 'width: 56px', 'class' => 'onlyNumber', 'id' => 'bankCodePart4' ));							
                         		?>
                         	</td>
                         </tr>
@@ -96,7 +96,7 @@
 									));
 							?>
                             <?php
-                            echo $this->Form->button ( '作成', array (
+                            echo $this->Form->button ( '変更', array (
                             	'type' => 'submit',
                             	'name' => 'data[submit_data]',
                             	'class' => 'link-button',
@@ -104,3 +104,13 @@
                             ?>
                         </div><!--End #submit-->
 <?php echo $this->Form->end();?>
+<script>
+$(document).ready(function(){
+	$("#submit_button").click(function(){
+	        if($("#bankCodePart1").val().length < 4 || $("#bankCodePart2").val().length < 3 || $("#bankCodePart3").val().length < 1 || $("#bankCodePart4").val().length < 7){
+				alert("銀行口座が間違いです。");
+				return false;
+	        }
+	});
+});
+</script>

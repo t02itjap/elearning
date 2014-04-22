@@ -2,6 +2,11 @@
 // on dom ready
 $(document).ready(function(){
 // class exists
+//Khanh
+$(".onlyNumber").keypress(function(e){
+        return !(e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57) && e.which != 46);
+});
+//end Khanh
 if($('.confirm_report').length) {
         // add click handler
 	$('.confirm_report').click(function(){

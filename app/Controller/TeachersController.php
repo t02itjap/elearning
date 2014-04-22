@@ -130,11 +130,12 @@ public function summary($id = 1) {
             $data = $this->request->data;
             $checkPassword = sha1($teacher ['User'] ['user_name'] . $data ['User'] ['password'] . $forPass);
             if ($checkPassword == $teacher ['User'] ['password']) {
-                if ($teacher ['User'] ['email'] == $data ['User'] ['email'] && $teacher ['User'] ['phone_number'] == $data ['User'] ['phone_number'] && $teacher ['User'] ['address'] == $data ['User'] ['address'] && $teacher ['User'] ['bank_account_code'] == $data ['User'] ['bank_account_code']) {
+            	$bankCode = $data ['User'] ['bankCodePart1'].'-'.$data ['User'] ['bankCodePart2'].'-'.$data ['User'] ['bankCodePart3'].'-'.$data ['User'] ['bankCodePart4'];
+                if ($teacher ['User'] ['email'] == $data ['User'] ['email'] && $teacher ['User'] ['phone_number'] == $data ['User'] ['phone_number'] && $teacher ['User'] ['address'] == $data ['User'] ['address'] && $teacher ['User'] ['bank_account_code'] == $bankCode) {
                     $this->Session->setFlash('情報を変更しなかった。');
                     $this->redirect(array('controller' => 'Teachers', 'action' => 'change_info'));
                 } else {
-                    $this->User->set(array('bank_account_code' => $data ['User'] ['bank_account_code'], 'address' => $data ['User'] ['address'], 'phone_number' => $data ['User'] ['phone_number']));
+                    $this->User->set(array('bank_account_code' => $bankCode, 'address' => $data ['User'] ['address'], 'phone_number' => $data ['User'] ['phone_number']));
                     if ($teacher ['User'] ['email'] != $data ['User'] ['email']) {
                         $this->User->set(array('email' => $data ['User'] ['email']));
                     }

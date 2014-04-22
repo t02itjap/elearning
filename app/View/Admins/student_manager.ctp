@@ -57,14 +57,16 @@
                             <td>クレジットカード番号</td>
                             <td>
                             	<?php
-                                    echo $this->Form->input ( 'bank_account_code', array (
-                            			'div' => false,
-                            			'label' => false,
-                            			'type' => 'text',
-                            			'class' => 'must_info',
-                            			'id' => 'bank_account_code',
-                            			'value' => $student['User']['bank_account_code']
-                            		));
+                            		$bankCode = explode('-',$student['User']['bank_account_code']);
+									echo $this->Form->input('cardPart1', array('value' => $bankCode[0], 'div' => false, 'label' => false, 'type' => 'text','maxlength' => '8', 'style' => 'width: 64px', 'class' => 'onlyNumber', 'id' => 'cardPart1' ));
+									echo "<b style = 'font-size: 20px'> - </b>";
+									echo $this->Form->input('cardPart2', array('value' => $bankCode[1], 'div' => false, 'label' => false, 'type' => 'text','maxlength' => '4', 'style' => 'width: 32px', 'class' => 'onlyNumber', 'id' => 'cardPart2' ));
+									echo "<b style = 'font-size: 20px'> - </b>";
+									echo $this->Form->input('cardPart3', array('value' => $bankCode[2], 'div' => false, 'label' => false, 'type' => 'text','maxlength' => '4', 'style' => 'width: 32px', 'class' => 'onlyNumber', 'id' => 'cardPart3' ));
+									echo "<b style = 'font-size: 20px'> - </b>";
+									echo $this->Form->input('cardPart4', array('value' => $bankCode[3], 'div' => false, 'label' => false, 'type' => 'text','maxlength' => '4', 'style' => 'width: 32px', 'class' => 'onlyNumber', 'id' => 'cardPart4' ));							
+									echo "<b style = 'font-size: 20px'> - </b>";
+									echo $this->Form->input('cardPart5', array('value' => $bankCode[4], 'div' => false, 'label' => false, 'type' => 'text','maxlength' => '4', 'style' => 'width: 32px', 'class' => 'onlyNumber', 'id' => 'cardPart5' ));
                         		?>
                         	</td>
                         </tr>
@@ -100,3 +102,13 @@
                             ?>
                         </div><!--End #submit-->
 <?php echo $this->Form->end();?>
+<script>
+$(document).ready(function(){
+	$("#submit_button").click(function(){
+	        if($("#cardPart1").val().length < 8 || $("#cardPart2").val().length < 4 || $("#cardPart3").val().length < 4 || $("#cardPart4").val().length < 4 || $("#cardPart5").val().length < 4){
+				alert("クレジットカード番号が間違いです。");
+				return false;
+	        }
+	});
+});
+</script>

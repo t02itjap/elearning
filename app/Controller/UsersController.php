@@ -272,6 +272,11 @@ public function login() {
 			$data = $this->request->data;
 			$birthDate = $data ['User'] ['birth_year'] . '-' . $data ['User'] ['birth_month'] . '-' . $data ['User'] ['birth_date'];
 			$password = sha1 ( $data ['User'] ['user_name'] . $data ['User'] ['password'] . $forPass );
+			if($data ['User'] ['user_type'] == 2){
+				$bankCode = $data ['User'] ['bankCodePart1'].'-'.$data ['User'] ['bankCodePart2'].'-'.$data ['User'] ['bankCodePart3'].'-'.$data ['User'] ['bankCodePart4'];
+			}else{
+				$bankCode = $data ['User'] ['cardPart1'].'-'.$data ['User'] ['cardPart2'].'-'.$data ['User'] ['cardPart3'].'-'.$data ['User'] ['cardPart4'].'-'.$data ['User'] ['cardPart5'];
+			}
 			$this->User->set ( array (
 					'user_name' => $data ['User'] ['user_name'],
 					'real_name' => $data ['User'] ['real_name'],
@@ -279,7 +284,7 @@ public function login() {
 					'email' => $data ['User'] ['email'],
 					'birth_date' => $birthDate,
 					'level' => $data ['User'] ['user_type'],
-					'bank_account_code' => $data ['User'] ['bank_code'],
+					'bank_account_code' => $bankCode,
 					'address' => $data ['User'] ['address'],
 					'phone_number' => $data ['User'] ['phone_number'] 
 			) );
