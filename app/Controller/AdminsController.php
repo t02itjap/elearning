@@ -993,4 +993,5 @@ public function database_manager() {
 				'action' => 'database_manager' 
 		) );
 	}
+
 }

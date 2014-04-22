@@ -36,7 +36,7 @@ class UsersController extends AppController {
 				'teacherName' 
 		) );
 	}
-public function login() {
+	public function login() {
 		// logged in user
 		$this->set ( 'title_for_layout', 'ログイン' );
 		if ($this->Auth->user ()) {
@@ -366,6 +366,7 @@ public function login() {
 		if ($this->Auth->user ())
 			$this->loginRedirect ( $this->Auth->user ( "level" ) );
 	}
+	
 	public function viewtestresult() {
 		$data = $this->Test->TestHistory->find ( 'all', array (
 				'conditions' => array (

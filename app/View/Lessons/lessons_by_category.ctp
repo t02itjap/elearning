@@ -5,11 +5,13 @@ $result=$this->Paginator->params();
 //debug($result);
 if($result['count']>=1):
 	echo "<div id='arr_type'>";
+	//授業を並べる
 	echo "並ぶタイプ：";
 	echo $this->Paginator->sort('lesson_name', '授業名');
 	echo "&nbsp;-&nbsp;";
 	echo $this->Paginator->sort('create_date', '作った日');
 	echo "</div>";
+	//授業情報を表す
 	foreach ($lessons as $lesson): 
 	?>
 		<div class='class'>
@@ -18,8 +20,10 @@ if($result['count']>=1):
 				<li>作った日：<?php echo $lesson['Lesson']['create_date']; ?></li>
 				<li>説明：<?php echo $lesson['Lesson']['description']; ?></li>
 				<li>先生：<?php echo $lesson['User']['user_name']; ?></li>
-				<li>学費：20,000 VND</li>
+				<li>学費：<?php echo $cost; ?> VND</li>
 				<?php 
+
+				//ユーザタイプによって授業表示についてボタンが違う
 				if(isset($level)){
 					switch ($level) {
 						case '1':
@@ -81,21 +85,15 @@ if($result['count']>=1):
 
 	<div class="paging btn-group">
 	    <?php
-	    echo $this->Paginator->first('最初へ');//di den trang dau tien
+	     //ページングする
+	    echo $this->Paginator->first('最初へ');
 	    echo $this->Paginator->prev(__('前へ'), array('class' => 'btn'), null, array('class' => 'prev disabled btn'));
 	    echo $this->Paginator->numbers(array('separator' => '', 'class' => 'btn', 'currentClass' => 'disabled'));
 	    echo $this->Paginator->next(__('次へ'), array('class' => 'btn'), null, array('class' => 'next disabled btn'));
-	    echo $this->Paginator->last('最後へ');//di den trang cuoi cung
+	    echo $this->Paginator->last('最後へ');
 	    ?>
 	</div>
 <?php 
 else:
-	echo 'Khong co ket qua!';
+	echo '結果がない！';
 endif; ?>
-<?php
-    echo $this->Paginator->counter(array(
-        'format' => __('Kết quả tìm được có {:count} bản ghi bắt đầu từ {:start}  〜 {:end} 　（{:page}/{:pages}）')
-    ));
-    //$x=$this->Paginator->params();
-    //debug($x['count']+3);
-?>
