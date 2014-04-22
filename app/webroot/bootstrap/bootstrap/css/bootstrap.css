@@ -4779,7 +4779,7 @@ input[type="submit"].btn.btn-mini {
   left: auto;
 }
 
-.navbar -group > li > .dropdown-menu .dropdown-menu,
+.navbar .pull-right > li > .dropdown-menu .dropdown-menu,
 .navbar .nav > li > .dropdown-menu.pull-right .dropdown-menu {
   right: 100%;
   left: auto;

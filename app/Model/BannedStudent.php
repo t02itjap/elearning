@@ -18,7 +18,7 @@ class BannedStudent extends AppModel {
 		$user = new User();
 		$_user = $user->find('first',array('conditions'=>array('user_name'=>$uname,'level'=>3)));
 		if($_user)
-			return $this->find('first',array('conditions'=>array('student_id'=>$_user['id'])));
+			return $this->find('first',array('conditions'=>array('student_id'=>$_user['User']['id'])));
 		else 
 			return false;
 		}	

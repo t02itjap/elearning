@@ -69,7 +69,8 @@ function index(){
     			));
 //     			管理者のIPアドレスをチェックする
     			if ($ip['IpAddress']['ip_address'] != $this->request->clientIp ()) {
-    				$this->Session->setFlash ( "IPアドレスが間違う".'</br>'.'間違う'.($this->Session->read('missing')+1).'回' );
+    				
+    				$this->Session->setFlash ( "IPアドレスが間違う".'</br>'.'間違う数'.($this->Session->read('missing')+1).'回' );
     				$this->Session->write('missing',$this->Session->read('missing')+1);
     				return $this->redirect (array('controller'=>'admins'));
     			}
@@ -83,7 +84,7 @@ function index(){
 						"action" => "view_all_lessons" 
 				) );
     		}else{
-    			$this->Session->setFlash('ユーザネームとかパスワードとかが間違う'.'</br>'.'間違う'.($this->Session->read('missing')+1).'回');
+    			$this->Session->setFlash('ユーザネームとかパスワードとかが間違う'.'</br>'.'間違う数'.($this->Session->read('missing')+1).'回');
     			$this->Session->write('missing',$this->Session->read('missing')+1);
     			return $this->redirect(array('controller'=>'admins'));
     		}
@@ -937,16 +938,20 @@ public function database_manager() {
 		}
 		array_multisort ( $price, SORT_DESC, $files_info );
 		$this->set ( compact ( 'files_info' ) );
+		if($this->request->is('post')){
+			$data = $this->request->data;
+			$cmd = 'schtasks /create /tn /"elearningBackup/" /tr c:\xampp\php ';
+		}
 	}
 	
 	public function delete_file(){
 		$this->autoRender = false;
 		if(isset($this->params['named']['file'])){
 			$source = WWW_ROOT.'files/db/'.$this->params['named']['file'];
-			var_dump($source);
+			
 			unlink($source);
 		}
-		$this->Session->setFlash(__('The backup have been deleted'));
+		$this->Session->setFlash(__($this->params['named']['file'].'　ファイルが削除した。'));
 		$this->redirect(array('controller' => 'admins', 'action' => 'database_manager'));
 	}
 	
@@ -959,7 +964,7 @@ public function database_manager() {
 		foreach ($files as $file) {
 			unlink($dir->pwd().DS.$file);
 		}
-		$this->Session->setFlash(__('All The backup have been deleted'));
+		$this->Session->setFlash(__('全部バックアップファイルが削除した。'));
 		$this->redirect(array('controller' => 'admins', 'action' => 'database_manager'));
 	}
 	public function backup_database() {
@@ -970,7 +975,7 @@ public function database_manager() {
 		$cmd = 'cd "C:/xampp/mysql/bin" & mysqldump.exe --user=root --host=localhost elearning > ' . $fileName;
 		
 		exec ( $cmd );
-		$this->Session->setFlash ( __ ( 'Database has been backuped' ) );
+		$this->Session->setFlash ( __ ( '現在のデータベースがバックアップした。' ) );
 		$this->redirect(array('controller' => 'admins', 'action' => 'database_manager'));
 	}
 	public function restore_database() {
@@ -985,7 +990,7 @@ public function database_manager() {
 // 			var_dump ( $command );
 			exec ( $command );
 		}
-		$this->Session->setFlash ( __ ( 'Database has been restored' ) );
+		$this->Session->setFlash ( __ ( $this->params ['named'] ['file'].' バックアップファイルがリストアした。' ) );
 		$this->redirect ( array (
 				'controller' => 'admins',
 				'action' => 'database_manager' 

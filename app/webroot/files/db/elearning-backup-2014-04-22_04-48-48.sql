@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.5.16, for Win32 (x86)
+-- MySQL dump 10.13  Distrib 5.5.32, for Win32 (x86)
 --
 -- Host: localhost    Database: elearning
 -- ------------------------------------------------------
--- Server version	5.5.16
+-- Server version	5.5.32
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -350,7 +350,7 @@ CREATE TABLE `tb_locked_users` (
   `lock_flg` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0: not lock, 1 lock',
   `lock_start_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -359,7 +359,7 @@ CREATE TABLE `tb_locked_users` (
 
 LOCK TABLES `tb_locked_users` WRITE;
 /*!40000 ALTER TABLE `tb_locked_users` DISABLE KEYS */;
-INSERT INTO `tb_locked_users` VALUES (1,'127.0.0.1',2,1,'2014-04-18 03:13:01');
+INSERT INTO `tb_locked_users` VALUES (1,'127.0.0.1',2,1,'2014-04-18 03:13:01'),(2,'::1',1,0,'0000-00-00 00:00:00');
 /*!40000 ALTER TABLE `tb_locked_users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -494,4 +494,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-04-18 15:25:29
+-- Dump completed on 2014-04-22  9:48:50

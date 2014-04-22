@@ -82,6 +82,12 @@ class User extends AppModel {
 			),
 		),
 	);
+	public $hasMany = array(
+			'Notification' => array(
+					'className' => 'Notifications.Notification',
+					'foreignKey' => 'user_id',
+			),
+	);
 	//tai khoan co level 1 admin ko
 	public function isAdmin($id){
 		return ($this->field('level',array('id'=>$id)) == 1);

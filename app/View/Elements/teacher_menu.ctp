@@ -1,4 +1,5 @@
-        <div id="main_nav">
+<?php echo $this->Element('Notifications.NotificationIcon');?>
+<div id="main_nav">
             <ul>
                 <li>
                 	<?php echo $this->Html->link(

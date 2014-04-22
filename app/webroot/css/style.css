@@ -941,16 +941,17 @@ font-size: 12px;
 	text-shadow:1px 1px 0px #689324;
 	padding: 2px;
 }
-.link-button, button:hover {
+.link-button:hover, button:hover {
 	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #8cb82b), color-stop(1, #9dce2c) );
 	background:-moz-linear-gradient( center top, #8cb82b 5%, #9dce2c 100% );
 	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#8cb82b', endColorstr='#9dce2c');
 	background-color:#8cb82b;
-}.link-button, button:active {
+}.link-button:active, button:active {
 	position:relative;
 	top:1px;
 }
 #keyword {
+	width : 20px;
 	margin-top: 10px;
 	margin-right: 2px;
 }
