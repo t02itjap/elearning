@@ -11,7 +11,7 @@
                 var name= $('#nameCategory').val();
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo $this->webroot . 'Teachers/uploadNewDocument' ?>",
+                    url: "<?php echo $this->webroot . 'Teachers/createNewCategory' ?>",
                     data: { name: name}
                 }) .done(function(data) {
                     var data =  $.parseJSON(data);

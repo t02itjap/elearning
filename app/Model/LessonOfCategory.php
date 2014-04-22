@@ -11,12 +11,12 @@ class LessonOfCategory extends AppModel {
             'foreignKey' => 'category_id'
         )
     );
-    public $hasAndBelongsToMany = array(
-        'Lesson' => array(
-            'className' => 'Lesson',
-            'foreignKey' => 'lesson_id'
-        )
-    );
+//    public $hasAndBelongsToMany = array(
+//        'Lesson' => array(
+//            'className' => 'Lesson',
+//            'foreignKey' => 'lesson_id'
+//        )
+//    );
 
     //Get lesson id and category name
     public function getLIdAndCName() {
