@@ -89,7 +89,7 @@
                             echo '<li>';
                             echo $this->Form->checkbox('Category', array(
                                 'value' => $category['Category']['id'],
-                                'name' => 'data[Lesson][category' . $category['Category']['id'] . ']',
+                                'name' => 'data[Lesson][category][]',
                             ));
                             echo '</li>';
                         }
