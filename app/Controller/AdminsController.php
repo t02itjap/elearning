@@ -145,12 +145,13 @@ function index(){
         $this->set(compact('student'));
         if (isset($this->request->data['submit_data'])) {
             $data = $this->request->data;
-            if ($student['User']['email'] == $data['User']['email'] && $student['User']['phone_number'] == $data['User']['phone_number'] && $student['User']['address'] == $data['User']['address'] && $student['User']['bank_account_code'] == $data['User']['bank_account_code']) {
+            $bankCode = $data ['User'] ['cardPart1'].'-'.$data ['User'] ['cardPart2'].'-'.$data ['User'] ['cardPart3'].'-'.$data ['User'] ['cardPart4'].'-'.$data ['User'] ['cardPart5'];
+            if ($student['User']['email'] == $data['User']['email'] && $student['User']['phone_number'] == $data['User']['phone_number'] && $student['User']['address'] == $data['User']['address'] && $student['User']['bank_account_code'] == $bankCode) {
                 $this->Session->setFlash('情報を変更しなかった。');
                 $this->redirect(array('controller' => 'Admins', 'action' => 'student_manager',  $student['User']['id']));
             } else {
                 $this->User->set(array(
-                    'bank_account_code' => $data['User']['bank_account_code'],
+                    'bank_account_code' => $bankCode,
                     'address' => $data['User']['address'],
                     'phone_number' => $data['User']['phone_number'],
                     ));
@@ -205,12 +206,13 @@ function index(){
         $this->set(compact('teacher'));
         if (isset($this->request->data['submit_data'])) {
             $data = $this->request->data;
-            if ($teacher['User']['email'] == $data['User']['email'] && $teacher['User']['phone_number'] == $data['User']['phone_number'] && $teacher['User']['address'] == $data['User']['address'] && $teacher['User']['bank_account_code'] == $data['User']['bank_account_code']) {
+            $bankCode = $data ['User'] ['bankCodePart1'].'-'.$data ['User'] ['bankCodePart2'].'-'.$data ['User'] ['bankCodePart3'].'-'.$data ['User'] ['bankCodePart4'];
+            if ($teacher['User']['email'] == $data['User']['email'] && $teacher['User']['phone_number'] == $data['User']['phone_number'] && $teacher['User']['address'] == $data['User']['address'] && $teacher['User']['bank_account_code'] == $bankCode) {
                 $this->Session->setFlash('情報を変更しなかった。');
                 $this->redirect(array('controller' => 'Admins', 'action' => 'teacherManager', $teacher['User']['id']));
             } else {
                 $this->User->set(array(
-                    'bank_account_code' => $data['User']['bank_account_code'],
+                    'bank_account_code' => $bankCode,
                     'address' => $data['User']['address'],
                     'phone_number' => $data['User']['phone_number'],
                     ));
@@ -996,4 +998,5 @@ public function database_manager() {
 				'action' => 'database_manager' 
 		) );
 	}
+
 }

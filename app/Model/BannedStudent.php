@@ -21,6 +21,6 @@ class BannedStudent extends AppModel {
 			return $this->find('first',array('conditions'=>array('student_id'=>$_user['User']['id'])));
 		else 
 			return false;
-		}	
+	}
 
 }

@@ -54,13 +54,13 @@ class User extends AppModel {
 		'bank_accout_code' => array(
 			'notempty' => array(
 				'rule' => array('notempty'),
-				'message' => '銀行口座あういはクレジットカード番号をにゅうりょくしてください。',
+				'message' => '銀行口座あういはクレジットカード番号を入力してください。',
 			),
 		),
 		'phone_number' => array(
 			'notempty' => array(
 				'rule' => array('notempty'),
-				'message' => '電話番号をにゅうりょくしてください。',
+				'message' => '電話番号を入力してください。',
 			),
 			'min' => array(
 				'rule' => array('minLength', 6),

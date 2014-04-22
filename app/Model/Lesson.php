@@ -19,12 +19,7 @@ class Lesson extends AppModel {
             'foreignKey' => 'lesson_id'
         )
     );
-//    public $hasAndBelongsToMany = array(
-//		'LessonOfCategory'=> array(
-//			'className'=>'LessonOfCategory',
-//			'foreignKey'=>'lesson_id'
-//			)
-//		);
+
     /*
       public $hasMany = array(
       'User' => array(
@@ -33,6 +28,7 @@ class Lesson extends AppModel {
       )
       //Het phan Thang viet
       ); */
+
     public $belongsTo = array(
         'User' => array(
             'className' => 'User',
@@ -103,7 +99,6 @@ class Lesson extends AppModel {
 			)
 		)
 	);
-
 }
 
 ?>

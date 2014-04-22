@@ -55,12 +55,14 @@ class StudentsController extends AppController {
             $data = $this->request->data;
             $checkPassword = sha1($student['User']['user_name'] . $data['User']['password'] . $forPass);
             if ($checkPassword == $student['User']['password']) {
-                if ($student['User']['email'] == $data['User']['email'] && $student['User']['phone_number'] == $data['User']['phone_number'] && $student['User']['address'] == $data['User']['address'] && $student['User']['bank_account_code'] == $data['User']['bank_account_code']) {
+            	$bankCode = $data ['User'] ['cardPart1'].'-'.$data ['User'] ['cardPart2'].'-'.$data ['User'] ['cardPart3'].'-'.$data ['User'] ['cardPart4'].'-'.$data ['User'] ['cardPart5'];
+                if ($student['User']['email'] == $data['User']['email'] && $student['User']['phone_number'] == $data['User']['phone_number'] && $student['User']['address'] == $data['User']['address'] && $student['User']['bank_account_code'] == $bankCode) {
                     $this->Session->setFlash('情報を変更しなかった。');
                     $this->redirect(array('controller' => 'Students', 'action' => 'change_info'));
                 } else {
+                	$bankCode = $data ['User'] ['cardPart1'].'-'.$data ['User'] ['cardPart2'].'-'.$data ['User'] ['cardPart3'].'-'.$data ['User'] ['cardPart4'].'-'.$data ['User'] ['cardPart5'];
                     $this->User->set(array(
-                        'bank_account_code' => $data['User']['bank_account_code'],
+                        'bank_account_code' => $bankCode,
                         'address' => $data['User']['address'],
                         'phone_number' => $data['User']['phone_number'],
                     ));
