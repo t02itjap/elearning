@@ -17,7 +17,8 @@ echo $this->Form->year('year', 2013, date('Y'), array('id' => 'year_id', 'value'
 echo "年";
 echo $this->Form->month('month', array('id' => 'month_id', 'value' => date('M', strtotime($time))));
 echo "月";
-echo $this->Form->end('表示');
+echo $this->Form->input('表示', array('type' => 'submit', 'class' => 'link-button', 'label' => false));
+echo $this->Form->end();
 ?>
 
 <div>
@@ -61,9 +62,9 @@ echo $this->Form->end('表示');
     ));
 ?>
 
-<p>合計報酬: <?php echo $sum; ?></p>
+<br>合計報酬: <?php echo $sum; ?></br>
 <?php
-echo $this->Html->Link('Download', array('class' => 'link-button', 'controller' => 'teachers', 'action' => 'exportBill', $time));
+echo $this->Html->Link('ダウンロード', array('controller' => 'teachers', 'action' => 'exportBill', $time), array('class' => 'link-button'));
 ?>
 <!--<script>
     $(document).ready(function() {

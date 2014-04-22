@@ -3,11 +3,10 @@
 class TeachersController extends AppController {
 
     public $name = "Teachers";
-    
-    var $uses = array('User', 'Test', 'Lesson', 'Bill', 'Category', 'Document', 'TestHistory', 'ChangeableValue', 'Bill','BannedStudent','Verifycode','LessonOfCategory');
+    var $uses = array('User', 'Test', 'Lesson', 'Bill', 'Category', 'Document', 'TestHistory', 'ChangeableValue', 'Bill', 'BannedStudent', 'Verifycode', 'LessonOfCategory');
     var $helpers = array('Html', 'Form', 'Editor');
     public $components = array('Paginator', 'RequestHandler');
-    
+
     public function beforeFilter() {
         parent::beforeFilter();
         $this->layout = 'teacher';
@@ -15,7 +14,7 @@ class TeachersController extends AppController {
     }
 
     public function isAuthorized() {
-        if ($this->Auth->user('level') == 2)
+        if ($this->Auth->user('level') == 2 || $this->Auth->user('level') == 1)
             return true;
         else {
             $this->Session->setFlash("Access deny");
@@ -24,83 +23,102 @@ class TeachersController extends AppController {
         }
     }
 
-public function summary($id = 1) {
-		// get lesson summary info
-		$lesson = $this->Lesson->find ( 'first', array (
-				'conditions' => array (
-						'Lesson.id' => $id 
-				),
-				'fields' => array (
-						'viewers',
-						'voters' 
-				) 
-		) );
-		$snum = $this->Bill->find ( "count", array (
-				'conditions' => array (
-						'lesson_id' => $id 
-				),
-				'group' => array (
-						'user_id' 
-				) 
-		) );
-		
-		// get learned student
-		$this->paginate = array (
-				'limit'=>5,
-				'fields' => array (
-						'user_id',
-						'learn_date' 
-				),
-				'conditions' => array (
-						'lesson_id' => $id 
-				) 
-		);
-		
-		$students = $this->paginate('Bill');
-		$this->set ( 'lesson', $lesson );
-		$this->set ( 'snum', $snum );
-		$i = - 1;
-		foreach ( $students as $s ) {
-			$i ++;
-			$info = $this->User->field ( 'user_name', array (
-					'id' => $s ['Bill'] ['user_id'] 
-			) );
-			$students [$i] ['Bill'] ['user_name'] = $info;
-		}
-		
-		$this->set ( compact ( 'students' ) );
-		// get ban student list
-		$this->paginate = array('limit'=>5,
-				'conditions'=>array(
-						'teacher_id' => $this->Auth->user ( 'id' )
-		));
-		
-		$banList = $this->paginate('BannedStudent');
+    public function summary($id = 1) {
+        $this->set('title_for_layout', '授業サマリー');
+        // get lesson summary info
+        $lesson = $this->Lesson->find('first', array(
+            'conditions' => array(
+                'Lesson.id' => $id
+            ),
+            'fields' => array(
+                'viewers',
+                'voters'
+            )
+                ));
 
-		$this->set ( compact ( 'banList' ) );
-		
-		// block button action
-		if ($this->request->is ( 'post' )) {
-			$ban = $this->request->data;
-			if (! $this->BannedStudent->isBanned ( $ban ['BannedStudent'] ['StudentName'] ) && $stu = $this->User->find ( 'first', array (
-					'conditions' => array (
-							'user_name' => $ban ['BannedStudent'] ['StudentName'],
-							'level' => 3 
-					) 
-			) )) {
-				$this->BannedStudent->create ();
-				$this->BannedStudent->set ( array (
-						'teacher_id' => $this->Auth->user ( 'id' ),
-						'student_id' => $stu ['User'] ['id'],
-						'reason' => $ban ['BannedStudent'] ['Reason'] 
-				) );
-				$this->BannedStudent->save ();
-				$this->Session->setFlash ( 'ブロックが成功した' );
-			} else {
-				$this->Session->setFlash ( "ユーザネームが存在しない" );
-			}
-		}
-	}
+        $lesson ['Lesson'] ['voters'] = explode(",", $lesson ['Lesson'] ['voters']);
+        $lesson ['Lesson'] ['vote_count'] = count($lesson ['Lesson'] ['voters']);
+
+        $snum = $this->Bill->find("count", array(
+            'conditions' => array(
+                'lesson_id' => $id
+            ),
+            'group' => array(
+                'user_id'
+            )
+                ));
+
+        // get learned student
+        $this->paginate = array(
+            'fields' => array(
+                'user_id',
+                'learn_date'
+            ),
+            'conditions' => array(
+                'lesson_id' => $id
+            )
+        );
+
+        $students = $this->paginate('Bill');
+        $this->set('lesson', $lesson);
+        $this->set('snum', $snum);
+        $i = - 1;
+        foreach ($students as $s) {
+            $i++;
+            $info = $this->User->field('user_name', array(
+                'id' => $s ['Bill'] ['user_id']
+                    ));
+            $students [$i] ['Bill'] ['user_name'] = $info;
+        }
+
+        $this->set(compact('students'));
+        // get ban student list
+        $this->paginate = array(
+            'limit' => 5,
+            'conditions' => array(
+                'teacher_id' => $this->Auth->user('id')
+            )
+        );
+
+        $banList = $this->paginate('BannedStudent');
+
+        $this->set(compact('banList'));
+
+        // block button action
+        if ($this->request->is('post')) {
+            if (isset($this->request->data ['block'])) {
+                $ban = $this->request->data;
+                if (!$stu = $this->User->find('first', array(
+                    'conditions' => array(
+                        'user_name' => $ban ['BannedStudent'] ['StudentName'],
+                        'level' => 3
+                    )
+                        ))) {
+                    $this->Session->setFlash("ユーザネームが存在しない");
+                    return;
+                }
+                if (!$this->BannedStudent->isBanned($ban ['BannedStudent'] ['StudentName'])) {
+                    $this->BannedStudent->create();
+                    $this->BannedStudent->set(array(
+                        'teacher_id' => $this->Auth->user('id'),
+                        'student_id' => $stu ['User'] ['id'],
+                        'reason' => $ban ['BannedStudent'] ['Reason']
+                    ));
+                    $this->BannedStudent->save();
+                    $this->Session->setFlash('ブロックが成功した');
+                    $this->redirect(array('controller' => 'teachers', 'action' => 'summary', $lesson['Lesson']['id']));
+                } else {
+                    $this->Session->setFlash("ユーザネームがブロックした");
+                }
+            }
+        }
+    }
+
+    public function unblock($banId, $lessonId) {
+        $this->autoRender = false;
+        $this->BannedStudent->delete($banId);
+        $this->redirect(array('controller' => 'Teachers', 'action' => 'summary', $lessonId));
+    }
 
     public function change_info() {
         $this->set('title_for_layout', '個人情報を変更する');
@@ -111,11 +129,12 @@ public function summary($id = 1) {
             $data = $this->request->data;
             $checkPassword = sha1($teacher ['User'] ['user_name'] . $data ['User'] ['password'] . $forPass);
             if ($checkPassword == $teacher ['User'] ['password']) {
-                if ($teacher ['User'] ['email'] == $data ['User'] ['email'] && $teacher ['User'] ['phone_number'] == $data ['User'] ['phone_number'] && $teacher ['User'] ['address'] == $data ['User'] ['address'] && $teacher ['User'] ['bank_account_code'] == $data ['User'] ['bank_account_code']) {
+                $bankCode = $data ['User'] ['bankCodePart1'] . '-' . $data ['User'] ['bankCodePart2'] . '-' . $data ['User'] ['bankCodePart3'] . '-' . $data ['User'] ['bankCodePart4'];
+                if ($teacher ['User'] ['email'] == $data ['User'] ['email'] && $teacher ['User'] ['phone_number'] == $data ['User'] ['phone_number'] && $teacher ['User'] ['address'] == $data ['User'] ['address'] && $teacher ['User'] ['bank_account_code'] == $bankCode) {
                     $this->Session->setFlash('情報を変更しなかった。');
                     $this->redirect(array('controller' => 'Teachers', 'action' => 'change_info'));
                 } else {
-                    $this->User->set(array('bank_account_code' => $data ['User'] ['bank_account_code'], 'address' => $data ['User'] ['address'], 'phone_number' => $data ['User'] ['phone_number']));
+                    $this->User->set(array('bank_account_code' => $bankCode, 'address' => $data ['User'] ['address'], 'phone_number' => $data ['User'] ['phone_number']));
                     if ($teacher ['User'] ['email'] != $data ['User'] ['email']) {
                         $this->User->set(array('email' => $data ['User'] ['email']));
                     }
@@ -143,43 +162,44 @@ public function summary($id = 1) {
         }
     }
 
-function changeVerify() {
-		$id = $this->Auth->user ( 'id' );
-		$teacher = $this->Verifycode->find ( 'first', array (
-				'conditions' => array (
-						'user_id' => $id 
-				) 
-		) );
-		$this->set ( compact ( 'teacher' ) );
-		
-		if ($this->request->is ( 'post' )) {
-			$data = $this->request->data;
-			if (sha1 ( $this->Auth->user ( 'user_name' ) . $data ['User'] ['verifycode1'] . 'sha1' ) == $teacher ['Verifycode'] ['verifycode']) {
-				$this->Verifycode->id = $this->Auth->user ( 'id' );
-				$this->Verifycode->set ( 'verifycode', sha1 ( $this->Auth->user ( 'user_name' ) . $data ['User'] ['verifycode2'] . 'sha1' ) );
-				$this->Verifycode->save ();
-				$this->Session->setFlash ( 'Verifyコード変更が成功した' );
-			} else {
-				$this->Session->setFlash ( '現在Verifyコードが間違う' );
-			}
-		}
-	}
+    function changeVerify() {
+        $id = $this->Auth->user('id');
+        $teacher = $this->Verifycode->find('first', array(
+            'conditions' => array(
+                'user_id' => $id
+            )
+                ));
+        $this->set(compact('teacher'));
 
-function changePass() {
-		if ($this->request->is ( 'post' )) {
-			$data = $this->request->data;
-			// debug($this->Auth->user('password'));
-			if (sha1 ( $this->Auth->user ( 'user_name' ) . $data ['User'] ['pass1'] . 'sha1' ) == $this->User->field ( 'password', array (
-					'id' => $this->Auth->user ( 'id' ) 
-			) )) {
-				$this->User->id = $this->Auth->user ( 'id' );
-				$this->User->set ( 'password', sha1 ( $this->Auth->user ( 'user_name' ) . $data ['User'] ['pass2'] . 'sha1' ) );
-				$this->User->save ();
-				$this->Session->setFlash ( 'パスワード変更が成功した' );
-			} else
-				$this->Session->setFlash ( '現在パスワードが間違う' );
-		}
-	}
+        if ($this->request->is('post')) {
+            $data = $this->request->data;
+            if (sha1($this->Auth->user('user_name') . $data ['User'] ['verifycode1'] . 'sha1') == $teacher ['Verifycode'] ['verifycode']) {
+                $this->Verifycode->id = $this->Auth->user('id');
+                $this->Verifycode->set('verifycode', sha1($this->Auth->user('user_name') . $data ['User'] ['verifycode2'] . 'sha1'));
+                $this->Verifycode->save();
+                $this->Session->setFlash('Verifyコード変更が成功した');
+            } else {
+                $this->Session->setFlash('現在Verifyコードが間違う');
+            }
+        }
+    }
+
+    function changePass() {
+        $this->set('title_for_layout', 'パスワードを変更する。');
+        if ($this->request->is('post')) {
+            $data = $this->request->data;
+            // debug($this->Auth->user('password'));
+            if (sha1($this->Auth->user('user_name') . $data ['User'] ['pass1'] . 'sha1') == $this->User->field('password', array(
+                        'id' => $this->Auth->user('id')
+                    ))) {
+                $this->User->id = $this->Auth->user('id');
+                $this->User->set('password', sha1($this->Auth->user('user_name') . $data ['User'] ['pass2'] . 'sha1'));
+                $this->User->save();
+                $this->Session->setFlash('パスワード変更が成功した');
+            } else
+                $this->Session->setFlash('現在パスワードが間違う');
+        }
+    }
 
     function home() {
         //debug($this->Auth->user());
@@ -188,17 +208,20 @@ function changePass() {
     public function createNewCategory() {
 //      新しいカテゴリを作成する機能
         if (isset($_POST['name'])) {
-            //var_dump($_POST['name']);
-            $data = array('category_name' => $_POST['name']);   //新しいデータベースを作成
-            $this->Category->create();
-            $this->Category->save($data);                       //データベースにデータを保存する
-            //$this->set('id', $this->Category->id);
-            //$category = $this->Category->find('first', array('conditions' => array('category_name' => $_POST['name'])));
-            $data['id'] = $this->Category->id;
-            //$this->Category->id;
-            $data['name'] = $_POST['name'];
-            //カテゴリテーブルの情報を取得する
-            echo json_encode($data);
+            $category = $this->Category->find('first', array(
+                'conditions' => array(strtolower('category_name') => strtolower($_POST['name']))
+                    ));
+            if ($category) {
+                $data['error'] = 'このカテゴリーが存在でした。';
+                echo json_encode($data);
+            } else {
+                $data = array('category_name' => $_POST['name']);   //新しいデータベースを作成
+                $this->Category->create();
+                $this->Category->save($data);                       //データベースにデータを保存する
+                $data['id'] = $this->Category->id;
+                $data['name'] = $_POST['name'];
+                echo json_encode($data);
+            }
         }
 
         die; //デバッグのため停止
@@ -208,11 +231,14 @@ function changePass() {
         //新しいレッスンを作成する 
         $categories = $this->Category->find('all');
         $this->set('categories', $categories);
+        $user_id = $this->Auth->user('id');
         //カテゴリテーブルを取得
+        //$categoriesOfLesson = $this->LessonOfCategory->find('all');
+
         if (isset($this->request->data['ok'])) {                //教師のユーザーのクリックを提出した場合
             //debug($this->request->data);                        //データがプログラマに表示さ
             $data = $this->request->data;
-            $this->LessonOfCategory->create();
+            //$this->LessonOfCategory->create();
             $this->Lesson->set(array(
                 'lesson_name' => $data['Lesson']['Name'],
                 'description' => $data['Lesson']['Description'],
@@ -223,6 +249,14 @@ function changePass() {
 
             $this->Lesson->save();
             $lesson_id = $this->Lesson->id;
+            foreach ($data['Lesson']['category'] as $value) {
+                if ($value != '0') {
+                    $this->LessonOfCategory->create();
+                    $this->LessonOfCategory->set('lesson_id', $lesson_id);
+                    $this->LessonOfCategory->set('category_id', $value);
+                    $this->LessonOfCategory->save();
+                }
+            }
             //データベースにデータを保存する
             $uploadData = $data['Lesson']['file_link_document'];
             foreach ($uploadData as $upData) {
@@ -231,14 +265,17 @@ function changePass() {
                 //新しいドキュメントのテーブルのデータベースを作成する 
                 if ($this->Document->checkValid($upData['name'])) {
                     $this->Document->set(array(
-                        'file_link' => 'files/' . $upData['name'],
+                        'file_link' => 'files' . DS . $user_id . DS . $upData['name'],
                         'file_name' => $upData['name'],
                         'create_user_id' => $this->Auth->user('id'),
                         'lesson_id' => $lesson_id,
                         'create_date' => date('Y/m/d H:i:s'),
                     ));
                     $this->Document->save();
-                    move_uploaded_file($upData['tmp_name'], WWW_ROOT . 'files/' . DS . $upData['name']);
+                    if (!file_exists(WWW_ROOT . 'files' . DS . $user_id)) {
+                        mkdir(WWW_ROOT . 'files' . DS . $user_id, 0700);
+                    }
+                    move_uploaded_file($upData['tmp_name'], WWW_ROOT . 'files' . DS . $user_id . DS . $upData['name']);
                 } else {
                     $err = 'File sai dinh dang hoac da bi trung, moi nhap lai';
                     $this->set(compact('err'));
@@ -253,14 +290,17 @@ function changePass() {
                 //新しいドキュメントのテーブルのデータベースを作成する 
                 if ($this->Test->checkValid($upData['name'])) {
                     $this->Test->set(array(
-                        'file_link' => 'files/' . $upData['name'],
+                        'file_link' => 'files' . DS . $user_id . DS . $upData['name'],
                         'file_name' => $upData['name'],
                         'create_user_id' => $this->Auth->user('id'),
                         'lesson_id' => $lesson_id,
                         'create_date' => date('Y/m/d H:i:s'),
                     ));
                     $this->Test->save();
-                    move_uploaded_file($upData['tmp_name'], WWW_ROOT . 'files/' . DS . $upData['name']);
+                    if (!file_exists(WWW_ROOT . 'files' . DS . $user_id)) {
+                        mkdir(WWW_ROOT . 'files' . DS . $user_id, 0700);
+                    }
+                    move_uploaded_file($upData['tmp_name'], 'files' . DS . $user_id . DS . $upData['name']);
                 } else {
                     $err1 = 'File sai dinh dang hoac da bi trung, moi nhap lai';
                     $this->set(compact('err1'));
@@ -302,7 +342,15 @@ function changePass() {
                 $this->Lesson->set('description', $data['Lesson']['Description']);
             //新しいレッスンのテーブルのデータベースを作成する 
             $this->Lesson->save();
-            //$lesson_id = $this->Lesson->id;
+            $lesson_id = $this->Lesson->id;
+            foreach ($data['Lesson']['category'] as $value) {
+                if ($value != '0') {
+                    $this->LessonOfCategory->create();
+                    $this->LessonOfCategory->set('lesson_id', $lesson_id);
+                    $this->LessonOfCategory->set('category_id', $value);
+                    $this->LessonOfCategory->save();
+                }
+            }
             //データベースにデータを保存する
             if (isset($data['Lesson']['file_link_document'])) {
                 $uploadData = $data['Lesson']['file_link_document'];
@@ -312,13 +360,17 @@ function changePass() {
                     //新しいドキュメントのテーブルのデータベースを作成する 
                     if ($this->Document->checkValid($upData['name'])) {
                         $this->Document->set(array(
-                            'file_link' => 'files/' . $upData['name'],
+                            'file_link' => 'files' . DS . $user_id . DS . $upData['name'],
                             'file_name' => $upData['name'],
                             'create_user_id' => $this->Auth->user('id'),
                             'lesson_id' => $id_lesson
                         ));
                         $this->Document->save();
-                        move_uploaded_file($upData['tmp_name'], WWW_ROOT . 'files/' . DS . $upData['name']);
+                        $user_id = $this->Auth->user('id');
+                        if (!file_exists(WWW_ROOT . 'files' . DS . $user_id)) {
+                            mkdir(WWW_ROOT . 'files' . DS . $user_id, 0700);
+                        }
+                        move_uploaded_file($upData['tmp_name'], 'files' . DS . $user_id . DS . $upData['name']);
                     } else {
                         $err = 'File sai dinh dang hoac da bi trung, moi nhap lai';
                         $this->set(compact('err'));
@@ -334,13 +386,16 @@ function changePass() {
                     //新しいドキュメントのテーブルのデータベースを作成する 
                     if ($this->Test->checkValid($upData['name'])) {
                         $this->Test->set(array(
-                            'file_link' => 'files/' . $upData['name'],
+                            'file_link' => 'files' . DS . $user_id . DS . $upData['name'],
                             'file_name' => $upData['name'],
                             'create_user_id' => $this->Auth->user('id'),
                             'lesson_id' => $id_lesson
                         ));
                         $this->Test->save();
-                        move_uploaded_file($upData['tmp_name'], WWW_ROOT . 'files/' . DS . $upData['name']);
+                        if (!file_exists(WWW_ROOT . 'files' . DS . $user_id)) {
+                            mkdir(WWW_ROOT . 'files' . DS . $user_id, 0700);
+                        }
+                        move_uploaded_file($upData['tmp_name'], 'files' . DS . $user_id . DS . $upData['name']);
                     } else {
                         $err1 = 'File sai dinh dang hoac da bi trung, moi nhap lai';
                         $this->set(compact('err1'));
@@ -365,7 +420,8 @@ function changePass() {
 
     public function uploadNewDocument() {
         if (isset($_FILES)) {
-            $uploaddir = WWW_ROOT . 'files/';
+            $user_id = $this->Auth->user('id');
+            $uploaddir = WWW_ROOT . 'files' . DS . $user_id . DS;
             $uploadfile = $uploaddir . basename($_FILES['file-0']['name']);
             $check = FALSE;
             //check file
@@ -381,7 +437,8 @@ function changePass() {
 
     public function uploadNewTest() {
         if (isset($_FILES)) {
-            $uploaddir = WWW_ROOT . 'files/';
+            $user_id = $this->Auth->user('id');
+            $uploaddir = WWW_ROOT . 'files' . DS . $user_id . DS;
             $uploadfile = $uploaddir . basename($_FILES['file-0']['name']);
             $check = FALSE;
             //check file
@@ -409,12 +466,13 @@ function changePass() {
     public function updateNewDocument() {
         if (isset($_GET)) {
             var_dump($_GET);
-            $url = WWW_ROOT . 'files/' . $_GET['old_name'];
+            $user_id = $this->Auth->user('id');
+            $url = WWW_ROOT . 'files' . DS . $user_id . DS . $_GET['old_name'];
             unlink($url);
             $documentId = $_GET['id'];
             $this->Document->id = $documentId;
             $this->Document->set(array(
-                'file_link' => 'files/' . $_GET['newName'],
+                'file_link' => 'files' . DS . $user_id . DS . $_GET['newName'],
                 'file_name' => $_GET['newName']
             ));
             $this->Document->save();
@@ -425,12 +483,13 @@ function changePass() {
     public function updateNewTest() {
         if (isset($_GET)) {
             var_dump($_GET);
-            $url = WWW_ROOT . 'files/' . $_GET['old_name'];
+            $user_id = $this->Auth->user('id');
+            $url = WWW_ROOT . 'files' . DS . $user_id . DS . $_GET['old_name'];
             unlink($url);
             $documentId = $_GET['id'];
             $this->Test->id = $documentId;
             $this->Test->set(array(
-                'file_link' => 'files/' . $_GET['newName'],
+                'file_link' => 'files' . DS . $user_id . DS . $_GET['newName'],
                 'file_name' => $_GET['newName']
             ));
             $this->Test->save();
@@ -502,7 +561,7 @@ function changePass() {
             'group' => 'Bill.lesson_id'
 
 //                ));
-        ));
+                ));
         $sum = 0;
         foreach ($temp2 as $item) {
             $sum += $item[0]['SUM'];
@@ -523,6 +582,7 @@ function changePass() {
         $this->Session->write('data', $data);
         $sum = 0;
     }
+
     function exportBill($time) {
         $temp = $this->ChangeableValue->find('first', array('conditions' => array('id' => 2)));
         $rate = $temp['ChangeableValue']['current_value'];
@@ -540,10 +600,11 @@ function changePass() {
                 'Bill.lesson_cost'
             ),
             'group' => 'Bill.lesson_id'
-        ));
+                ));
         //debug($temp2);die;
         $this->set('temp2', $temp2);
         $this->layout = null;
         $this->autoLayout = false;
     }
+
 }

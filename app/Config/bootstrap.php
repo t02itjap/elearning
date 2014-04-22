@@ -105,3 +105,29 @@ CakeLog::config('error', array(
 	'types' => array('warning', 'error', 'critical', 'alert', 'emergency'),
 	'file' => 'error',
 ));
+
+$log_path=LOGS.DS.date('Y').'/'.date('m').'/'.date('d').'/';
+CakeLog::config('system', array(
+	'engine'=>'File',
+	'types'=>array('warning', 'error', 'critical', 'alert', 'emergency', 'notice', 'info', 'debug'),
+	'file'=> 'System',
+	'path'=>$log_path
+	));
+CakeLog::config('student', array(
+	'engine'=>'File',
+	'file'=>'Student',
+	'scopes'=>array('student'),
+	'path'=>$log_path
+	));
+CakeLog::config('manager', array(
+	'engine'=>'File',
+	'file'=>'Manager',
+	'scopes'=>array('manager'),
+	'path'=>$log_path
+	));
+CakeLog::config('teacher', array(
+	'engine'=>'File',
+	'file'=>'Teacher',
+	'scopes'=>array('teacher'),
+	'path'=>$log_path
+	));

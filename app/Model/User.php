@@ -6,79 +6,79 @@ class User extends AppModel {
 		'user_name' => array(
 			'notempty' => array(
 				'rule' => array('notempty'),
-				'message' => 'hay nhap user name',
+				'message' => 'ユーザネームを入力してください。',
 			),
 			'min' => array(
-				'rule' => array('minLength', 4),
-				'message' => 'user name phai co it nhat 4 ki tu ',
+				'rule' => array('minLength', 3),
+				'message' => 'ユーザネームが３キャラクタ以上あらなければなりません',
 			),
 			'max' => array(
 				'rule' => array('maxLength', 16),
-				'message' => 'user name khong duoc qua 16 ki tu',
+				'message' => 'ユーザネームが１６キャラクタ以下あらなければなりません',
 			),
 			'check character' => array(
-				'rule' => '/^[a-z0-9]{4,16}$/i',
-				'message' => 'user name chi chua so va chu cai thuong'
+				'rule' => '/^[a-z0-9]{3,16}$/i',
+				'message' => 'ユーザネームが数と通常キャラクタがあらなければなりません'
 			),
 			'check exist' => array(
 				'rule' => 'isUnique',
-				'message' => 'user name da ton tai',
+				'message' => 'このユーザネームが存在でした。',
 			),
 		),
 		'real_name' => array(
 			'notempty' => array(
 				'rule' => array('notempty'),
-				'message' => 'hay nhap ten that',
+				'message' => '名前を入力してください。',
 			),
 		),
 		'email' => array(
 			'notempty' => array(
 				'rule' => array('notempty'),
-				'message' => 'hay nhap mail',
+				'message' => 'メールを入力してください。',
 			),
 			'check validation' => array(
 				'rule' => array('email'),
-				'message' => 'mail cua ban khong hop le',
+				'message' => 'メール形態が間違いです。',
 			),
 			'check exist' => array(
 				'rule' => 'isUnique',
-				'message' => 'email nay da duoc su dung',
+				'message' => 'このメールが存在でした',
 			)
 		),
 		'address' => array(
 			'notempty' => array(
 				'rule' => array('notempty'),
-				'message' => 'hay nhap dia chi',
+				'message' => 'アドレスを入力してください。',
 			),
 		),
 		'bank_accout_code' => array(
 			'notempty' => array(
 				'rule' => array('notempty'),
-				'message' => 'hay nhap ma ngan hang',
+				'message' => '銀行口座あういはクレジットカード番号を入力してください。',
 			),
 		),
 		'phone_number' => array(
 			'notempty' => array(
 				'rule' => array('notempty'),
-				'message' => 'hay nhap so dien thoai',
+				'message' => '電話番号を入力してください。',
 			),
 			'min' => array(
 				'rule' => array('minLength', 6),
-				'message' => 'so dien thoai phai co it nhat 6 so ',
+				'message' => '電話番号が６キャラクタ以上あらなければなりません ',
 			),
 			'max' => array(
 				'rule' => array('maxLength', 15),
-				'message' => 'so dien thoai khong duoc qua 15 so',
+				'message' => '電話番号が１５キャラクタ以下あらなければなりません',
 			),
 		),
 		'birth_date' => array(
 			'notempty' => array(
 				'rule' => array('notempty'),
-				'message' => 'hay nhap ngay sinh',
+				'message' => '誕生日をにゅうりょくしてください。',
 			),
 			'check birth date' => array(
 				'rule' => array('date','ymd'),
-				'message' => 'ngay sinh khong hop le'
+				'message' => '誕生日が間違い。'
 			),
 		),
 	);

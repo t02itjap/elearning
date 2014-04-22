@@ -109,7 +109,7 @@ echo $this->Form->create ( 'User', array ('type' => 'file' ) )?>
 		<td><span>*</span>電話番号</td>
 		<td>
             <?php
-				echo $this->Form->input ( 'phone_number', array ('div' => false, 'label' => false, 'type' => 'text', 'class' => 'must_info', 'id' => 'phone_number' ) );
+				echo $this->Form->input ( 'phone_number', array ('div' => false, 'label' => false, 'type' => 'number', 'class' => 'must_info', 'id' => 'phone_number' ) );
 			?>
         </td>
 	</tr>
@@ -127,4 +127,12 @@ echo $this->Form->create ( 'User', array ('type' => 'file' ) )?>
 echo $this->Form->end ()?>
 <!-- end form -->
 <script type="text/javascript">
+$("#submit_button").click(function(){
+    var passwordVal = $("#password").val();
+    var checkVal = $("#re_password").val();
+    if (passwordVal != checkVal ) {
+        $("#re_password").after('<br><span class = "error-message">確認パスワードが間違い。</span>');
+        return false;
+    }
+});
 </script>

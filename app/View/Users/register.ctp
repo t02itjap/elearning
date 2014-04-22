@@ -1,6 +1,6 @@
 <?php
 echo $this->Html->script ( array (
-		'jquery.validate' 
+		'jquery.validate', 'jquery-1.4.4.min.js'
 ) );
 ?>
 
@@ -90,7 +90,7 @@ echo $this->Form->create ( 'User', array ('type' => 'post', 'novalidate' => 'tru
 					echo $this->Form->input ( 'email', array ('div' => false, 'label' => false, 'type' => 'text', 'class' => 'must_info', 'id' => 'mail' ) );
 					?>
 				</td>
-			</tr>
+		</tr>
 
 			<tr>
 				<td><span>*</span>アカウントタイプ</td>
@@ -120,15 +120,36 @@ echo $this->Form->create ( 'User', array ('type' => 'post', 'novalidate' => 'tru
 				</td>
 			</tr>
 			<?php if(isset($answerErr)) echo '<tr><td></td><td><font color = "#8A0808">'.$answerErr.'</font></td></tr>';?>
-			<td id="bank"><span>*</span>銀行口座</td>
-			<td id="regedit" hidden='true'><span>*</span>クレジットカード番号</td>
+		<tr id="bank">
+			<td><span>*</span>銀行口座</td>
 			<td>
 				<?php
-				echo $this->Form->input ( 'bank_code', array ('div' => false, 'label' => false, 'type' => 'text', 'class' => 'must_info', 'id' => 'bank_code' ) );
+				echo $this->Form->input('bankCodePart1', array('div' => false, 'label' => false, 'type' => 'text','maxlength' => '4', 'style' => 'width: 32px', 'class' => 'onlyNumber', 'id' => 'bankCodePart1' ));
+				echo "<b style = 'font-size: 20px'> - </b>";
+				echo $this->Form->input('bankCodePart2', array('div' => false, 'label' => false, 'type' => 'text','maxlength' => '3', 'style' => 'width: 24px', 'class' => 'onlyNumber', 'id' => 'bankCodePart2' ));
+				echo "<b style = 'font-size: 20px'> - </b>";
+				echo $this->Form->input('bankCodePart3', array('div' => false, 'label' => false, 'type' => 'text','maxlength' => '1', 'style' => 'width: 8px', 'class' => 'onlyNumber', 'id' => 'bankCodePart3' ));
+				echo "<b style = 'font-size: 20px'> - </b>";
+				echo $this->Form->input('bankCodePart4', array('div' => false, 'label' => false, 'type' => 'text','maxlength' => '7', 'style' => 'width: 56px', 'class' => 'onlyNumber', 'id' => 'bankCodePart4' ));							
 				?>
 			</td>
 		</tr>
-		<td></td>
+		<tr id="regedit" hidden='true'>
+			<td><span>*</span>クレジットカード番号</td>
+			<td>
+				<?php
+				echo $this->Form->input('cardPart1', array('div' => false, 'label' => false, 'type' => 'text','maxlength' => '8', 'style' => 'width: 64px', 'class' => 'onlyNumber', 'id' => 'cardPart1' ));
+				echo "<b style = 'font-size: 20px'> - </b>";
+				echo $this->Form->input('cardPart2', array('div' => false, 'label' => false, 'type' => 'text','maxlength' => '4', 'style' => 'width: 32px', 'class' => 'onlyNumber', 'id' => 'cardPart2' ));
+				echo "<b style = 'font-size: 20px'> - </b>";
+				echo $this->Form->input('cardPart3', array('div' => false, 'label' => false, 'type' => 'text','maxlength' => '4', 'style' => 'width: 32px', 'class' => 'onlyNumber', 'id' => 'cardPart3' ));
+				echo "<b style = 'font-size: 20px'> - </b>";
+				echo $this->Form->input('cardPart4', array('div' => false, 'label' => false, 'type' => 'text','maxlength' => '4', 'style' => 'width: 32px', 'class' => 'onlyNumber', 'id' => 'cardPart4' ));							
+				echo "<b style = 'font-size: 20px'> - </b>";
+				echo $this->Form->input('cardPart5', array('div' => false, 'label' => false, 'type' => 'text','maxlength' => '4', 'style' => 'width: 32px', 'class' => 'onlyNumber', 'id' => 'cardPart5' ));				
+				?>
+			</td>
+		</tr>
 		<tr>
 			<td><span>*</span>アドレス</td>
 			<td>
@@ -141,7 +162,7 @@ echo $this->Form->create ( 'User', array ('type' => 'post', 'novalidate' => 'tru
 			<td><span>*</span>電話番号</td>
 			<td>
 				<?php
-				echo $this->Form->input ( 'phone_number', array ('div' => false, 'label' => false, 'type' => 'text', 'class' => 'must_info', 'id' => 'phone_number' ) );
+				echo $this->Form->input ( 'phone_number', array ('div' => false, 'label' => false, 'type' => 'number', 'class' => 'onlyNumber', 'id' => 'phone_number' ) );
 				?>
 			</td>
 		</tr>
@@ -178,9 +199,9 @@ $(document).ready(function(){
 		$("#quest").hide();
 		$("#ans").hide();
 	}
-	$("#phone_number").keypress(function(e){
-        return !(e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57) && e.which != 46);
-	});	
+//	$(".onlyNumber").keypress(function(e){
+//        return !(e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57) && e.which != 46);
+//	});	
 	$("#agree_rule").click(function(){
 		var checked = $(this).attr("checked");
 		if(checked == true){
@@ -189,7 +210,26 @@ $(document).ready(function(){
 			$("#submit_button").attr("disabled","disabled");
 		}
 	});
-	$("#submit_data").click(function(){
+	$("#submit_button").click(function(){
+        var passwordVal = $("#password").val();
+        var checkVal = $("#re_password").val();
+        if (passwordVal != checkVal ) {
+            $("#re_password").after('<br><span class="error-message">確認パスワードが間違い。</span>');
+            return false;
+        }
+        if($("#user_type").val()==2){
+            if($("#bankCodePart1").val().length < 4 || $("#bankCodePart2").val().length < 3 || $("#bankCodePart3").val().length < 1 || $("#bankCodePart4").val().length < 7){
+				alert("銀行口座が間違いです。");
+				return false;
+            }
+        }
+        else{
+            if($("#cardPart1").val().length < 8 || $("#cardPart2").val().length < 4 || $("#cardPart3").val().length < 4 || $("#cardPart4").val().length <4 || $("#cardPart5").val().length <4){
+				alert("クレジットカード番号が間違いです。");
+				return false;
+            }
+        }
+            
 	});
 	$("#user_type").change(function(){
 		var value = $(this).val();

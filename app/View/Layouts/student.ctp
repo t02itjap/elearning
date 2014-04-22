@@ -19,33 +19,7 @@ $cakeDescription = __d ( 'cake_dev', 'CakePHP: the rapid development php framewo
 ?>
 <!DOCTYPE html>
 <html>
-<head>
-	<?php echo $this->Html->charset();?>
-	<title>
-		<?php echo $title_for_layout; ?>
-	</title>
-	<?php
-	echo $this->Html->meta ( 'icon' );
-	
-	echo $this->Html->css ( array (
-			'cake.generic',
-			'style',
-			'jquery-ui.custom' 
-	) );
-	echo $this->Html->script ( array (
-			'jquery-1.7.2.min' 
-	) );
-	echo $this->Html->script ( array (
-			'jquery-ui-1.8.4.custom.min' 
-	) );
-	echo $this->Html->script ( array (
-			'jquery-idleTimeout' 
-	) );
-	echo $this->fetch ( 'meta' );
-	echo $this->fetch ( 'css' );
-	echo $this->fetch ( 'script' );
-	?>
-</head>
+<?php echo $this->element('head');?>
 <body>
 	<div id="container">
 		<?php echo $this->element('header');?>

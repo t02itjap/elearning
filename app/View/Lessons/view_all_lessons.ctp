@@ -2,11 +2,13 @@
 //debug($lessons);
 echo $this->Html->css('style'); 
 echo "<div id='arr_type'>";
+//授業を並べる
 echo "並ぶタイプ：";
 echo $this->Paginator->sort('lesson_name', '授業名');
 echo "&nbsp;-&nbsp;";
 echo $this->Paginator->sort('create_date', '作った日');
 echo "</div>";
+//授業情報を表す
 foreach ($lessons as $lesson): 
 	?>
 <div class='class'>
@@ -15,17 +17,21 @@ foreach ($lessons as $lesson):
 		<li>作った日：<?php echo $lesson['Lesson']['create_date']; ?></li>
 		<li>説明：<?php echo $lesson['Lesson']['description']; ?></li>
 		<li>先生：<?php echo $lesson['User']['user_name']; ?></li>
-		<li>学費：20,000 VND</li>
+		<li>学費：<?php echo $cost; ?> VND</li>
 		<?php 
 		if(isset($level)){
 			switch ($level) {
-				case '1':
-				echo "<li><a href='#' class='see'>見る</a></li>";
+				case '3':
+				echo "<li>";
+				echo $this->Html->link('見る',array('controller' => 'Students', 'action' => 'view_lesson_to_learn', $lesson['Lesson']['id']), array('class' => 'link-button'));
+				echo "</li>";
 				break;
 
 				case '2':
-				echo "<li><a href='#' class='see'>見る</a></li>";
+				echo "<li>";
+				echo $this->Html->link('見る',array('controller' => 'Teachers', 'action' => 'manage_course', $lesson['Lesson']['id']), array('class' => 'link-button'));
 						//echo $this->$Html->link('タイトル違反',array('action'=>'titile_report',$lesson['Lesson']['id']),array('class'=>'confirm_report'));
+				echo "</li>";
 				echo "<li>";
 				echo $this->Html->link(
 					'タイトル違反',
@@ -34,12 +40,12 @@ foreach ($lessons as $lesson):
 						'action' => 'title_report',
 						$lesson['Lesson']['id']
 						),
-					array('class'=>'confirm_report')
+					array('class'=>'confirm_report link-button')
 					);
 				echo "</li>";
 				break;
 				
-				case '3':
+				case '1':
 				echo "<li>";
 				echo $this->Html->link(
 					'削除',
@@ -48,10 +54,12 @@ foreach ($lessons as $lesson):
 						'action' => 'delete_lesson',
 						$lesson['Lesson']['id']
 						),
-					array('class'=>'confirm_delete')
+					array('class'=>'confirm_delete link-button')
 					);
 				echo "</li>";
-				echo "<li><a href='".$this->webroot."students/view_lesson_to_learn/".$lesson['Lesson']['id']."' class='see'>見る</a></li>";
+				echo "<li>";
+				echo $this->Html->link('見る',array('controller' => 'Teachers', 'action' => 'manage_course', $lesson['Lesson']['id']), array('class' => 'link-button'));
+				echo "</li>";
 				break;
 
 				default:
@@ -59,25 +67,9 @@ foreach ($lessons as $lesson):
 				break;
 			}
 		}
-		else
-			echo "<li><a href='#' class='see'>見る</a></li>";
 		?>
 	</ul>
 </div>
 <?php endforeach; ?>
-
-<div class="paging btn-group">
-	<?php
-    echo $this->Paginator->first('最初へ');//di den trang dau tien
-    echo $this->Paginator->prev(__('前へ'), array('class' => 'btn'), null, array('class' => 'prev disabled btn'));
-    echo $this->Paginator->numbers(array('separator' => '', 'class' => 'btn', 'currentClass' => 'disabled'));
-    echo $this->Paginator->next(__('次へ'), array('class' => 'btn'), null, array('class' => 'next disabled btn'));
-    echo $this->Paginator->last('最後へ');//di den trang cuoi cung
-    ?>
-</div>
-<?php
-echo $this->Paginator->counter(array(
-	'format' => __('Kết quả tìm được có {:count} bản ghi bắt đầu từ {:start}  〜 {:end} 　（{:page}/{:pages}）')
-	));
-	?>
+<?php $this->element('paging');?>
 	

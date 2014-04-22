@@ -77,17 +77,17 @@ $(document).ready(function(){
 			  rules: {
 				  'data[User][verifycode1]':{
 					  required:true,
-					  minlength:6,
+					  minlength:3,
 					  maxlength:15
 				  },
 				  'data[User][verifycode2]':{
 					  required:true,
-					  minlength:6,
+					  minlength:3,
 					  maxlength:15
 				  },
 				  'data[User][verifycode3]':{
 					  required:true,
-					  minlength:6,
+					  minlength:3,
 					  maxlength:15,
 					  equalTo:"#UserVerifycode2"
 				  }
@@ -95,17 +95,17 @@ $(document).ready(function(){
 			  messages:{
 				  'data[User][verifycode1]':{
 					  required:"現在Verifyコードを入力する",
-					  minlength:"６文字以上、入力する",
+					  minlength:"３文字以上、入力する",
 					  maxlength:"１５文字以下、入力する"
 				  },
 				  'data[User][verifycode2]':{
 					  required:"新しいVerifyコードを入力する",
-					  minlength:"６文字以上、入力する",
+					  minlength:"３文字以上、入力する",
 					  maxlength:"１５文字以下、入力する"
 				  },
 				  'data[User][verifycode3]':{
 					  required:"新しいVerifyコードの確認を入力する",
-					  minlength:"６文字以上、入力する",
+					  minlength:"３文字以上、入力する",
 					  maxlength:"１５文字以下、入力する",
 					  equalTo:"上のようなVerifyコードを入力する"
 				  },

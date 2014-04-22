@@ -31,54 +31,70 @@ class UsersController extends AppController {
 				'home',
 				'login',
 				'register',
-				'teacherLogin',
+				'teacherPass',
+				'teacherVerify',
 				'teacherName' 
 		) );
 	}
-	public function login() {		
+	public function login() {
 		// logged in user
-		$this->set('title_for_layout', 'ログイン');
-		if ($this->Auth->user ()){
-			if($this->Auth->user('level') != 1) $this->redirect ( array (
-					"controller" => "Lessons",
-					"action" => "view_all_lessons" 
-			) );
-			else $this->redirect ( array ("controller" => "Admins","action" => "manager_home" ) );
+		$this->set ( 'title_for_layout', 'ログイン' );
+		if ($this->Auth->user ()) {
+			if ($this->Auth->user ( 'level' ) != 1)
+				$this->redirect ( array (
+						"controller" => "Lessons",
+						"action" => "view_all_lessons" 
+				) );
+			else
+				$this->redirect ( array (
+						"controller" => "Admins",
+						"action" => "manager_home" 
+				) );
 		}
-			// xu ly khi nguoi dung an login
+		// xu ly khi nguoi dung an login
 		if ($this->request->is ( 'post' )) {
 			$data = $this->request->data;
 			// tao chuoi password de so sanh
 			$data ['User'] ['password'] = $data ['User'] ['user_name'] . $data ['User'] ['password'] . 'sha1';
-			$password = sha1( $data ['User'] ['password']);
+			$password = sha1 ( $data ['User'] ['password'] );
 			$user = $this->User->find ( 'first', array (
 					'conditions' => array (
 							'user_name' => $data ['User'] ['user_name'],
-							'password' => $password,
+							'password' => $password 
 					) 
 			) );
+			
 			// kiem tra IP dang bi block
 			$guest = $this->LockedUser->find ( 'first', array (
 					'conditions' => array (
-							'ip_address' => $this->request->clientIp (),
+							'ip_address' => $this->request->clientIp () 
 					) 
 			) );
-			if (isset($guest)) {
-				if ($guest ['LockedUser'] ['count'] > 3) {
-					if ($this->request->data ['User'] ['user_type'] == 2) {
-						echo "check";
-						die();
-						$this->redirect ( 'teacherName' );
-					} else if ($this->request->data ['User'] ['user_type'] == 3) {
+			// debug($guest);die();
+			if ($guest) {
+				if ($guest ['LockedUser'] ['count'] >= ($this->ChangeableValue->field ( "current_value", array (
+										'id' => 4 ) )-1)) {
+// 					if ($this->request->data ['User'] ['user_type'] == 2) {
+// 						$this->redirect ( 'teacherName' );
+// 					} else if ($this->request->data ['User'] ['user_type'] == 3) {
 						if ($guest ['LockedUser'] ['lock_flg'] == 1) {
-							if ($time = (strtotime ( date ( "Y/m/d H:i:s" ) ) - strtotime ( $guest ['LockedUser'] ['lock_start_time'] )) < 60*$this->ChangeableValue->field ( 'current_value', array (
+							if ((strtotime ( date ( "Y/m/d H:i:s" ) ) - strtotime ( $guest ['LockedUser'] ['lock_start_time'] )) < 60*$this->ChangeableValue->field ( 'current_value', array (
 									'id' => 5 
 							) )) {
-								$this->Session->setFlash ( 'IP が '.$this->ChangeableValue->field("current_value",array('id'=>5)). ' 分間に'. 'ブロックしている' );
+// 								$time = (strtotime ( date ( "Y/m/d H:i:s" ) ) - strtotime ( $guest ['LockedUser'] ['lock_start_time'] ));
+// 								debug($time);die();
+								$this->Session->setFlash ( 'IP が ' . $this->ChangeableValue->field ( "current_value", array (
+										'id' => 5 
+								) ) . ' 分間に' . 'ブロックしている' );
 								$this->redirect ( 'login' );
 							} else {
-								$this->LockedUser->delete ( $guest ['LockedUser'] ['id'] );
-								$this->redirect ( 'login' );
+								
+								if ($this->request->data ['User'] ['user_type'] == 2)
+									$this->redirect ( 'teacherName' );
+								else {
+									$this->LockedUser->delete ( $guest ['LockedUser'] ['id'] );
+									$this->redirect ( 'login' );
+								}
 							}
 						} else {
 							$this->LockedUser->id = $guest ['LockedUser'] ['id'];
@@ -90,36 +106,39 @@ class UsersController extends AppController {
 							$this->Session->setFlash ( 'IP が初めにブロックしている' );
 							$this->redirect ( 'login' );
 						}
-					}
+// 					}
 				}
 			}
 			
 			if (! empty ( $user )) {
+				if($user['User']['level'] == 1){
+					$this->Session->setFlash('ログインページが適当しない');
+					$this->redirect('login');
+				}
 				// kiem tra user active
 				if ($user ['User'] ['approve_flag'] == 0) {
 					$this->Session->setFlash ( __ ( 'アカウントがまだ確認しない' ) );
 					$this->redirect ( 'login' );
 				}
-				//kiem tra chon loai tai khoan
-				if($user['User']['level']!=$data['User']['user_type'] && $user['User']['level'] != 1){
-					$this->Session->setFlash('アカウントタイプを選択することが間違う');
-					$this->redirect('login');
+				// kiem tra chon loai tai khoan
+				if ($user ['User'] ['level'] != $data ['User'] ['user_type'] && $user ['User'] ['level'] != 1) {
+					$this->Session->setFlash ( 'アカウントタイプを選択することが間違う' );
+					$this->redirect ( 'login' );
 				}
 				// kiem tra lastIP
-				if ($user['User']['level'] == 2 && $user['User']['ip_address'] != NULL && $user['User']['ip_address'] != $this->request->clientIp()) {
+				if ($user ['User'] ['level'] == 2 && $user ['User'] ['ip_address'] != NULL && $user ['User'] ['ip_address'] != $this->request->clientIp ()) {
 					$this->Session->setFlash ( __ ( '最後のログインIPと比べて違う' ) );
-					$this->redirect ( array ('controller' => 'Users','action' => 'teacherLogin',$user ['User'] ['id']
+					$this->redirect ( array (
+							'controller' => 'Users',
+							'action' => 'teacherVerify',
+							$user ['User'] ['id'] 
 					) );
 				}
-				// kiem tra admin IP
-				//if ($user ['User'] ['level'] == 1 && $user ['User']['ip_address'] != $this->request->clientIp ()) {
-					//$this->Session->setFlash ( "IPアドレスが間違う" );
-					//$this->redirect ( "login" );
-				//}
+				
 			}
 			
 			// login
-			$this->request->data['User']['password'] = $data['User']['password'];
+			$this->request->data ['User'] ['password'] = $data ['User'] ['password'];
 			if ($this->Auth->login ()) {
 				// save current IP
 				$this->User->id = $this->Auth->user ( 'id' );
@@ -128,7 +147,7 @@ class UsersController extends AppController {
 				) );
 				$this->User->save ();
 				$this->Session->setFlash ( "Hello　" . $this->Auth->user ( 'user_name' ) );
-				//xoa lock ip
+				// xoa lock ip
 				$this->LockedUser->deleteAll ( array (
 						'ip_address' => $this->request->clientIp () 
 				) );
@@ -167,14 +186,47 @@ class UsersController extends AppController {
 			) )) {
 				$this->redirect ( array (
 						'controller' => 'Users',
-						'action' => 'teacherLogin',
+						'action' => 'teacherVerify',
 						$guest ['User'] ['id'] 
 				) );
 			} else
 				$this->Session->setFlash ( 'ユーザネームが間違う' );
 		}
 	}
-	public function teacherLogin($id) {
+	public function teacherPass($id) {
+		$this->set ( 'titile_for_layout', 'パスワード入力' );
+		$teacher = $this->User->find ( 'first', array (
+				'conditions' => array (
+						'id' => $id 
+				) 
+		) );
+		$this->set ( compact ( 'teacher' ) );
+		if ($this->request->is ( 'post' )) {
+			$data = $this->request->data;
+			$pass = $teacher ['User'] ['user_name'] . $data ['User'] ['pass'] . 'sha1';
+			$this->request->data = $teacher;
+			$this->request->data ['User'] ['password'] = $pass;
+			
+			if ($this->Auth->login ()) {
+				$this->User->id = $id;
+				$this->User->set ( array (
+						'ip_address' => $this->request->clientIp () 
+				) );
+				$this->User->save ();
+				
+				$this->redirect ( array (
+						"controller" => "Lessons",
+						"action" => "view_all_lessons" 
+				) );
+				$this->LockedUser->deleteAll ( array (
+						'ip_address' => $this->request->clientIp () 
+				) );
+			}else 
+				$this->Session->setFlash('パスワードが間違う');
+		}
+	}
+	public function teacherVerify($id) {
+		$this->set ( 'titile_for_layout', 'Verifyコード入力' );
 		$teacher = $this->Verifycode->find ( 'first', array (
 				'conditions' => array (
 						'user_id' => $id 
@@ -187,25 +239,27 @@ class UsersController extends AppController {
 					'id' => $id 
 			) ) . $verifycode ['Verifycode'] ['verifycode'] . 'sha1' );
 			if ($verifycode == $teacher ['Verifycode'] ['verifycode']) {
-				$this->request->data = $this->User->find ( 'all', array (
-						'conditions' => array (
-								'id' => $id 
-						) 
-				) );
-				
-				$this->Auth->login ();
-				//save lastIP
-				$this->User->id = $id;
-				$this->User->set(array('ip_address'=>$this->request->clientIp()));
-				$this->User->save();
-				
 				$this->redirect ( array (
-						"controller" => "Lessons",
-						"action" => "view_all_lessons" 
+						'controller' => 'Users',
+						'action' => 'teacherPass',
+						$id 
 				) );
-				$this->LockedUser->deleteAll ( array (
-						'ip_address' => $this->request->clientIp () 
-				) );
+				
+				// $this->Auth->login ();
+				// // save lastIP
+				// $this->User->id = $id;
+				// $this->User->set ( array (
+				// 'ip_address' => $this->request->clientIp ()
+				// ) );
+				// $this->User->save ();
+				
+				// $this->redirect ( array (
+				// "controller" => "Lessons",
+				// "action" => "view_all_lessons"
+				// ) );
+				// $this->LockedUser->deleteAll ( array (
+				// 'ip_address' => $this->request->clientIp ()
+				// ) );
 			} else {
 				$this->Session->setFlash ( 'Verifyコードが間違う' );
 			}
@@ -218,6 +272,11 @@ class UsersController extends AppController {
 			$data = $this->request->data;
 			$birthDate = $data ['User'] ['birth_year'] . '-' . $data ['User'] ['birth_month'] . '-' . $data ['User'] ['birth_date'];
 			$password = sha1 ( $data ['User'] ['user_name'] . $data ['User'] ['password'] . $forPass );
+			if($data ['User'] ['user_type'] == 2){
+				$bankCode = $data ['User'] ['bankCodePart1'].'-'.$data ['User'] ['bankCodePart2'].'-'.$data ['User'] ['bankCodePart3'].'-'.$data ['User'] ['bankCodePart4'];
+			}else{
+				$bankCode = $data ['User'] ['cardPart1'].'-'.$data ['User'] ['cardPart2'].'-'.$data ['User'] ['cardPart3'].'-'.$data ['User'] ['cardPart4'].'-'.$data ['User'] ['cardPart5'];
+			}
 			$this->User->set ( array (
 					'user_name' => $data ['User'] ['user_name'],
 					'real_name' => $data ['User'] ['real_name'],
@@ -225,7 +284,7 @@ class UsersController extends AppController {
 					'email' => $data ['User'] ['email'],
 					'birth_date' => $birthDate,
 					'level' => $data ['User'] ['user_type'],
-					'bank_account_code' => $data ['User'] ['bank_code'],
+					'bank_account_code' => $bankCode,
 					'address' => $data ['User'] ['address'],
 					'phone_number' => $data ['User'] ['phone_number'] 
 			) );
@@ -253,6 +312,7 @@ class UsersController extends AppController {
 							'initial_password' => $password 
 					) );
 					$this->InitialUser->save ();
+					$this->Session->setFlash('登録が成功です。');
 					$this->redirect ( array ('controller' => 'Users','action' => 'login') );
 				} else {
 					if ($this->Verifycode->validates ()) {
@@ -282,6 +342,7 @@ class UsersController extends AppController {
 								'initial_verifycode' => $verifycode 
 						) );
 						$this->InitialVerifycode->save ();
+						$this->Session->setFlash('登録が成功です。');
 						$this->redirect ( array ('controller' => 'Users','action' => 'login') );
 					}
 					else {
@@ -305,117 +366,7 @@ class UsersController extends AppController {
 		if ($this->Auth->user ())
 			$this->loginRedirect ( $this->Auth->user ( "level" ) );
 	}
-	public function get_user_request($user_id = null) {
-		$this->showLayout ();
-		$user_id = 7;
-		$user = $this->User->find ( 'all', array (
-				'fields' => array (
-						'User.id',
-						'User.user_name',
-						'User.real_name',
-						'User.reg_date',
-						'User.level',
-						'User.birth_date',
-						'User.phone_number',
-						'User.email',
-						'User.phone_number',
-						'User.address',
-						'User.bank_account_code' 
-				),
-				'conditions' => array (
-						'User.id' => $user_id,
-						'User.approve_flag' => false 
-				) 
-		) );
-		$user = $user [0] ['User'];
-		$this->set ( 'requestUser', $user );
-		// debug($user);die();
-		if ($user ['level'] == 2)
-			$this->set ( 'title_for_layout', '先生アカウント' );
-			// =======
-			// public function get_user_request($user_id = null) {
-			// $this->showLayout ();
-			// $user_id = 6;
-			// $user = $this->User->find ( 'all', array (
-			// 'fields' => array (
-			// 'User.id',
-			// 'User.user_name',
-			// 'User.real_name',
-			// 'User.reg_date',
-			// 'User.level',
-			// 'User.birth_date',
-			// 'User.phone_number',
-			// 'User.email',
-			// 'User.phone_number',
-			// 'User.address',
-			// 'User.bank_account_code'
-			// ),
-			// 'conditions' => array (
-			// 'User.id' => $user_id
-			// )
-			// ) );
-			// $user = $user [0] ['User'];
-			// $this->set ( 'requestUser', $user );
-			// // debug($user);die();
-			// if ($user ['level'] == 2)
-			// $this->set ( 'title_for_layout', '先生アカウント' );
-			// >>>>>>> tiendq
-		else
-			$this->set ( 'title_for_layout', '学生アカウント' );
-	}
-	public function accept_user($id = null) {
-		// debug($id);die();
-		$this->showLayout ();
-		$success = false;
-		
-		$count = $this->User->find ( 'count', array (
-				'conditions' => array (
-						'User.id' => $id 
-				) 
-		) );
-		if ($count != 0) {
-			$sql = 'update tb_users
-			set approve_flag=true
-			where id=' . $id;
-			$this->User->query ( $sql );
-			$success = true;
-		}
-		if ($this->RequestHandler->isAjax ()) {
-			$this->autoRender = $this->layout = false;
-			echo json_encode ( array (
-					'success' => ($success == true) ? FALSE : TRUE 
-			) );
-			
-			exit ();
-		}
-		$this->redirect ( array (
-				'controller' => 'lessons',
-				'action' => 'manage_lessons' 
-		) );
-	}
-	public function remove_user($id = null) {
-		// debug($id);die();
-		$this->showLayout ();
-		$success = false;
-		
-		$count = $this->User->find ( 'count', array (
-				'conditions' => array (
-						'User.id' => $id 
-				) 
-		) );
-		if ($count != 0) {
-			$this->User->delete ( $id );
-			$success = true;
-		}
-		
-		if ($this->RequestHandler->isAjax ()) {
-			$this->autoRender = $this->layout = false;
-			echo json_encode ( array (
-					'success' => ($success == true) ? FALSE : TRUE 
-			) );
-			exit ();
-		}
-	}
+	
 	public function viewtestresult() {
 		$data = $this->Test->TestHistory->find ( 'all', array (
 				'conditions' => array (

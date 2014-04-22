@@ -67,11 +67,12 @@ foreach ($category as $categories) {
     ?>
     <div id="learnDiv" style="<?php echo $tmp ?>">
         <span class="ml">資料：</span>
-        <span class="doc"><a href="" style="text-decoration: underline;"><?php
-    foreach ($lesson['Document'] as $documents) {
-        echo $documents['file_name'];
-        echo "<br/>";
-    }
+        <span class="doc">
+        <?php
+    	foreach ($lesson['Document'] as $documents) {
+        	echo $this->Html->link($documents['file_name'], array('controller' => 'Documents', 'action' => 'viewDoc'));
+        	echo "<br/>";
+    	}
     ?></a></span><br /><br /><br />
         <span class="ml">テスト：</span>
         <span class="test"><a href="" style="text-decoration: underline;"><?php
@@ -90,13 +91,8 @@ foreach ($category as $categories) {
 
     <h3>------コメント------</h3>
     <div id="comment">
-
         <div class="comment">
-            <img src="" alt="アバター"/>
-            <span class="comment_content"></span>
-        </div>
-        <div class="comment">
-            <img src="" alt="アバター"/>
+            <?php echo $this->Html->image('student.jpg');?>
             <span class="comment_content"></span>
         </div>
         <div id="new_comment">

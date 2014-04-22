@@ -1,4 +1,4 @@
-<?php // debug($users); die(); ?>
+<?php echo $this->Session->flash(); ?>
 
  <div id="acc_manage">
     <span>アカウント検索</span>
@@ -42,7 +42,7 @@
                     ?>
                     <tr>
                         <td class='content-center'><?php echo $item['User']['id']; ?></td>
-                        <td class='content-center'><?php echo "<a href='#'>".$item['User']['user_name']."</a>"; ?></td>
+                        <td class='content-center'><?php echo $this->Html->link($item['User']['user_name'], array('controller' => 'Admins', 'action' => 'get_user_request', $item['User']['id']))?></td>
                         <td class='content-center'><?php echo $item['User']['real_name']; ?></td>
                         <?php
                                 $count = 'khong';
@@ -74,9 +74,6 @@
     echo $this->Paginator->next(__('後'), array('class' => 'btn'), null, array('class' => 'next disabled btn'));
     ?>
 </div>
-<?php else: {
-    echo $message;
-} ?>
 <?php endif; ?>
 </div>
 

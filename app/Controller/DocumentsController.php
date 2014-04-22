@@ -66,14 +66,14 @@ public function update(){
 	//Huong Viet
 public function delete_document() {
 	if(isset($this->request->data['delete_file'])){
-                //debug($this->request->data['hide']);
+               
 		$count = $this->request->data['hide'];
 		$this->Document->id = $count;
 		$this->Document->delete();
 		$this->redirect(array('controller' => 'admins', 'action' => 'getDocument'));
 	}
 	if(isset($this->request->data['block_file'])){
-                //debug($this->request->data);die();
+               
 		$count = $this->request->data['hide'];
 		$this->Document->id = $count;
 		debug($this->Document->id);die();
