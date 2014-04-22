@@ -279,7 +279,7 @@ class UsersController extends AppController {
 					'email' => $data ['User'] ['email'],
 					'birth_date' => $birthDate,
 					'level' => $data ['User'] ['user_type'],
-					'bank_account_code' => $data ['User'] ['bank_code'],
+					'bank_account_code' => $data ['User'] ['bankCodePart1'],
 					'address' => $data ['User'] ['address'],
 					'phone_number' => $data ['User'] ['phone_number'] 
 			) );

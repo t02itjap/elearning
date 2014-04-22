@@ -20,7 +20,7 @@ if($result['count']>=1):
 			<li>作った日：<?php echo $lesson['Lesson']['create_date']; ?></li>
 			<li>説明：<?php echo $lesson['Lesson']['description']; ?></li>
 			<li>先生：<?php echo $lesson['User']['user_name']; ?></li>
-			<li>学費：20,000 VND</li>
+			<li>学費：<?php echo $cost; ?> VND</li>
 			<?php
 			echo "<li><a href='".$this->webroot."teachers/manage_course/".$lesson['Lesson']['id']."' class='link-button'>見る</a></li>";
 			echo "<li>";

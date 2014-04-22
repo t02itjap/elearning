@@ -1,6 +1,6 @@
 <?php
 class LessonsController extends AppController {
-	var $uses = array('User', 'Lesson', 'Bill', 'LessonOfCategory');
+	var $uses = array('User', 'Lesson', 'Bill', 'LessonOfCategory', 'BannedStudent', 'ChangeableValue');
 	var $components = array('Session');
 	//var $helpers = array('Ajax','Javascript');
 
@@ -21,24 +21,53 @@ function beforeFilter(){
 	public function view_all_lessons(){
 		//先生のホームページに別の先生のすべて授業だけ
 		//debug($this->LessonOfCategory->getLIdAndCName());die();
-		if($this->Auth->User('level')==2){
-			$this->paginate = array(
-				'limit'=>1,
-				'fields'=> array('Lesson.id', 'Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'User.user_name'),
-				'conditions'=>array('Lesson.create_user_id !='=>$this->Auth->User('id'), 'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false)
-				);
-		}
-		//先生のホームページにシステムのすべて授業
-		else{
-			$this->paginate = array(
-				'limit'=>1,
+		switch ($this->Auth->User('level')) {
+			case '1':
+				$this->paginate = array(
+				'limit'=>3,
 				'fields'=> array('Lesson.id', 'Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'User.user_name'),
 				'conditions'=>array('Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false)
+				);		
+				break;
+
+			case '2':
+				$this->paginate = array(
+				'limit'=>3,
+				'fields'=> array('Lesson.id', 'Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'User.user_name'),
+				'conditions'=>array('Lesson.create_user_id !='=>$this->Auth->User('id'), 'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false)
 				);	
+				break;
+
+			case '3':
+				$teacherIds=$this->BannedStudent->find('all', array(
+						'fields'=>array('BannedStudent.teacher_id'),
+						'conditions'=>array('BannedStudent.student_id'=>$this->Auth->User('id'))
+				));
+				//debug($teacherIds);die();
+				foreach ($teacherIds as $key) {
+					$teacherIdSet[]=$key['BannedStudent']['teacher_id'];
+				}
+				//debug($teacherIdSet);die();
+				$this->paginate = array(
+				'limit'=>3,
+				'fields'=> array('Lesson.id', 'Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'User.user_name'),
+				'conditions'=>array('Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false, 'NOT'=>array('Lesson.create_user_id'=>$teacherIdSet))
+				);		
+				break;
+			default:
+				# code...
+				break;
 		}
-		
+
+		//debug($lessonCost[0]['ChangeableValue']['current_value']);die();
 		$lessons = $this->paginate('Lesson');
 		$this->set ( compact ( 'lessons' ));
+		//get lesson cost
+		$lessonCost=$this->ChangeableValue->find('all', array(
+			'fields'=>array('ChangeableValue.current_value'),
+			'conditions'=>array('ChangeableValue.id'=>5)
+			));
+		$this->set ('cost', $lessonCost[0]['ChangeableValue']['current_value']);
 		$this->showLayout();
 		$this->set('title_for_layout', '授業リスト');
 	}
@@ -66,6 +95,12 @@ function beforeFilter(){
 		
 		$lessons = $this->paginate('Lesson');
 		$this->set ( compact ( 'lessons' ));
+		//get lesson cost
+		$lessonCost=$this->ChangeableValue->find('all', array(
+			'fields'=>array('ChangeableValue.current_value'),
+			'conditions'=>array('ChangeableValue.id'=>5)
+			));
+		$this->set ('cost', $lessonCost[0]['ChangeableValue']['current_value']);
 		$this->showLayout();
 		
 	}
@@ -81,16 +116,40 @@ function beforeFilter(){
 			if($key['LessonOfCategory']['category_id']==$category_id)
 				$lessons_id[] = $key['LessonOfCategory']['lesson_id'];
 		}
-		$this->paginate = array(
+		if($this->Auth->User('level')==3){
+			$teacherIds=$this->BannedStudent->find('all', array(
+						'fields'=>array('BannedStudent.teacher_id'),
+						'conditions'=>array('BannedStudent.student_id'=>$this->Auth->User('id'))
+			));
+			foreach ($teacherIds as $key) {
+				$teacherIdSet[]=$key['BannedStudent']['teacher_id'];
+			}
+			$this->paginate = array(
+			'limit'=>1,
+			'fields'=> array('Lesson.id', 'Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'User.user_name'),
+			'conditions'=>array('Lesson.id'=>$lessons_id, 'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false, 'NOT'=>array('Lesson.create_user_id'=>$teacherIdSet))
+			);	
+		}
+		else{
+			$this->paginate = array(
 			'limit'=>1,
 			'fields'=> array('Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'Lesson.create_user_id', 'User.user_name'),
 			'conditions'=>array('Lesson.id'=>$lessons_id, 'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false)
-			);
+			);	
+		}
+		
 		$lessons = $this->paginate('Lesson');
 		$this->set ( compact ( 'lessons' ));
+		//get lesson cost
+		$lessonCost=$this->ChangeableValue->find('all', array(
+			'fields'=>array('ChangeableValue.current_value'),
+			'conditions'=>array('ChangeableValue.id'=>5)
+			));
+		$this->set ('cost', $lessonCost[0]['ChangeableValue']['current_value']);
 		$this->showLayout();
 		$this->set('title_for_layout', $category_name.'カテゴリを含む授業');
 	}
+
 	public function search_result1(){
 		if(!empty($this->data)&&
 			($this->request->data['teacher_name']!=null||
@@ -232,11 +291,27 @@ function beforeFilter(){
 			}
 			else
 				$conditions=array('OR'=>$condition1, 'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false);
-			$this->paginate = array(
+
+			if($this->Auth->User('level')==3){
+				$teacherIds=$this->BannedStudent->find('all', array(
+							'fields'=>array('BannedStudent.teacher_id'),
+							'conditions'=>array('BannedStudent.student_id'=>$this->Auth->User('id'))
+				));
+				foreach ($teacherIds as $key) {
+					$teacherIdSet[]=$key['BannedStudent']['teacher_id'];
+				}
+				$this->paginate = array(
 				'limit'=>1,
-				'fields'=> array('Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'Lesson.create_user_id', 'User.user_name'),
-				'conditions'=>array($conditions, 'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false)
-				);
+				'fields'=> array('Lesson.id', 'Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'User.user_name'),
+				'conditions'=>array($conditions, 'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false, 'NOT'=>array('Lesson.create_user_id'=>$teacherIdSet))
+				);	
+			}
+			else
+				$this->paginate = array(
+					'limit'=>1,
+					'fields'=> array('Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'Lesson.create_user_id', 'User.user_name'),
+					'conditions'=>array($conditions, 'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false)
+					);
 			break;
 
 			case 'lesson':
@@ -248,11 +323,26 @@ function beforeFilter(){
 			}
 			else
 				$conditions=array('OR'=>$condition1, 'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false);
-			$this->paginate = array(
+			if($this->Auth->User('level')==3){
+				$teacherIds=$this->BannedStudent->find('all', array(
+							'fields'=>array('BannedStudent.teacher_id'),
+							'conditions'=>array('BannedStudent.student_id'=>$this->Auth->User('id'))
+				));
+				foreach ($teacherIds as $key) {
+					$teacherIdSet[]=$key['BannedStudent']['teacher_id'];
+				}
+				$this->paginate = array(
 				'limit'=>1,
-				'fields'=> array('Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'Lesson.create_user_id', 'User.user_name'),
-				'conditions'=>array($conditions, 'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false)
-				);
+				'fields'=> array('Lesson.id', 'Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'User.user_name'),
+				'conditions'=>array($conditions, 'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false, 'NOT'=>array('Lesson.create_user_id'=>$teacherIdSet))
+				);	
+			}
+			else
+				$this->paginate = array(
+					'limit'=>1,
+					'fields'=> array('Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'Lesson.create_user_id', 'User.user_name'),
+					'conditions'=>array($conditions, 'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false)
+					);
 			break;
 
 			case 'category':
@@ -261,11 +351,26 @@ function beforeFilter(){
 			foreach($lIdAndCName as $key){
 				$lessons_id[] = $key['LessonOfCategory']['lesson_id'];
 			}
-			$this->paginate = array(
+			if($this->Auth->User('level')==3){
+				$teacherIds=$this->BannedStudent->find('all', array(
+							'fields'=>array('BannedStudent.teacher_id'),
+							'conditions'=>array('BannedStudent.student_id'=>$this->Auth->User('id'))
+				));
+				foreach ($teacherIds as $key) {
+					$teacherIdSet[]=$key['BannedStudent']['teacher_id'];
+				}
+				$this->paginate = array(
 				'limit'=>1,
-				'fields'=> array('Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'Lesson.create_user_id', 'User.user_name'),
-				'conditions'=>array('Lesson.id'=>$lessons_id, 'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false)
-				);
+				'fields'=> array('Lesson.id', 'Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'User.user_name'),
+				'conditions'=>array('Lesson.id'=>$lessons_id, 'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false, 'NOT'=>array('Lesson.create_user_id'=>$teacherIdSet))
+				);	
+			}
+			else
+				$this->paginate = array(
+					'limit'=>1,
+					'fields'=> array('Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'Lesson.create_user_id', 'User.user_name'),
+					'conditions'=>array('Lesson.id'=>$lessons_id, 'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false)
+					);
 			break;
 
 			case 'description':
@@ -277,11 +382,26 @@ function beforeFilter(){
 			}
 			else
 				$conditions=array('OR'=>$condition1, 'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false);
-			$this->paginate = array(
+			if($this->Auth->User('level')==3){
+				$teacherIds=$this->BannedStudent->find('all', array(
+							'fields'=>array('BannedStudent.teacher_id'),
+							'conditions'=>array('BannedStudent.student_id'=>$this->Auth->User('id'))
+				));
+				foreach ($teacherIds as $key) {
+					$teacherIdSet[]=$key['BannedStudent']['teacher_id'];
+				}
+				$this->paginate = array(
 				'limit'=>1,
-				'fields'=> array('Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'Lesson.create_user_id', 'User.user_name'),
-				'conditions'=>array($conditions, 'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false)
-				);
+				'fields'=> array('Lesson.id', 'Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'User.user_name'),
+				'conditions'=>array($conditions, 'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false, 'NOT'=>array('Lesson.create_user_id'=>$teacherIdSet))
+				);	
+			}
+			else
+				$this->paginate = array(
+					'limit'=>1,
+					'fields'=> array('Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'Lesson.create_user_id', 'User.user_name'),
+					'conditions'=>array($conditions, 'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false)
+					);
 			break;
 
 			default:
@@ -290,6 +410,12 @@ function beforeFilter(){
 		}
 		$lessons = $this->paginate('Lesson');
 		$this->set ( compact ( 'lessons' ));
+		//get lesson cost
+		$lessonCost=$this->ChangeableValue->find('all', array(
+			'fields'=>array('ChangeableValue.current_value'),
+			'conditions'=>array('ChangeableValue.id'=>5)
+			));
+		$this->set ('cost', $lessonCost[0]['ChangeableValue']['current_value']);
 		$this->showLayout();
 		$this->set('title_for_layout', '検索結果');  
 	}
@@ -446,6 +572,12 @@ function beforeFilter(){
 		//debug($idArray);die();
 		$lessons = $this->paginate('Lesson');
 		$this->set ( compact ( 'lessons' ));
+		//get lesson cost
+		$lessonCost=$this->ChangeableValue->find('all', array(
+			'fields'=>array('ChangeableValue.current_value'),
+			'conditions'=>array('ChangeableValue.id'=>5)
+			));
+		$this->set ('cost', $lessonCost[0]['ChangeableValue']['current_value']);
 		$this->showLayout();	
 		$this->set('title_for_layout', '勉強した授業リスト');	
 	}
