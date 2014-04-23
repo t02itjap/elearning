@@ -1,5 +1,5 @@
 <?php 
-echo $this->Form->create('Tests',array('type' => 'post', 'controller'=>'tests','action'=>'result'));
+echo $this->Form->create('Tests',array('type' => 'post', 'controller'=>'tests','action'=>'test',1));
 ?>
 
 <div id="test">

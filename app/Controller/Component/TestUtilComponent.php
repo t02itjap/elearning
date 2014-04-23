@@ -3,8 +3,6 @@
 class TestUtilComponent extends Component {
 	public function loadTestFile($file_link){
 		$file= file_get_contents($file_link);
-		debug($file);
-		die;
 		$lines= preg_split('/\n+/', $file);
 		$ql= new QuestionList();
 		$words=preg_split('/\t+/', $lines[0]);

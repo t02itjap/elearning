@@ -30,7 +30,7 @@
       </script>
       <!-- end -->
       <embed id="embed" src="<?php echo $file ?>"
-       height="100%" width="100%" style="z-index: 1" enableContextMenu="0">
+       height="300px" width="100%" style="z-index: 1" enableContextMenu="0">
        <param name="enableContextMenu" value="0">
    </div>
    <?php
@@ -55,7 +55,7 @@
     <div id="new_comment">
         <?php
         echo $this->Form->create(null,array('url'=>array('controller'=>'documents','action'=>'viewDoc',$id)));
-        echo $this->Form->textarea("txtComment",array('id'=>"comment"));
+        echo $this->Form->textarea("txtComment",array('id'=>"comment",'value'=>""));
         echo $this->Form->input('id',array('type' => 'hidden','value'=>$data[0]['l']['id']));
         echo $this->Form->button ( 'ポスト', array ('type' => 'submit', 'name' => 'data[submit_comment]','class'=>'btn','id'=>"btn-save") );
         echo $this->Form->end ()?>
