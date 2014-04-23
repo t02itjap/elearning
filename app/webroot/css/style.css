@@ -26,6 +26,12 @@ display: block;
 }
 
 /*BODY*/
+.error{
+	color: red;
+	font-family:"Lucida Console", Courier, monospace;
+	font-size: 10px;
+	width: 200px;
+}
 
 body { 
     margin: auto;
@@ -158,6 +164,7 @@ border-radius:5px;
     float: left;
     padding: 10px;
     width: 200px;
+	height: 470px;
 }
 
 #search {
@@ -753,6 +760,22 @@ margin-left: 66px;
     height: 100px;
 }
 
+#data_manage table tr td {
+	padding: 5px 1px 5px 1px;
+	font-size: 14px;
+}
+
+.content-center {
+	text-align: center;
+}
+.content-left {
+	text-align: left;
+}
+
+#data_manage table tr td input {
+	margin-bottom: 1px;
+}
+
 /*Hoc sinh result*/
 #hs_result table{
     border: 1px solid green;
@@ -1007,7 +1030,7 @@ th a.desc:after {
 	content: ' ⇡';
 }
 table tr td {
-	padding: 6px;
+	padding: 6px 3px 6px 3px;
 	text-align: left;
 	vertical-align: top;
 	border-bottom:1px solid #ddd;
