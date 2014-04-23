@@ -1,5 +1,5 @@
 <?php // Notification icon ?>
-<div class="notifications notification-icon btn-group pull-right">
+<div class="notifications notification-icon btn-group pull-right" style="margin-top: -2px;margin-bottom: -2px;">
     <a id="notification-icon" class="btn btn-inverse dropdown-toggle" data-toggle="dropdown" href="#">
         <i class="icon-info-sign"></i>
         <span class="notification-counter" id="notification-counter" style="display: none;">0</span>
