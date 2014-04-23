@@ -1,8 +1,10 @@
 <?php
 
-class TestComponent extends Component {
-	public function loadTestFile($file_link=null,$file_name=null){
-		$file= file_get_contents('../webroot/test2.tsv');
+class TestUtilComponent extends Component {
+	public function loadTestFile($file_link){
+		$file= file_get_contents($file_link);
+		debug($file);
+		die;
 		$lines= preg_split('/\n+/', $file);
 		$ql= new QuestionList();
 		$words=preg_split('/\t+/', $lines[0]);
@@ -37,8 +39,8 @@ class TestComponent extends Component {
 		return $ql;
 	}
 
-	public function loadResult($file_link=null, $file_name=null){
-		$file= file_get_contents('../webroot/test2.tsv');
+	public function loadResult($file_link){
+		$file= file_get_contents($file_link);
 		$lines= preg_split('/\n+/', $file);
 		$i = 1;
 		$listResult="";
