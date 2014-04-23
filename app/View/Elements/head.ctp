@@ -28,6 +28,6 @@ header('Expires: 0'); // Proxies. ?>
 	echo $this->fetch ( 'meta' );
 	echo $this->fetch ( 'css' );
 	echo $this->fetch ( 'script' );
-	echo $this->Element('Notifications.NotificationInit');
+// 	echo $this->Element('Notifications.NotificationInit');
 	?>
 </head>

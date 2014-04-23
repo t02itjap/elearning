@@ -1,4 +1,4 @@
-<?php echo $this->Element('Notifications.NotificationIcon');?>
+
 <div id="main_nav">
             <ul>
                 <li>
@@ -20,8 +20,12 @@
 						); ?>
 				</li>
 				<li><?php echo $this->Html->link('学生の試験結果',array('controller'=>'Teachers','action'=>'getStudentTestHistoriesList'))?></li>
-                
-                <li><?php echo $this->Html->link('授業を作る',array('controller'=>'Teachers','action'=>'create_course'))?></li>
+              	<li><?php echo $this->Html->link('授業を作る',array('controller'=>'Teachers','action'=>'create_course'))?></li>
+            	<?php 
+//             	echo $this->Element('Notifications.NotificationIcon',array('clear_notifications' => true));
+            	?>
             </ul>
+            
         
         </div><!--End #main_nav-->
+        
