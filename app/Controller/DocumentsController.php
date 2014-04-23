@@ -1,7 +1,7 @@
 <?php
 App::uses ( 'DboSource', 'Model/Datasource' );
 class DocumentsController extends Controller{
-//var $uses = array ('User');
+	var $uses = array ('Document','User','Comment');
 	//$data= array();
 	function beforeFilter(){
 		parent::beforeFilter();
@@ -12,56 +12,41 @@ class DocumentsController extends Controller{
 	}
 	public function index(){
 		//$lesson = new Lesson();
-		$this->redirect(array('controller' => 'documents', 'action' => 'viewDoc','id'=>1));
+		// $this->redirect(array('controller' => 'documents', 'action' => 'viewDoc','id'=>1));
 	}
 
-	public function viewDoc(){
-		if (isset($this->request->query['id'])) {
-			$id=$this->request->id;
-			$d = $this->Document->getDocuments(1);
-			$path=$d['Document']['file_link'];
-			$p = '/elearning/app/webroot/test.MP4';
-			$extension = pathinfo('../webroot/test.MP4',PATHINFO_EXTENSION);
-			$this->set('data', $this->Document->getComments(1));
-			$this->set('extension',strtoupper($extension));
-			$this->set('path',$p);
-		}else{
-		// redirect
-			// $d = $this->Document->getDocuments(1);
-			// $path=$d['Document']['file_link'];
-			// $p = '/elearning/app/webroot/test.MP4';
-			// $extension = pathinfo('../webroot/test.MP4',PATHINFO_EXTENSION);
-			// $this->set('data', $this->Document->getComments(1));
-			// $this->set('extension',strtoupper($extension));
-			// $this->set('path',$p);
-
-		}	
-	}
-
-	public function load(){
-		$data=$this->Document->getComments(1);
-		foreach ($data as $value) {
-			echo '<div class="comment" id="comment_div">
-			<img src="" alt="'.$value["u"]["user_name"].'"/>
-			<span class="comment_content">'.$value["c"]["comment"].'</span>
-			</div>';
+	public function viewDoc($id){
+		if (!isset($id))  $this->redirect(array('controller' => 'documents', 'action' => 'viewDoc', 2));
+		$doc = $this->Document->findById($id);
+		$file = $this->webroot . $doc['Document']['file_link'];
+		$this->set('file',$file);
+		$this->set('id',$id);
+		//Copyright
+		if (isset($this->request->data['submit_data'])){
+			$this->Document->id=$id;
+			$this->Document->saveField('copyright_reporters',$this->Document->field('copyright_reporters')+1);
 		}
+		//Comment
+		if (isset($this->request->data['submit_comment'])) {
+			$data = $this->request->data;
+			date_default_timezone_set("Asia/Ho_Chi_Minh");
+			$dt = new DateTime();
+			echo $dt->format('Y-m-d H:i:s');
+			$this->Comment->set(
+				array('comment'=>$this->request->data['Document']['txtComment'],
+					'user_id'=>25,
+					'comment_date'=>$dt->format('Y-m-d H:i:s'),
+					'lesson_id'=>$this->request->data['Document']['id']
+					)
+				);
+		}
+	//if ($this->Comment->validates()) {
+		$this->Comment->save();		
+		//loadComment
+		$this->set('data', $this->Comment->getComments($id));
+		// debug($this->Comment->getComments(1));
+		// die;
 	}
-	public function read(){
-	$d = $this->Document->getDocuments(1);//docment id
-	$path=$d['Document']['file_link'];
-	$this->response->file('../webroot/test.doc');//truyen vao $path
-	$this->response->header('Content-Disposition', 'inline');
-	return $this->response;
-}
-public function update(){
-	if (isset($this->request->data['submit_data'])) {
-		$document_id=$this->request->data['Document'];
-		$this->Document->id=$document_id;
-		$this->Document->saveField('copyright_reporters',$this->Document->field('copyright_reporters')+1);
-		$this->redirect(array('controller' => 'documents', 'action' => 'index'));
-	}
-}
 
 	//Huong Viet
 public function delete_document() {

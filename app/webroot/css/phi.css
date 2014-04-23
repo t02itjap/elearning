@@ -1,0 +1,45 @@
+
+.overlay2{
+    position: absolute;
+    width: 100%;
+    height: 80%;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none; 
+	-moz-user-select: none; 
+	-ms-user-select: none; 
+	-o-user-select: none;
+	user-select: none;
+}
+.overlay{
+    position: absolute;
+    width: 100%;
+    height: 80%;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none; 
+	-moz-user-select: none; 
+	-ms-user-select: none; 
+	-o-user-select: none;
+	user-select: none;
+}
+.overlay3{
+    position: absolute;
+    width: 100%;
+    height: 80%;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none; 
+	-moz-user-select: none; 
+	-ms-user-select: none; 
+	-o-user-select: none;
+	user-select: none;
+}
+.overlay4{
+    position: absolute;
+    width: 100%;
+    height: 80%;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none; 
+	-moz-user-select: none; 
+	-ms-user-select: none; 
+	-o-user-select: none;
+	user-select: none;
+}
