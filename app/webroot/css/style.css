@@ -166,8 +166,8 @@ border-radius:5px;
     height: 150px;
 }
 
-#search input[name="search"]{
-    width: 190px;
+#search select{
+    width: 100px;
 } 
 
 #search input[type="submit"]{
@@ -423,7 +423,7 @@ border-radius:5px;
 #change_info {
     border: 1px solid green;
     margin-top: 30px;
-    margin-bottom: 50px;
+    margin-bottom: 20px;
 }
 #change_info h4 {
     margin: 5px;
@@ -864,7 +864,6 @@ margin-left: 66px;
 
 #summary table{
     border: 1px solid green;
-    margin-left: 30px;
     margin-top: 20px;
     margin-bottom: 30px;
 }
@@ -908,6 +907,7 @@ font-size: 12px;
 /*end Phi*/
 /*khanh*/
 .link-button, button {
+	margin-right:5px;
 	margin-top: 5px;
 	-moz-box-shadow:inset 1px 1px 0px -50px #c1ed9c;
 	-webkit-box-shadow:inset 1px 1px 0px -50px #c1ed9c;
@@ -951,7 +951,7 @@ font-size: 12px;
 	top:1px;
 }
 #keyword {
-	width : 20px;
+	width: 160px;
 	margin-top: 10px;
 	margin-right: 2px;
 }
@@ -1001,3 +1001,23 @@ table td.actions a {
 }
 
 /*end khanh*/
+.message {
+ border: 1px solid;
+    margin: 10px 0px;
+    padding:15px 10px 15px 50px;
+    background-repeat: no-repeat;
+    background-position: 10px center;-moz-border-radius:.5em;
+-webkit-border-radius:.5em;
+border-radius:.5em;
+ 
+}
+.message {
+    color: #00529B;
+    background-color: #BDE5F8;
+    background-image: url('/elearning/img/info.png');
+}
+.select label {
+	font-size: 14px;
+	font-weight: bold;
+	line-height: 20px;
+}

@@ -942,7 +942,36 @@ public function database_manager() {
 		$this->set ( compact ( 'files_info' ) );
 		if($this->request->is('post')){
 			$data = $this->request->data;
-			$cmd = 'schtasks /create /tn /"elearningBackup/" /tr c:\xampp\php ';
+			$startDate = $data['Backup']['start'];
+			$every = $data['Backup']['every'];
+			$endDate = $data['Backup']['end'];
+			$startTime =$data['Backup']['startTime'];
+			$endTime = $data['Backup']['endTime'];
+			$cmd = 'schtasks /create /sc minute /tn "autobackup" /tr C:\xampp\htdocs\elearning\runbackup.vbs';
+			$cmd = $cmd.' /mo '.$every;
+			$cmd = $cmd.' /sd '.$startDate;
+			$cmd = $cmd.' /st '.$startTime;
+			$cmd = $cmd.' /ed '.$endDate;
+			$cmd = $cmd.' /et '.$endTime;
+			$cmd = $cmd.' /k';
+			exec('schtasks /query /tn "autobackup"',$ret);
+
+			
+			debug($ret);die();
+			
+		}
+	}
+	
+	public function endBackup(){
+		exec('schtasks /query /tn "autobackup"',$ret);
+		if(empty($ret)){
+			$this->Session->setFlash('自動バックアッププロセスがない。');
+			$this->redirect('database_manager');
+		}else
+		{
+			exec('schtasks /delete /tn "autobackup"',$ret);
+			$this->Session->setFlash('自動バックアッププロセスが終わる。');
+			$this->redirect('database_manager');
 		}
 	}
 	

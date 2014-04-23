@@ -14,7 +14,7 @@ class NotificationsController extends NotificationsAppController {
     public function read($id = null) {
         $this->Notification->id = $id;
         if (!$this->Notification->exists()) {
-            throw new NotFoundException(__('Invalid notification'));
+            throw new NotFoundException(__('メッセージがない'));
         }
 
         $this->Notification->id = $id;
@@ -54,10 +54,10 @@ class NotificationsController extends NotificationsAppController {
             }
         } else {
             if (!$this->Notification->exists()) {
-                throw new NotFoundException(__('Invalid notification'));
+                throw new NotFoundException(__('メッセージがない'));
             }
             if (!$this->Notification->delete()) {
-                $this->Session->setFlash(__('Notification was not deleted'));
+                $this->Session->setFlash(__('メッセージが削除しない'));
             }
             $this->redirect($this->referer('/'));
         }
@@ -70,7 +70,7 @@ class NotificationsController extends NotificationsAppController {
      */
     public function deleteall() {
         if (!$this->Notification->deleteAll(array('user_id' => AuthComponent::user('id')))) {
-            $this->Session->setFlash(__('Notifications are not deleted'));
+            $this->Session->setFlash(__('メッセージが削除しない'));
         }
         $this->redirect($this->referer('/'));
     }

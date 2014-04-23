@@ -45,12 +45,14 @@ echo $this->Html->script ( array (
 				"label" => false,
 				"type" => "text",
 				"readonly" => true,
-				"placeholder" => "スタット日"
+				"placeholder" => "スタット日",
+				"div" => false
 		) );
-		echo $this->Form->input ( "startHour", array (
+		echo $this->Form->input ( "startTime", array (
 				"label" => false,
 				"type" => "text",
-				"placeholder" => "スタット時間"
+				"placeholder" => "スタット時間",
+				"div" => false
 		) );
 		echo $this->Form->input ( "every", array (
 				"label" => false,
@@ -62,24 +64,32 @@ echo $this->Html->script ( array (
 				"label" => false,
 				"type" => "text",
 				"readonly" => true,
-				"placeholder" => "終わる日"
+				"placeholder" => "終わる日",
+				"div" => false
 				) );
-		echo $this->Form->input ( "endHour", array (
+		echo $this->Form->input ( "endTime", array (
 		"label" => false,
 		"type" => "text",
-		"placeholder" => "エンド時間"
-) );
-		
+		"placeholder" => "終わる時間",
+		"div" => false
+		) );
+		echo '</br>';
 		echo $this->Form->button ( "リセット", array (
-				"type" => "reset" 
+				"type" => "reset" ,
+				
 		) );
-		echo $this->Form->end ( array (
-				"label" => 'スタット',
-				'class' => 'link-button',
-				'div' => false 
+		echo $this->Form->button ('スタット', array (
+			'class' => 'link-button',
+			'name'  => 'start',
+			'type ' => 'submit',
+			'div' => false
 		) );
-		
-		?>
+		echo $this->Html->link ( "終わり",array (
+			'controller' => 'admins',
+			'action' => 'endBackup'),
+			array('class' => 'link-button','style' => 'padding:5px;float:right;') );
+		$this->Form->end();	
+	?>
 		
 </div>
 
@@ -103,7 +113,7 @@ $().ready(function() {
                required: "バックアップエンド日を選択する"
         }
        });
-    $("#BackupStartHour").rules("add",{
+    $("#BackupStartTime").rules("add",{
 			time : "required time",
 			required:true,
 			messages: {
@@ -118,7 +128,7 @@ $().ready(function() {
 
 	});
 
-    $("#BackupEndHour").rules("add",{
+    $("#BackupEndTime").rules("add",{
 		time : "required time",
 		required:true,
 		messages: {

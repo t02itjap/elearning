@@ -1,7 +1,7 @@
 <?php
 $data['id'] = $notification['Notification']['id'];
 $data['time'] = $this->Time->timeAgoInWords($notification['Notification']['created']);
-$data['sender'] = $notification['Sender']['name'];
+// $data['sender'] = $notification['Sender']['name'];
 
 $data['message'] = "";
 if (isset($notification['Sender']['name'])) {
@@ -23,7 +23,7 @@ if (isset($notification['Sender']['email'])) {
 } else {
     $email = md5(strtolower(trim(AuthComponent::user('email'))));
 }
-$data['avatar'] = "http://www.gravatar.com/avatar/$email?s=50&d=mm";
+$data['avatar'] = "/img/admin.jpg";
 ?>
 
 <li id="<?php echo $data['id']; ?>" class="notification-item <?php echo $data['is_read']; ?>" style="position: relative;">
@@ -41,5 +41,5 @@ $data['avatar'] = "http://www.gravatar.com/avatar/$email?s=50&d=mm";
             <div style="clear: both;"></div>
         </div>
     </a>
-    <?php echo $this->Html->link('x', array('plugin' => 'notifications', 'controller' => 'notifications', 'action' => 'delete', $data['id']), array('class' => 'deletelink')); ?>
+<!-- <?php echo $this->Html->link('x', array('plugin' => 'notifications', 'controller' => 'notifications', 'action' => 'delete', $data['id']), array('class' => 'deletelink')); ?> -->    
 </li>
