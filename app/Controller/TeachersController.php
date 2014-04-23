@@ -161,6 +161,7 @@ class TeachersController extends AppController {
     }
 
     function changeVerify() {
+    	$this->set('title_for_layout','Verifyコード変更');
         $id = $this->Auth->user('id');
         $teacher = $this->Verifycode->find('first', array(
             'conditions' => array(
@@ -172,10 +173,14 @@ class TeachersController extends AppController {
         if ($this->request->is('post')) {
             $data = $this->request->data;
             if (sha1($this->Auth->user('user_name') . $data ['User'] ['verifycode1'] . 'sha1') == $teacher ['Verifycode'] ['verifycode']) {
-                $this->Verifycode->id = $this->Auth->user('id');
-                $this->Verifycode->set('verifycode', sha1($this->Auth->user('user_name') . $data ['User'] ['verifycode2'] . 'sha1'));
+                $this->Verifycode->id = $this->Verifycode->field('id',array('user_id'=>$this->Auth->user('id')));
+                
+                $this->Verifycode->set(array(
+                		'question' => base64_encode($data['User']['question1']),
+                		'verifycode'=> sha1($this->Auth->user('user_name') . $data ['User'] ['verifycode2'] . 'sha1')));
                 $this->Verifycode->save();
                 $this->Session->setFlash('Verifyコード変更が成功した');
+                $this->redirect('changeVerify');
             } else {
                 $this->Session->setFlash('現在Verifyコードが間違う');
             }

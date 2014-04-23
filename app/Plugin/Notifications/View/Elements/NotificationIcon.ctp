@@ -7,7 +7,7 @@
     <ul id="notification-items" class="dropdown-menu">
         <?php if (isset($clear_notifications)): ?>
             <li class="notification-button">
-                <?php echo $this->Html->link('Clear Notifications', array('plugin' => 'notifications', 'controller' => 'notifications', 'action' => 'markallread'), array('class' => '')); ?>
+                <?php echo $this->Html->link('メッセージを全部削除', array('plugin' => 'notifications', 'controller' => 'notifications', 'action' => 'markallread'), array('class' => '')); ?>
             </li>
             <li class="divider"></li>
         <?php endif; ?>
@@ -18,7 +18,7 @@
             <li class="divider"></li>
             <li class="notification-button">
                 <?php
-                echo $this->Html->link('All notifications', $all_notifications);
+                echo $this->Html->link('全部メッセージ', $all_notifications);
                 ?>
             </li>
         <?php endif; ?>

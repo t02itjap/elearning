@@ -1,9 +1,11 @@
 <div id="summary">
-	<p>Like数：<?php echo $lesson['Lesson']['vote_count']-1?>件（<?php if(empty($snum)) echo(''); else echo((($lesson['Lesson']['vote_count']-1)/$snum*100).' ％受講者数')?>)</p>
-	<p>参照数：<?php if(empty($lesson['Lesson']['viewers'])) echo '0'; else  echo $lesson['Lesson']['viewers']?>人</p>
-	<p>受講者数：<?php if(empty($snum)) echo '0'; else echo $snum;?>人</p>
+	<p class ='label label-info' style = 'display:block;font-size:14px;'>Like数：<?php echo $lesson['Lesson']['vote_count']-1?>件（<?php if(empty($snum)) echo(''); else echo((($lesson['Lesson']['vote_count']-1)/$snum*100).' ％受講者数')?>)</p>
+	</br>
+	<p class ='label label-info' style = 'display:block;font-size:14px;'>参照数：<?php if(empty($lesson['Lesson']['viewers'])) echo '0'; else  echo $lesson['Lesson']['viewers']?>人</p>
+	</br>
+	<p class ='label label-info' style = 'display:block;font-size:14px;'>受講者数：<?php if(empty($snum)) echo '0'; else echo $snum;?>人</p>
 	<h2>受講者リスト</h2>
-	<table class='table table-striped' style='table-layout: fixed'>
+	<table  style='table-layout: fixed'>
 		<thead>
 			<tr>
 				<th>順番</th>
@@ -66,8 +68,12 @@
 						'label' => false,
 						'placeholder' => '原因' 
 				) );
+?>
+<div>
+<?php 
 				echo $this->Form->button ( "リセット", array (
-						"type" => "reset" 
+						"type" => "reset",
+						"class" =>'link-button'
 				) );
 				echo $this->Form->end (array (
 						'label' => 'ブロック',
@@ -77,3 +83,4 @@
 				) );
 				?>
 </div>
+				</div>

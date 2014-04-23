@@ -19,8 +19,9 @@
                         ); ?>
                 </li>
                 <li><?php echo $this->Html->link('試験結果',array('controller'=>'Students','action'=>'getTestHistories'))?></li>
-            	<?php 
-//             	echo $this->Element('Notifications.NotificationIcon');
+            	<?php
+            	echo $this->Element('Notifications.NotificationInit');
+            	echo $this->Element('Notifications.NotificationIcon');
             	?>
             </ul>
         

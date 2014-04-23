@@ -86,7 +86,7 @@ Cache::config('default', array('engine' => 'File'));
  *
  * ));
  */
-// CakePlugin::load('Notifications');
+CakePlugin::load('Notifications');
 Configure::write('Dispatcher.filters', array(
 	'AssetDispatcher',
 	'CacheDispatcher'
