@@ -66,4 +66,18 @@ class Document extends AppModel {
         );
         return $this->find('all', $condition);
     }
+    public function deleteDocumentByUserId($userId){
+    	$check = 1;
+		$recordList = $this->find('all',array(
+        	'conditions' => array('create_user_id' => $userId)
+        ));
+        if($recordList != NULL) foreach ($recordList as $record){
+            if(!$this->delete($record['Document']['id'])){
+            	$check = 0;
+            	break;
+            }
+        }
+        if($check == 1) return true;
+        else return false;
+    }
 }

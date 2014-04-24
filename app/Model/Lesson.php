@@ -99,6 +99,20 @@ class Lesson extends AppModel {
 			)
 		)
 	);
+	public function deleteLessonByTeacherId($teacherId){
+    	$check = 1;
+		$recordList = $this->find('all',array(
+        	'conditions' => array('create_user_id' => $teacherId)
+        ));
+        if($recordList != NULL) foreach ($recordList as $record){
+            if(!$this->delete($record['Lesson']['id'])){
+            	$check = 0;
+            	break;
+            }
+        }
+        if($check == 1) return true;
+        else return false;
+	}
 }
 
 ?>

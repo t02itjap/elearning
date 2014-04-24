@@ -72,7 +72,25 @@
                     </div><!--End #change_info-->
                     <div id="submit">
                             <?php
-                            if($teacher['User']['status_flag'] == 1)
+//                          block restore acc  
+//                            if($teacher['User']['status_flag'] == 1)
+//                            	echo $this->Form->button('アカウントを削除',
+//									array(
+//										'name' => 'data[delete_teacher]',
+//										'class' => 'link-button',
+//										'onClick' => "return confirm('このアカウントを削除したいですか?')",
+//										'escape' => false,
+//										'title' => '確認'
+//								));
+//							else
+//                            	echo $this->Form->button('アカウントを回復',
+//									array(
+//										'name' => 'data[restore_teacher]',
+//										'class' => 'link-button',
+//										'onClick' => "return confirm('このアカウントを回復したいですか?')",
+//										'escape' => false,
+//										'title' => '確認'
+//								));
                             	echo $this->Form->button('アカウントを削除',
 									array(
 										'name' => 'data[delete_teacher]',
@@ -80,16 +98,7 @@
 										'onClick' => "return confirm('このアカウントを削除したいですか?')",
 										'escape' => false,
 										'title' => '確認'
-								));
-							else
-                            	echo $this->Form->button('アカウントを回復',
-									array(
-										'name' => 'data[restore_teacher]',
-										'class' => 'link-button',
-										'onClick' => "return confirm('このアカウントを回復したいですか?')",
-										'escape' => false,
-										'title' => '確認'
-								));							
+								));						
 							?>
 							<?php
                             echo $this->Form->button('リセットパスワード',

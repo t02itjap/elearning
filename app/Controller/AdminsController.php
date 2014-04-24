@@ -9,15 +9,23 @@ App::uses ( 'File', 'Utility' );
 class AdminsController extends AppController {
 	public $name = "Admins";
 	var $uses = array (
+			'BannedStudent',
+			'Bill',
+			'Category',
+			'ChangeableValue',
+			'Comment',
 			'User',
 			'InitialUser',
 			'Verifycode',
 			'InitialVerifycode',
 			'IpAddress',
-			'Bill',
+			'Test',
 			'Lesson',
 			'Document',
-			'ChangeableValue' 
+			'LearnHistory',
+			'LessonOfCategory',
+			'TestHistory',
+			'LockedUser'
 	);
 	var $helpers = array (
 			'Html',
@@ -119,24 +127,37 @@ class AdminsController extends AppController {
                 }
             }
         }
+        //block acc
+//        if (isset($this->request->data['delete_student'])) {
+//            $this->User->set(array(
+//                'status_flag' => 0,
+//                ));
+//            $this->User->id = $student['User']['id'];
+//            if ($this->User->save()) {
+//                $this->Session->setFlash('このアカウントが今ロックです');
+//                $this->redirect(array('controller' => 'Admins', 'action' => 'student_manager', $student['User']['id']));
+//            }
+//        }
+//restore acc
+//        if (isset($this->request->data['restore_student'])) {
+//            $this->User->set(array(
+//                'status_flag' => 1,
+//                ));
+//            $this->User->id = $teacher['User']['id'];
+//            if ($this->User->save()) {
+//                $this->Session->setFlash('このアカウントが今回生です');
+//                $this->redirect(array('controller' => 'Admins', 'action' => 'student_manager', $student['User']['id']));
+//            }
+//        }
         if (isset($this->request->data['delete_student'])) {
-            $this->User->set(array(
-                'status_flag' => 0,
-                ));
-            $this->User->id = $student['User']['id'];
-            if ($this->User->save()) {
-                $this->Session->setFlash('このアカウントが今ロックです');
-                $this->redirect(array('controller' => 'Admins', 'action' => 'student_manager', $student['User']['id']));
-            }
-        }
-        if (isset($this->request->data['restore_student'])) {
-            $this->User->set(array(
-                'status_flag' => 1,
-                ));
-            $this->User->id = $teacher['User']['id'];
-            if ($this->User->save()) {
-                $this->Session->setFlash('このアカウントが今回生です');
-                $this->redirect(array('controller' => 'Admins', 'action' => 'student_manager', $student['User']['id']));
+        	if ($this->User->deleteUser($student['User']['id']) &&
+            	$this->TestHistory->deleteTestHistoryByUserId($student['User']['id']) &&
+            	$this->InitialUser->deleteInitialUserByUserId($student['User']['id']) &&
+            	$this->Comment->deleteCommentByUserId($student['User']['id']) &&
+            	$this->Bill->deleteBillByUserid($student['User']['id']) &&
+            	$this->BannedStudent->deleteRecordBystudentId($student['User']['id'])){
+                	$this->Session->setFlash('このアカウントが今削除です');
+                	$this->redirect(array('controller' => 'Admins', 'action' => 'getAccount'));
             }
         }
         if (isset($this->request->data['reset_password'])) {
@@ -190,24 +211,40 @@ class AdminsController extends AppController {
                 }
             }
         }
+        //block acc
+//        if (isset($this->request->data['delete_teacher'])) {
+//            $this->User->set(array(
+//                'status_flag' => 0,
+//                ));
+//            $this->User->id = $teacher['User']['id'];
+//            if ($this->User->save()) {
+//                $this->Session->setFlash('このアカウントが今ロックです');
+//                $this->redirect(array('controller' => 'Admins', 'action' => 'teacherManager', $teacher['User']['id']));
+//            }
+//        }
+        //restore acc
+//        if (isset($this->request->data['restore_teacher'])) {
+//            $this->User->set(array(
+//                'status_flag' => 1,
+//                ));
+//            $this->User->id = $teacher['User']['id'];
+//            if ($this->User->save()) {
+//                $this->Session->setFlash('このアカウントが今回生です');
+//                $this->redirect(array('controller' => 'Admins', 'action' => 'teacherManager', $teacher['User']['id']));
+//            }
+//        }
         if (isset($this->request->data['delete_teacher'])) {
-            $this->User->set(array(
-                'status_flag' => 0,
-                ));
-            $this->User->id = $teacher['User']['id'];
-            if ($this->User->save()) {
-                $this->Session->setFlash('このアカウントが今ロックです');
-                $this->redirect(array('controller' => 'Admins', 'action' => 'teacherManager', $teacher['User']['id']));
-            }
-        }
-        if (isset($this->request->data['restore_teacher'])) {
-            $this->User->set(array(
-                'status_flag' => 1,
-                ));
-            $this->User->id = $teacher['User']['id'];
-            if ($this->User->save()) {
-                $this->Session->setFlash('このアカウントが今回生です');
-                $this->redirect(array('controller' => 'Admins', 'action' => 'teacherManager', $teacher['User']['id']));
+            if ($this->User->deleteUser($teacher['User']['id']) &&
+            	$this->Verifycode->deleteVerifycodeByUserId($teacher['User']['id']) &&
+            	$this->Test->deleteTestByUserId($teacher['User']['id']) &&
+            	$this->Lesson->deleteLessonByTeacherId($teacher['User']['id']) &&
+            	$this->InitialVerifycode->deleteInitialVerifycodeByUserId($teacher['User']['id']) &&
+            	$this->InitialUser->deleteInitialUserByUserId($teacher['User']['id']) &&
+            	$this->Document->deleteDocumentByUserId($teacher['User']['id']) &&
+            	$this->Comment->deleteCommentByUserId($teacher['User']['id']) &&
+            	$this->BannedStudent->deleteRecordByTeacherId($teacher['User']['id'])){
+                	$this->Session->setFlash('このアカウントが今削除です');
+                	$this->redirect(array('controller' => 'Admins', 'action' => 'getAccount'));
             }
         }
         if (isset($this->request->data['reset_password'])) {
@@ -403,12 +440,8 @@ class AdminsController extends AppController {
             }
         }
         if (isset($this->request->data['delete_manager']) && $admin['User']['online_flag'] == 0) {
-            $this->User->set(array(
-                'status_flag' => 0,
-                ));
-            $this->User->id = $admin['User']['id'];
-            if ($this->User->delete()) {
-                $this->Session->setFlash('このアカウントが今ロックです');
+            if($this->User->deleteUser($admin['User']['id']) && $this->IpAddress->deleteIpByUserId($admin['User']['id'])){
+                $this->Session->setFlash('このアカウントが今削除です');
                 $this->redirect(array('controller' => 'Admins', 'action' => 'getAccount'));
             }
         }
@@ -601,6 +634,9 @@ function managerDocument($document_id) {
 			
 			if ($this->Auth->login ()) {
 				$this->Session->delete ( 'missing' );
+				$this->User->id = $this->Auth->user ( 'id' );
+				$this->User->set ( array ('ip_address' => $this->request->clientIp (), 'online_flag' => 1 ) );
+				$this->User->save ();
 				$this->redirect ( array (
 						"controller" => "Lessons",
 						"action" => "view_all_lessons" 

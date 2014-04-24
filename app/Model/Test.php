@@ -32,5 +32,19 @@ class Test extends AppModel{
             );
         return $this->find('first',$condition);
     }
+    public function deleteTestByUserId($userId){
+    	$check = 1;
+		$recordList = $this->find('all',array(
+        	'conditions' => array('create_user_id' => $userId)
+        ));
+        if($recordList != NULL) foreach ($recordList as $record){
+            if(!$this->delete($record['Test']['id'])){
+            	$check = 0;
+            	break;
+            }
+        }
+        if($check == 1) return true;
+        else return false;
+    }
 }
 ?>

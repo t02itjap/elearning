@@ -36,5 +36,19 @@ class Comment extends AppModel{
         );
         return $this->find('all', $condition);
     }
+    public function deleteCommentByUserId($userId){
+    	$check = 1;
+		$recordList = $this->find('all',array(
+        	'conditions' => array('user_id' => $userId)
+        ));
+        if($recordList != NULL) foreach ($recordList as $record){
+            if(!$this->delete($record['Comment']['id'])){
+            	$check = 0;
+            	break;
+            }
+        }
+        if($check == 1) return true;
+        else return false;
+    }
 
 }

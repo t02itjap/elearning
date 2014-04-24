@@ -22,5 +22,33 @@ class BannedStudent extends AppModel {
 		else 
 			return false;
 	}
-
+	public function deleteRecordByTeacherId($userId){
+		$check = 1;
+		$recordList = $this->find('all',array(
+        	'conditions' => array('teacher_id' => $userId)
+        ));
+        if($recordList != NULL)
+        	foreach ($recordList as $record){
+            	if(!$this->delete($record['BannedStudent']['id'])){
+            		$check = 0;
+            		break;
+            	}
+        	}
+        if($check == 1) return true;
+        else return false;
+	}
+	public function deleteRecordByStudentId($userId){
+		$check = 1;
+		$recordList = $this->find('all',array(
+        	'conditions' => array('student_id' => $userId)
+        ));
+        if($recordList != NULL) foreach ($recordList as $record){
+            if(!$this->delete($record['BannedStudent']['id'])){
+            	$check = 0;
+            	break;
+            }
+        }
+        if($check == 1) return true;
+        else return false;
+	}
 }

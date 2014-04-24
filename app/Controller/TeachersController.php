@@ -1,7 +1,25 @@
 <?php
 class TeachersController extends AppController {
     public $name = "Teachers";
-    var $uses = array('User', 'Test', 'Lesson', 'Bill', 'Category', 'Document', 'TestHistory', 'ChangeableValue', 'Bill', 'BannedStudent', 'Verifycode', 'LessonOfCategory');
+	var $uses = array (
+			'BannedStudent',
+			'Bill',
+			'Category',
+			'ChangeableValue',
+			'Comment',
+			'User',
+			'InitialUser',
+			'Verifycode',
+			'InitialVerifycode',
+			'IpAddress',
+			'Test',
+			'Lesson',
+			'Document',
+			'LearnHistory',
+			'LessonOfCategory',
+			'TestHistory',
+			'LockedUser'
+	);
     var $helpers = array('Html', 'Form', 'Editor');
     public $components = array('Paginator', 'RequestHandler');
 
@@ -150,12 +168,18 @@ class TeachersController extends AppController {
             }
         }
         if (isset($this->request->data ['delete_teacher'])) {
-            $this->User->set(array('status_flag' => 0));
-            $this->User->id = $teacher ['User'] ['id'];
-            if ($this->User->save()) {
-                $this->Session->destroy();
-                $this->Session->setFlash('あなたのアカウントが今ロックです、再開けるために、管理者に連絡してください。');
-                $this->redirect(array('controller' => 'Users', 'action' => 'login'));
+        	if ($this->User->deleteUser($teacher['User']['id']) &&
+            	$this->Verifycode->deleteVerifycodeByUserId($teacher['User']['id']) &&
+            	$this->Test->deleteTestByUserId($teacher['User']['id']) &&
+            	$this->Lesson->deleteLessonByTeacherId($teacher['User']['id']) &&
+            	$this->InitialVerifycode->deleteInitialVerifycodeByUserId($teacher['User']['id']) &&
+            	$this->InitialUser->deleteInitialUserByUserId($teacher['User']['id']) &&
+            	$this->Document->deleteDocumentByUserId($teacher['User']['id']) &&
+            	$this->Comment->deleteCommentByUserId($teacher['User']['id']) &&
+            	$this->BannedStudent->deleteRecordByTeacherId($teacher['User']['id'])){
+            		$this->Session->destroy ();
+                	$this->Session->setFlash('このアカウントが今削除です');
+                	$this->redirect(array('controller' => 'Users', 'action' => 'login'));
             }
         }
     }

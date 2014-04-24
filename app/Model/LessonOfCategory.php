@@ -74,6 +74,20 @@ class LessonOfCategory extends AppModel {
 		}
 		return $lIdAndCname;
 	}
+	public function deleteLessonOfCategoryByLessonId($lessonId){
+		$check = 1;
+		$recordList = $this->find('all',array(
+        	'conditions' => array('lesson_id' => $lessonId)
+        ));
+        if($recordList != NULL) foreach ($recordList as $record){
+            if(!$this->delete($record['LessonOfCategory']['id'])){
+            	$check = 0;
+            	break;
+            }
+        }
+        if($check == 1) return true;
+        else return false;
+	}
 }
 
 ?>

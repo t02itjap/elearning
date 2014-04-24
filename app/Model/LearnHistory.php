@@ -11,4 +11,18 @@ class LearnHistory extends AppModel {
 			'order' => ''
 		)
 	);
+	public function deleteLearnHistoryByBillId($billId){
+		$check = 1;
+		$recordList = $this->find('all',array(
+        	'conditions' => array('bill_id' => $billId)
+        ));
+        if($recordList != NULL) foreach ($recordList as $record){
+            if(!$this->delete($record['LearnHistory']['id'])){
+            	$check = 0;
+            	break;
+            }
+        }
+        if($check == 1) return true;
+        else return false;
+	}
 }
