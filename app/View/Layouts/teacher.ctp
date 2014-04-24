@@ -43,10 +43,11 @@ $cakeDescription = __d ( 'cake_dev', 'CakePHP: the rapid development php framewo
 		   $(document).idleTimeout({
 		     inactivity: <?=$sessiontime*1000*60?>, 
      		 noconfirm: 10000, 
-     		 sessionAlive: 6*60*60*1000,
+     		 sessionAlive: 60*60*1000,
      		 alive_url:"/elearning/users/login",
      		 redirect_url:"/elearning/users/logout",
-     		 logout_url:"/elearning/users/logout"
+     		 logout_url:"/elearning/users/logout",
+     		 showDialog:true
 		   });
 		  });
 		</script>

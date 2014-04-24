@@ -1086,7 +1086,7 @@ class AdminsController extends AppController {
 		if ($this->request->is ( 'post' )) {
 			$data = $this->request->data;
 			$startDate = $data ['Backup'] ['start'];
-			$every = $data ['Backup'] ['every'];
+			$every = $this->ChangeableValue->field('current_value',array('id'=>8));
 			$endDate = $data ['Backup'] ['end'];
 			$startTime = $data ['Backup'] ['startTime'];
 			$endTime = $data ['Backup'] ['endTime'];

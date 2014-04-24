@@ -60,16 +60,16 @@ echo $this->Html->script ( array (
 				"div" => false
 		) );
 		echo '</td>';
-		echo '<tr>';
-		echo '<td>';
-		echo $this->Form->input ( "every", array (
-				"label" => false,
-				"type" => "text",
-				"placeholder" => "繰り返すタイム"
-				) );
-		echo '</td>';
-		echo '<td>'.'<label style="font-size:14px;padding-top:5px;">分</label>'.'</td>';
-		echo '</tr>';
+// 		echo '<tr>';
+// 		echo '<td>';
+// 		echo $this->Form->input ( "every", array (
+// 				"label" => false,
+// 				"type" => "text",
+// 				"placeholder" => "繰り返すタイム"
+// 				) );
+// 		echo '</td>';
+// 		echo '<td>'.'<label style="font-size:14px;padding-top:5px;">分</label>'.'</td>';
+// 		echo '</tr>';
 		echo '<td>';
 		echo $this->Form->input ( "end", array (
 				"label" => false,
@@ -129,12 +129,12 @@ $().ready(function() {
         }
        });
 
-    $("#BackupEvery").rules("add", {
-        required:true,
-        messages: {
-               required: "繰り返すタイムを入力する"
-        }
-       });
+//     $("#BackupEvery").rules("add", {
+//         required:true,
+//         messages: {
+//                required: "繰り返すタイムを入力する"
+//         }
+//        });
     $("#BackupStartTime").rules("add",{
 			time : "required time",
 			required:true,

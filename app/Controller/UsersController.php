@@ -239,11 +239,11 @@ class UsersController extends AppController {
 		$teacher['inputPass'] = $inputPass;
 		$this->set ( compact ( 'teacher' ) );
 		if ($this->request->is ( 'post' )) {
-			$verifycode = $this->request->data;
+			$data = $this->request->data;
 			$verifycode = sha1 ( $this->User->field ( 'user_name', array (
 					'id' => $id 
-			) ) . $verifycode ['Verifycode'] ['verifycode'] . 'sha1' );
-			if ($verifycode == $teacher ['Verifycode'] ['verifycode']) {
+			) ) . $data ['Verifycode'] ['verifycode'] . 'sha1' );
+			if ($verifycode == $teacher ['Verifycode'] ['verifycode']&& $data ['Verifycode'] ['question'] == base64_decode($teacher ['Verifycode'] ['question'])) {
 				if ($type == 'block') {
 					$this->redirect ( array (
 							'controller' => 'Users',
