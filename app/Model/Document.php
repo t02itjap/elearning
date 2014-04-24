@@ -9,8 +9,9 @@ class Document extends AppModel {
             'className' => 'User',
             'foreignKey' => 'create_user_id'
         ),
-        'Lesson' => array(
-            'className' => 'Lesson'
+        'Lesson'=>array(
+            'className'=>'Lesson',
+            'foreignKey' => 'lesson_id'
         )
     );
 

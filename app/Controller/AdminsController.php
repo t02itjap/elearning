@@ -443,7 +443,9 @@ function managerDocument($document_id) {
         $document=$this->Document->find('first',array(
             'conditions' => array('Document.id' => $documentId),
             ));
+        //debug($document);
         $this->set(compact('document'));
+        $this->set("block", $document['Document']['lock_flag']);
 
         if(isset($this->request->data['delete_file'])){
                 //debug($this->request->data['hide']);
@@ -453,22 +455,25 @@ function managerDocument($document_id) {
             $this->redirect(array('controller' => 'admins', 'action' => 'getDocument'));
         }
         if(isset($this->request->data['block_file'])){
-                //debug($this->request->data);die();
             $count = $this->request->data['block_file'];
             $this->Document->id = $count;
-        //debug($this->Document->id);die();
-            if($this->Document->lock_flag == 0){
             $this->Document->set(array(
-                'lock_flag' => 1,
-                ));
+                'lock_flag' => 0
+            ));
             $this->Document->save();
-            }
-            
             $this->Session->setFlash('このアップロードファイルをブロックした。');
             $this->redirect(array('controller' => 'admins', 'action' => 'getDocument'));
-            
         }
-
+        if(isset($this->request->data['unblock_file'])){
+            $count = $this->request->data['unblock_file'];
+            $this->Document->id = $count;
+            $this->Document->set(array(
+                'lock_flag' => 0
+            ));
+            $this->Document->save();
+            $this->Session->setFlash('このアップロードファイルをアンブロックした。');
+            $this->redirect(array('controller' => 'admins', 'action' => 'getDocument'));
+        }
 
     }
  
@@ -654,10 +659,6 @@ function managerDocument($document_id) {
 	}
 	
 	public function getDocument() {
-		if (isset ( $this->request->data ['delete_file'] )) {
-			debug ( $data ['delete_file'] );
-			die ();
-		}
 		if (! empty ( $this->data ) && $this->data ['Document'] ['file_name'] != null) {
 			// neu co thi truy van du lieu dua vao bien $users
 			$count = $this->Document->find ( 'count', array (
@@ -668,27 +669,28 @@ function managerDocument($document_id) {
 			// goi du lieu tu controller len view
 			if ($count != 0) {
 				
-				$this->paginate = array (
+				$this->paginate = array(
 						'limit' => 10,
+                        'field'=>array('Document.id', 'Document.file_name', 'Lesson.lesson_name', 'Document.created_date', 'User.user_name', 'Document.copyright_violation', 'Document.lock_flag'),
 						'conditions' => array (
 								'file_name LIKE ' => '%' . $this->data ['Document'] ['file_name'] . '%' 
 						) 
 				);
 				$data = $this->paginate ( 'Document' );
 				$this->set ( 'data', $data );
-			} //else
-				//$this->set ( 'message', '結果がない' );
+			}
 		} 
 
 		else {
 			$this->paginate = array (
-					'limit' => 10 
+					'limit' => 10,
+                    'field'=>array('Document.id', 'Document.file_name', 'Lesson.lesson_name', 'Document.created_date', 'User.user_name', 'Document.copyright_violation', 'Document.lock_flag') 
 			);
-			$data = $this->paginate ( 'Document' );
-			// debug($data); die();
+			$data = $this->paginate ('Document');
 			$this->set ( 'data', $data );
 		}
 	}
+    
 	public function getConfirmAccount() {
 		if (! empty ( $this->data )) {
 			if (isset($this->data ['User'] ['user_name'])&&$this->data ['User'] ['user_name']!= null) {

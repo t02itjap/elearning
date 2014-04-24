@@ -17,14 +17,27 @@
                     </table>
                     <div id="submit">
                     <?php
-                        echo $this->Form->button ( 'ブロック', array (
+                        //debug($block);
+                        if(!$block){
+                            echo $this->Form->button ( 'ブロック', array (
                                 'value' => $document ['Document'] ['id'],
                                 'name' => 'data[block_file]',
                                 'class' => 'link-button',
                                 'onClick' => "return confirm('このファイルをブロックしたいですか?')",
-                                'escape' => 'flase',
-                                'title' => 'xac nhan' 
+                                'escape' => 'flase'
+                                //'title' => 'xac nhan' 
                         ) );
+                        }
+                        else{
+                            echo $this->Form->button ( 'アンブロック', array (
+                                'value' => $document ['Document'] ['id'],
+                                'name' => 'data[unblock_file]',
+                                'class' => 'link-button',
+                                'onClick' => "return confirm('このファイルをアンブロックしたいですか?')",
+                                'escape' => 'flase'
+                                //'title' => 'xac nhan' 
+                        ) );
+                        }
                     ?>
                     <?php
                         
@@ -33,8 +46,8 @@
                                 'name' => 'data[delete_file]',
                                 'class' => 'link-button',
                                 'onClick' => "return confirm('このファイルを削除したいですか?')",
-                                'escape' => 'flase',
-                                'title' => 'xac nhan' 
+                                'escape' => 'flase'
+                                //'title' => 'xac nhan' 
                         ) );
                     ?>
                     </div><!--End #submit-->

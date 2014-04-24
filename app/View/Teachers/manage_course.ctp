@@ -69,7 +69,7 @@
                                 }
                             });
                         } else {
-                            alert('File sai dinh dang hoac da bi trung, moi nhap lai');
+                            alert('ファイルタイプが間違う');
                         }
                     }
                 });
@@ -123,7 +123,7 @@
                                 }
                             });
                         } else {
-                            alert('File sai dinh dang hoac da bi trung, moi nhap lai');
+                            alert('ファイルタイプが間違う');
                         }
                     }
                 });
@@ -134,14 +134,14 @@
         $('#addNewDocument').on('click',function(e){
             e.preventDefault();
             var tmp = 
-                '<label for="fileDocument">Pdf or Image</label>'+
+                '<label for="fileDocument">新しい資料</label>'+
                 '<input id="fileDocument" type="file" name="data[Lesson][file_link_document][]">';
             $('#fileArrayDocument').append(tmp);
         });
         $('#addNewTest').on('click',function(e){
             e.preventDefault();
             var tmp = 
-                '<label for="fileTest">Only TSV</label>'+
+                '<label for="fileTest">新しいテストTSVファイルだけ</label>'+
                 '<input id="fileTest" type="file" name="data[Lesson][file_link_test][]">';
             $('#fileArrayTest').append(tmp);
         });
@@ -162,6 +162,7 @@
                     echo $this->Form->input('Name', array(
                         'type' => 'text',
                         'name' => 'data[Lesson][Name]',
+						'value'=> $dataCourse['Lesson']['lesson_name'],
                         'label' => false,
                     ));
                     ?>
@@ -173,14 +174,17 @@
             <tr>
                 <td>カテゴリー</td>
                 <td>
-                    <ul id="listCategory" style="overflow-y: scroll; height:200px;">
+                    <ul id="listCategory" style="overflow-y: scroll; height:200px;width: 424px;">
                         <?php
                         foreach ($categories as $category) {
-                            echo '<label>' . $category['Category']['category_name'] . '</label>';
+                            
                             echo '<li>';
+                            echo '<label style = "line-height:25px;display:inline">' . $category['Category']['category_name'] . '</label>';
                             echo $this->Form->checkbox('Category', array(
                                 'value' => $category['Category']['id'],
                                 'name' => 'data[Lesson][category][]',
+								'style' => 'width :300px;float:right;',
+								'checked' => in_array($category['Category']['id'], $dataCategory) == true ? true : false,
                             ));
                             echo '</li>';
                         }
@@ -189,19 +193,19 @@
                         <!--教師のユーザーからの授業名を取得-->
 
                     </ul>
-                </td>
-                <td>
+        
                     <button id="createNewCategory" type="button">カテゴリー追加</button>
                 </td>
+            </tr>
             <tr>
+            <td></td>
+            <td>
             <div id="formCreateNewCategory">
 
                 <input type="text" id="nameCategory"/>
                 <button id="createCategory">追加</button>
             </div>
-            </tr>
-
-            </td>   
+            </td>
             </tr>
 
             <tr>
@@ -211,6 +215,7 @@
                     echo $this->Form->input('Name', array(
                         'type' => 'textarea',
                         'name' => 'data[Lesson][Description]',
+						'value' => $dataCourse['Lesson']['description'],
                         'label' => false,
                     ));
                     ?>
@@ -219,16 +224,6 @@
 
                 </td>
             </tr>
-<!--            <tr>
-                <td>資料１</td>
-                <td><a href="" style="text-decoration: underline;">資料１</a></td>
-                <td><button>変更</button></td>
-            </tr>
-            <tr>
-                <td>資料２</td>
-                <td><a href="" style="text-decoration: underline;">資料2</a></td>
-                <td><button>変更</button></td>
-            </tr>-->
             <?php
             foreach ($dataLesson as $data) {
                 echo '<tr>';
@@ -255,22 +250,14 @@
                 echo '</tr>';
             }
             ?>
-            <tr id="fileArrayDocument">
-                
+            <tr>
+                <td></td>
+                <td id="fileArrayDocument"></td>
             </tr>
             <tr>
+            	<td></td>
                 <td><button id="addNewDocument">資料追加</button></td>
             </tr>
-<!--            <tr>
-                <td>テスト１</td>
-                <td><a href="" style="text-decoration: underline;">テスト１　時間：３０分</a></td>
-                <td><button>変更</button></td>
-            </tr>
-            <tr>
-                <td>テスト２</td>
-                <td><a href="" style="text-decoration: underline;">テスト2　時間：３０分</a></td>
-                <td><button>変更</button></td>
-            </tr>-->
             <?php
             foreach ($dataTest as $data) {
                 echo '<tr>';
@@ -296,10 +283,12 @@
                 echo '</tr>';
             }
             ?>
-            <tr id="fileArrayTest">
-                
+            <tr >
+                <td></td>
+                <td id="fileArrayTest"></td>
             </tr>
             <tr>
+            	<td></td>
                 <td><button id="addNewTest">テスト追加</button></td>
             </tr>
         </table>

@@ -100,7 +100,8 @@ class TeachersController extends AppController {
                     $this->BannedStudent->set(array(
                         'teacher_id' => $this->Auth->user('id'),
                         'student_id' => $stu ['User'] ['id'],
-                        'reason' => $ban ['BannedStudent'] ['Reason']
+                        'reason' => $ban ['BannedStudent'] ['Reason'],
+                        'banned_date'=>date("Y-m-d h:i:s", time())
                     ));
                     $this->BannedStudent->save();
                     $this->Session->setFlash('ブロックが成功した');
@@ -362,11 +363,11 @@ class TeachersController extends AppController {
 
     public function manage_course($id_lesson) {
         if (!$id_lesson) {
-            throw new NotFoundException('404 not found');
+            throw new NotFoundException('このページが存在じゃありません。');
         }
         $lesson = $this->Lesson->find('first', array('conditions' => array('Lesson.id' => $id_lesson)));
         if (!$lesson) {
-            throw new NotFoundException('405 not found lesson');
+            throw new NotFoundException('このページが存在じゃありません。');
         }
         //新しいレッスンを作成する 
         $categories = $this->Category->find('all');
@@ -408,7 +409,8 @@ class TeachersController extends AppController {
                     //debug($upData);
                     $this->Document->create();
                     //新しいドキュメントのテーブルのデータベースを作成する 
-                    if ($this->Document->checkValid($upData['name'])) {
+                    $user_id = $this->Auth->user('id');
+                    if ($this->Document->checkValid($upData['name'],$user_id)) {
                         $this->Document->set(array(
                             'file_link' => 'files' . DS . $user_id . DS . $upData['name'],
                             'file_name' => $upData['name'],
@@ -416,14 +418,13 @@ class TeachersController extends AppController {
                             'lesson_id' => $id_lesson
                         ));
                         $this->Document->save();
-                        $user_id = $this->Auth->user('id');
+                        
                         if (!file_exists(WWW_ROOT . 'files' . DS . $user_id)) {
                             mkdir(WWW_ROOT . 'files' . DS . $user_id, 0700);
                         }
                         move_uploaded_file($upData['tmp_name'], 'files' . DS . $user_id . DS . $upData['name']);
                     } else {
-                        $err = 'File sai dinh dang hoac da bi trung, moi nhap lai';
-                        $this->set(compact('err'));
+                        $this->Session->setFlash('ファイル存在したとかファイル名が存在したとか');
                     }
                 }
             }
@@ -447,14 +448,20 @@ class TeachersController extends AppController {
                         }
                         move_uploaded_file($upData['tmp_name'], 'files' . DS . $user_id . DS . $upData['name']);
                     } else {
-                        $err1 = 'File sai dinh dang hoac da bi trung, moi nhap lai';
-                        $this->set(compact('err1'));
+                        $this->Session->setFlash('ファイル存在したとかファイル名が存在したとか');
                     }
                 }
             }
             //検証]をチェックし、新しいテストをアップロードする 
         }
         //22-3-2014
+        $dataCourse = $this->Lesson->find('first',array('conditions'=> array('Lesson.id' => $id_lesson)));
+        $this->set('dataCourse',$dataCourse);
+        $dataCategory = $this->LessonOfCategory->find('list', array(
+            'fields' => array('category_id'),
+            'conditions' => array('lesson_id' => $id_lesson),
+                ));
+        $this->set('dataCategory', $dataCategory);
         $dataLesson = $this->Document->find('all', array(
             'fields' => array(),
             'conditions' => array('lesson_id' => $id_lesson),

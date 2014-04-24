@@ -29,9 +29,10 @@
 		<tbody> 
         <?php
 					$sum = 0;
+					//debug($data);
 					foreach ( $data as $item ) {
 						
-?>
+		?>
                     <tr>
                         <?php
 						echo $this->Form->create ( 'Document', array (
