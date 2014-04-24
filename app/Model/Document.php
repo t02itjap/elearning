@@ -69,5 +69,4 @@ class Document extends AppModel {
         );
         return $this->find('all', $condition);
     }
-
 }

@@ -26,6 +26,12 @@ display: block;
 }
 
 /*BODY*/
+.error{
+	color: red;
+	font-family:"Lucida Console", Courier, monospace;
+	font-size: 10px;
+	width: 200px;
+}
 
 body { 
     margin: auto;
@@ -158,6 +164,7 @@ border-radius:5px;
     float: left;
     padding: 10px;
     width: 200px;
+	height: 470px;
 }
 
 #search {
@@ -166,8 +173,8 @@ border-radius:5px;
     height: 150px;
 }
 
-#search input[name="search"]{
-    width: 190px;
+#search select{
+    width: 100px;
 } 
 
 #search input[type="submit"]{
@@ -423,7 +430,7 @@ border-radius:5px;
 #change_info {
     border: 1px solid green;
     margin-top: 30px;
-    margin-bottom: 50px;
+    margin-bottom: 20px;
 }
 #change_info h4 {
     margin: 5px;
@@ -630,10 +637,10 @@ border-radius:5px;
 }
 
 #new_comment textarea {
-height: 25px;
-width: 572px;
+height: 55px;
+width: 584px;
 border: 1px solid green;
-margin-left: 33px;
+margin-left: 66px;
 }
 
 #new_comment form {
@@ -753,6 +760,22 @@ margin-left: 33px;
     height: 100px;
 }
 
+#data_manage table tr td {
+	padding: 5px 1px 5px 1px;
+	font-size: 14px;
+}
+
+.content-center {
+	text-align: center;
+}
+.content-left {
+	text-align: left;
+}
+
+#data_manage table tr td input {
+	margin-bottom: 1px;
+}
+
 /*Hoc sinh result*/
 #hs_result table{
     border: 1px solid green;
@@ -863,7 +886,6 @@ margin-left: 33px;
 
 #summary table{
     border: 1px solid green;
-    margin-left: 30px;
     margin-top: 20px;
     margin-bottom: 30px;
 }
@@ -901,12 +923,13 @@ color: black;
 font-size: 12px;
 }
 .btn{
-    float: left;
-    width: 50px;
+    float: right;
+    width: 80px;
 }
 /*end Phi*/
 /*khanh*/
 .link-button, button {
+	margin-right:5px;
 	margin-top: 5px;
 	-moz-box-shadow:inset 1px 1px 0px -50px #c1ed9c;
 	-webkit-box-shadow:inset 1px 1px 0px -50px #c1ed9c;
@@ -940,6 +963,15 @@ font-size: 12px;
 	text-shadow:1px 1px 0px #689324;
 	padding: 2px;
 }
+
+.link-button:before, button:before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
 .link-button:hover, button:hover {
 	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #8cb82b), color-stop(1, #9dce2c) );
 	background:-moz-linear-gradient( center top, #8cb82b 5%, #9dce2c 100% );
@@ -950,7 +982,9 @@ font-size: 12px;
 	position:relative;
 	top:1px;
 }
+
 #keyword {
+	width: 160px;
 	margin-top: 10px;
 	margin-right: 2px;
 }
@@ -986,7 +1020,7 @@ th a.desc:after {
 	content: ' ⇡';
 }
 table tr td {
-	padding: 6px;
+	padding: 6px 3px 6px 3px;
 	text-align: left;
 	vertical-align: top;
 	border-bottom:1px solid #ddd;
@@ -1044,3 +1078,25 @@ table td.actions a {
 }
 
 /*end khanh*/
+.message {
+ border: 1px solid;
+    margin: 10px 0px;
+    padding:15px 10px 15px 50px;
+    background-repeat: no-repeat;
+    background-position: 10px center;-moz-border-radius:.5em;
+-webkit-border-radius:.5em;
+border-radius:.5em;
+ 
+}
+.message {
+    color: #00529B;
+    background-color: #BDE5F8;
+    background-image: url('/elearning/img/info.png');
+}
+.select label {
+	font-size: 14px;
+	font-weight: bold;
+	line-height: 20px;
+}
+
+

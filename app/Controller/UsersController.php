@@ -50,21 +50,15 @@ class UsersController extends AppController {
 			
 			// kiem tra IP dang bi block
 			$guest = $this->LockedUser->find ( 'first', array ('conditions' => array ('ip_address' => $this->request->clientIp () ) ) );
-			// debug($guest);die();
 			if ($guest) {
 
 				if ($guest ['LockedUser'] ['count'] >= ($this->ChangeableValue->field ( "current_value", array (
 						'id' => 4 
 				) ) - 1)) {
-					// if ($this->request->data ['User'] ['user_type'] == 2) {
-					// $this->redirect ( 'teacherName' );
-					// } else if ($this->request->data ['User'] ['user_type'] == 3) {
 					if ($guest ['LockedUser'] ['lock_flg'] == 1) {
 						if ((strtotime ( date ( "Y/m/d H:i:s" ) ) - strtotime ( $guest ['LockedUser'] ['lock_start_time'] )) < 60 * $this->ChangeableValue->field ( 'current_value', array (
 								'id' => 5 
 						) )) {
-							// $time = (strtotime ( date ( "Y/m/d H:i:s" ) ) - strtotime ( $guest ['LockedUser'] ['lock_start_time'] ));
-							// debug($time);die();
 							$this->Session->setFlash ( 'IP が ' . $this->ChangeableValue->field ( "current_value", array (
 									'id' => 5 
 							) ) . ' 分間に' . 'ブロックしている' );

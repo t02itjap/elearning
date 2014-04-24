@@ -40,6 +40,7 @@ echo $this->Form->button ( "パスワード忘れた", array (
 echo $this->Form->end ( array (
 		"label" => 'ログイン',
 		'class' => 'link-button',
+		'style' => 'padding: 5px;',
 		'div' => false
 ) );
 ?>

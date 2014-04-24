@@ -1,14 +1,12 @@
 <?php echo $this->Html->script ( array (
 		'jquery.validate' 
 ) );?>
-
-
 	<?php echo $this->Session->flash();?>
                 <?php echo $this->Form->create('User',array('type'=>'post'));?>
     <div id="change_info">
 		<table>
 			<tr>
-				<td>現在パスワード</td>
+				<td style= 'padding-top: 15px;'><label class='label'>現在パスワード</td>
 				<td>
 					<?php
                            echo $this->Form->input ( 'pass1', array (
@@ -22,7 +20,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td>新しいパスワード</td>
+				<td style= 'padding-top: 15px;'><label class='label'>新しいパスワード</td>
 				<td>
 					<?php
                            echo $this->Form->input ( 'pass2', array (
@@ -36,7 +34,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td>新しいパスワード確認</td>
+				<td style= 'padding-top: 15px;'><label class='label'>新しいパスワード確認</td>
 				<td>
 					<?php
                            echo $this->Form->input ( 'pass3', array (
@@ -51,8 +49,16 @@
 			</tr>
 		</table>
 	</div><!--End #change_info-->
+<<<<<<< HEAD
 		<?php echo $this->Form->end('変更');?>
 
+=======
+		<?php echo $this->Form->end(array(
+				'label' => '変更',
+				'class' => 'link-button',
+				'style' => 'float:right;'
+		));?>
+>>>>>>> 6a68e80a79c70381ca3ced0f3c64960bb8bf12ec
 <script>
 $(document).ready(function(){
   var validator = $("#UserChangePassForm").validate(
