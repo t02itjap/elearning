@@ -74,7 +74,7 @@
                     </div><!--End #change_info-->
                     <div id="submit">
                             <?php
-                            if($teacher['User']['status_flag'] == 1)
+                            if(isset($teacher['User']['status_flag'])&&$teacher['User']['status_flag']== 1)
                             echo $this->Form->button('アカウントを削除',
 								array(
 									'name' => 'data[delete_student]',

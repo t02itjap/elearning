@@ -40,7 +40,7 @@ class LessonOfCategory extends AppModel {
 		$andpos=strpos($keyword, '+');
 		$orpos=strpos($keyword, '-');
 		
-		if(($andpos!=0&&$orpos!=0&&$andpos<=$orpos)||$orpos==0)
+		if(($andpos!=0&&$orpos!=0&&$andpos<=$orpos)||($orpos==0&&$andpos!=0))
 		{
 			$keywords=explode('+', $keyword);
 			$isand=true;
@@ -52,48 +52,28 @@ class LessonOfCategory extends AppModel {
 		foreach ($keywords as $key) {
 			$condition1[]=array('Category.category_name LIKE'=>'%'.$key.'%');
 		}
+		//debug($condition1);
 		if($isand){
-			$conditions=array($condition1);		
+			foreach ($keywords as $key) {
+				$lIdAndCnameTemp[]=$this->find('all', array(
+				'fields'=>array('LessonOfCategory.lesson_id'),
+				'conditions'=>array('Category.category_name LIKE'=>'%'.$key.'%')
+				));
+			}
+			//debug("isand in LessonOfCategory");	
+			$lIdAndCname=call_user_func_array('array_intersect', $lIdAndCnameTemp);
 		}
-		else
+		else{
 			$conditions=array('OR'=>$condition1);
-		$lIdAndCname=$this->find('all', array(
-			'fields'=>array('LessonOfCategory.lesson_id', 'LessonOfCategory.category_id', 'Category.category_name'),
-			'conditions'=>$conditions
+			//debug($conditions);
+			$lIdAndCname=$this->find('all', array(
+				'fields'=>array('LessonOfCategory.lesson_id'),
+				'conditions'=>$conditions
 			));
-		//debug($lIdAndCname);die();
+			//debug("Not isand in LessonOfCategory");
+		}
 		return $lIdAndCname;
 	}
-
-	// public function getLIdAndCName2($keyword=null){
-	// 	$isand=false;
-	// 	$andpos=strpos($keyword, '+');
-	// 	$orpos=strpos($keyword, '-');
-		
-	// 	if(($andpos!=0&&$orpos!=0&&$andpos<=$orpos)||$orpos==0)
-	// 	{
-	// 		$keywords=explode('+', $keyword);
-	// 		$isand=true;
-	// 	}
-	// 	else{
-	// 		$keywords=explode('-', $keyword);
-	// 		$isand=false;
-	// 	}
-	// 	foreach ($keywords as $key) {
-	// 		$condition1[]=array('Category.category_name LIKE'=>'%'.$key.'%');
-	// 	}
-	// 	if($isand){
-	// 		$conditions=array($condition1);		
-	// 	}
-	// 	else
-	// 		$conditions=array('OR'=>$condition1);
-	// 	$lIdAndCname=$this->find('all', array(
-	// 		'fields'=>array('LessonOfCategory.lesson_id', 'LessonOfCategory.category_id', 'Category.category_name'),
-	// 		'conditions'=>$conditions
-	// 		));
-	// 	//debug($lIdAndCname);die();
-	// 	return $lIdAndCname;
-	// }
 }
 
 ?>
