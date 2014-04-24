@@ -68,7 +68,7 @@
         </tbody>    
     </table>
 <?php else: {
-    echo $message;
+    echo '結果がない';
 } ?>
 <?php endif; ?>
 </div>

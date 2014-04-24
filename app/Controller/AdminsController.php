@@ -649,6 +649,74 @@ function managerDocument($document_id) {
 		$this->Session->write ( 'userInfors', $data );
 	}
 	
+<<<<<<< HEAD
+=======
+	// Huong Viet`
+	public function getAccount() {
+		if (! empty ( $this->data )) {
+			if (isset($this->data ['User'] ['user_name'])&&$this->data ['User'] ['user_name']!= null) {
+				// neu co thi truy van du lieu dua vao bien $users
+				// debug($user_name);
+				// debug($this->data['User']['user_name']);die();
+				$count = $this->User->find ( 'count', array (
+						'conditions' => array (
+								'user_name LIKE ' => '%' . $this->data ['User'] ['user_name'] . '%',
+								'User.approve_flag' => 1 
+						) 
+				) );
+				// goi du lieu tu controller len view
+				if ($count != 0) {
+					// $this->set('users',$users);
+					
+					$this->paginate = array (
+							'limit' => 10,
+							'field' => array (
+									'User.id',
+									'User.user_name',
+									'User.real_name' 
+							),
+							'conditions' => array (
+									'user_name LIKE ' => '%' . $this->data ['User'] ['user_name'] . '%',
+									'User.approve_flag' => 1 
+							) 
+					);
+					$data = $this->paginate ( 'User' );
+					$this->set ( 'data', $data );
+				} //else
+					//$this->set ( 'message', '結果がない' );
+			}
+			if (isset($this->data ['User'] ['level'])&&$this->data ['User'] ['level']!= null) {
+				$this->paginate = array (
+						'limit' => 10,
+						'conditions' => array (
+								'User.approve_flag' => 1,
+								'User.level' => $this->data ['User'] ['level'] 
+						) 
+				);
+				$data = $this->paginate ( 'User' );
+				
+				$this->set ( 'data', $data );
+			}
+		} 
+
+		else {
+			$this->paginate = array (
+					'limit' => 10,
+					'conditions' => array (
+							'User.approve_flag' => 1 
+					),
+					'field' => array (
+							'User.id',
+							'User.user_name',
+							'User.real_name' 
+					) 
+			)
+			;
+			$data = $this->paginate ( 'User' );
+			$this->set ( 'data', $data );
+		}
+	}
+>>>>>>> 9b30084eb3a0bde29e3bac37d635f62cb312e513
 	public function getDocument() {
 		if (isset ( $this->request->data ['delete_file'] )) {
 			debug ( $data ['delete_file'] );
@@ -672,8 +740,8 @@ function managerDocument($document_id) {
 				);
 				$data = $this->paginate ( 'Document' );
 				$this->set ( 'data', $data );
-			} else
-				$this->set ( 'message', '結果がない' );
+			} //else
+				//$this->set ( 'message', '結果がない' );
 		} 
 
 		else {
@@ -687,7 +755,7 @@ function managerDocument($document_id) {
 	}
 	public function getConfirmAccount() {
 		if (! empty ( $this->data )) {
-			if ($this->data ['User'] ['user_name'] != null) {
+			if (isset($this->data ['User'] ['user_name'])&&$this->data ['User'] ['user_name']!= null) {
 				// neu co thi truy van du lieu dua vao bien $users
 				// debug($user_name);
 				// debug($this->data['User']['user_name']);die();
@@ -717,7 +785,7 @@ function managerDocument($document_id) {
 					$this->set ( 'data', $data );
 				}
 			}
-			if ($this->data ['User'] ['level'] != null) {
+			if (isset($this->data ['User'] ['level'])&& $this->data ['User'] ['level']!= null) {
 				$this->paginate = array (
 						'limit' => 10,
 						'conditions' => array (
