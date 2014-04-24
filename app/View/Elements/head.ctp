@@ -19,6 +19,7 @@ header ( 'Expires: 0' ); // Proxies.?>
 	echo $this->Html->css ( '/notifications/css/notifications' );
 	
 	echo $this->Html->script ( '/notifications/js/notifications' );
+
 	echo $this->Html->script ( array (
 			'jquery-1.7.2.min',
 			'jquery-ui-1.8.4.custom.min',

@@ -2,6 +2,8 @@
 class LessonsController extends AppController {
 	var $uses = array('User', 'Lesson', 'Bill', 'LessonOfCategory', 'BannedStudent', 'ChangeableValue');
 	var $components = array('Session');
+	var $costId=6;
+	//Configure::write('costId', 5);
 	//var $helpers = array('Ajax','Javascript');
 
 /*
@@ -9,14 +11,13 @@ class LessonsController extends AppController {
 	$data= array();
 >>>>>>> 2be1f5077ad250cac8ce44b372e03e0dc8dbebab
 */
-function beforeFilter(){
+	function beforeFilter(){
 	parent::beforeFilter();
 	//$this->layout= "student";
 		$this->Auth->authenticate = array ('Form' => array ('userModel' => 'User', 'fields' => array ('username' => 'user_name', 'password' => 'password' ) )//'scope' => array('User.')
 			);
-		$this->Auth->allow ( array ('home', 'login', 'register', 'search_result2' ) );
+		$this->Auth->allow ( array ('home', 'login', 'register', 'search_result3' ) );
 	}
-
 	//ユーザのホームページにある授業リスト
 	public function view_all_lessons(){
 		//先生のホームページに別の先生のすべて授業だけ
@@ -65,7 +66,7 @@ function beforeFilter(){
 		//get lesson cost
 		$lessonCost=$this->ChangeableValue->find('all', array(
 			'fields'=>array('ChangeableValue.current_value'),
-			'conditions'=>array('ChangeableValue.id'=>5)
+			'conditions'=>array('ChangeableValue.id'=>$this->costId)
 			));
 		$this->set ('cost', $lessonCost[0]['ChangeableValue']['current_value']);
 		$this->showLayout();
@@ -98,7 +99,7 @@ function beforeFilter(){
 		//get lesson cost
 		$lessonCost=$this->ChangeableValue->find('all', array(
 			'fields'=>array('ChangeableValue.current_value'),
-			'conditions'=>array('ChangeableValue.id'=>5)
+			'conditions'=>array('ChangeableValue.id'=>$this->costId)
 			));
 		$this->set ('cost', $lessonCost[0]['ChangeableValue']['current_value']);
 		$this->showLayout();
@@ -143,7 +144,7 @@ function beforeFilter(){
 		//get lesson cost
 		$lessonCost=$this->ChangeableValue->find('all', array(
 			'fields'=>array('ChangeableValue.current_value'),
-			'conditions'=>array('ChangeableValue.id'=>5)
+			'conditions'=>array('ChangeableValue.id'=>$this->costId)
 			));
 		$this->set ('cost', $lessonCost[0]['ChangeableValue']['current_value']);
 		$this->showLayout();
@@ -413,11 +414,126 @@ function beforeFilter(){
 		//get lesson cost
 		$lessonCost=$this->ChangeableValue->find('all', array(
 			'fields'=>array('ChangeableValue.current_value'),
-			'conditions'=>array('ChangeableValue.id'=>5)
+			'conditions'=>array('ChangeableValue.id'=>$this->costId)
 			));
 		$this->set ('cost', $lessonCost[0]['ChangeableValue']['current_value']);
 		$this->showLayout();
 		$this->set('title_for_layout', '検索結果');  
+	}
+
+	public function search_result3(){
+		$isand=false;
+		if(!empty($this->data)&&$this->request->data['keyword']!=null){
+			$keyword=$this->request->data['keyword'];
+			//$type=$this->data['Lesson']['type'];
+			$this->Session->write('keyword', $keyword);
+			//$this->Session->write('type', $type);
+			//debug($keyword);
+			//debug($type);die();
+		}
+		else if($this->Session->check('keyword')&&$this->Session->check('type')){
+			$keyword=$this->Session->read('keyword');
+			//$type=$this->Session->read('type');
+			//debug($keyword);
+		}
+		$andpos=strpos($keyword, '+');
+		$orpos=strpos($keyword, '-');
+		
+		if(($andpos!=0&&$orpos!=0&&$andpos<=$orpos)||$orpos==0)
+		{
+			$keywords=explode('+', $keyword);
+			$isand=true;
+		}
+		else{
+			$keywords=explode('-', $keyword);
+			$isand=false;
+		}
+		//debug($keywords);
+		
+		//Get lessonId and categoryName
+		$lIdAndCName=$this->LessonOfCategory->getLIdAndCName2($keyword);
+		$lessons_id = Array();
+		foreach($lIdAndCName as $key){
+			$lessons_id[] = $key['LessonOfCategory']['lesson_id'];
+		}
+
+		if($isand){
+			foreach ($keywords as $key) {
+			$conditionTeacher[]=array('User.user_name LIKE'=>'%'.$key.'%');
+			$conditionLesson[]=array('Lesson.lesson_name LIKE'=>'%'.$key.'%');
+			$conditionDescription[]=array('Lesson.description LIKE'=>'%'.$key.'%');
+			}
+			$conditionCategory=array('Lesson.id'=>$lessons_id);
+			if($this->Auth->User('level')==3){
+				$teacherIds=$this->BannedStudent->find('all', array(
+							'fields'=>array('BannedStudent.teacher_id'),
+							'conditions'=>array('BannedStudent.student_id'=>$this->Auth->User('id'))
+				));
+				foreach ($teacherIds as $key) {
+					$teacherIdSet[]=$key['BannedStudent']['teacher_id'];
+				}
+				$conditions=array('OR'=>array($conditionTeacher, $conditionLesson, $conditionDescription, $conditionCategory), 
+									'Lesson.delete_flag'=>false, 
+									'Lesson.lock_flag'=>false, 
+									'NOT'=>array('Lesson.create_user_id'=>$teacherIdSet)
+									);
+
+			}
+			else{
+				$conditions=array('OR'=>array($conditionTeacher, $conditionLesson, $conditionDescription, $conditionCategory), 
+									'Lesson.delete_flag'=>false, 
+									'Lesson.lock_flag'=>false
+									);
+			}
+		}
+		else{
+			
+			foreach ($keywords as $key){
+				$condition[]=array('User.user_name LIKE'=>'%'.$key.'%');
+				$condition[]=array('Lesson.lesson_name LIKE'=>'%'.$key.'%');
+				$condition[]=array('Lesson.description LIKE'=>'%'.$key.'%');
+			}
+			$condition[]=array('Lesson.id'=>$lessons_id);
+			if($this->Auth->User('level')==3){
+				$teacherIds=$this->BannedStudent->find('all', array(
+							'fields'=>array('BannedStudent.teacher_id'),
+							'conditions'=>array('BannedStudent.student_id'=>$this->Auth->User('id'))
+				));
+				foreach ($teacherIds as $key) {
+					$teacherIdSet[]=$key['BannedStudent']['teacher_id'];
+				}
+				$conditions=array('OR'=>$condition, 
+									'Lesson.delete_flag'=>false, 
+									'Lesson.lock_flag'=>false,
+									'NOT'=>array('Lesson.create_user_id'=>$teacherIdSet)
+									);
+			}
+			else{
+				$conditions=array('OR'=>$condition, 
+									'Lesson.delete_flag'=>false, 
+									'Lesson.lock_flag'=>false
+									);
+			}
+		
+		}
+
+		//debug($conditions);
+		$this->paginate = array(
+			'limit'=>1,
+			'fields'=> array('Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'Lesson.create_user_id', 'User.user_name'),
+			'conditions'=>$conditions
+			);
+		$lessons = $this->paginate('Lesson');
+		$this->set ( compact ( 'lessons' ));
+		//get lesson cost
+		$lessonCost=$this->ChangeableValue->find('all', array(
+			'fields'=>array('ChangeableValue.current_value'),
+			'conditions'=>array('ChangeableValue.id'=>$this->costId)
+			));
+		$this->set ('cost', $lessonCost[0]['ChangeableValue']['current_value']);
+		$this->showLayout();
+		$this->set('title_for_layout', '検索結果');
+
 	}
 	//検索ボックスで検索された授業
 	public function search_result(){

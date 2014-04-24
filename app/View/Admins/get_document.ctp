@@ -18,12 +18,12 @@
 			<tr>
 				<th><?php echo $this->Paginator->sort('Document.id', 'ID'); ?></th>
 				<th><?php echo $this->Paginator->sort('Document.file_name', 'ファイル名'); ?></th>
+				<th><?php echo $this->Paginator->sort('Document.lesson_id', '授業名'); ?></th>
 				<th><?php echo $this->Paginator->sort('Document.create_date', 'アップロード時間'); ?></th>
 				<th><?php echo $this->Paginator->sort('Document.create_user_id', 'アップロード者'); ?></th>
 				<th><?php echo $this->Paginator->sort('Document.copyright_violation', 'Copyright違反'); ?></th>
 				<th><?php echo $this->Paginator->sort('Document.lock_flag', 'ブロック情態'); ?></th>
-				<th>ブロック</th>
-				<th>削除</th>
+				
 			</tr>
 		</thead>
 		<tbody> 
@@ -42,13 +42,15 @@
 						?>
                         <?php
 						
-echo $this->Form->hidden ( 'hide', array (
+							echo $this->Form->hidden ( 'hide', array (
 								'value' => $item ['Document'] ['id'],
 								'name' => 'data[hide]' 
 						) );
 						?>
                         <td class='content-center'><?php echo $item['Document']['id']; ?></td>
-				<td class='content-center'><?php echo "<a href='#'>".$item['Document']['file_name']."</a>"; ?></td>
+				
+				<td class='content-center'><?php echo $this->Html->link($item['Document']['file_name'], array('controller' => 'Admins', 'action' => 'managerDocument', $item['Document']['id'])); ?></td>
+				<td class='content-center'><?php echo $item['Lesson']['lesson_name']; ?></td>
 				<td class='content-center'><?php echo $item['Document']['create_date']; ?></td>
 				<td class='content-center'><?php echo $item['User']['user_name']; ?></td>
                         <?php
@@ -65,27 +67,7 @@ echo $this->Form->hidden ( 'hide', array (
 						?>
                         <td class='content-center'><?php echo $count; ?></td>
 				<td class='content-center'><?php echo $count1; ?></td>
-				<td><?php
-						echo $this->Form->button ( 'Block', array (
-								'name' => 'data[block_file]',
-								'class' => 'link-button',
-								'onClick' => "return confirm('このファイルをブロックしたいですか?')",
-								'escape' => 'flase',
-								'title' => 'xac nhan' 
-						) );
-						?></td>
-				<td><?php
-						
-echo $this->Form->button ( 'delete', array (
-								'name' => 'data[delete_file]',
-								'class' => 'link-button',
-								'onClick' => "return confirm('このファイルを削除したいですか?')",
-								'escape' => 'flase',
-								'title' => 'xac nhan' 
-						) );
-						?>
-
-                        </td>
+				
 			</tr>
                     
                 <?php
@@ -119,7 +101,7 @@ echo $this->Form->button ( 'delete', array (
 				 <?php
 else :
 					{
-						echo $message;
+						echo '結果がない';
 					}
 					?>
 <?php endif; ?>

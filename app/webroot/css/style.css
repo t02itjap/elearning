@@ -869,7 +869,6 @@ margin-left: 66px;
 }
 
 #acc_manage select {
-    float: right;
     margin-right: 20px;
 }
 
@@ -974,26 +973,14 @@ font-size: 12px;
   bottom: 0;
 }
 .link-button:hover, button:hover {
-  background-color: #84ea93;
-  -moz-box-shadow: #12ec32 0 -20px 30px -2px inset, white 0 2px 4px -2px inset;
-  -webkit-box-shadow: #12ec32 0 -20px 30px -2px inset, white 0 2px 4px -2px inset;
-  box-shadow: #12ec32 0 -20px 30px -2px inset, white 0 2px 4px -2px inset;
-  cursor: pointer;
-}
-.link-button:active, button:active {
-  background-color: #89ff9a;
-  -moz-box-shadow: #1abc31 0 -20px 40px 10px inset, #c7f4ce 0 10px 4px -2px inset;
-  -webkit-box-shadow: #1abc31 0 -20px 40px 10px inset, #c7f4ce 0 10px 4px -2px inset;
-  box-shadow: #1abc31 0 -20px 40px 10px inset, #c7f4ce 0 10px 4px -2px inset;
-}
-.link-button:active:before, button:active:before {
-  content: "";
-  position: absolute;
-  width: 100%;
-  height: 48%;
-  left: 0;
-  right: 0;
-  bottom: 0;
+	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #8cb82b), color-stop(1, #9dce2c) );
+	background:-moz-linear-gradient( center top, #8cb82b 5%, #9dce2c 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#8cb82b', endColorstr='#9dce2c');
+	background-color:#8cb82b;
+	color: orange;
+}.link-button:active, button:active {
+	position:relative;
+	top:1px;
 }
 
 #keyword {
@@ -1001,8 +988,11 @@ font-size: 12px;
 	margin-top: 10px;
 	margin-right: 2px;
 }
-.error-message {
+.error-message, .message{
 	color: red;
+	font-family:Arial;
+	font-size:16px;
+	font-weight:bold;
 }
 /** Tables **/
 table {
@@ -1044,6 +1034,47 @@ td.actions {
 table td.actions a {
 	margin: 0px 6px;
 	padding:2px 5px;
+}
+/** Paging **/
+.paging {
+	color: #bbb;
+	margin-top: 1em;
+	clear:both;
+}
+.paging .current,
+.paging .disabled,
+.paging a {
+	text-decoration: none;
+	padding: 5px 8px;
+	display: inline-block
+}
+.paging > span {
+	display: inline-block;
+	border: 1px solid #ccc;
+}
+.paging > span:hover {
+	background: #efefef;
+}
+.paging .prev {
+	border-left: 1px solid #ccc;
+	-moz-border-radius: 4px 0 0 4px;
+	-webkit-border-radius: 4px 0 0 4px;
+	border-radius: 4px 0 0 4px;
+}
+.paging .next {
+	-moz-border-radius: 0 4px 4px 0;
+	-webkit-border-radius: 0 4px 4px 0;
+	border-radius: 0 4px 4px 0;
+}
+.paging .disabled {
+	color: #bbb;
+}
+.paging .disabled:hover {
+	background: transparent;
+}
+.paging .current {
+	background: #efefef;
+	color: #c73e14;
 }
 
 /*end khanh*/

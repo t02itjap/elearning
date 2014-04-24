@@ -102,7 +102,7 @@
 									'escape' => false,
 									'title' => '確認'
 									));
-                            echo $this->Form->button ( '作成', array (
+                            echo $this->Form->button ( '変更', array (
                             	'type' => 'submit',
                             	'name' => 'data[submit_data]',
                             	'class' => 'link-button',
