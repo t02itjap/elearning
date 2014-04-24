@@ -12,7 +12,7 @@ echo $this->Form->create('Verifycode',array('type'=>'post',"url" => array (
 				$teacher['type'],
 				$teacher['inputPass']
 		)));
-echo $this->Form->input('question',array('label'=>'秘密質問','type'=>'text','value'=>base64_decode($teacher['Verifycode']['question']),'disabled'=>true));
+echo $this->Form->input('question',array('label'=>'秘密質問','type'=>'text'));
 echo $this->Form->input('verifycode',array('label'=>'答え','type'=>'text'));
 echo $this->Form->button ( "VerifyCode忘れた", array (
 		"id" => "missPass",

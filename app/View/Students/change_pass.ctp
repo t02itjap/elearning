@@ -51,7 +51,7 @@
 			</tr>
 		</table>
 	</div><!--End #change_info-->
-		<?php echo $this->Form->end('作成');?>
+		<?php echo $this->Form->end('変更');?>
 </div><!--End #main_content-->
 
 <script>

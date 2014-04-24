@@ -35,7 +35,7 @@ class StudentsController extends AppController {
             $data = $this->request->data;
             if (sha1($this->Auth->user('user_name') . $data ['User'] ['pass1'] . 'sha1') == $this->User->field("password", array("id" => $this->Auth->user("id")))) {
                 $this->User->id = $this->Auth->user('id');
-                $this->User->set('password', $data ['User'] ['pass2']);
+                $this->User->set('password', sha1($this->Auth->user('user_name') . $data ['User'] ['pass2'] . 'sha1'));
                 $this->User->save();
                 $this->Session->setFlash('パスワード変更が成功した');
             } else
