@@ -14,8 +14,8 @@ class Document extends AppModel {
         )
     );
 
-    public function checkValid($fileName) {
-        $uploaddir = WWW_ROOT . 'files/';
+    public function checkValid($fileName, $folder) {
+        $uploaddir = WWW_ROOT . 'files/'.$folder.'/';
         $check = FALSE;
         //check file
         $allowedExts = array("gif", "jpeg", "jpg", "png", "pdf", "mp3", "mp4", "wav", "tsv");

@@ -37,8 +37,10 @@ echo $this->Form->button ( "パスワード忘れた", array (
 		"id" => "missPass",
 		"type" => "button" 
 ) );
-echo $this->Form->end ( "ログイン", array (
-		"label" => false 
+echo $this->Form->end ( array (
+		"label" => 'ログイン',
+		'class' => 'link-button',
+		'div' => false
 ) );
 ?>
 

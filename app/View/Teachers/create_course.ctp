@@ -95,6 +95,10 @@
                         }
                         ?>						
                     </ul>
+                    <?php
+                    	if(isset($notHaveCategoryMessage)) echo $notHaveCategoryMessage;
+                    	if(isset($notCheckCategoryMessage)) echo $notCheckCategoryMessage;
+                    ?>
                     <button id="createNewCategory" type="button">カテゴリー追加</button>
                 </td>
 			</tr>

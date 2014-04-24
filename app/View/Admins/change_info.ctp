@@ -94,7 +94,7 @@
                     </div><!--End #change_info-->
                     <div id="submit">
                             <?php
-                            echo $this->Form->button ( '作成', array (
+                            echo $this->Form->button ( '変更', array (
                             	'type' => 'submit',
                             	'name' => 'data[submit_data]',
                             	'class' => 'link-button',

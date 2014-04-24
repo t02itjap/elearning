@@ -12,17 +12,19 @@ header('Expires: 0'); // Proxies. ?>
 	
 	echo $this->Html->css ( array (
 			'cake.generic',
-			'style',
-			'jquery-ui.custom' 
+			'jquery-ui.custom',
+			'style'
 	) );
+	
 	echo $this->Html->script ( array (
 			'jquery-1.7.2.min','jquery-ui-1.8.4.custom.min','jquery-1.11.0.min', 'script-common.js'
 	) );
 	echo $this->Html->script ( array (
-			'jquery-idleTimeout' 
+			'jquery-idleTimeout'
 	) );
 	echo $this->fetch ( 'meta' );
 	echo $this->fetch ( 'css' );
 	echo $this->fetch ( 'script' );
+
 	?>
 </head>

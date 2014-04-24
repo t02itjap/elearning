@@ -846,7 +846,6 @@ margin-left: 33px;
 }
 
 #acc_manage select {
-    float: right;
     margin-right: 20px;
 }
 
@@ -941,12 +940,13 @@ font-size: 12px;
 	text-shadow:1px 1px 0px #689324;
 	padding: 2px;
 }
-.link-button, button:hover {
+.link-button:hover, button:hover {
 	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #8cb82b), color-stop(1, #9dce2c) );
 	background:-moz-linear-gradient( center top, #8cb82b 5%, #9dce2c 100% );
 	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#8cb82b', endColorstr='#9dce2c');
 	background-color:#8cb82b;
-}.link-button, button:active {
+	color: orange;
+}.link-button:active, button:active {
 	position:relative;
 	top:1px;
 }
@@ -954,8 +954,11 @@ font-size: 12px;
 	margin-top: 10px;
 	margin-right: 2px;
 }
-.error-message {
+.error-message, .message{
 	color: red;
+	font-family:Arial;
+	font-size:16px;
+	font-weight:bold;
 }
 /** Tables **/
 table {
@@ -1000,8 +1003,7 @@ table td.actions a {
 }
 /** Paging **/
 .paging {
-	background:#fff;
-	color: #ccc;
+	color: #bbb;
 	margin-top: 1em;
 	clear:both;
 }
@@ -1015,7 +1017,6 @@ table td.actions a {
 .paging > span {
 	display: inline-block;
 	border: 1px solid #ccc;
-	border-left: 0;
 }
 .paging > span:hover {
 	background: #efefef;
@@ -1032,7 +1033,7 @@ table td.actions a {
 	border-radius: 0 4px 4px 0;
 }
 .paging .disabled {
-	color: #ddd;
+	color: #bbb;
 }
 .paging .disabled:hover {
 	background: transparent;

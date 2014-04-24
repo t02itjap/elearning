@@ -1,7 +1,5 @@
 <?php
-
 class TeachersController extends AppController {
-
     public $name = "Teachers";
     var $uses = array('User', 'Test', 'Lesson', 'Bill', 'Category', 'Document', 'TestHistory', 'ChangeableValue', 'Bill', 'BannedStudent', 'Verifycode', 'LessonOfCategory');
     var $helpers = array('Html', 'Form', 'Editor');
@@ -238,74 +236,121 @@ class TeachersController extends AppController {
         if (isset($this->request->data['ok'])) {                //教師のユーザーのクリックを提出した場合
             //debug($this->request->data);                        //データがプログラマに表示さ
             $data = $this->request->data;
-            //$this->LessonOfCategory->create();
+            $bug = 0;
+            if(!isset($data['Lesson']['category'])){
+            	$bug = 1;
+            	$this->set('notHaveCategoryMessage', '<br><span>カテゴリーを作ってください。</span></br>');
+            }
+            $checkCate = 0;
+            if(isset($data['Lesson']['category'])){
+                for($i = 0;$i < count($data['Lesson']['category']);$i++){
+            		if($data['Lesson']['category'][$i] != 0){
+            			$checkCate = 1;
+            			break;
+            		}
+            	}	
+            }
+            if($checkCate == 0){
+            	$bug = 1;
+				$this->set('notCheckCategoryMessage', '<br><span>カテゴリーを選んでください。<br></span>');
+            }
+            $uploadData = $data['Lesson']['file_link_document'];
+            foreach ($uploadData as $upData) {
+                //debug($upData);
+                if($upData['name'] != NULL){
+                	$this->Document->create();
+                	//新しいドキュメントのテーブルのデータベースを作成する 
+                	if ($this->Document->checkValid($upData['name'], $user_id) == false){
+                    	$bug = 1;
+                		$err = '<br><span>このファイルが存在でした、あるいはこのファイルの形態が間違いです。<span></br>';
+                   		$this->set(compact('err'));
+                	}
+            	}
+            }
+            //検証]をチェックし、新しいドキュメントをアップロードする 
+
+            $uploadData1 = $data['Lesson']['file_link_test'];
+            foreach ($uploadData1 as $upData) {
+                if($upData['name'] != NULL){
+                	$this->Test->create();
+                	//新しいドキュメントのテーブルのデータベースを作成する 
+                	if ($this->Test->checkValid($upData['name'], $user_id) == false) {
+                    	$bug = 1;
+                		$err1 = '<br><span>このファイルが存在でした、あるいはこのファイルの形態が間違いです。<span></br>';
+                    	$this->set(compact('err1'));	
+                	}
+                }
+            }
             $this->Lesson->set(array(
                 'lesson_name' => $data['Lesson']['Name'],
                 'description' => $data['Lesson']['Description'],
                 'create_user_id' => $this->Auth->user('id'),
                 'create_date' => date('Y/m/d H:i:s'),
             ));
+            if($this->Lesson->validates() == false){
+            	$bug = 1;
+            }
             //新しいレッスンのテーブルのデータベースを作成する 
-
-            $this->Lesson->save();
-            $lesson_id = $this->Lesson->id;
-            foreach ($data['Lesson']['category'] as $value) {
-                if ($value != '0') {
-                    $this->LessonOfCategory->create();
-                    $this->LessonOfCategory->set('lesson_id', $lesson_id);
-                    $this->LessonOfCategory->set('category_id', $value);
-                    $this->LessonOfCategory->save();
-                }
-            }
-            //データベースにデータを保存する
-            $uploadData = $data['Lesson']['file_link_document'];
-            foreach ($uploadData as $upData) {
-                //debug($upData);
-                $this->Document->create();
-                //新しいドキュメントのテーブルのデータベースを作成する 
-                if ($this->Document->checkValid($upData['name'])) {
-                    $this->Document->set(array(
-                        'file_link' => 'files' . DS . $user_id . DS . $upData['name'],
-                        'file_name' => $upData['name'],
-                        'create_user_id' => $this->Auth->user('id'),
-                        'lesson_id' => $lesson_id,
-                        'create_date' => date('Y/m/d H:i:s'),
-                    ));
-                    $this->Document->save();
-                    if (!file_exists(WWW_ROOT . 'files' . DS . $user_id)) {
-                        mkdir(WWW_ROOT . 'files' . DS . $user_id, 0700);
-                    }
-                    move_uploaded_file($upData['tmp_name'], WWW_ROOT . 'files' . DS . $user_id . DS . $upData['name']);
-                } else {
-                    $err = 'File sai dinh dang hoac da bi trung, moi nhap lai';
-                    $this->set(compact('err'));
-                }
-            }
+			if($bug == 0){
+				$this->Lesson->set(array(
+	                'lesson_name' => $data['Lesson']['Name'],
+	                'description' => $data['Lesson']['Description'],
+	                'create_user_id' => $this->Auth->user('id'),
+	                'create_date' => date('Y/m/d H:i:s'),
+	            	));
+				$this->Lesson->save();
+            	$lesson_id = $this->Lesson->id;
+            	foreach ($data['Lesson']['category'] as $value) {
+                	if ($value != '0') {
+                    	$this->LessonOfCategory->create();
+                    	$this->LessonOfCategory->set('lesson_id', $lesson_id);
+                    	$this->LessonOfCategory->set('category_id', $value);
+                    	$this->LessonOfCategory->save();
+                	}
+            	}
+			    //データベースにデータを保存する
+            	$uploadData = $data['Lesson']['file_link_document'];
+            	foreach ($uploadData as $upData) {
+            		if($upData['name'] != NULL){
+            			$this->Document->create();
+            			$this->Document->set(array(
+	                        'file_link' => 'files' . DS . $user_id . DS . $upData['name'],
+	                        'file_name' => $upData['name'],
+	                        'create_user_id' => $this->Auth->user('id'),
+	                        'lesson_id' => $lesson_id,
+	                        'create_date' => date('Y/m/d H:i:s'),
+                    	));
+                    	$this->Document->save();
+                    	if (!file_exists(WWW_ROOT . 'files' . DS . $user_id)) {
+                        	mkdir(WWW_ROOT . 'files' . DS . $user_id, 0700);
+                    	}
+                    	move_uploaded_file($upData['tmp_name'], WWW_ROOT . 'files' . DS . $user_id . DS . $upData['name']);
+            		}
+            	}
             //検証]をチェックし、新しいドキュメントをアップロードする 
 
-            $uploadData1 = $data['Lesson']['file_link_test'];
-            foreach ($uploadData1 as $upData) {
+            	$uploadData1 = $data['Lesson']['file_link_test'];
+            	foreach ($uploadData1 as $upData) {
                 //debug($upData);
-                $this->Test->create();
-                //新しいドキュメントのテーブルのデータベースを作成する 
-                if ($this->Test->checkValid($upData['name'])) {
-                    $this->Test->set(array(
-                        'file_link' => 'files' . DS . $user_id . DS . $upData['name'],
-                        'file_name' => $upData['name'],
-                        'create_user_id' => $this->Auth->user('id'),
-                        'lesson_id' => $lesson_id,
-                        'create_date' => date('Y/m/d H:i:s'),
-                    ));
-                    $this->Test->save();
-                    if (!file_exists(WWW_ROOT . 'files' . DS . $user_id)) {
-                        mkdir(WWW_ROOT . 'files' . DS . $user_id, 0700);
-                    }
-                    move_uploaded_file($upData['tmp_name'], 'files' . DS . $user_id . DS . $upData['name']);
-                } else {
-                    $err1 = 'File sai dinh dang hoac da bi trung, moi nhap lai';
-                    $this->set(compact('err1'));
-                }
-            }
+                	if($upData['name'] != NULL){
+                		$this->Test->create();
+                		$this->Test->set(array(
+	                        'file_link' => 'files' . DS . $user_id . DS . $upData['name'],
+	                        'file_name' => $upData['name'],
+	                        'create_user_id' => $this->Auth->user('id'),
+	                        'lesson_id' => $lesson_id,
+	                        'create_date' => date('Y/m/d H:i:s'),
+	                    ));
+                    	$this->Test->save();
+                    	if (!file_exists(WWW_ROOT . 'files' . DS . $user_id)) {
+                        	mkdir(WWW_ROOT . 'files' . DS . $user_id, 0700);
+                    	}
+                    	move_uploaded_file($upData['tmp_name'], 'files' . DS . $user_id . DS . $upData['name']);
+                	}
+            	}
+            	$this->Session->setFlash('新しい授業を作ることが成功です。');
+            	$this->redirect(array('controller' => 'Lessons', 'action' => 'manage_lessons'));
+			}
             //検証]をチェックし、新しいテストをアップロードする 
         }
     }
@@ -606,5 +651,4 @@ class TeachersController extends AppController {
         $this->layout = null;
         $this->autoLayout = false;
     }
-
 }

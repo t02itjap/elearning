@@ -69,7 +69,8 @@ function index(){
     			));
 //     			管理者のIPアドレスをチェックする
     			if ($ip['IpAddress']['ip_address'] != $this->request->clientIp ()) {
-    				$this->Session->setFlash ( "IPアドレスが間違う".'</br>'.'間違う'.($this->Session->read('missing')+1).'回' );
+    				
+    				$this->Session->setFlash ( "IPアドレスが間違う".'</br>'.'間違う数'.($this->Session->read('missing')+1).'回' );
     				$this->Session->write('missing',$this->Session->read('missing')+1);
     				return $this->redirect (array('controller'=>'admins'));
     			}
@@ -90,7 +91,7 @@ function index(){
 						"action" => "view_all_lessons" 
 				) );
     		}else{
-    			$this->Session->setFlash('ユーザネームとかパスワードとかが間違う'.'</br>'.'間違う'.($this->Session->read('missing')+1).'回');
+    			$this->Session->setFlash('ユーザネームとかパスワードとかが間違う'.'</br>'.'間違う数'.($this->Session->read('missing')+1).'回');
     			$this->Session->write('missing',$this->Session->read('missing')+1);
     			return $this->redirect(array('controller'=>'admins'));
     		}
@@ -180,6 +181,16 @@ function index(){
                 $this->redirect(array('controller' => 'Admins', 'action' => 'student_manager', $student['User']['id']));
             }
         }
+        if (isset($this->request->data['restore_student'])) {
+            $this->User->set(array(
+                'status_flag' => 1,
+                ));
+            $this->User->id = $teacher['User']['id'];
+            if ($this->User->save()) {
+                $this->Session->setFlash('このアカウントが今回生です');
+                $this->redirect(array('controller' => 'Admins', 'action' => 'student_manager', $student['User']['id']));
+            }
+        }
         if (isset($this->request->data['reset_password'])) {
             $initialStudent = $this->InitialUser->find('first', array(
                 'conditions' => array(
@@ -238,6 +249,16 @@ function index(){
             $this->User->id = $teacher['User']['id'];
             if ($this->User->save()) {
                 $this->Session->setFlash('このアカウントが今ロックです');
+                $this->redirect(array('controller' => 'Admins', 'action' => 'teacherManager', $teacher['User']['id']));
+            }
+        }
+        if (isset($this->request->data['restore_teacher'])) {
+            $this->User->set(array(
+                'status_flag' => 1,
+                ));
+            $this->User->id = $teacher['User']['id'];
+            if ($this->User->save()) {
+                $this->Session->setFlash('このアカウントが今回生です');
                 $this->redirect(array('controller' => 'Admins', 'action' => 'teacherManager', $teacher['User']['id']));
             }
         }
@@ -443,7 +464,7 @@ function index(){
                 $this->redirect(array('controller' => 'Admins', 'action' => 'getAccount'));
             }
         }
-        if ($admin['User']['online_flag'] == 1 && isset($this->request->data)) {
+        if ($admin['User']['online_flag'] == 1 && (isset($this->request->data['submit_data']) || isset($this->request->data['delete_manager']))) {
             $this->Session->setFlash('このアカウントが今オンラインです、アカウントの情報を変更できなかった。');
             $this->redirect(array('controller' => 'Admins', 'action' => 'manager_manager', $admin['User']['id']));
         }
@@ -571,20 +592,12 @@ function managerDocument($document_id) {
     
     
     public function getAccount() {
-
-    if(!empty($this->data))
-		{
-			if($this->data['User']['user_name']!=null){
-        //neu co thi truy van du lieu dua vao bien $users
-        	//debug($user_name); 
-        	//debug($this->data['User']['user_name']);die();
+	$this->set('title_for_layout', 'アカウントを管理');
+    if(isset($this->request->data['submit_data'])){
+			if($this->data['User']['user_name']!=null && $this->data['User']['level'] == 0){
             $count=$this->User->find('count',array('conditions'=>array('user_name LIKE '=>'%'.$this->data['User']['user_name'].'%','User.approve_flag'=> 1)));
-            //goi du lieu tu controller len view
             if($count!=0)
             	{
-                //$this->set('users',$users);
-
-
                 $this->paginate = array(
                     'limit' => 10,
                     'field' => array('User.id', 'User.user_name', 'User.real_name'),
@@ -594,38 +607,64 @@ function managerDocument($document_id) {
                 $this->set('data', $data);            
             	}
             else
-                $this->set('message', 'çµ�æžœã�Œã�ªã�„');   
-             
-            
+                $this->set('message', 'このアカウントが存在じゃありません。');   
         	}
-        	if($this->data['User']['level']!=null){
+        	if($this->data['User']['user_name'] == null && $this->data['User']['level']!=0){
         		$this->paginate = array(
                 'limit' => 10,
                 'conditions' => array(
                     'User.approve_flag'=> 1,'User.level'=>$this->data['User']['level']
                     ),
-            );
-            $data = $this->paginate('User');
-
-            $this->set('data', $data);
+            	);
+            	$data = $this->paginate('User');
+           	 	$this->set('data', $data);
         	}
-
-        	
-
+        	if($this->data['User']['user_name'] != null && $this->data['User']['level']!=0){
+            	$count=$this->User->find('count',array(
+            		'conditions'=>array(
+            			'User.user_name LIKE '=>'%'.$this->data['User']['user_name'].'%',
+            			'User.approve_flag'=> 1,
+            			'User.level'=>$this->data['User']['level']
+            		)
+            	));
+            	if($count!=0){
+                	$this->paginate = array(
+                    	'limit' => 10,
+                    	'field' => array('User.id', 'User.user_name', 'User.real_name'),
+                    	'conditions'=>array(
+                    		'User.user_name LIKE '=>'%'.$this->data['User']['user_name'].'%',
+                    		'User.approve_flag'=> 1,
+                			'User.level'=>$this->data['User']['level']
+                ));
+                	$data = $this->paginate('User');
+                	$this->set('data', $data);            
+            	}
+            else
+                $this->set('message', 'このアカウントが存在じゃありません。');   
+        	}
+        	if($this->data['User']['user_name'] == null && $this->data['User']['level']==0){
+				$this->paginate = array(
+	    			'limit' => 10,
+	    			'conditions' => array(
+	    				'User.approve_flag'=> 1
+	    			),
+	    			'field' => array('User.id', 'User.user_name', 'User.real_name')
+				);
+	    		$data = $this->paginate('User');
+	    		$this->set('data', $data);        		
+        	}
 		}
-        
-        else{
-            $this->paginate = array(
-                'limit' => 10,
-                'conditions' => array(
-                    'User.approve_flag'=> 1
-                    ),
-                'field' => array('User.id', 'User.user_name', 'User.real_name')
-
-            );
-            $data = $this->paginate('User');
-            $this->set('data', $data);
-            }
+		else{
+			$this->paginate = array(
+    			'limit' => 10,
+    			'conditions' => array(
+    				'User.approve_flag'=> 1
+    			),
+    			'field' => array('User.id', 'User.user_name', 'User.real_name')
+			);
+    		$data = $this->paginate('User');
+    		$this->set('data', $data);
+		}
     }
 
     
@@ -982,16 +1021,20 @@ public function database_manager() {
 		}
 		array_multisort ( $price, SORT_DESC, $files_info );
 		$this->set ( compact ( 'files_info' ) );
+		if($this->request->is('post')){
+			$data = $this->request->data;
+			$cmd = 'schtasks /create /tn /"elearningBackup/" /tr c:\xampp\php ';
+		}
 	}
 	
 	public function delete_file(){
 		$this->autoRender = false;
 		if(isset($this->params['named']['file'])){
 			$source = WWW_ROOT.'files/db/'.$this->params['named']['file'];
-			var_dump($source);
+			
 			unlink($source);
 		}
-		$this->Session->setFlash(__('The backup have been deleted'));
+		$this->Session->setFlash(__($this->params['named']['file'].'　ファイルが削除した。'));
 		$this->redirect(array('controller' => 'admins', 'action' => 'database_manager'));
 	}
 	
@@ -1004,7 +1047,7 @@ public function database_manager() {
 		foreach ($files as $file) {
 			unlink($dir->pwd().DS.$file);
 		}
-		$this->Session->setFlash(__('All The backup have been deleted'));
+		$this->Session->setFlash(__('全部バックアップファイルが削除した。'));
 		$this->redirect(array('controller' => 'admins', 'action' => 'database_manager'));
 	}
 	public function backup_database() {
@@ -1015,7 +1058,7 @@ public function database_manager() {
 		$cmd = 'cd "C:/xampp/mysql/bin" & mysqldump.exe --user=root --host=localhost elearning > ' . $fileName;
 		
 		exec ( $cmd );
-		$this->Session->setFlash ( __ ( 'Database has been backuped' ) );
+		$this->Session->setFlash ( __ ( '現在のデータベースがバックアップした。' ) );
 		$this->redirect(array('controller' => 'admins', 'action' => 'database_manager'));
 	}
 	public function restore_database() {
@@ -1030,7 +1073,7 @@ public function database_manager() {
 // 			var_dump ( $command );
 			exec ( $command );
 		}
-		$this->Session->setFlash ( __ ( 'Database has been restored' ) );
+		$this->Session->setFlash ( __ ( $this->params ['named'] ['file'].' バックアップファイルがリストアした。' ) );
 		$this->redirect ( array (
 				'controller' => 'admins',
 				'action' => 'database_manager' 

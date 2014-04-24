@@ -3,10 +3,9 @@
 ) );?>
 
 
-<div id="main_content">
 	<?php echo $this->Session->flash();?>
                 <?php echo $this->Form->create('User',array('type'=>'post'));?>
-                    <div id="change_info">
+    <div id="change_info">
 		<table>
 			<tr>
 				<td>現在パスワード</td>
@@ -52,8 +51,7 @@
 			</tr>
 		</table>
 	</div><!--End #change_info-->
-		<?php echo $this->Form->end('作成');?>
-</div><!--End #main_content-->
+		<?php echo $this->Form->end('変更');?>
 
 <script>
 $(document).ready(function(){

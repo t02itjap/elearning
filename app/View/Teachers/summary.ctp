@@ -1,7 +1,7 @@
 <div id="summary">
-	<p>Like数：<?php echo $lesson['Lesson']['vote_count']-1?>件（<?php echo ($lesson['Lesson']['vote_count']-1)/$snum*100?>％受講者数)</p>
-	<p>参照数：<?php echo $lesson['Lesson']['viewers']?>人</p>
-	<p>受講者数：<?php echo $snum;?>人</p>
+	<p>Like数：<?php echo $lesson['Lesson']['vote_count']-1?>件（<?php if(empty($snum)) echo(''); else echo((($lesson['Lesson']['vote_count']-1)/$snum*100).' ％受講者数')?>)</p>
+	<p>参照数：<?php if(empty($lesson['Lesson']['viewers'])) echo '0'; else  echo $lesson['Lesson']['viewers']?>人</p>
+	<p>受講者数：<?php if(empty($snum)) echo '0'; else echo $snum;?>人</p>
 	<h2>受講者リスト</h2>
 	<table class='table table-striped' style='table-layout: fixed'>
 		<thead>
@@ -32,7 +32,7 @@
 				<td><?php echo $this->Paginator->sort('Student.user_name', '名前'); ?></td>
 				<td>原因</td>
 				<td><?php echo $this->Paginator->sort('BannedStudent.banned_date', '時間'); ?></td>
-				<td>Unブロック</td>
+				<td>アンブロック</td>
 			</tr>
 		</thead>
 		<tbody>
@@ -72,6 +72,7 @@
 				echo $this->Form->end (array (
 						'label' => 'ブロック',
 						'div' => false,
+						'class' => 'link-button',
 						'name' => 'block'
 				) );
 				?>

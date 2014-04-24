@@ -74,6 +74,7 @@
                     </div><!--End #change_info-->
                     <div id="submit">
                             <?php
+                            if($teacher['User']['status_flag'] == 1)
                             echo $this->Form->button('アカウントを削除',
 								array(
 									'name' => 'data[delete_student]',
@@ -82,6 +83,15 @@
 									'escape' => false,
 									'title' => '確認'
 									));
+							else
+                            	echo $this->Form->button('アカウントを回復',
+									array(
+										'name' => 'data[restore_student]',
+										'class' => 'link-button',
+										'onClick' => "return confirm('このアカウントを回復したいですか?')",
+										'escape' => false,
+										'title' => '確認'
+								));	
 							?>
 							<?php
                             echo $this->Form->button('リセットパスワード',
@@ -94,7 +104,7 @@
 									));
 							?>
                             <?php
-                            echo $this->Form->button ( '作成', array (
+                            echo $this->Form->button ( '変更', array (
                             	'type' => 'submit',
                             	'name' => 'data[submit_data]',
                             	'class' => 'link-button',

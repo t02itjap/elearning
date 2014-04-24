@@ -1,4 +1,5 @@
-        <div id="main_nav">
+
+<div id="main_nav">
             <ul>
                 <li>
                 	<?php echo $this->Html->link(
