@@ -60,6 +60,8 @@ echo $this->Html->script ( array (
 				"div" => false
 		) );
 		echo '</td>';
+		echo '</tr>';
+		echo '<tr>';
 // 		echo '<tr>';
 // 		echo '<td>';
 // 		echo $this->Form->input ( "every", array (
