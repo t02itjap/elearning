@@ -183,7 +183,8 @@
                             echo $this->Form->checkbox('Category', array(
                                 'value' => $category['Category']['id'],
                                 'name' => 'data[Lesson][category][]',
-								'style' => 'width :300px;float:right;'
+								'style' => 'width :300px;float:right;',
+								'checked' => in_array($category['Category']['id'], $dataCategory) == true ? true : false,
                             ));
                             echo '</li>';
                         }
@@ -223,16 +224,6 @@
 
                 </td>
             </tr>
-<!--            <tr>
-                <td>資料１</td>
-                <td><a href="" style="text-decoration: underline;">資料１</a></td>
-                <td><button>変更</button></td>
-            </tr>
-            <tr>
-                <td>資料２</td>
-                <td><a href="" style="text-decoration: underline;">資料2</a></td>
-                <td><button>変更</button></td>
-            </tr>-->
             <?php
             foreach ($dataLesson as $data) {
                 echo '<tr>';
@@ -266,16 +257,6 @@
             	<td></td>
                 <td><button id="addNewDocument">資料追加</button></td>
             </tr>
-<!--            <tr>
-                <td>テスト１</td>
-                <td><a href="" style="text-decoration: underline;">テスト１　時間：３０分</a></td>
-                <td><button>変更</button></td>
-            </tr>
-            <tr>
-                <td>テスト２</td>
-                <td><a href="" style="text-decoration: underline;">テスト2　時間：３０分</a></td>
-                <td><button>変更</button></td>
-            </tr>-->
             <?php
             foreach ($dataTest as $data) {
                 echo '<tr>';
