@@ -15,10 +15,42 @@ class TestsController extends AppController{
 		$t = $this->Test->findById($id);
 		$file = WWW_ROOT . $t['Test']['file_link'];
 		$test = $this->TestUtil->loadTestFile($file);
-		$this->Session->write('testObject',$test);
 		$this->set('testObject',$test);
 	}
 
+	public function save($id){
+		// if (!isset($id)) $this->redirect(array('controller' => 'tests', 'action' => 'test', 1));
+		debug($this->request->data);
+		die;
+		$t = $this->Test->findById($id);
+		$file = WWW_ROOT . $t['Test']['file_link'];
+
+		$results = $this->Test->loadResult($file);
+		$i=0;
+		$mark;
+		foreach ($test->questions as $key => $q) {
+			$i++;
+			$mark[$i] = $q[$i]->mark;
+		}
+			//Parse Corrects Answers to Array to be easy to equal them.
+		$ans = preg_split('/\-+/',$results);
+			//Total number questions;
+		$leng = count($ans)-1;
+
+			//User Answers
+		$userAnswers = $this->request->data;
+			//Parse User Answers to String to push to DataBase
+		$userAnswersString = $this->TestUtil->saveResult($leng,$userAnswers);
+
+		$totalScore = 0;
+		for ($i=1; $i <= $leng; $i++) { 
+			if (isset($userAnswers[$i]) && $userAnswers[$i]==$ans[$i]){
+				$totalScore+=$mark[$i];
+			}
+		}
+
+
+	}
 
 	public function result($testID){
 		if(isset($this->request->data['result'])){

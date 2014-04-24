@@ -1,5 +1,6 @@
 <?php 
-echo $this->Form->create('Tests',array('type' => 'post', 'controller'=>'tests','action'=>'test',1));
+echo $this->Form->create('Tests',array('type' => 'post', 'controller'=>'tests','action'=>'save',$test['id']));
+echo 
 ?>
 
 <div id="test">
@@ -19,6 +20,6 @@ echo $this->Form->create('Tests',array('type' => 'post', 'controller'=>'tests','
 </ul>
 </div>
 <?php 
-echo $this->Form->button('表示', array ('type' => 'submit', 'name' => 'data[result]','class'=>'btn','id'=>"btn-save"));
+echo $this->Form->button('表示', array ('type' => 'submit','class'=>'btn','id'=>"btn-save"));
 echo $this->Form->end();
 ?>
