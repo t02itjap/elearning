@@ -2,7 +2,7 @@
 class LessonsController extends AppController {
 	var $uses = array('User', 'Lesson', 'Bill', 'LessonOfCategory', 'BannedStudent', 'ChangeableValue');
 	var $components = array('Session');
-	var $costId=5;
+	var $costId=6;
 	//Configure::write('costId', 5);
 	//var $helpers = array('Ajax','Javascript');
 

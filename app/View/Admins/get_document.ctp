@@ -119,7 +119,7 @@ echo $this->Form->button ( 'delete', array (
 				 <?php
 else :
 					{
-						echo $message;
+						echo '結果がない';
 					}
 					?>
 <?php endif; ?>

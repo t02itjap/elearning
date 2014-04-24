@@ -604,7 +604,7 @@ class AdminsController extends AppController {
 	// Huong Viet`
 	public function getAccount() {
 		if (! empty ( $this->data )) {
-			if ($this->data ['User'] ['user_name'] != null) {
+			if (isset($this->data ['User'] ['user_name'])&&$this->data ['User'] ['user_name']!= null) {
 				// neu co thi truy van du lieu dua vao bien $users
 				// debug($user_name);
 				// debug($this->data['User']['user_name']);die();
@@ -632,10 +632,10 @@ class AdminsController extends AppController {
 					);
 					$data = $this->paginate ( 'User' );
 					$this->set ( 'data', $data );
-				} else
-					$this->set ( 'message', 'çµ�æžœã�Œã�ªã�„' );
+				} //else
+					//$this->set ( 'message', '結果がない' );
 			}
-			if ($this->data ['User'] ['level'] != null) {
+			if (isset($this->data ['User'] ['level'])&&$this->data ['User'] ['level']!= null) {
 				$this->paginate = array (
 						'limit' => 10,
 						'conditions' => array (
@@ -689,8 +689,8 @@ class AdminsController extends AppController {
 				);
 				$data = $this->paginate ( 'Document' );
 				$this->set ( 'data', $data );
-			} else
-				$this->set ( 'message', '結果がない' );
+			} //else
+				//$this->set ( 'message', '結果がない' );
 		} 
 
 		else {
@@ -704,7 +704,7 @@ class AdminsController extends AppController {
 	}
 	public function getConfirmAccount() {
 		if (! empty ( $this->data )) {
-			if ($this->data ['User'] ['user_name'] != null) {
+			if (isset($this->data ['User'] ['user_name'])&&$this->data ['User'] ['user_name']!= null) {
 				// neu co thi truy van du lieu dua vao bien $users
 				// debug($user_name);
 				// debug($this->data['User']['user_name']);die();
@@ -734,7 +734,7 @@ class AdminsController extends AppController {
 					$this->set ( 'data', $data );
 				}
 			}
-			if ($this->data ['User'] ['level'] != null) {
+			if (isset($this->data ['User'] ['level'])&& $this->data ['User'] ['level']!= null) {
 				$this->paginate = array (
 						'limit' => 10,
 						'conditions' => array (
