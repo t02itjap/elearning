@@ -31,15 +31,19 @@ class AdminsController extends AppController {
 		parent::beforeFilter ();
 		$this->layout = 'manager';
 		$this->Auth->allow ( 'index' );
+		$this->Auth->authorize='Controller';
 	}
 
- 	public function isAuthorized() {
-        if ($this->Auth->user('level') == 1 )
-            return true;
-        else {
-            $this->Session->setFlash("Access deny");
-            $this->redirect($this->redirect(array("controller" => "users", "action" => "logout")));
-            return false;
+	public function isAuthorized() {
+		if ($this->Auth->user ( 'level' ) == 1)
+			return true;
+		else {
+			$this->Session->setFlash ( "Access deny" );
+			$this->redirect ( array (
+					"controller" => "users",
+					"action" => "logout" 
+			) ) ;
+			return false;
         }
     }
 
@@ -1069,7 +1073,7 @@ function managerDocument($document_id) {
 		if ($this->request->is ( 'post' )) {
 			$data = $this->request->data;
 			$startDate = $data ['Backup'] ['start'];
-			$every = $data ['Backup'] ['every'];
+			$every = $this->ChangeableValue->field('current_value',array('id'=>8));
 			$endDate = $data ['Backup'] ['end'];
 			$startTime = $data ['Backup'] ['startTime'];
 			$endTime = $data ['Backup'] ['endTime'];

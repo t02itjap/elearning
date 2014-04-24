@@ -3,6 +3,7 @@ class LessonsController extends AppController {
 	var $uses = array('User', 'Lesson', 'Bill', 'LessonOfCategory', 'BannedStudent', 'ChangeableValue');
 	var $components = array('Session');
 	var $costId=6;
+	var $teacherIdSet = array('-1');
 	//Configure::write('costId', 5);
 	//var $helpers = array('Ajax','Javascript');
 
@@ -46,13 +47,13 @@ class LessonsController extends AppController {
 				));
 				//debug($teacherIds);die();
 				foreach ($teacherIds as $key) {
-					$teacherIdSet[]=$key['BannedStudent']['teacher_id'];
+					$this->teacherIdSet[]=$key['BannedStudent']['teacher_id'];
 				}
-				//debug($teacherIdSet);die();
+				//debug($this->teacherIdSet);die();
 				$this->paginate = array(
 				'limit'=>3,
 				'fields'=> array('Lesson.id', 'Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'User.user_name'),
-				'conditions'=>array('Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false, 'NOT'=>array('Lesson.create_user_id'=>$teacherIdSet))
+				'conditions'=>array('Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false, 'NOT'=>array('Lesson.create_user_id'=>$this->teacherIdSet))
 				);		
 				break;
 			default:
@@ -123,12 +124,12 @@ class LessonsController extends AppController {
 						'conditions'=>array('BannedStudent.student_id'=>$this->Auth->User('id'))
 			));
 			foreach ($teacherIds as $key) {
-				$teacherIdSet[]=$key['BannedStudent']['teacher_id'];
+				$this->teacherIdSet[]=$key['BannedStudent']['teacher_id'];
 			}
 			$this->paginate = array(
 			'limit'=>1,
 			'fields'=> array('Lesson.id', 'Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'User.user_name'),
-			'conditions'=>array('Lesson.id'=>$lessons_id, 'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false, 'NOT'=>array('Lesson.create_user_id'=>$teacherIdSet))
+			'conditions'=>array('Lesson.id'=>$lessons_id, 'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false, 'NOT'=>array('Lesson.create_user_id'=>$this->teacherIdSet))
 			);	
 		}
 		else{
@@ -299,12 +300,12 @@ class LessonsController extends AppController {
 							'conditions'=>array('BannedStudent.student_id'=>$this->Auth->User('id'))
 				));
 				foreach ($teacherIds as $key) {
-					$teacherIdSet[]=$key['BannedStudent']['teacher_id'];
+					$this->teacherIdSet[]=$key['BannedStudent']['teacher_id'];
 				}
 				$this->paginate = array(
 				'limit'=>1,
 				'fields'=> array('Lesson.id', 'Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'User.user_name'),
-				'conditions'=>array($conditions, 'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false, 'NOT'=>array('Lesson.create_user_id'=>$teacherIdSet))
+				'conditions'=>array($conditions, 'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false, 'NOT'=>array('Lesson.create_user_id'=>$this->teacherIdSet))
 				);	
 			}
 			else
@@ -330,12 +331,12 @@ class LessonsController extends AppController {
 							'conditions'=>array('BannedStudent.student_id'=>$this->Auth->User('id'))
 				));
 				foreach ($teacherIds as $key) {
-					$teacherIdSet[]=$key['BannedStudent']['teacher_id'];
+					$this->teacherIdSet[]=$key['BannedStudent']['teacher_id'];
 				}
 				$this->paginate = array(
 				'limit'=>1,
 				'fields'=> array('Lesson.id', 'Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'User.user_name'),
-				'conditions'=>array($conditions, 'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false, 'NOT'=>array('Lesson.create_user_id'=>$teacherIdSet))
+				'conditions'=>array($conditions, 'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false, 'NOT'=>array('Lesson.create_user_id'=>$this->teacherIdSet))
 				);	
 			}
 			else
@@ -358,12 +359,12 @@ class LessonsController extends AppController {
 							'conditions'=>array('BannedStudent.student_id'=>$this->Auth->User('id'))
 				));
 				foreach ($teacherIds as $key) {
-					$teacherIdSet[]=$key['BannedStudent']['teacher_id'];
+					$this->teacherIdSet[]=$key['BannedStudent']['teacher_id'];
 				}
 				$this->paginate = array(
 				'limit'=>1,
 				'fields'=> array('Lesson.id', 'Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'User.user_name'),
-				'conditions'=>array('Lesson.id'=>$lessons_id, 'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false, 'NOT'=>array('Lesson.create_user_id'=>$teacherIdSet))
+				'conditions'=>array('Lesson.id'=>$lessons_id, 'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false, 'NOT'=>array('Lesson.create_user_id'=>$this->teacherIdSet))
 				);	
 			}
 			else
@@ -389,12 +390,12 @@ class LessonsController extends AppController {
 							'conditions'=>array('BannedStudent.student_id'=>$this->Auth->User('id'))
 				));
 				foreach ($teacherIds as $key) {
-					$teacherIdSet[]=$key['BannedStudent']['teacher_id'];
+					$this->teacherIdSet[]=$key['BannedStudent']['teacher_id'];
 				}
 				$this->paginate = array(
 				'limit'=>1,
 				'fields'=> array('Lesson.id', 'Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'User.user_name'),
-				'conditions'=>array($conditions, 'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false, 'NOT'=>array('Lesson.create_user_id'=>$teacherIdSet))
+				'conditions'=>array($conditions, 'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false, 'NOT'=>array('Lesson.create_user_id'=>$this->teacherIdSet))
 				);	
 			}
 			else
@@ -439,7 +440,7 @@ class LessonsController extends AppController {
 		$andpos=strpos($keyword, '+');
 		$orpos=strpos($keyword, '-');
 		
-		if(($andpos!=0&&$orpos!=0&&$andpos<=$orpos)||$orpos==0)
+		if(($andpos!=0&&$orpos!=0&&$andpos<=$orpos)||($orpos==0&&$andpos!=0))
 		{
 			$keywords=explode('+', $keyword);
 			$isand=true;
@@ -453,10 +454,12 @@ class LessonsController extends AppController {
 		//Get lessonId and categoryName
 		$lIdAndCName=$this->LessonOfCategory->getLIdAndCName2($keyword);
 		$lessons_id = Array();
+		//debug($keyword);
+		//debug($lIdAndCName);
 		foreach($lIdAndCName as $key){
 			$lessons_id[] = $key['LessonOfCategory']['lesson_id'];
 		}
-
+		//debug($lessons_id);
 		if($isand){
 			foreach ($keywords as $key) {
 			$conditionTeacher[]=array('User.user_name LIKE'=>'%'.$key.'%');
@@ -470,12 +473,12 @@ class LessonsController extends AppController {
 							'conditions'=>array('BannedStudent.student_id'=>$this->Auth->User('id'))
 				));
 				foreach ($teacherIds as $key) {
-					$teacherIdSet[]=$key['BannedStudent']['teacher_id'];
+					$this->teacherIdSet[]=$key['BannedStudent']['teacher_id'];
 				}
 				$conditions=array('OR'=>array($conditionTeacher, $conditionLesson, $conditionDescription, $conditionCategory), 
 									'Lesson.delete_flag'=>false, 
 									'Lesson.lock_flag'=>false, 
-									'NOT'=>array('Lesson.create_user_id'=>$teacherIdSet)
+									'NOT'=>array('Lesson.create_user_id'=>$this->teacherIdSet)
 									);
 
 			}
@@ -500,12 +503,12 @@ class LessonsController extends AppController {
 							'conditions'=>array('BannedStudent.student_id'=>$this->Auth->User('id'))
 				));
 				foreach ($teacherIds as $key) {
-					$teacherIdSet[]=$key['BannedStudent']['teacher_id'];
+					$this->teacherIdSet[]=$key['BannedStudent']['teacher_id'];
 				}
 				$conditions=array('OR'=>$condition, 
 									'Lesson.delete_flag'=>false, 
 									'Lesson.lock_flag'=>false,
-									'NOT'=>array('Lesson.create_user_id'=>$teacherIdSet)
+									'NOT'=>array('Lesson.create_user_id'=>$this->teacherIdSet)
 									);
 			}
 			else{

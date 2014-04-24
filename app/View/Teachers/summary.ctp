@@ -4,7 +4,7 @@
 	<p class ='label label-info' style = 'display:block;font-size:14px;'>参照数：<?php if(empty($lesson['Lesson']['viewers'])) echo '0'; else  echo $lesson['Lesson']['viewers']?>人</p>
 	</br>
 	<p class ='label label-info' style = 'display:block;font-size:14px;'>受講者数：<?php if(empty($snum)) echo '0'; else echo $snum;?>人</p>
-	<h2>受講者リスト</h2>
+	<h3>受講者リスト</h3>
 	<table  style='table-layout: fixed'>
 		<thead>
 			<tr>
@@ -26,7 +26,7 @@
                 <?php echo $this->element('paging');?>
                 </br>
                 <?php echo $this->Session->flash();?>
-            <h2>ブロック学生リスト</h2>
+            <h3>ブロック学生リスト</h3>
 	<table>
 		<thead>
 			<tr>
@@ -50,7 +50,7 @@
                     </tbody>
 	</table>
 				<!--<?php echo $this->element('paging',array('model'=>'BannedStudent'));?>-->
-		<h2>ブロック学生追加</h2>
+		<h3>ブロック学生追加</h3>
 	<div class="err" id="add_err"></div>		
 				<?php
 				echo $this->Session->flash ();

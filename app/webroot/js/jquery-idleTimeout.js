@@ -10,14 +10,14 @@
     var defaults = {
       inactivity: 1200000, //20 Minutes
       noconfirm: 10000, //10 Seconds
-      sessionAlive: 30000, //10 Minutes
+//      sessionAlive: 30000, //10 Minutes
       redirect_url: '/js_sandbox/',
       click_reset: true,
       alive_url: '/js_sandbox/',
       logout_url: '/js_sandbox/',
       showDialog: true,
-	  dialogTitle: 'Auto Logout',
-	  dialogText: 'You are about to be signed out due to inactivity.',
+	  dialogTitle: '自動ログアウト',
+	  dialogText: '活動しない自動ログアウト',
 	  dialogButton: 'Stay Logged In'
     }
     

@@ -57,7 +57,7 @@ class Lesson extends AppModel {
     public function getComments($lesson_id) {
         $condition = array(
             'joins' => array(
-                array(
+            		array(
                     'table' => 'tb_comments',
                     'alias' => 'c',
                     'type' => 'INNER',
