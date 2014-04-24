@@ -262,8 +262,9 @@
             foreach ($dataTest as $data) {
                 echo '<tr>';
                 echo '<td>';
-                echo '<a href="#" style="text-decoration: underline;overflow-x:scroll; height:24px; width=50px " >';
-                echo $data['Test']['file_name'];
+                echo $this->Html->link($data['Test']['file_name'], array('controller'=>'tests','action'=>'test',$data['Test']['id']));
+                // echo '<a href="#" style="text-decoration: underline;overflow-x:scroll; height:24px; width=50px " >';
+                // echo $data['Test']['file_name'];
                 echo '</a>';
                 echo '</td>';
                 echo '<td class="hiddenTest" style="display:none">';

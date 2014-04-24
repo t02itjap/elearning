@@ -70,17 +70,17 @@ foreach ($category as $categories) {
         <span class="doc">
         <?php
     	foreach ($lesson['Document'] as $documents) {
-        	echo $this->Html->link($documents['file_name'], array('controller' => 'Documents', 'action' => 'viewDoc'));
+        	echo $this->Html->link($documents['file_name'], array('controller' => 'Documents', 'action' => 'viewDoc',$documents['id']));
         	echo "<br/>";
     	}
     ?></a></span><br /><br /><br />
         <span class="ml">テスト：</span>
-        <span class="test"><a href="" style="text-decoration: underline;"><?php
+        <span class="test"><?php
                 foreach ($lesson['Test'] as $tests) {
-                    echo $tests['file_name'];
+                    echo $this->Html->link($tests['file_name'], array('controller'=>'tests','action'=>'test',$tests['id']));
                     echo "<br/>";
                 }
-    ?>　時間：３０分</a></span><br /><br /><br />
+    ?></span><br /><br /><br />
         <?php
         $tmpDisable = '';
         if ($flagLike)
