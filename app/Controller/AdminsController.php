@@ -39,9 +39,8 @@ class AdminsController extends AppController {
 		parent::beforeFilter ();
 		$this->layout = 'manager';
 		$this->Auth->allow ( 'index' );
-		$this->Auth->authorize='Controller';
+		$this->Auth->authorize = 'Controller';
 	}
-
 	public function isAuthorized() {
 		if ($this->Auth->user ( 'level' ) == 1)
 			return true;
@@ -50,8 +49,9 @@ class AdminsController extends AppController {
 			$this->redirect ( array (
 					"controller" => "users",
 					"action" => "logout" 
-			) ) ;
+			) );
 			return false;
+//<<<<<<< HEAD
         }
     }
 
@@ -451,136 +451,165 @@ class AdminsController extends AppController {
         }
     }
 
-    public function exportMoney(){
-        $data = $this->Session->read('userInfors');
-        $date = date('Y-m');        
-        //Write file!
-        $file = fopen('C:\xampp\htdocs\elearning\app\webroot\ELS-UBT-'.$date.'.tsv','w');
-        for ($i=0; $i <count($data) ; $i++) { 
-            $line = $data[$i]['user']['user_name'] . "\t" . $data[$i]['user']['real_name'] . "\t" . $data[$i][0]['sum'] . "\t" . $data[$i]['user']['address'] . "\t" . $data[$i]['user']['phone_number'] . "\t" . '54' . $data[$i]['user']['bank_account_code'] . "\n";
-            fwrite($file,$line);
-        }
-        fwrite($file,'END＿＿＿END＿＿＿END' . "\t" . date('Y') . "\t" . date('n'));
-        fclose($file);
-        $this->response->file('webroot\ELS-UBT-'.$date.'.tsv',array(
-            'download'=>true,
-            'name'=>'ELS-UBT-'.$date.'.tsv'
-            ));
-        return $this->reponse;            
-    }
-
-//Huong Viet`    
-function managerDocument($document_id) {
-        $this->set('title_for_layout', 'アップロードファイルを管理する');
-        $documentId=$document_id;
-        $document=$this->Document->find('first',array(
-            'conditions' => array('Document.id' => $documentId),
-            ));
-        $this->set(compact('document'));
-
-        if(isset($this->request->data['delete_file'])){
-                //debug($this->request->data['hide']);
-            $count = $this->request->data['delete_file'];
-            $this->Document->id = $count;
-            $this->Document->delete();
-            $this->redirect(array('controller' => 'admins', 'action' => 'getDocument'));
-        }
-        if(isset($this->request->data['block_file'])){
-                //debug($this->request->data);die();
-            $count = $this->request->data['block_file'];
-            $this->Document->id = $count;
-        //debug($this->Document->id);die();
-            if($this->Document->lock_flag == 0){
-            $this->Document->set(array(
-                'lock_flag' => 1,
-                ));
-            $this->Document->save();
-            }
-            
-            $this->Session->setFlash('このアップロードファイルをブロックした。');
-            $this->redirect(array('controller' => 'admins', 'action' => 'getDocument'));
-            
-        }
-
-
-    }
- 
-    public function getAccount() {
-	$this->set('title_for_layout', 'アカウントを管理');
-    if(isset($this->request->data['submit_data'])){
-			if($this->data['User']['user_name']!=null && $this->data['User']['level'] == 0){
-            $count=$this->User->find('count',array('conditions'=>array('user_name LIKE '=>'%'.$this->data['User']['user_name'].'%','User.approve_flag'=> 1)));
-            if($count!=0)
-            	{
-                $this->paginate = array(
-                    'limit' => 10,
-                    'field' => array('User.id', 'User.user_name', 'User.real_name'),
-                    'conditions'=>array('user_name LIKE '=>'%'.$this->data['User']['user_name'].'%','User.approve_flag'=> 1
-                ));
-                $data = $this->paginate('User');
-                $this->set('data', $data);            
-            	}
-            else
-                $this->set('message', 'このアカウントが存在じゃありません。');   
-        	}
-        	if($this->data['User']['user_name'] == null && $this->data['User']['level']!=0){
-        		$this->paginate = array(
-                'limit' => 10,
-                'conditions' => array(
-                    'User.approve_flag'=> 1,'User.level'=>$this->data['User']['level']
-                    ),
-            	);
-            	$data = $this->paginate('User');
-           	 	$this->set('data', $data);
-        	}
-        	if($this->data['User']['user_name'] != null && $this->data['User']['level']!=0){
-            	$count=$this->User->find('count',array(
-            		'conditions'=>array(
-            			'User.user_name LIKE '=>'%'.$this->data['User']['user_name'].'%',
-            			'User.approve_flag'=> 1,
-            			'User.level'=>$this->data['User']['level']
-            		)
-            	));
-            	if($count!=0){
-                	$this->paginate = array(
-                    	'limit' => 10,
-                    	'field' => array('User.id', 'User.user_name', 'User.real_name'),
-                    	'conditions'=>array(
-                    		'User.user_name LIKE '=>'%'.$this->data['User']['user_name'].'%',
-                    		'User.approve_flag'=> 1,
-                			'User.level'=>$this->data['User']['level']
-                ));
-                	$data = $this->paginate('User');
-                	$this->set('data', $data);            
-            	}
-            else
-                $this->set('message', 'このアカウントが存在じゃありません。');   
-        	}
-        	if($this->data['User']['user_name'] == null && $this->data['User']['level']==0){
-				$this->paginate = array(
-	    			'limit' => 10,
-	    			'conditions' => array(
-	    				'User.approve_flag'=> 1
-	    			),
-	    			'field' => array('User.id', 'User.user_name', 'User.real_name')
+	public function exportMoney() {
+		$data = $this->Session->read ( 'data' );
+		$date = date ( 'Y-m' );
+		// Write file!
+		$file = fopen ( WWW_ROOT.DS.'files'.DS.'exportMoney'.DS.'ELS-UBT-' . $date . '.tsv', 'w' );
+		$head = 'ELS-UBT-GWK54M78'."\t".date('Y')."\t".date('m')."\t".date('Y')."\t".date('m')."\t".date('d')."\t".date('h')."\t".date('i')."\t".date('s')."\t".$data['createId']."\t".$data['creater']."\r\n";
+		fwrite ( $file,$head);
+		foreach ($data['money'] as $money) {
+			if($money['user']['level']==2) $type = '54'; else $type = '18';
+			$line = $money['user'] ['user_name'] . "\t" . $money['user'] ['real_name'] . "\t" . $money ['sum'] . "\t" . $money['user'] ['address'] . "\t" . $money['user'] ['phone_number'] . "\t" . $type . $money['user'] ['bank_account_code'] . "\r\n";
+// 			debug($line);die();
+			fwrite ( $file, $line );
+		}
+		fwrite ( $file, 'END＿＿＿END＿＿＿END' . "\t" . date ( 'Y' ) . "\t" . date ( 'n' ) );
+		fclose ( $file );
+		$this->response->file ( WWW_ROOT.DS.'files'.DS.'exportMoney'.DS.'ELS-UBT-' . $date . '.tsv', array (
+				'download' => true,
+				'name' => 'ELS-UBT-' . $date . '.tsv' 
+		) );
+		return $this->reponse;
+	}
+	
+	// Huong Viet`
+	function managerDocument($document_id) {
+		$this->set ( 'title_for_layout', 'アップロードファイルを管理する' );
+		$documentId = $document_id;
+		$document = $this->Document->find ( 'first', array (
+				'conditions' => array (
+						'Document.id' => $documentId 
+				) 
+		) );
+		$this->set ( compact ( 'document' ) );
+		
+		if (isset ( $this->request->data ['delete_file'] )) {
+			// debug($this->request->data['hide']);
+			$count = $this->request->data ['delete_file'];
+			$this->Document->id = $count;
+			$this->Document->delete ();
+			$this->redirect ( array (
+					'controller' => 'admins',
+					'action' => 'getDocument' 
+			) );
+		}
+		if (isset ( $this->request->data ['block_file'] )) {
+			// debug($this->request->data);die();
+			$count = $this->request->data ['block_file'];
+			$this->Document->id = $count;
+			// debug($this->Document->id);die();
+			if ($this->Document->lock_flag == 0) {
+				$this->Document->set ( array (
+						'lock_flag' => 1 
+				) );
+				$this->Document->save ();
+			}
+			
+			$this->Session->setFlash ( 'このアップロードファイルをブロックした。' );
+			$this->redirect ( array (
+					'controller' => 'admins',
+					'action' => 'getDocument' 
+			) );
+		}
+	}
+	public function getAccount() {
+		$this->set ( 'title_for_layout', 'アカウントを管理' );
+		if (isset ( $this->request->data ['submit_data'] )) {
+			if ($this->data ['User'] ['user_name'] != null && $this->data ['User'] ['level'] == 0) {
+				$count = $this->User->find ( 'count', array (
+						'conditions' => array (
+								'user_name LIKE ' => '%' . $this->data ['User'] ['user_name'] . '%',
+								'User.approve_flag' => 1 
+						) 
+				) );
+				if ($count != 0) {
+					$this->paginate = array (
+							'limit' => 10,
+							'field' => array (
+									'User.id',
+									'User.user_name',
+									'User.real_name' 
+							),
+							'conditions' => array (
+									'user_name LIKE ' => '%' . $this->data ['User'] ['user_name'] . '%',
+									'User.approve_flag' => 1 
+							) 
+					);
+					$data = $this->paginate ( 'User' );
+					$this->set ( 'data', $data );
+				} else
+					$this->set ( 'message', 'このアカウントが存在じゃありません。' );
+			}
+			if ($this->data ['User'] ['user_name'] == null && $this->data ['User'] ['level'] != 0) {
+				$this->paginate = array (
+						'limit' => 10,
+						'conditions' => array (
+								'User.approve_flag' => 1,
+								'User.level' => $this->data ['User'] ['level'] 
+						) 
 				);
-	    		$data = $this->paginate('User');
-	    		$this->set('data', $data);        		
-        	}
-		}
-		else{
-			$this->paginate = array(
-    			'limit' => 10,
-    			'conditions' => array(
-    				'User.approve_flag'=> 1
-    			),
-    			'field' => array('User.id', 'User.user_name', 'User.real_name')
+				$data = $this->paginate ( 'User' );
+				$this->set ( 'data', $data );
+			}
+			if ($this->data ['User'] ['user_name'] != null && $this->data ['User'] ['level'] != 0) {
+				$count = $this->User->find ( 'count', array (
+						'conditions' => array (
+								'User.user_name LIKE ' => '%' . $this->data ['User'] ['user_name'] . '%',
+								'User.approve_flag' => 1,
+								'User.level' => $this->data ['User'] ['level'] 
+						) 
+				) );
+				if ($count != 0) {
+					$this->paginate = array (
+							'limit' => 10,
+							'field' => array (
+									'User.id',
+									'User.user_name',
+									'User.real_name' 
+							),
+							'conditions' => array (
+									'User.user_name LIKE ' => '%' . $this->data ['User'] ['user_name'] . '%',
+									'User.approve_flag' => 1,
+									'User.level' => $this->data ['User'] ['level'] 
+							) 
+					);
+					$data = $this->paginate ( 'User' );
+					$this->set ( 'data', $data );
+				} else
+					$this->set ( 'message', 'このアカウントが存在じゃありません。' );
+			}
+			if ($this->data ['User'] ['user_name'] == null && $this->data ['User'] ['level'] == 0) {
+				$this->paginate = array (
+						'limit' => 10,
+						'conditions' => array (
+								'User.approve_flag' => 1 
+						),
+						'field' => array (
+								'User.id',
+								'User.user_name',
+								'User.real_name' 
+						) 
+				);
+				$data = $this->paginate ( 'User' );
+				$this->set ( 'data', $data );
+			}
+		} else {
+			$this->paginate = array (
+					'limit' => 10,
+					'conditions' => array (
+							'User.approve_flag' => 1 
+					),
+					'field' => array (
+							'User.id',
+							'User.user_name',
+							'User.real_name' 
+					) 
 			);
-    		$data = $this->paginate('User');
-    		$this->set('data', $data);
+			$data = $this->paginate ( 'User' );
+			$this->set ( 'data', $data );
 		}
-    }
-    
+	}
 	function index() {
 		$this->layout = 'before_login';
 		$this->set ( 'title_for_layout', '管理者ログイン' );
@@ -654,46 +683,82 @@ function managerDocument($document_id) {
 	// Athor: Manh Phi.
 	// Moneys Export Function
 	public function managerMoney() {
-		$monthyear = "";
+		$isDownload = false;
+		$percent = $this->ChangeableValue->field('current_value',array('id'=>2));
 		if (isset ( $this->request->data ['result'] )) {
 			$time = $this->request->data ['Admins'];
 			$monthyear = $time ['year'] . "-" . $time ['month'] . "%";
-		}
-		
-		$data = $this->Bill->find ( 'all', array (
-				'fields' => array (
-						'sum(Bill.lesson_cost) AS sum',
-						'Bill.user_id' 
-				),
-				'group' => 'Bill.lesson_id',
-				'conditions' => array (
-						'Bill.learn_date LIKE ' => $monthyear 
-				) 
-		) );
-		for($i = 0; $i < count ( $data ); $i ++) {
-			$user = $this->User->find ( 'first', array (
+			
+			$sData = $this->Bill->find ( 'all', array (
 					'fields' => array (
-							'user_name',
-							'real_name',
-							'phone_number',
-							'address',
-							'bank_account_code' 
+							'sum(Bill.lesson_cost) AS sMoney',
+							'Bill.user_id'
 					),
+					'group' => 'Bill.user_id',
 					'conditions' => array (
-							'User.id' => $data [$i] ['Bill'] ['user_id'] 
+							'Bill.learn_date LIKE ' => $monthyear 
 					) 
 			) );
-			$data [$i] ['user'] = $user ['User'];
+			
+			$tData = $this->Bill->find ( 'all', array (
+					'fields' => array (
+							'sum(Bill.lesson_cost) AS tMoney',
+							'Bill.lesson_id'
+					),
+					'group' => 'Bill.lesson_id',
+					'conditions' => array (
+							'Bill.learn_date LIKE ' => $monthyear
+					)
+			) );
+// 			debug($tData);die();
+			if(!empty($sData)||!empty($tData)){
+				$isDownload = true;
+				
+				$money= array();
+				for($i = 0; $i < count ( $tData ); $i ++) {
+					$teacherId = $this->Lesson->field('create_user_id',array('id'=>$tData[$i]['Bill']['lesson_id']));
+					$user = $this->User->find ( 'first', array (
+							'fields' => array (
+									'user_name',
+									'real_name',
+									'phone_number',
+									'address',
+									'bank_account_code',
+									'level'
+							),
+							'conditions' => array (
+									'User.id' => $teacherId
+							)
+					) );
+					$money[] = array('sum' => $tData[$i][0]['tMoney']*$percent/100,'user'=>$user ['User']);
+				}
+				for($i = 0; $i < count ( $sData ); $i ++) {
+					$user = $this->User->find ( 'first', array (
+							'fields' => array (
+									'user_name',
+									'real_name',
+									'phone_number',
+									'address',
+									'bank_account_code',
+									'level'
+							),
+							'conditions' => array (
+									'User.id' => $sData [$i] ['Bill'] ['user_id']
+							)
+					) );
+					$money[] = array('sum' => $sData[$i][0]['sMoney'],'user'=>$user ['User']);
+				}
+// 				debug($money);
+				//ghep 2 mang
+				$data = array('createId'=>$this->Auth->user('user_name'),'creater'=>$this->Auth->user('real_name'),'money'=>$money);
+				$this->set ( 'data', $data );
+				
+				$this->Session->write ( 'data', $data );
+			}		
 		}
-		$this->set ( 'userInfors', $data );
-		$this->Session->write ( 'userInfors', $data );
+		$this->set('isDownload',$isDownload);
 	}
-	
 	public function getDocument() {
-		if (isset ( $this->request->data ['delete_file'] )) {
-			debug ( $data ['delete_file'] );
-			die ();
-		}
 		if (! empty ( $this->data ) && $this->data ['Document'] ['file_name'] != null) {
 			// neu co thi truy van du lieu dua vao bien $users
 			$count = $this->Document->find ( 'count', array (
@@ -704,30 +769,32 @@ function managerDocument($document_id) {
 			// goi du lieu tu controller len view
 			if ($count != 0) {
 				
-				$this->paginate = array (
+				$this->paginate = array(
 						'limit' => 10,
+                        'field'=>array('Document.id', 'Document.file_name', 'Lesson.lesson_name', 'Document.created_date', 'User.user_name', 'Document.copyright_violation', 'Document.lock_flag'),
 						'conditions' => array (
 								'file_name LIKE ' => '%' . $this->data ['Document'] ['file_name'] . '%' 
 						) 
 				);
 				$data = $this->paginate ( 'Document' );
 				$this->set ( 'data', $data );
-			} //else
-				//$this->set ( 'message', '結果がない' );
+
+			}
 		} 
 
 		else {
 			$this->paginate = array (
-					'limit' => 10 
+					'limit' => 10,
+                    'field'=>array('Document.id', 'Document.file_name', 'Lesson.lesson_name', 'Document.created_date', 'User.user_name', 'Document.copyright_violation', 'Document.lock_flag') 
 			);
-			$data = $this->paginate ( 'Document' );
-			// debug($data); die();
+			$data = $this->paginate ('Document');
 			$this->set ( 'data', $data );
 		}
 	}
+    
 	public function getConfirmAccount() {
 		if (! empty ( $this->data )) {
-			if (isset($this->data ['User'] ['user_name'])&&$this->data ['User'] ['user_name']!= null) {
+			if (isset ( $this->data ['User'] ['user_name'] ) && $this->data ['User'] ['user_name'] != null) {
 				// neu co thi truy van du lieu dua vao bien $users
 				// debug($user_name);
 				// debug($this->data['User']['user_name']);die();
@@ -757,7 +824,7 @@ function managerDocument($document_id) {
 					$this->set ( 'data', $data );
 				}
 			}
-			if (isset($this->data ['User'] ['level'])&& $this->data ['User'] ['level']!= null) {
+			if (isset ( $this->data ['User'] ['level'] ) && $this->data ['User'] ['level'] != null) {
 				$this->paginate = array (
 						'limit' => 10,
 						'conditions' => array (
@@ -781,8 +848,7 @@ function managerDocument($document_id) {
 							'User.user_name',
 							'User.real_name' 
 					) 
-			)
-			;
+			);
 			$data = $this->paginate ( 'User' );
 			$this->set ( 'data', $data );
 		}
@@ -1088,7 +1154,6 @@ function managerDocument($document_id) {
 		}
 	}
 	public function database_manager() {
-		
 		$this->set ( 'title_for_layout', 'バックアップとリストアデータベース' );
 		$dir = new Folder ( WWW_ROOT . 'files/db' );
 		$files = $dir->find ( '.*\.sql' );
@@ -1109,40 +1174,42 @@ function managerDocument($document_id) {
 		if ($this->request->is ( 'post' )) {
 			$data = $this->request->data;
 			$startDate = $data ['Backup'] ['start'];
-			$every = $this->ChangeableValue->field('current_value',array('id'=>8));
+			$every = $this->ChangeableValue->field ( 'current_value', array (
+					'id' => 8 
+			) );
 			$endDate = $data ['Backup'] ['end'];
 			$startTime = $data ['Backup'] ['startTime'];
 			$endTime = $data ['Backup'] ['endTime'];
-// 			debug($startDate);debug(date('Y/m/d'));die();
+			// debug($startDate);debug(date('Y/m/d'));die();
 			if (implode ( '', explode ( '/', date ( 'Y/m/d' ) ) ) > implode ( '', explode ( '-', $startDate ) )) {
 				$this->Session->setFlash ( '現在日はスタット日のほうが早いです', 'default', array (), 'autobackup' );
-				return ;
+				return;
 			}
 			if (implode ( '', explode ( '-', $startDate ) ) == implode ( '', explode ( '-', $endDate ) )) {
 				if (strtotime ( date ( 'hh:mm' ) ) > strtotime ( $startTime )) {
 					$this->Session->setFlash ( '現在タイムはスタットタイムのほうが早いです', 'default', array (), 'autobackup' );
-					return ;
+					return;
 				}
 				if (strtotime ( $startTime ) > strtotime ( $endTime )) {
 					$this->Session->setFlash ( 'スタットタイムは終るタイムのほうが早いです', 'default', array (), 'autobackup' );
-					return ;
+					return;
 				}
 			}
 			if (implode ( '', explode ( '-', $startDate ) ) > implode ( '', explode ( '-', $endDate ) )) {
 				$this->Session->setFlash ( 'スタット日は終る日のほうが早いです', 'default', array (), 'autobackup' );
-				return ;
+				return;
 			}
 			
 			$cmd = 'schtasks /create /sc minute /tn "autobackup" /tr C:\xampp\htdocs\elearning\runbackup.vbs';
 			$cmd = $cmd . ' /mo ' . $every;
-			$cmd = $cmd . ' /sd ' . implode('/', explode('-',$startDate));
+			$cmd = $cmd . ' /sd ' . implode ( '/', explode ( '-', $startDate ) );
 			$cmd = $cmd . ' /st ' . $startTime;
-			$cmd = $cmd . ' /ed ' . implode('/', explode('-',$endDate));
+			$cmd = $cmd . ' /ed ' . implode ( '/', explode ( '-', $endDate ) );
 			$cmd = $cmd . ' /et ' . $endTime;
-			$cmd = $cmd . ' /k' ;
+			$cmd = $cmd . ' /k';
 			exec ( $cmd, $ret );
-// 			debug(strpos( $ret[0],'WARNING'));die();
-			if (strpos( $ret[0],'WARNING')!==false){
+			// debug(strpos( $ret[0],'WARNING'));die();
+			if (strpos ( $ret [0], 'WARNING' ) !== false) {
 				$this->Session->setFlash ( '自動バックアップが運転している', 'default', array (), 'autobackup' );
 			} else {
 				$this->Session->setFlash ( '自動バックアップのスケジュールがスタットした。', 'default', array (), 'autobackup' );

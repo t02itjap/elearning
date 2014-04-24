@@ -24,6 +24,8 @@ for($i = 1; $i <= 12; $i ++) {
        ?>
        <br />
        <br />
+       <h4 style="font-size: 1.3em;"><?php if(!empty($data)) echo 'ELS-UBT-GWK54M78 '.date('Y').' '.date('m').' '.date('Y').' '.date('m').' '.
+       date('d').' '.date('h').' '.date('i').' '.date('s').' '.$data['createId'].' '.$data['creater']?></h4>
        <table>
         <tr>
             <td>ID</td>
@@ -32,22 +34,21 @@ for($i = 1; $i <= 12; $i ++) {
             <td>連絡先住所</td>
             <td>電話番号</td>
             <td>請求区分</td>
-            <td>クレジットカード番号</td>
-            <td>銀行口座番号</td>
+            <td>クレジットカード番号-銀行口座番号</td>
         </tr>
-        <?php for ($i=0; $i <count($userInfors) ; $i++) { 
+        
+        <?php if(!empty($data)) { for ($i=0; $i <count($data['money']) ; $i++) { 
         ?>
         <tr>
-            <td><?=$i+1?></td>
-            <td><?=$userInfors[$i]['user']['real_name']?></td>
-            <td><?=$userInfors[$i][0]['sum']?></td>
-            <td><?=$userInfors[$i]['user']['address']?></td>
-            <td><?=$userInfors[$i]['user']['phone_number']?></td>
-            <td>54</td>
-            <td>クレジットカード番号</td>
-            <td><?=$userInfors[$i]['user']['bank_account_code']?></td>
+            <td><?=$data['money'][$i]['user']['user_name']?></td>
+            <td><?=$data['money'][$i]['user']['real_name']?></td>
+            <td><?=$data['money'][$i]['sum']?></td>
+            <td><?=$data['money'][$i]['user']['address']?></td>
+            <td><?=$data['money'][$i]['user']['phone_number']?></td>
+            <td><?php if($data['money'][$i]['user']['level']==2 ) echo '54';else echo '18';?></td>
+            <td><?=$data['money'][$i]['user']['bank_account_code']?></td>
         </tr>
-        <?php } ?>
+        <?php } }?>
     </table>
     <?php
     ?>
@@ -55,8 +56,10 @@ for($i = 1; $i <= 12; $i ++) {
 
 <div id="submit">
         <?php
-       echo $this->Form->create('Admins',array('type' => 'post', 'controller'=>'admins','action'=>'exportMoney'));
-       echo $this->Form->button('作成', array('type' => 'submit', 'name' => 'noname','class'=>'btn','id'=>"btn-save"));
-       echo $this->Form->end();
+        if($isDownload){
+	       echo $this->Form->create('Admins',array('type' => 'post', 'controller'=>'admins','action'=>'exportMoney'));
+	       echo $this->Form->button('作成', array('type' => 'submit', 'name' => 'noname','class'=>'btn','id'=>"btn-save"));
+	       echo $this->Form->end();
+	       }
        ?>
 </div><!--End #submit-->
