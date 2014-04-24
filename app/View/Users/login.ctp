@@ -26,6 +26,7 @@ echo $this->Form->input ( "user_type", array (
 echo $this->Form->input ( "user_name", array (
 		"label" => false,
 		"type" => "text",
+		"value" =>'',
 		// "name" => "uname",
 		"placeholder" => "ユーザネーム",
 		"class" => "must",
@@ -47,8 +48,11 @@ echo $this->Form->button ( "パスワード忘れた", array (
 		"id" => "missPass",
 		"type" => "button"
 ) );
-echo $this->Form->end ( "ログイン", array (
-		"label" => false 
+echo $this->Form->end ( array (
+		"label" => 'ログイン',
+		'class' => 'link-button',
+		'style' => 'padding: 5px;',
+		'div' => false
 ) );
 ?>
 </center>

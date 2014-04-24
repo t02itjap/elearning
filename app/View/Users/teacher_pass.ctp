@@ -10,28 +10,32 @@ echo $this->Form->create('User',array('type'=>'post',"url" => array (
 				$teacher['User']['id']
 		)));
 
-echo $this->Form->input('pass',array('type'=>'password'));
+echo $this->Form->input('pass',array(
+		"label" => false,
+		"type" => "password",
+		// "name" => "pass",
+		"placeholder" => "パスワード",
+		"class" => "must"
+));
 echo $this->Form->button ( "パスワードが忘れた", array (
 		"id" => "missPass",
 		"type" => "button",
-		'onclick' => "return alert('Lien he quan ly de reset mat khau')" 
+		'onclick' => "return alert('パスワードをリセットために、管理者に連絡する')" 
 ) );
-echo $this->Form->end('login');
+echo $this->Form->end(array(
+		"label" => 'ログイン',
+		'class' => 'link-button',
+		'div' => false
+));
 ?>
 
 <script type="text/javascript">
 $(document).ready(function(){
-    $("#VerifycodeTeacherLoginForm").validate();
-    $("#VerifycodeQuestion").rules("add", {
+    $("#UserTeacherPassForm").validate();
+    $("#UserPass").rules("add", {
      required:true,
      messages: {
-            required: "questionを入力する"
-     }
-    });
-    $("#VerifycodeVerifycode").rules("add", {
-     required:true,
-     messages: {
-            required: "answerを入力する"
+            required: "パスワードを入力する"
      }
   	});    
 });

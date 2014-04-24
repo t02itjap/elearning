@@ -1,6 +1,7 @@
 <?php
 class TestsController extends AppController{
-	var $components=array('Session','Test');
+	var $uses = array('Test');
+	var $components=array('Session','TestUtil');
 	function beforeFilter(){
 		parent::beforeFilter();
 		$this->layout= "student";
@@ -9,11 +10,15 @@ class TestsController extends AppController{
 	}
 	public function index(){
 	}
-	public function test(){
-		$test = $this->Test->loadTestFile(null,null);
+	public function test($id){
+		if (!isset($id)) $this->redirect(array('controller' => 'tests', 'action' => 'test', 1));
+		$t = $this->Test->findById($id);
+		$file = WWW_ROOT . $t['Test']['file_link'];
+		$test = $this->TestUtil->loadTestFile($file);
 		$this->Session->write('testObject',$test);
 		$this->set('testObject',$test);
 	}
+
 
 	public function result($testID){
 		if(isset($this->request->data['result'])){

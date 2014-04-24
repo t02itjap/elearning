@@ -11,7 +11,7 @@ echo $this->Session->flash();
         <tr>
             <td><?php echo $this->Html->link('可変値を変更',array('controller' => 'Admins', 'action' => 'changeValues'))?></td>
             <td><?php echo $this->Html->link('アカウントを管理',array('controller' => 'Admins', 'action' => 'getAccount'))?></td>
-            <td><?php echo $this->Html->link('バックアップツール',array('controller' => '', 'action' => ''))?></td>
+            <td><?php echo $this->Html->link('バックアップツール',array('controller' => 'Admins', 'action' => 'database_manager'))?></td>
         </tr>
         <tr>
             <td><img src="" alt="アイコン"/></td>

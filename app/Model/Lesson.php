@@ -20,6 +20,15 @@ class Lesson extends AppModel {
         )
     );
 
+    /*
+      public $hasMany = array(
+      'User' => array(
+      'className' => 'User'
+      // >>>>>>> 2be1f5077ad250cac8ce44b372e03e0dc8dbebab
+      )
+      //Het phan Thang viet
+      ); */
+
     public $belongsTo = array(
         'User' => array(
             'className' => 'User',
