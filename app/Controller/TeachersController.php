@@ -408,7 +408,8 @@ class TeachersController extends AppController {
                     //debug($upData);
                     $this->Document->create();
                     //新しいドキュメントのテーブルのデータベースを作成する 
-                    if ($this->Document->checkValid($upData['name'])) {
+                    $user_id = $this->Auth->user('id');
+                    if ($this->Document->checkValid($upData['name'],$user_id)) {
                         $this->Document->set(array(
                             'file_link' => 'files' . DS . $user_id . DS . $upData['name'],
                             'file_name' => $upData['name'],
@@ -416,14 +417,13 @@ class TeachersController extends AppController {
                             'lesson_id' => $id_lesson
                         ));
                         $this->Document->save();
-                        $user_id = $this->Auth->user('id');
+                        
                         if (!file_exists(WWW_ROOT . 'files' . DS . $user_id)) {
                             mkdir(WWW_ROOT . 'files' . DS . $user_id, 0700);
                         }
                         move_uploaded_file($upData['tmp_name'], 'files' . DS . $user_id . DS . $upData['name']);
                     } else {
-                        $err = 'File sai dinh dang hoac da bi trung, moi nhap lai';
-                        $this->set(compact('err'));
+                        $this->Session->setFlash('ファイル存在したとかファイル名が存在したとか');
                     }
                 }
             }
@@ -447,14 +447,15 @@ class TeachersController extends AppController {
                         }
                         move_uploaded_file($upData['tmp_name'], 'files' . DS . $user_id . DS . $upData['name']);
                     } else {
-                        $err1 = 'File sai dinh dang hoac da bi trung, moi nhap lai';
-                        $this->set(compact('err1'));
+                        $this->Session->setFlash('ファイル存在したとかファイル名が存在したとか');
                     }
                 }
             }
             //検証]をチェックし、新しいテストをアップロードする 
         }
         //22-3-2014
+        $dataCourse = $this->Lesson->find('first',array('conditions'=> array('Lesson.id' => $id_lesson)));
+        $this->set('dataCourse',$dataCourse);
         $dataLesson = $this->Document->find('all', array(
             'fields' => array(),
             'conditions' => array('lesson_id' => $id_lesson),

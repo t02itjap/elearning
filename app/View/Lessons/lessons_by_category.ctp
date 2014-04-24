@@ -47,7 +47,9 @@ if($result['count']>=1):
 								    array('class'=>'confirm_delete')
 									);
 								echo "</li>";
-								echo "<li><a href='#' class='see'>情報サマリー</a></li>";
+								echo "<li>";
+								echo $this->Html->link('情報サマリー',array('controller'=>'teachers','action'=>'summary',$lesson['Lesson']['id']));
+								echo "</li>";
 							}
 							else{
 								echo "<li>";

@@ -1,3 +1,7 @@
+<?php echo $this->Html->script ( array (
+		'jquery.validate' 
+) );?>
+
 <script>
     $(document).ready(function(){
         $('#formCreateNewCategory').hide();
@@ -22,7 +26,7 @@
                     var data =  $.parseJSON(data);
                     //console.log( data);
                     if(data.error != null)   alert(data.error);
-                    else $('#listCategory').append('<li><label>'+name+'</label><input type="checkbox" value="'+data['id']+'" ></li>');
+                    else $('#listCategory').append('<li ><label style = "display:inline;line-height:25px;">'+name+'</label><input type="checkbox" style = "width :300px;float:right;" value="'+data['id']+'" ></li>');
                 });
                 //すぐにカテゴリ情報を取得し、ページ上に表示され、自動ロードを無視
                 $('#formCreateNewCategory').hide();                     //入力ボックスを非表示
@@ -48,17 +52,12 @@
         //           $(this).hide();
         //           $('#fileTest').trigger('click');
         //        });
-        $("#agree_rule").on('click',function(){
-            if($(this).is(':checked'))
-                $("#submit_button").prop('disabled', false);  // checked
-            else
-                $('#submit_button').prop('disabled', true);
-        });
     });
 </script>
 
 
     <div id="create_class">
+    	<?php echo $this->Session->flash();?>
         <h3><span>＊</span>は必ずインプットしてください。</h3>
         <?php
         echo $this->Form->create('Lesson', array('type' => 'file'));
@@ -85,11 +84,13 @@
                     <ul id="listCategory" style="overflow-x: hidden; overflow-y: scroll; height:200px; width: 424px">
                         <?php
                         foreach ($categories as $category) {
-                            echo '<label>' . $category['Category']['category_name'] . '</label>';
+                            
                             echo '<li>';
+                            echo '<label style = "line-height:25px;display:inline">' . $category['Category']['category_name'] . '</label>';
                             echo $this->Form->checkbox('Category', array(
                                 'value' => $category['Category']['id'],
                                 'name' => 'data[Lesson][category][]',
+								'style' => 'width :300px;float:right;'
                             ));
                             echo '</li>';
                         }
@@ -175,10 +176,40 @@
     </div><!--End #rule-->
     <div id="submit">
         <?php
-        echo $this->Form->button('作成', array('type' => 'submit', 'name' => 'data[ok]', 'disabled' => 'disabled', 'id' => 'submit_button'));
+        echo $this->Form->button('作成', array('type' => 'submit', 'name' => 'data[ok]','id' => 'submit_button'));
         ?>
         <?php
         echo $this->Form->button('リセット', array('type' => 'reset'));
         ?>
     </div><!--End #submit-->
-<?php $this->Form->end(); ?>
+    <script type="text/javascript">
+    $(document).ready(function () {
+
+    	$('#submit_button').click(function(){
+  	      var isChecked = $("#agree_rule:checked").length;
+  	      if(isChecked<1){
+    	    	alert('Copyright要求を賛成することは必要です');
+  	      } 	      
+  	   });
+
+        $('#LessonCreateCourseForm').validate({
+            rules: {
+                'data[Lesson][Name]': {
+                    required: true
+                },
+                'data[Lesson][Description]':{
+                	required: true
+                }
+            },
+            messages: {
+                'data[Lesson][Name]': {
+                    required: "授業名を必ずインプットする"
+                },
+                'data[Lesson][Description]':{
+                	required: "授業説明を必ずインプットする" 
+            	}
+            }
+        });
+    });
+</script>
+    <?php $this->Form->end(); ?>
