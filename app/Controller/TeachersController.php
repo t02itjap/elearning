@@ -100,7 +100,8 @@ class TeachersController extends AppController {
                     $this->BannedStudent->set(array(
                         'teacher_id' => $this->Auth->user('id'),
                         'student_id' => $stu ['User'] ['id'],
-                        'reason' => $ban ['BannedStudent'] ['Reason']
+                        'reason' => $ban ['BannedStudent'] ['Reason'],
+                        'banned_date'=>date("Y-m-d h:i:s", time())
                     ));
                     $this->BannedStudent->save();
                     $this->Session->setFlash('ブロックが成功した');
