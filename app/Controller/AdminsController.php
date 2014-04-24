@@ -31,16 +31,17 @@ class AdminsController extends AppController {
 		parent::beforeFilter ();
 		$this->layout = 'manager';
 		$this->Auth->allow ( 'index' );
+		$this->Auth->authorize='Controller';
 	}
 	public function isAuthorized() {
 		if ($this->Auth->user ( 'level' ) == 1)
 			return true;
 		else {
 			$this->Session->setFlash ( "Access deny" );
-			$this->redirect ( $this->redirect ( array (
+			$this->redirect ( array (
 					"controller" => "users",
 					"action" => "logout" 
-			) ) );
+			) ) ;
 			return false;
 		}
 	}

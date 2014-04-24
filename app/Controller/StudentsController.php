@@ -16,7 +16,7 @@ class StudentsController extends AppController {
     public function beforeFilter() {
         parent::beforeFilter();
         $this->layout = 'student';
-        $this->Auth->authorize = 'controller';
+        $this->Auth->authorize = 'Controller';
     }
 
     function isAuthorized() {
