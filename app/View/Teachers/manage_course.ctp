@@ -294,7 +294,7 @@
     </div><!--End #change_class-->
     <div id="submit">
         <input type="submit" name="data[delete]" value="授業削除" style="color: white;background: black;"/>
-        <input type="submit" name="data[ok]" value="作成"/>
+        <input type="submit" name="data[ok]" value="変更"/>
         <input type="submit" name="cancel" value="キャセル"/>
     </div><!--End #submit-->
     <br /><br />
