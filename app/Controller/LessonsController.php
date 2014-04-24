@@ -440,7 +440,7 @@ class LessonsController extends AppController {
 		$andpos=strpos($keyword, '+');
 		$orpos=strpos($keyword, '-');
 		
-		if(($andpos!=0&&$orpos!=0&&$andpos<=$orpos)||$orpos==0)
+		if(($andpos!=0&&$orpos!=0&&$andpos<=$orpos)||($orpos==0&&$andpos!=0))
 		{
 			$keywords=explode('+', $keyword);
 			$isand=true;
@@ -454,10 +454,12 @@ class LessonsController extends AppController {
 		//Get lessonId and categoryName
 		$lIdAndCName=$this->LessonOfCategory->getLIdAndCName2($keyword);
 		$lessons_id = Array();
+		//debug($keyword);
+		//debug($lIdAndCName);
 		foreach($lIdAndCName as $key){
 			$lessons_id[] = $key['LessonOfCategory']['lesson_id'];
 		}
-
+		//debug($lessons_id);
 		if($isand){
 			foreach ($keywords as $key) {
 			$conditionTeacher[]=array('User.user_name LIKE'=>'%'.$key.'%');
