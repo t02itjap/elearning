@@ -74,6 +74,9 @@
     echo $this->Paginator->next(__('後'), array('class' => 'btn'), null, array('class' => 'next disabled btn'));
     ?>
 </div>
+<?php else: {
+    echo '結果がない';
+} ?>
 <?php endif; ?>
 </div>
 
