@@ -1,40 +1,87 @@
 <?php
 
 class TestUtilComponent extends Component {
-	public function loadTestFile($file_link){
-		$file= file_get_contents($file_link);
-		$lines= preg_split('/\n+/', $file);
+	public function loadTestFile($file_contents){
+		$lines= preg_split('/\n+/', $file_contents);
+		$numberline = count($lines);
 		$ql= new QuestionList();
-		$words=preg_split('/\t+/', $lines[0]);
-		$words[1] = trim(preg_replace('/\s\s+/',' ',$words[1]));
-		$ql->title=$words[1];
-		$words=preg_split('/\t+/', $lines[1]);
-		$words[1] = trim(preg_replace('/\s\s+/',' ',$words[1]));
-		$ql->subtitle=$words[1];
-		$i=0;
-		foreach ($lines as $line) {
-			if(preg_match('/Q\(/',$line))
-			{
-				$line = trim(preg_replace('/\s\s+/',' ',$line));
-				$words=preg_split('/\t+/', $line);
-				if($words[0]=="Q($i)") {
-					if($words[1]=="KS") {
-						// $q->result=$words[2];
-						$q->mark=	$words[3];
-					}
-					else {
-						$q->answers[] = array($words[1] => $words[2]);
-					}
+
+		
+		$i = 0; // index of line.
+		//Get title.
+		while (true) {
+			$lines[$i] = $this->formalString($lines[$i]);
+			if (strlen($lines[$i])==0) $i++; // This line is a comment.
+			else {
+				$words=preg_split('/\t+/', $lines[$i]);
+				if (count($words)>2) return false;
+				if ($words[0]!='TestTitle') return false;				
+				$ql->title = $words[1];
+				$i++;
+				break;
+			}
+		}
+		//Get Subtitle.
+		while (true) {
+			$lines[$i] = $this->formalString($lines[$i]);
+			if (strlen($lines[$i])==0) $i++; // This line is a comment.
+			else {
+				$words=preg_split('/\t+/', $lines[$i]);
+				if (count($words)>2) return false;
+				if ($words[0]!='TestSubTitle') return false;				
+				$ql->subtitle = $words[1];
+				break;
+			}
+		}
+
+		//Get Question
+		$q = 0; //First question is number 1.
+		$a = 0;
+		$isFinish = false;
+		while ($i<$numberline-1) {
+			$i++;
+			$lines[$i] = $this->formalString($lines[$i]);
+			if (strlen($lines[$i])==0) continue;
+			$words = preg_split('/\t+/', $lines[$i]);
+			if ($words[0]!="Q($q)"){ // Check new question
+				if ($words[0]=='End' && count($words)!=1) return false;
+				if ($words[0]=='End')  {
+					$isFinish = true;
+					continue;
+				}
+				if ($words[1]!='QS') return false;
+				$q++;
+				if (count($words)!=3) return false;
+				$ql->questions[$q]['question'] = $words[2];
+				$a = 1;
+			} else { // found Q($q)
+				if ($words[1]=='KS') {
+					if (count($words)!=4) return false;
+					$ql->questions[$q]['mark'] = $words[3];
+					$qa = $this->getNumberFromString($words[2]);
+					if ($qa==false) return false;
+					$ql->questions[$q]['correct'] = $qa;
 				} else {
-					$i++;
-					$q= new Question();
-					if($i!=0) $ql->questions[] = array("Q($i)" => $q );
-					$q->question=$words[2];
+					if ($words[1]!="S($a)" || count($words)!=3 ) return false;
+					$ql->questions[$q]['answers'][$a] = $words[2];
+					$a++;
 				}
 			}
 		}
-		// if($i!=0) $ql->questions[] = array("Q($i)" => $q );
-		return $ql;
+		if ($isFinish==true) return $ql;
+		else return false;
+	}
+
+	public function formalString($s){
+		$s = str_replace(strstr($s,'#'),'', $s);
+		$s = ltrim($s); $s = rtrim($s);
+		return $s;
+	}
+
+	public function getNumberFromString($s){
+		preg_match_all('!\d+!', $s, $matches);
+		if (count($matches[0])!=1) return false;
+		return $matches[0][0];
 	}
 
 	public function loadResult($file_link){
@@ -76,18 +123,9 @@ class TestUtilComponent extends Component {
 */
 class QuestionList
 {
-	public $title="";
-	public $subtitle="";
-	public $questions = array();
-}
-/**
-* 
-*/
-class Question
-{
-	public $question = '';
-	public $answers = array();
-	public $mark;
+	public $title;
+	public $subtitle;
+	public $questions;
 }
 
 ?>

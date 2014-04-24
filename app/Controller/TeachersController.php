@@ -100,7 +100,8 @@ class TeachersController extends AppController {
                     $this->BannedStudent->set(array(
                         'teacher_id' => $this->Auth->user('id'),
                         'student_id' => $stu ['User'] ['id'],
-                        'reason' => $ban ['BannedStudent'] ['Reason']
+                        'reason' => $ban ['BannedStudent'] ['Reason'],
+                        'banned_date'=>date("Y-m-d h:i:s", time())
                     ));
                     $this->BannedStudent->save();
                     $this->Session->setFlash('ブロックが成功した');
@@ -362,11 +363,11 @@ class TeachersController extends AppController {
 
     public function manage_course($id_lesson) {
         if (!$id_lesson) {
-            throw new NotFoundException('404 not found');
+            throw new NotFoundException('このページが存在じゃありません。');
         }
         $lesson = $this->Lesson->find('first', array('conditions' => array('Lesson.id' => $id_lesson)));
         if (!$lesson) {
-            throw new NotFoundException('405 not found lesson');
+            throw new NotFoundException('このページが存在じゃありません。');
         }
         //新しいレッスンを作成する 
         $categories = $this->Category->find('all');
@@ -456,6 +457,11 @@ class TeachersController extends AppController {
         //22-3-2014
         $dataCourse = $this->Lesson->find('first',array('conditions'=> array('Lesson.id' => $id_lesson)));
         $this->set('dataCourse',$dataCourse);
+        $dataCategory = $this->LessonOfCategory->find('list', array(
+            'fields' => array('category_id'),
+            'conditions' => array('lesson_id' => $id_lesson),
+                ));
+        $this->set('dataCategory', $dataCategory);
         $dataLesson = $this->Document->find('all', array(
             'fields' => array(),
             'conditions' => array('lesson_id' => $id_lesson),
