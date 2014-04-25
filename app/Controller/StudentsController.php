@@ -6,7 +6,7 @@ App::uses('DboSource', 'Model/Datasource');
  * User controller for login,logout,...
  */
 class StudentsController extends AppController {
-
+    var $costId=6;
     public $name = "Students";
 // <<<<<<< HEAD
 	var $uses = array (
@@ -144,6 +144,11 @@ class StudentsController extends AppController {
         $this->set('flag', $flag);
         $this->set('lesson', $lesson);
         $this->set('category', $category);
+        $lessonCost=$this->ChangeableValue->find('all', array(
+            'fields'=>array('ChangeableValue.current_value'),
+            'conditions'=>array('ChangeableValue.id'=>$this->costId)
+            ));
+        $this->set ('cost', $lessonCost[0]['ChangeableValue']['current_value']);
         //like
         $likeString = $data['Lesson']['voters'];
         $flagLike = false;
@@ -183,7 +188,11 @@ class StudentsController extends AppController {
         if (isset($_POST)) {
             $data = $_POST;
             $this->Bill->create();
-            $this->Bill->set('lesson_cost', 20000);
+            $lessonCost=$this->ChangeableValue->find('all', array(
+            'fields'=>array('ChangeableValue.current_value'),
+            'conditions'=>array('ChangeableValue.id'=>$this->costId)
+            ));
+            $this->Bill->set('lesson_cost', $lessonCost[0]['ChangeableValue']['current_value']);
             $this->Bill->set('learn_date', date('Y/m/d H:i'));
             if ($this->Bill->save($data)) {
                 echo true;

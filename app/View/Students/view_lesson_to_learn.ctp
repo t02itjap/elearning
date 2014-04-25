@@ -46,10 +46,10 @@ foreach ($category as $categories) {
     echo $categories['Category']['category_name'] . ';';
 }
 ?></span><br />
-    <span class="ml">作る日<?php echo $lesson['Lesson']['create_date']; ?></span><br />
-    <span class="ml">説明 <?php echo $lesson['Lesson']['description']; ?></span><br />
-    <span class="ml">先生 <?php echo $lesson['User']['user_name']; ?></span><br />
-    <span class="ml">学費：20,000 VND </span><br />
+    <span class="ml">作る日: <?php echo $lesson['Lesson']['create_date']; ?></span><br />
+    <span class="ml">説明: <?php echo $lesson['Lesson']['description']; ?></span><br />
+    <span class="ml">先生: <?php echo $lesson['User']['user_name']; ?></span><br />
+    <span class="ml">学費：<?php echo $cost; ?> VND </span><br />
     <span class="ml" >Like数 :
         <span id="countLike"><?php echo $countLike; ?></span>
     </span><br /><br />
@@ -89,7 +89,7 @@ foreach ($category as $categories) {
         ?>
     </div>   
 
-    <h3>------コメント------</h3>
+    <!-- <h3>------コメント------</h3>
     <div id="comment">
         <div class="comment">
             <?php echo $this->Html->image('student.jpg');?>
@@ -101,5 +101,5 @@ foreach ($category as $categories) {
                 <input type="submit" value="ポスト"/>
             </form>
         </div><!--End #new_comment-->
-    </div><!--End #comment-->
+    <!--</div><!--End #comment--> 
 </div><!--End #start_study-->

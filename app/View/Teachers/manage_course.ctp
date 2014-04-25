@@ -301,7 +301,7 @@
         <input type="submit" name="cancel" value="キャセル"/>
     </div><!--End #submit-->
     <br /><br />
-    <div id="comment">
+    <!-- <div id="comment">
         <div class="comment">
             <img src="" alt="アバター"/>
             <span class="comment_content"></span>
@@ -316,5 +316,5 @@
                 <input type="submit" value="ポスト"/>
             </form>
         </div><!--End #new_comment-->
-    </div><!--End #comment-->
+    </div><!--End #comment--> -->
 <?php $this->Form->end(); ?>
