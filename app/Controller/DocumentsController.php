@@ -37,6 +37,7 @@ class DocumentsController extends AppController{
 			$dt = new DateTime();
 			//echo $dt->format('Y-m-d H:i:s');
 			//debug($this->Auth->user('id'));die();
+			$this->Comment->create();
 			$this->Comment->set(
 				array('comment'=>$this->request->data['Document']['txtComment'],
 					'user_id'=>$this->Auth->user('id'),

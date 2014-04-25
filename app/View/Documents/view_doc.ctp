@@ -37,7 +37,7 @@
    echo $this->Form->create(null,array('url'=>array('controller'=>'documents','action'=>'viewDoc',$id)));
   //secho $this->Form->input('',array('type' => 'hidden','value'=>$id));
    echo $this->Form->button ( 'Copyright違反 ', array ('type' => 'submit', 'name' => 'data[submit_data]','id' => 'submit_button' ) );
-   echo $this->Form->end ()
+   echo $this->Form->end ();
    ?>
    <div id="comment">
     <div class="old_comment">
@@ -55,11 +55,11 @@
     </div>
     <div id="new_comment">
         <?php
-        echo $this->Form->create(null,array('controller'=>'documents','action'=>'viewDoc',$id, $lesson_id));
+        echo $this->Form->create(null,array(array('controller'=>'documents','action'=>'viewDoc',$id, $lesson_id)));
         echo $this->Form->textarea("txtComment",array('id'=>"comment",'value'=>$clear));
         echo $this->Form->input('id',array('type' => 'hidden','value'=>$lesson_id));
         echo $this->Form->button ( 'ポスト', array ('type' => 'submit','class'=>'btn','id'=>"btn-save", 'onclick'=>'return cmtValid()'));
-        echo $this->Form->end ()?>
+        echo $this->Form->end ();?>
          </div><!--End #new_comment-->
        </div><!--End #comment-->
      </div><!--End #start_study-->
