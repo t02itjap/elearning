@@ -9,8 +9,25 @@ class StudentsController extends AppController {
 
     public $name = "Students";
 // <<<<<<< HEAD
-    var $uses = array('User', 'LearnHistory', 'Bill', 'Lesson', 'Test', 'TestHistory', 'LessonOfCategory');
-    var $helpers = array('Html', 'Form', 'Editor', 'Csv');
+	var $uses = array (
+			'BannedStudent',
+			'Bill',
+			'Category',
+			'ChangeableValue',
+			'Comment',
+			'User',
+			'InitialUser',
+			'Verifycode',
+			'InitialVerifycode',
+			'IpAddress',
+			'Test',
+			'Lesson',
+			'Document',
+			'LearnHistory',
+			'LessonOfCategory',
+			'TestHistory',
+			'LockedUser'
+	);    var $helpers = array('Html', 'Form', 'Editor', 'Csv');
     public $components = array('RequestHandler');
 
     public function beforeFilter() {
@@ -85,14 +102,15 @@ class StudentsController extends AppController {
             }
         }
         if (isset($this->request->data['delete_student'])) {
-            $this->User->set(array(
-                'status_flag' => 0,
-            ));
-            $this->User->id = $student['User']['id'];
-            if ($this->User->save()) {
-                $this->Session->destroy();
-                $this->Session->setFlash('あなたのアカウントが今ロックです、再開けるために、管理者に連絡してください。');
-                $this->redirect(array('controller' => 'Users', 'action' => 'login'));
+        	if ($this->User->deleteUser($student['User']['id']) &&
+            	$this->TestHistory->deleteTestHistoryByUserId($student['User']['id']) &&
+            	$this->InitialUser->deleteInitialUserByUserId($student['User']['id']) &&
+            	$this->Comment->deleteCommentByUserId($student['User']['id']) &&
+            	$this->Bill->deleteBillByUserid($student['User']['id']) &&
+            	$this->BannedStudent->deleteRecordBystudentId($student['User']['id'])){
+            		$this->Session->destroy ();
+                	$this->Session->setFlash('このアカウントが今削除です');
+                	$this->redirect(array('controller' => 'Users', 'action' => 'login'));
             }
         }
     }

@@ -16,5 +16,13 @@ class Verifycode extends AppModel {
 			),
 		)
 	);
+	public function deleteVerifycodeByUserId($userId){
+		$record = $this->find('first',array(
+        	'conditions' => array('user_id' => $userId)
+        ));
+        if($record == NULL) return true;
+        else if($this->delete($record['Verifycode']['id'])) return true;
+        else return false;
+	}
 }
 ?>

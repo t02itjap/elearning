@@ -105,4 +105,8 @@ class User extends AppModel {
 	public function foo(){
 		
 	}
+	public function deleteUser($userId){
+		if($this->delete($userId)) return true;
+		else return false;
+	}
 }
