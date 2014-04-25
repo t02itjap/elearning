@@ -56,10 +56,14 @@ class TeachersController extends AppController {
             )
                 ));
 
-//         if(strpos())
-        $lesson ['Lesson'] ['voters'] = explode(",", $lesson ['Lesson'] ['voters']);
-        foreach ($lesson['Lesson']['voters'] as $value){
-        	$user = $this->User->find('first',array('conditions'=>array('id'=>$value)));
+        if(strpos(',',$$lesson ['Lesson'] ['voters'])){
+        	$lesson ['Lesson'] ['voters'] = explode(",", $lesson ['Lesson'] ['voters']);
+	        foreach ($lesson['Lesson']['voters'] as $value){
+	        	$user = $this->User->find('first',array('conditions'=>array('id'=>$value)));
+	        	$lesson['Lesson']['like'][] = $user;
+	        }
+        }else {
+        	$user = $this->User->find('first',array('conditions'=>array('id'=>$lesson['Lesson']['voters'])));
         	$lesson['Lesson']['like'][] = $user;
         }
 //         debug($lesson['Lesson']['like']);die();
