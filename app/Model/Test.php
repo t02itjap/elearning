@@ -6,8 +6,8 @@
 class Test extends AppModel{
     var $name="Test";
     
-    public function checkValid($fileName) {
-        $uploaddir = WWW_ROOT . 'files/';
+    public function checkValid($fileName, $folder) {
+        $uploaddir = WWW_ROOT . 'files/'.$folder.'/';
         $check = FALSE;
         //check file
         $allowedExts = array("tsv");
@@ -26,11 +26,31 @@ class Test extends AppModel{
             'foreignKey' => 'test_id'
             )
         );
+    public $belongsTo = array(
+        'Lesson' => array(
+            'className' => 'Lesson',
+            'foreignKey' => 'lesson_id'
+        )
+    );
     public function getTests($lesson_id){
         $condition = array(
             'conditions'=>array('lesson_id'=>$lesson_id)
             );
         return $this->find('first',$condition);
+    }
+    public function deleteTestByUserId($userId){
+    	$check = 1;
+		$recordList = $this->find('all',array(
+        	'conditions' => array('create_user_id' => $userId)
+        ));
+        if($recordList != NULL) foreach ($recordList as $record){
+            if(!$this->delete($record['Test']['id'])){
+            	$check = 0;
+            	break;
+            }
+        }
+        if($check == 1) return true;
+        else return false;
     }
 }
 ?>

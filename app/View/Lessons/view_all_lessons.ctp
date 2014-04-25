@@ -28,10 +28,10 @@ foreach ($lessons as $lesson):
 				break;
 
 				case '2':
-// 				echo "<li>";
-// 				echo $this->Html->link('見る',array('controller' => 'Teachers', 'action' => 'manage_course', $lesson['Lesson']['id']), array('class' => 'link-button'));
-// 						//echo $this->$Html->link('タイトル違反',array('action'=>'titile_report',$lesson['Lesson']['id']),array('class'=>'confirm_report'));
-// 				echo "</li>";
+				// echo "<li>";
+				// echo $this->Html->link('見る',array('controller' => 'Teachers', 'action' => 'manage_course', $lesson['Lesson']['id']), array('class' => 'link-button'));
+				// 		//echo $this->$Html->link('タイトル違反',array('action'=>'titile_report',$lesson['Lesson']['id']),array('class'=>'confirm_report'));
+				// echo "</li>";
 				echo "<li>";
 				echo $this->Html->link(
 					'タイトル違反',

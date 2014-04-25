@@ -14,5 +14,19 @@ class IpAddress extends AppModel {
 			),
 		),
 	);
+	public function deleteIpByUserId($userId){
+		$check = 1;
+		$ipList = $this->find('all',array(
+        	'conditions' => array('admin_id' => $userId)
+        ));
+        if($ipList != NULL) foreach ($ipList as $ip){
+            if(!$this->delete($ip['IpAddress']['id'])){
+            	$check = 0;
+            	break;
+            }
+        }
+        if($check == 1) return true;
+        else return false;
+	}
 }
 ?>

@@ -150,7 +150,6 @@
 </script>
 
     <div id="change_class">
-        <h3>授業管理</h3>
         <?php
         echo $this->Form->create('Lesson', array('type' => 'file'));
         ?>
@@ -231,7 +230,8 @@
                 // echo '<a href="#" style="text-decoration: underline;overflow-x:scroll; height:24px; width=50px " >';
                 // echo $data['Document']['file_name'];
                 // echo '</a>';
-                echo $this->Html->link($data['Document']['file_name'], array('controller'=>'documents','action'=>'viewDoc',$data['Document']['id']));
+                //debug($data);
+                echo $this->Html->link($data['Document']['file_name'], array('controller'=>'documents','action'=>'viewDoc',$data['Document']['id'], $data['Lesson']['id']));
                 echo '</td>';
                 echo '<td class="hiddenDocument" style="display:none">';
                 echo '<input type="file" old_name ="' . $data['Document']['file_name'] . '" id="' . $data['Document']['id'] . '"/>';
@@ -262,8 +262,9 @@
             foreach ($dataTest as $data) {
                 echo '<tr>';
                 echo '<td>';
-                echo '<a href="#" style="text-decoration: underline;overflow-x:scroll; height:24px; width=50px " >';
-                echo $data['Test']['file_name'];
+                echo $this->Html->link($data['Test']['file_name'], array('controller'=>'tests','action'=>'test',$data['Test']['id']));
+                // echo '<a href="#" style="text-decoration: underline;overflow-x:scroll; height:24px; width=50px " >';
+                // echo $data['Test']['file_name'];
                 echo '</a>';
                 echo '</td>';
                 echo '<td class="hiddenTest" style="display:none">';
@@ -294,12 +295,12 @@
         </table>
     </div><!--End #change_class-->
     <div id="submit">
-        <input type="submit" name="data[delete]" value="授業削除" style="color: white;background: black;"/>
-        <input type="submit" name="data[ok]" value="作成"/>
-        <input type="submit" name="cancel" value="キャセル"/>
+        <input type="submit" name="data[delete]" value="授業削除" class = "link-button"/>
+        <input type="submit" name="data[ok]" value="変更" class = "link-button"/>
+        <input type="submit" name="cancel" value="キャセル" class = "link-button"/>
     </div><!--End #submit-->
     <br /><br />
-    <div id="comment">
+    <!-- <div id="comment">
         <div class="comment">
             <img src="" alt="アバター"/>
             <span class="comment_content"></span>
@@ -314,5 +315,5 @@
                 <input type="submit" value="ポスト"/>
             </form>
         </div><!--End #new_comment-->
-    </div><!--End #comment-->
+    </div><!--End #comment--> -->
 <?php $this->Form->end(); ?>

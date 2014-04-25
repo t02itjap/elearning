@@ -6,11 +6,28 @@ App::uses('DboSource', 'Model/Datasource');
  * User controller for login,logout,...
  */
 class StudentsController extends AppController {
-
+    var $costId=6;
     public $name = "Students";
 // <<<<<<< HEAD
-    var $uses = array('User', 'LearnHistory', 'Bill', 'Lesson', 'Test', 'TestHistory', 'LessonOfCategory');
-    var $helpers = array('Html', 'Form', 'Editor', 'Csv');
+	var $uses = array (
+			'BannedStudent',
+			'Bill',
+			'Category',
+			'ChangeableValue',
+			'Comment',
+			'User',
+			'InitialUser',
+			'Verifycode',
+			'InitialVerifycode',
+			'IpAddress',
+			'Test',
+			'Lesson',
+			'Document',
+			'LearnHistory',
+			'LessonOfCategory',
+			'TestHistory',
+			'LockedUser'
+	);    var $helpers = array('Html', 'Form', 'Editor', 'Csv');
     public $components = array('RequestHandler');
 
     public function beforeFilter() {
@@ -85,14 +102,15 @@ class StudentsController extends AppController {
             }
         }
         if (isset($this->request->data['delete_student'])) {
-            $this->User->set(array(
-                'status_flag' => 0,
-            ));
-            $this->User->id = $student['User']['id'];
-            if ($this->User->save()) {
-                $this->Session->destroy();
-                $this->Session->setFlash('あなたのアカウントが今ロックです、再開けるために、管理者に連絡してください。');
-                $this->redirect(array('controller' => 'Users', 'action' => 'login'));
+        	if ($this->User->deleteUser($student['User']['id']) &&
+            	$this->TestHistory->deleteTestHistoryByUserId($student['User']['id']) &&
+            	$this->InitialUser->deleteInitialUserByUserId($student['User']['id']) &&
+            	$this->Comment->deleteCommentByUserId($student['User']['id']) &&
+            	$this->Bill->deleteBillByUserid($student['User']['id']) &&
+            	$this->BannedStudent->deleteRecordBystudentId($student['User']['id'])){
+            		$this->Session->destroy ();
+                	$this->Session->setFlash('このアカウントが今削除です');
+                	$this->redirect(array('controller' => 'Users', 'action' => 'login'));
             }
         }
     }
@@ -126,6 +144,11 @@ class StudentsController extends AppController {
         $this->set('flag', $flag);
         $this->set('lesson', $lesson);
         $this->set('category', $category);
+        $lessonCost=$this->ChangeableValue->find('all', array(
+            'fields'=>array('ChangeableValue.current_value'),
+            'conditions'=>array('ChangeableValue.id'=>$this->costId)
+            ));
+        $this->set ('cost', $lessonCost[0]['ChangeableValue']['current_value']);
         //like
         $likeString = $data['Lesson']['voters'];
         $flagLike = false;
@@ -165,7 +188,11 @@ class StudentsController extends AppController {
         if (isset($_POST)) {
             $data = $_POST;
             $this->Bill->create();
-            $this->Bill->set('lesson_cost', 20000);
+            $lessonCost=$this->ChangeableValue->find('all', array(
+            'fields'=>array('ChangeableValue.current_value'),
+            'conditions'=>array('ChangeableValue.id'=>$this->costId)
+            ));
+            $this->Bill->set('lesson_cost', $lessonCost[0]['ChangeableValue']['current_value']);
             $this->Bill->set('learn_date', date('Y/m/d H:i'));
             if ($this->Bill->save($data)) {
                 echo true;

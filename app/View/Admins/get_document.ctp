@@ -1,13 +1,17 @@
 <?php //debug($users); die(); ?>
 
 <div id="acc_manage">
-	<span>アップロードファイルを管理します。</span>
     <?php
 				echo $this->Form->create ( 'Document' );
+				echo '<div style = "float: left; margin-left: 5px; margin-top:3px">';
 				echo $this->Form->input ( 'file_name', array (
-						'label' => 'アップロードファイル検索' 
+						'placeholder' => 'ファイル検索', 'label' => false
 				) );
-				echo $this->Form->end ( '検索' );
+				echo '</div>';
+				echo '<div style = "float: left; margin-left: 5px; margin-top:0px">';
+				echo $this->Form->button('検索', array('type' => 'submit', 'name' => 'data[submit_data]', 'class' => 'link-button', 'id' => 'submit_button'));
+				echo '</div>';
+				echo $this->Form->end ();
 				?>
     <?php if(isset($data)&&$data!=null): ?>
     <!--
@@ -77,28 +81,6 @@
         </tbody>
 	</table>
 </div>
-
-
-<div class="paging btn-group">
-    <?php
-					echo $this->Paginator->prev ( __ ( '前' ), array (
-							'class' => 'btn' 
-					), null, array (
-							'class' => 'prev disabled btn' 
-					) );
-					echo $this->Paginator->numbers ( array (
-							'separator' => '',
-							'class' => 'btn',
-							'currentClass' => 'disabled' 
-					) );
-					echo $this->Paginator->next ( __ ( '後' ), array (
-							'class' => 'btn' 
-					), null, array (
-							'class' => 'next disabled btn' 
-					) );
-					?>
-</div>
-
 				 <?php
 else :
 					{
@@ -109,23 +91,6 @@ else :
 
 
  <?php if(isset($users)): ?>
-<div class="paging btn-group">
-    <?php
-		echo $this->Paginator->prev ( __ ( 'Trước' ), array (
-				'class' => 'btn' 
-		), null, array (
-				'class' => 'prev disabled btn' 
-		) );
-		echo $this->Paginator->numbers ( array (
-				'separator' => '',
-				'class' => 'btn',
-				'currentClass' => 'disabled' 
-		) );
-		echo $this->Paginator->next ( __ ( 'Sau' ), array (
-				'class' => 'btn' 
-		), null, array (
-				'class' => 'next disabled btn' 
-		) );
-		?>
-</div>
+
 <?php endif; ?>
+<?php echo $this->element('paging');?>

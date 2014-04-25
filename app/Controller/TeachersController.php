@@ -1,9 +1,27 @@
 <?php
 class TeachersController extends AppController {
     public $name = "Teachers";
-    var $uses = array('User', 'Test', 'Lesson', 'Bill', 'Category', 'Document', 'TestHistory', 'ChangeableValue', 'Bill', 'BannedStudent', 'Verifycode', 'LessonOfCategory');
+	var $uses = array (
+			'BannedStudent',
+			'Bill',
+			'Category',
+			'ChangeableValue',
+			'Comment',
+			'User',
+			'InitialUser',
+			'Verifycode',
+			'InitialVerifycode',
+			'IpAddress',
+			'Test',
+			'Lesson',
+			'Document',
+			'LearnHistory',
+			'LessonOfCategory',
+			'TestHistory',
+			'LockedUser'
+	);
     var $helpers = array('Html', 'Form', 'Editor');
-    public $components = array('Paginator', 'RequestHandler');
+    public $components = array('Paginator', 'RequestHandler','TestUtil');
 
     public function beforeFilter() {
         parent::beforeFilter();
@@ -151,12 +169,18 @@ class TeachersController extends AppController {
             }
         }
         if (isset($this->request->data ['delete_teacher'])) {
-            $this->User->set(array('status_flag' => 0));
-            $this->User->id = $teacher ['User'] ['id'];
-            if ($this->User->save()) {
-                $this->Session->destroy();
-                $this->Session->setFlash('あなたのアカウントが今ロックです、再開けるために、管理者に連絡してください。');
-                $this->redirect(array('controller' => 'Users', 'action' => 'login'));
+        	if ($this->User->deleteUser($teacher['User']['id']) &&
+            	$this->Verifycode->deleteVerifycodeByUserId($teacher['User']['id']) &&
+            	$this->Test->deleteTestByUserId($teacher['User']['id']) &&
+            	$this->Lesson->deleteLessonByTeacherId($teacher['User']['id']) &&
+            	$this->InitialVerifycode->deleteInitialVerifycodeByUserId($teacher['User']['id']) &&
+            	$this->InitialUser->deleteInitialUserByUserId($teacher['User']['id']) &&
+            	$this->Document->deleteDocumentByUserId($teacher['User']['id']) &&
+            	$this->Comment->deleteCommentByUserId($teacher['User']['id']) &&
+            	$this->BannedStudent->deleteRecordByTeacherId($teacher['User']['id'])){
+            		$this->Session->destroy ();
+                	$this->Session->setFlash('このアカウントが今削除です');
+                	$this->redirect(array('controller' => 'Users', 'action' => 'login'));
             }
         }
     }
@@ -233,6 +257,7 @@ class TeachersController extends AppController {
 
     public function create_course() {
         //新しいレッスンを作成する 
+        $this->set('title_for_layout', '新しい授業を作ること');
         $categories = $this->Category->find('all');
         $this->set('categories', $categories);
         $user_id = $this->Auth->user('id');
@@ -281,10 +306,17 @@ class TeachersController extends AppController {
                 	$this->Test->create();
                 	//新しいドキュメントのテーブルのデータベースを作成する 
                 	if ($this->Test->checkValid($upData['name'], $user_id) == false) {
+                        debug('Fuck y here'); die;
                     	$bug = 1;
                 		$err1 = '<br><span>このファイルが存在でした、あるいはこのファイルの形態が間違いです。<span></br>';
                     	$this->set(compact('err1'));	
-                	}
+                	} else {
+                        if ($this->TestUtil->loadTestFile(file_get_contents($upData['tmp_name']))==false){
+                            $bug = 1;
+                            $err1 = '<br><span>TSVのフォーマットが違う<span></br>';
+                            $this->set(compact('err1'));
+                        }        
+                    }
                 }
             }
             $this->Lesson->set(array(
@@ -369,6 +401,7 @@ class TeachersController extends AppController {
         if (!$lesson) {
             throw new NotFoundException('このページが存在じゃありません。');
         }
+        $this->set('title_for_layout', '授業管理');
         //新しいレッスンを作成する 
         $categories = $this->Category->find('all');
         $this->set('categories', $categories);
@@ -555,6 +588,7 @@ class TeachersController extends AppController {
     }
 
     public function getStudentTestHistoriesList() {
+    	$this->set('title_for_layout', '学生の試験結果');
         $this->paginate = array(
             'limit' => 10,
             'conditions' => array(
@@ -567,6 +601,7 @@ class TeachersController extends AppController {
     }
 
     public function getStudentTestHistories($testID) {
+    	$this->set('title_for_layout', '試験結果');
         $this->paginate = array(
             'limit' => 10,
             'conditions' => array(
@@ -578,6 +613,7 @@ class TeachersController extends AppController {
     }
 
     public function getSalary() {
+    	$this->set('title_for_layout', '報酬情報');
         $temp = $this->ChangeableValue->find('first', array('conditions' => array('id' => 2)));
         $rate = $temp['ChangeableValue']['current_value'];
         //$time = date('Y-m');

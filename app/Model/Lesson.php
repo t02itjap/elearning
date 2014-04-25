@@ -20,15 +20,6 @@ class Lesson extends AppModel {
         )
     );
 
-    /*
-      public $hasMany = array(
-      'User' => array(
-      'className' => 'User'
-      // >>>>>>> 2be1f5077ad250cac8ce44b372e03e0dc8dbebab
-      )
-      //Het phan Thang viet
-      ); */
-
     public $belongsTo = array(
         'User' => array(
             'className' => 'User',
@@ -54,33 +45,6 @@ class Lesson extends AppModel {
         return $this->find('all', $condition);
     }
 
-    public function getComments($lesson_id) {
-        $condition = array(
-            'joins' => array(
-            		array(
-                    'table' => 'tb_comments',
-                    'alias' => 'c',
-                    'type' => 'INNER',
-                    'conditions' => array(
-                        'c.lession_id=Lesson.id'
-                    )
-                )
-            ),
-            'joins' => array(
-                array(
-                    'table' => 'tb_users',
-                    'alias' => 'u',
-                    'type' => 'INNER',
-                    'conditions' => array(
-                        'u.id=c.user_ id'
-                    )
-                )
-            ),
-            'fields' => array('c.comment', 'u.user_name'),
-            'conditions' => array('Lesson.id' => $lession_id)
-        );
-        return $this->find('all', $condition);
-    }
     public $validate = array(
 		'lesson_name' => array(
 			'notempty' => array(
@@ -99,6 +63,20 @@ class Lesson extends AppModel {
 			)
 		)
 	);
+	public function deleteLessonByTeacherId($teacherId){
+    	$check = 1;
+		$recordList = $this->find('all',array(
+        	'conditions' => array('create_user_id' => $teacherId)
+        ));
+        if($recordList != NULL) foreach ($recordList as $record){
+            if(!$this->delete($record['Lesson']['id'])){
+            	$check = 0;
+            	break;
+            }
+        }
+        if($check == 1) return true;
+        else return false;
+	}
 }
 
 ?>

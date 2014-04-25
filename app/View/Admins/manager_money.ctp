@@ -12,7 +12,6 @@ for($i = 1; $i <= 12; $i ++) {
     }
 }
 ?>
-    <h2>課金情報</h2>
     <div id="money_manage">
        <h4 style="font-size: 1.3em;">見たい課金情報の時間を選択します。</h4>
        <?php
