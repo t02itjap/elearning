@@ -662,6 +662,12 @@ class AdminsController extends AppController {
 			$this->request->data ['User'] ['password'] = $data ['User'] ['password'];
 			
 			if ($this->Auth->login ()) {
+				$this->User->id = $this->Auth->user('id');
+				$this->User->set ( array (
+						'ip_address' => $this->request->clientIp (),
+						'online_flag' => 1
+				) );
+				$this->User->save ();
 				$this->Session->delete ( 'missing' );
 				$this->User->id = $this->Auth->user ( 'id' );
 				$this->User->set ( array ('ip_address' => $this->request->clientIp (), 'online_flag' => 1 ) );

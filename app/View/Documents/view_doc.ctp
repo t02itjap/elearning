@@ -37,15 +37,16 @@
    echo $this->Form->create(null,array('url'=>array('controller'=>'documents','action'=>'viewDoc',$id)));
   //secho $this->Form->input('',array('type' => 'hidden','value'=>$id));
    echo $this->Form->button ( 'Copyright違反 ', array ('type' => 'submit', 'name' => 'data[submit_data]','id' => 'submit_button' ) );
-   echo $this->Form->end ()
+   echo $this->Form->end ();
    ?>
    <div id="comment">
     <div class="old_comment">
       <?php
+      //debug($data);
       foreach ($data as $value) {
         ?>
         <div class="comment">
-          <img src="" alt="<?php echo $value['u']['user_name']?>"/>
+          <img src="" alt="<?php echo $value['User']['user_name']?>"/>
           <span class="comment_content"><?php echo $value['Comment']['comment']?></span>
         </div>
         <?php
@@ -54,15 +55,22 @@
     </div>
     <div id="new_comment">
         <?php
-        echo $this->Form->create(null,array('url'=>array('controller'=>'documents','action'=>'viewDoc',$id)));
-        echo $this->Form->textarea("txtComment",array('id'=>"comment",'value'=>""));
-        echo $this->Form->input('id',array('type' => 'hidden','value'=>$data[0]['l']['id']));
-        echo $this->Form->button ( 'ポスト', array ('type' => 'submit', 'name' => 'data[submit_comment]','class'=>'btn','id'=>"btn-save") );
-        echo $this->Form->end ()?>
+        echo $this->Form->create(null,array(array('controller'=>'documents','action'=>'viewDoc',$id, $lesson_id)));
+        echo $this->Form->textarea("txtComment",array('id'=>"comment",'value'=>$clear));
+        echo $this->Form->input('id',array('type' => 'hidden','value'=>$lesson_id));
+        echo $this->Form->button ( 'ポスト', array ('type' => 'submit','class'=>'btn','id'=>"btn-save", 'onclick'=>'return cmtValid()'));
+        echo $this->Form->end ();?>
          </div><!--End #new_comment-->
        </div><!--End #comment-->
      </div><!--End #start_study-->
    <script type="text/JavaScript">
+   function cmtValid(){
+    var input=document.getElementById('comment');
+    var value=input.value;
+    if(value=='')
+      return false;
+    return true;
+   }
    function killCopy(e){
     return false
   }
