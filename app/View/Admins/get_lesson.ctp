@@ -36,7 +36,7 @@
 						?>
                     <tr>
 				<td class='content-center'><?php echo $item['Lesson']['id']; ?></td>
-				<td class='content-center'><?php echo "<a href='#'>".$item['Lesson']['lesson_name']."</a>"; ?></td>
+				<td class='content-center'><?php echo $this->Html->link($item['Lesson']['lesson_name'],array('controller'=>'teachers','action'=>'manage_course',$item['Lesson']['id']));?></td>
 				<td class='content-center'><?php echo $item['User']['user_name']; ?></td>
 				<td class='content-center'><?php echo $item['Lesson']['create_date']; ?></td>
 				<!--<td class='content-center'><?php echo $item['Lesson']['category_id']; ?></td>-->

@@ -11,7 +11,7 @@ echo $this->Session->flash();
         <tr>
             <td><?php echo $this->Html->link('管理者アカウント追加',array('controller' => 'Admins', 'action' => 'register_new_manager'))?></td>
             <td><?php echo $this->Html->link('アップロードファイル管理',array('controller' => 'Admins', 'action' => 'getDocument'))?></td>
-            <td><?php echo $this->Html->link('授業管理',array('controller' => 'Lessons', 'action' => 'manage_lessons'))?></td>
+            <td><?php echo $this->Html->link('授業管理',array('controller' => 'Admins', 'action' => 'getLesson'))?></td>
         </tr>
         <tr>
             <td><?php echo $this->Html->link('課金情報管理',array('controller' => 'Admins', 'action' => 'managerMoney'))?></td>

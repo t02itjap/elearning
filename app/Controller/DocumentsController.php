@@ -17,17 +17,29 @@ class DocumentsController extends AppController{
 
 	public function viewDoc($id=null, $lesson_id=null){
 		//debug($id.'---'.$lesson_id);die();
+		if($this->Auth->user('level')==2){
+			$this->layout= "teacher";
+		}
 		//if (!isset($id))  $this->redirect(array('controller' => 'documents', 'action' => 'viewDoc', 2));
 		$this->set('clear', '');
 		$this->set('lesson_id', $lesson_id);
 		$doc = $this->Document->findById($id);
-		$file = $this->webroot . $doc['Document']['file_link'];
+		$this->set('doc',$doc);
+		//debug($doc);die;
+		$file = $this->webroot.$doc['Document']['file_link'];
+		//$file = str_replace('\', $replace, $subject)
 		$this->set('file',$file);
 		$this->set('id',$id);
+		//debug($file);die;
 		//Copyright
 		if (isset($this->request->data['submit_data'])){
 			$this->Document->id=$id;
-			$this->Document->saveField('copyright_reporters',$this->Document->field('copyright_reporters')+1);
+			if($this->Document->field('copyright_violation') == 0 ){
+				$this->Document->set(array('copyright_violation'=>1));
+			}
+			$this->Document->set(array('copyright_reporters'=>($this->Document->field('copyright_reporters')+1)));
+			$this->Document->save();
+			$this->Session->setFlash('Copyright違反を報告成功した');
 		}
 		//Comment
 		if (isset($this->request->data['Document']['txtComment'])&&$this->request->data['Document']['txtComment']!='') {

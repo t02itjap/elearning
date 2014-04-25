@@ -66,7 +66,7 @@ class Lesson extends AppModel {
 	public function deleteLessonByTeacherId($teacherId){
     	$check = 1;
 		$recordList = $this->find('all',array(
-        	'conditions' => array('create_user_id' => $teacherId)
+        	'conditions' => array('Lesson.create_user_id' => $teacherId)
         ));
         if($recordList != NULL) foreach ($recordList as $record){
             if(!$this->delete($record['Lesson']['id'])){

@@ -1,6 +1,7 @@
 <?php //debug($users); die(); ?>
 
 <div id="acc_manage">
+	<?php echo $this->Session->flash();?>
     <?php
 				echo $this->Form->create ( 'Document' );
 				echo '<div style = "float: left; margin-left: 5px; margin-top:3px">';
@@ -26,14 +27,14 @@
 				<th><?php echo $this->Paginator->sort('Document.create_date', 'アップロード時間'); ?></th>
 				<th><?php echo $this->Paginator->sort('Document.create_user_id', 'アップロード者'); ?></th>
 				<th><?php echo $this->Paginator->sort('Document.copyright_violation', 'Copyright違反'); ?></th>
-				<th><?php echo $this->Paginator->sort('Document.lock_flag', 'ブロック情態'); ?></th>
-				
+				<th><?php echo 'ファイルリンク' ;?></th>
+				<th></th>
 			</tr>
 		</thead>
 		<tbody> 
         <?php
 					$sum = 0;
-					//debug($data);
+// 					debug($data);die();
 					foreach ( $data as $item ) {
 						
 		?>
@@ -71,7 +72,8 @@
 						}
 						?>
                         <td class='content-center'><?php echo $count; ?></td>
-				<td class='content-center'><?php echo $count1; ?></td>
+				<td class='content-center'><?php echo $item['Document']['file_link'] ?></td>
+				<td class='content-center'><?php echo $this->Html->link('削除',array('controller'=>'admins','action'=>'deleteDoc',$item['Document']['id']));?></td>
 				
 			</tr>
                     

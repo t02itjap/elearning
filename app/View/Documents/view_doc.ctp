@@ -1,6 +1,6 @@
    <link rel="stylesheet" type="text/css" href="<?php echo $this->webroot . 'css/phi.css' ?>">
    <div id="start_study">
-    <p id="doc_name">資料名</p>
+    <p id="doc_name">資料名 : <?php echo $doc['Document']['file_name']?></p>
     <!-- lap -->
     <div class="col-lg-9" height="500px" width="900px" style="position: relative">
       <div class="overlay"></div> 
@@ -34,6 +34,7 @@
        <param name="enableContextMenu" value="0">
    </div>
    <?php
+   echo $this->Session->flash();
    echo $this->Form->create(null,array('url'=>array('controller'=>'documents','action'=>'viewDoc',$id)));
   //secho $this->Form->input('',array('type' => 'hidden','value'=>$id));
    echo $this->Form->button ( 'Copyright違反 ', array ('type' => 'submit', 'name' => 'data[submit_data]','id' => 'submit_button' ) );

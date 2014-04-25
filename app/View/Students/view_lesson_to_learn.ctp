@@ -1,6 +1,8 @@
 <script>
     $(document).ready(function(){
         $('#learn').on('click',function(){
+            var ok = confirm('勉強したい？');
+            if(ok){
             var lesson_id = $(this).attr('lesson_id');
             var user_id = $(this).attr('user_id');
             $.ajax({
@@ -16,6 +18,7 @@
                     $('#learn').hide().remove();
                 }
             });
+            }
         });
         $('#like').on('click',function(){
             var lesson_id = $(this).attr('lesson_id');
@@ -70,8 +73,10 @@ foreach ($category as $categories) {
         <span class="doc">
         <?php
     	foreach ($lesson['Document'] as $documents) {
+			if($documents['lock_flag']!= true){
         	echo $this->Html->link($documents['file_name'], array('controller' => 'Documents', 'action' => 'viewDoc',$documents['id']));
         	echo "<br/>";
+        	}
     	}
     ?></a></span><br /><br /><br />
         <span class="ml">テスト：</span>

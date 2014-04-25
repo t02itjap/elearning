@@ -23,9 +23,32 @@
 	                        <?php }?>
 	                    </tbody>
 	</table>
+	
+	<h3>合計報酬　：<?php echo $total?></h3>
                 <?php echo $this->element('paging');?>
                 </br>
                 <?php echo $this->Session->flash();?>
+                <h3>ライク者リスト</h3>
+                <table>
+		<thead>
+			<tr>
+			<td>順番</td>
+				<td>ID</td>
+				<td>名前</td>
+			</tr>
+		</thead>
+		<tbody>
+                    <?php $i=1;foreach ($lesson['Lesson']['like'] as $l) {?>
+                    
+                    <tr>
+                    <td><?php echo $i;?></td>
+				<td><?php echo $l['User']['user_name']?></td>
+				<td><?php echo $l['User']['real_name']?></td>
+			</tr>
+                    <?php $i++;}?>
+                    </tbody>
+	</table>
+	
             <h3>ブロック学生リスト</h3>
 	<table>
 		<thead>

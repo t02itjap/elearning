@@ -55,6 +55,17 @@ class AdminsController extends AppController {
         }
     }
 
+    function deleteDoc($i){
+    	$this->autoRender = false;
+    	$doc = $this->Document->find('first',array('conditions'=>array('Document.id'=>$i)));
+//     	debug($doc);die();
+    	$this->Document->delete($i);
+    	$source = WWW_ROOT . $doc['Document'] ['file_link'];
+    	unlink ( $source );
+    	$this->Session->setFlash("ファイルが削除した");
+    	$this->redirect('getDocument');
+    }
+    
     function register_new_manager() {
         $this->set('title_for_layout', '登録');
         $forPass = 'sha1';
@@ -474,45 +485,49 @@ class AdminsController extends AppController {
 	}
 	
 	// Huong Viet`
-	function managerDocument($document_id) {
-		$this->set ( 'title_for_layout', 'アップロードファイルを管理する' );
-		$documentId = $document_id;
-		$document = $this->Document->find ( 'first', array (
-				'conditions' => array (
-						'Document.id' => $documentId 
-				) 
-		) );
-		$this->set ( compact ( 'document' ) );
-		
-		if (isset ( $this->request->data ['delete_file'] )) {
-			// debug($this->request->data['hide']);
-			$count = $this->request->data ['delete_file'];
-			$this->Document->id = $count;
-			$this->Document->delete ();
-			$this->redirect ( array (
-					'controller' => 'admins',
-					'action' => 'getDocument' 
-			) );
-		}
-		if (isset ( $this->request->data ['block_file'] )) {
-			// debug($this->request->data);die();
-			$count = $this->request->data ['block_file'];
-			$this->Document->id = $count;
-			// debug($this->Document->id);die();
-			if ($this->Document->lock_flag == 0) {
-				$this->Document->set ( array (
-						'lock_flag' => 1 
-				) );
-				$this->Document->save ();
-			}
-			
-			$this->Session->setFlash ( 'このアップロードファイルをブロックした。' );
-			$this->redirect ( array (
-					'controller' => 'admins',
-					'action' => 'getDocument' 
-			) );
-		}
-	}
+function managerDocument($document_id) {
+        $this->set('title_for_layout', 'アップロードファイルを管理する');
+        $documentId=$document_id;
+        $document=$this->Document->find('first',array(
+            'conditions' => array('Document.id' => $documentId),
+            ));
+        //debug($document);
+        $this->set(compact('document'));
+        $this->set("block", $document['Document']['lock_flag']);
+
+        if(isset($this->request->data['delete_file'])){
+                //debug($this->request->data['hide']);
+            $count = $this->request->data['delete_file'];
+            $this->Document->id = $count;
+            $this->Document->delete();
+            $this->redirect(array('controller' => 'admins', 'action' => 'getDocument'));
+        }
+        if(isset($this->request->data['block_file'])){
+        	
+            $count = $this->request->data['block_file'];
+            $this->User->Notification->msg($this->Document->field('create_user_id',array('id'=>$count)), "あなたの".$this->Document->field('file_name',array('id'=>$count))."ファイルがブロックした");
+            $this->Document->id = $count;
+            $this->Document->set(array(
+                'lock_flag' => 1
+            ));
+            $this->Document->save();
+            $this->Session->setFlash('このアップロードファイルをブロックした。');
+            $this->redirect(array('controller' => 'admins', 'action' => 'getDocument'));
+        }
+        if(isset($this->request->data['unblock_file'])){
+        	
+            $count = $this->request->data['unblock_file'];
+            $this->User->Notification->msg($this->Document->field('create_user_id',array('id'=>$count)), "あなたの".$this->Document->field('file_name',array('id'=>$count))."ファイルがアンブロックした");
+            $this->Document->id = $count;
+            $this->Document->set(array(
+                'lock_flag' => 0
+            ));
+            $this->Document->save();
+            $this->Session->setFlash('このアップロードファイルをアンブロックした。');
+            $this->redirect(array('controller' => 'admins', 'action' => 'getDocument'));
+        }
+
+    }
 	public function getAccount() {
 		$this->set ( 'title_for_layout', 'アカウントを管理' );
 		if (isset ( $this->request->data ['submit_data'] )) {
