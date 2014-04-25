@@ -8,7 +8,6 @@ echo $this->Html->script ( array (
 ?>
 <?php echo $this->Session->flash('backup');?>
 <div id='data_manage'>
-	<h3>バックアップ管理</h3>
 	<table>
 		<tr>
 			<th>ファイル名</th>

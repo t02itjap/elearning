@@ -67,13 +67,6 @@
         ?>   
         </tbody>    
     </table>
-<div class="paging btn-group">
-    <?php
-    echo $this->Paginator->prev(__('前'), array('class' => 'btn'), null, array('class' => 'prev disabled btn'));
-    echo $this->Paginator->numbers(array('separator' => '', 'class' => 'btn', 'currentClass' => 'disabled'));
-    echo $this->Paginator->next(__('後'), array('class' => 'btn'), null, array('class' => 'next disabled btn'));
-    ?>
-</div>
 <?php else: {
     echo '結果がない';
 } ?>
@@ -81,11 +74,6 @@
 </div>
 
  <?php if(isset($users)): ?>
-<div class="paging btn-group">
-    <?php
-    echo $this->Paginator->prev(__('Trước'), array('class' => 'btn'), null, array('class' => 'prev disabled btn'));
-    echo $this->Paginator->numbers(array('separator' => '', 'class' => 'btn', 'currentClass' => 'disabled'));
-    echo $this->Paginator->next(__('Sau'), array('class' => 'btn'), null, array('class' => 'next disabled btn'));
-    ?>
-</div>
+
 <?php endif; ?>
+<?php echo $this->element('paging');?>

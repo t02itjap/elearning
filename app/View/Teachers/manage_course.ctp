@@ -150,7 +150,6 @@
 </script>
 
     <div id="change_class">
-        <h3>授業管理</h3>
         <?php
         echo $this->Form->create('Lesson', array('type' => 'file'));
         ?>
@@ -294,9 +293,9 @@
         </table>
     </div><!--End #change_class-->
     <div id="submit">
-        <input type="submit" name="data[delete]" value="授業削除" style="color: white;background: black;"/>
-        <input type="submit" name="data[ok]" value="作成"/>
-        <input type="submit" name="cancel" value="キャセル"/>
+        <input type="submit" name="data[delete]" value="授業削除" class = "link-button"/>
+        <input type="submit" name="data[ok]" value="作成" class = "link-button"/>
+        <input type="submit" name="cancel" value="キャセル" class = "link-button"/>
     </div><!--End #submit-->
     <br /><br />
     <div id="comment">

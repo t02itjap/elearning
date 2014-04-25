@@ -257,6 +257,7 @@ class TeachersController extends AppController {
 
     public function create_course() {
         //新しいレッスンを作成する 
+        $this->set('title_for_layout', '新しい授業を作ること');
         $categories = $this->Category->find('all');
         $this->set('categories', $categories);
         $user_id = $this->Auth->user('id');
@@ -393,6 +394,7 @@ class TeachersController extends AppController {
         if (!$lesson) {
             throw new NotFoundException('このページが存在じゃありません。');
         }
+        $this->set('title_for_layout', '授業管理');
         //新しいレッスンを作成する 
         $categories = $this->Category->find('all');
         $this->set('categories', $categories);
@@ -579,6 +581,7 @@ class TeachersController extends AppController {
     }
 
     public function getStudentTestHistoriesList() {
+    	$this->set('title_for_layout', '学生の試験結果');
         $this->paginate = array(
             'limit' => 10,
             'conditions' => array(
@@ -591,6 +594,7 @@ class TeachersController extends AppController {
     }
 
     public function getStudentTestHistories($testID) {
+    	$this->set('title_for_layout', '試験結果');
         $this->paginate = array(
             'limit' => 10,
             'conditions' => array(
@@ -602,6 +606,7 @@ class TeachersController extends AppController {
     }
 
     public function getSalary() {
+    	$this->set('title_for_layout', '報酬情報');
         $temp = $this->ChangeableValue->find('first', array('conditions' => array('id' => 2)));
         $rate = $temp['ChangeableValue']['current_value'];
         //$time = date('Y-m');
