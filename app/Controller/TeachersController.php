@@ -3,7 +3,7 @@ class TeachersController extends AppController {
     public $name = "Teachers";
     var $uses = array('User', 'Test', 'Lesson', 'Bill', 'Category', 'Document', 'TestHistory', 'ChangeableValue', 'Bill', 'BannedStudent', 'Verifycode', 'LessonOfCategory');
     var $helpers = array('Html', 'Form', 'Editor');
-    public $components = array('Paginator', 'RequestHandler');
+    public $components = array('Paginator', 'RequestHandler','TestUtil');
 
     public function beforeFilter() {
         parent::beforeFilter();
@@ -281,10 +281,17 @@ class TeachersController extends AppController {
                 	$this->Test->create();
                 	//新しいドキュメントのテーブルのデータベースを作成する 
                 	if ($this->Test->checkValid($upData['name'], $user_id) == false) {
+                        debug('Fuck y here'); die;
                     	$bug = 1;
                 		$err1 = '<br><span>このファイルが存在でした、あるいはこのファイルの形態が間違いです。<span></br>';
                     	$this->set(compact('err1'));	
-                	}
+                	} else {
+                        if ($this->TestUtil->loadTestFile(file_get_contents($upData['tmp_name']))==false){
+                            $bug = 1;
+                            $err1 = '<br><span>TSVのフォーマットが違う<span></br>';
+                            $this->set(compact('err1'));
+                        }        
+                    }
                 }
             }
             $this->Lesson->set(array(

@@ -6,8 +6,8 @@
 class Test extends AppModel{
     var $name="Test";
     
-    public function checkValid($fileName) {
-        $uploaddir = WWW_ROOT . 'files/';
+    public function checkValid($fileName, $folder) {
+        $uploaddir = WWW_ROOT . 'files/'.$folder.'/';
         $check = FALSE;
         //check file
         $allowedExts = array("tsv");

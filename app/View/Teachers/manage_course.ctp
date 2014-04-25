@@ -231,7 +231,8 @@
                 // echo '<a href="#" style="text-decoration: underline;overflow-x:scroll; height:24px; width=50px " >';
                 // echo $data['Document']['file_name'];
                 // echo '</a>';
-                echo $this->Html->link($data['Document']['file_name'], array('controller'=>'documents','action'=>'viewDoc',$data['Document']['id']));
+                //debug($data);
+                echo $this->Html->link($data['Document']['file_name'], array('controller'=>'documents','action'=>'viewDoc',$data['Document']['id'], $data['Lesson']['id']));
                 echo '</td>';
                 echo '<td class="hiddenDocument" style="display:none">';
                 echo '<input type="file" old_name ="' . $data['Document']['file_name'] . '" id="' . $data['Document']['id'] . '"/>';

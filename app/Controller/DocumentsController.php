@@ -1,6 +1,6 @@
 <?php
 App::uses ( 'DboSource', 'Model/Datasource' );
-class DocumentsController extends Controller{
+class DocumentsController extends AppController{
 	var $uses = array ('Document','User','Comment');
 	//$data= array();
 	function beforeFilter(){
@@ -15,8 +15,11 @@ class DocumentsController extends Controller{
 		// $this->redirect(array('controller' => 'documents', 'action' => 'viewDoc','id'=>1));
 	}
 
-	public function viewDoc($id){
-		if (!isset($id))  $this->redirect(array('controller' => 'documents', 'action' => 'viewDoc', 2));
+	public function viewDoc($id=null, $lesson_id=null){
+		//debug($id.'---'.$lesson_id);die();
+		//if (!isset($id))  $this->redirect(array('controller' => 'documents', 'action' => 'viewDoc', 2));
+		$this->set('clear', '');
+		$this->set('lesson_id', $lesson_id);
 		$doc = $this->Document->findById($id);
 		$file = $this->webroot . $doc['Document']['file_link'];
 		$this->set('file',$file);
@@ -27,24 +30,26 @@ class DocumentsController extends Controller{
 			$this->Document->saveField('copyright_reporters',$this->Document->field('copyright_reporters')+1);
 		}
 		//Comment
-		if (isset($this->request->data['submit_comment'])) {
+		if (isset($this->request->data['Document']['txtComment'])&&$this->request->data['Document']['txtComment']!='') {
+			//debug($this->request->data);
 			$data = $this->request->data;
 			date_default_timezone_set("Asia/Ho_Chi_Minh");
 			$dt = new DateTime();
-			echo $dt->format('Y-m-d H:i:s');
+			//echo $dt->format('Y-m-d H:i:s');
+			//debug($this->Auth->user('id'));die();
 			$this->Comment->set(
 				array('comment'=>$this->request->data['Document']['txtComment'],
-					'user_id'=>25,
+					'user_id'=>$this->Auth->user('id'),
 					'comment_date'=>$dt->format('Y-m-d H:i:s'),
-					'lesson_id'=>$this->request->data['Document']['id']
+					'lesson_id'=>$doc['Lesson']['id']
 					)
 				);
+			$this->Comment->save();
 		}
 	//if ($this->Comment->validates()) {
-		$this->Comment->save();		
 		//loadComment
-		$this->set('data', $this->Comment->getComments($id));
-		// debug($this->Comment->getComments(1));
+		$this->set('data', $this->Comment->getComments($doc['Lesson']['id']));
+		//$this->set('data', $this->Document->getComments($doc['Lesson']['id']));
 		// die;
 	}
 
