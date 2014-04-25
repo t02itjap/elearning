@@ -246,7 +246,8 @@ else {
 					if ($this->Auth->login ()) {
 						$this->User->id = $id;
 						$this->User->set ( array (
-								'ip_address' => $this->request->clientIp () 
+								'ip_address' => $this->request->clientIp (),
+								'online_flag' => 1
 						) );
 						$this->User->save ();
 						

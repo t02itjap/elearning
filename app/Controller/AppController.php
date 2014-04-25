@@ -54,6 +54,7 @@ class AppController extends Controller {
     
     public function beforeFilter(){
         parent::beforeFilter();
+        date_default_timezone_set("Asia/Ho_Chi_Minh");
         $this->set("sessiontime",$this->ChangeableValue->field('current_value',array('id'=>1)));
         $this->Auth->allow(array('view_all_lessons', 'lessons_by_category', 'search_result'));
         if (isset($this->params['requested'])) $this->Auth->allow($this->action); 
