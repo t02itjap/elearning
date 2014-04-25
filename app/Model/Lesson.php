@@ -77,6 +77,10 @@ class Lesson extends AppModel {
         if($check == 1) return true;
         else return false;
 	}
+	public function deleteLessonByLessonId($lessonId){
+    	if($this->delete($lessonId)) return true;
+    	else return false;
+	}
 }
 
 ?>

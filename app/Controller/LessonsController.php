@@ -28,7 +28,7 @@ class LessonsController extends AppController {
 				$this->paginate = array(
 				'limit'=>3,
 				'fields'=> array('Lesson.id', 'Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'User.user_name'),
-				'conditions'=>array( 'Lesson.delete_flag'=>0, 'Lesson.lock_flag'=>0)
+				'conditions'=>array('Lesson.create_user_id !=' => $this->Auth->User('id'), 'Lesson.delete_flag'=>0, 'Lesson.lock_flag'=>0)
 				);	
 				break;
 

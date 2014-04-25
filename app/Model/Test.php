@@ -52,5 +52,21 @@ class Test extends AppModel{
         if($check == 1) return true;
         else return false;
     }
+    public function deleteTestByLessonId($LessonId){
+    	$check = 1;
+		$recordList = $this->find('all',array(
+        	'conditions' => array('lesson_id' => $lessonId)
+        ));
+        if($recordList != NULL) foreach ($recordList as $record){
+        	$file = WWW_ROOT . 'files/'.$record['Test']['create_user_id'].'/'.$record['Test']['file_name'];
+        	unlink($file);
+            if(!$this->delete($record['Test']['id'])){
+            	$check = 0;
+            	break;
+            }
+        }
+        if($check == 1) return true;
+        else return false;
+    }
 }
 ?>

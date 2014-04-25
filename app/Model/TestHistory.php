@@ -28,5 +28,19 @@ class TestHistory extends AppModel{
         if($check == 1) return true;
         else return false;
     }
+    public function deleteTestHistoryByTestId($testId){
+    	$check = 1;
+		$recordList = $this->find('all',array(
+        	'conditions' => array('test_id' => $testId)
+        ));
+        if($recordList != NULL) foreach ($recordList as $record){
+            if(!$this->delete($record['TestHistory']['id'])){
+            	$check = 0;
+            	break;
+            }
+        }
+        if($check == 1) return true;
+        else return false;
+    }
 }
 ?>

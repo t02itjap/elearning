@@ -81,6 +81,27 @@ class Document extends AppModel {
             	break;
             }
         }
+        if($check == 1){
+			$uploaddir = WWW_ROOT . 'files/'.$userId.'/';
+			if (!is_dir($uploaddir)) rmdir($uploaddir);
+
+        	return true;
+        }
+        else return false;
+    }
+    public function deleteDocumentByLessonId($LessonId){
+    	$check = 1;
+		$recordList = $this->find('all',array(
+        	'conditions' => array('lesson_id' => $lessonId)
+        ));
+        if($recordList != NULL) foreach ($recordList as $record){
+        	$file = WWW_ROOT . 'files/'.$record['Document']['create_user_id'].'/'.$record['Document']['file_name'];
+        	unlink($file);
+            if(!$this->delete($record['Document']['id'])){
+            	$check = 0;
+            	break;
+            }
+        }
         if($check == 1) return true;
         else return false;
     }
