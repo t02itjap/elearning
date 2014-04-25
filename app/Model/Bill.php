@@ -66,6 +66,20 @@ class Bill extends AppModel{
         if($check == 1) return true;
         else return false;
 	}
+	public function deleteBillByLessonid($LessonId){
+		$check = 1;
+		$recordList = $this->find('all',array(
+        	'conditions' => array('lesson_id' => $lessonId)
+        ));
+        if($recordList != NULL) foreach ($recordList as $record){
+            if(!$this->delete($record['Bill']['id'])){
+            	$check = 0;
+            	break;
+            }
+        }
+        if($check == 1) return true;
+        else return false;
+	}
 }	
 
 ?>

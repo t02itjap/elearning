@@ -27,7 +27,7 @@
            // condo
             e.preventDefault();
             $(this).hide();
-            var buttonAdd= $(this);
+            var buttonAdd = $(this);
             var documentId = $(this).attr('document_id');
             var hiddenDocument = $(this).parents().prev('td');
             hiddenDocument.show();

@@ -443,6 +443,10 @@ class TeachersController extends AppController {
             //新しいレッスンのテーブルのデータベースを作成する 
             $this->Lesson->save();
             $lesson_id = $this->Lesson->id;
+            $categoryListOfLesson = $this->LessonOfCategory->find('all', array(
+            	'conditions' => array('lesson_id' => $lesson_id),
+            )); 
+            foreach($categoryListOfLesson as $categoryOfLesson ) $this->LessonOfCategory->delete($categoryOfLesson['LessonOfCategory']['id']);
             foreach ($data['Lesson']['category'] as $value) {
                 if ($value != '0') {
                     $this->LessonOfCategory->create();
