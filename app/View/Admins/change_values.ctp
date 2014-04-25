@@ -1,4 +1,3 @@
-<h2>可変値を変更します。</h2>
 
 <?php
 echo $this->Html->script(array('jquery.validate', 'additional-methods', 'jquery.validate.min', 'additional-methods.min'));

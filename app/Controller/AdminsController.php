@@ -683,6 +683,7 @@ class AdminsController extends AppController {
 	// Athor: Manh Phi.
 	// Moneys Export Function
 	public function managerMoney() {
+		$this->set('title_for_layout', '課金情報');
 		$isDownload = false;
 		$percent = $this->ChangeableValue->field('current_value',array('id'=>2));
 		if (isset ( $this->request->data ['result'] )) {
@@ -758,7 +759,9 @@ class AdminsController extends AppController {
 		}
 		$this->set('isDownload',$isDownload);
 	}
+	
 	public function getDocument() {
+		$this->set('title_for_layout', 'アップロードファイルを管理します');
 		if (! empty ( $this->data ) && $this->data ['Document'] ['file_name'] != null) {
 			// neu co thi truy van du lieu dua vao bien $users
 			$count = $this->Document->find ( 'count', array (
@@ -921,6 +924,7 @@ class AdminsController extends AppController {
 		}
 	}
 	public function getReceipts() {
+		$this->set('title_for_layout', '報酬情報');
 		// //授業のデータを取る
 		// $this->paginate = array(
 		// 'limit' => 10
@@ -1000,6 +1004,7 @@ class AdminsController extends AppController {
 	}
 	public function changeValues() {
 		// 可変値を取る
+		$this->set('title_for_layout', '可変値を変更します');
 		$data = $this->ChangeableValue->find ( 'all' );
 		$this->set ( 'data', $data );
 		// debug($data);

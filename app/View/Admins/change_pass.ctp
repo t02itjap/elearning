@@ -49,16 +49,11 @@
 			</tr>
 		</table>
 	</div><!--End #change_info-->
-<<<<<<< HEAD
-		<?php echo $this->Form->end('変更');?>
-
-=======
 		<?php echo $this->Form->end(array(
 				'label' => '変更',
 				'class' => 'link-button',
 				'style' => 'float:right;'
 		));?>
->>>>>>> 6a68e80a79c70381ca3ced0f3c64960bb8bf12ec
 <script>
 $(document).ready(function(){
   var validator = $("#UserChangePassForm").validate(
