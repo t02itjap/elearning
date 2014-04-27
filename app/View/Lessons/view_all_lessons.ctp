@@ -71,5 +71,5 @@ foreach ($lessons as $lesson):
 	</ul>
 </div>
 <?php endforeach; ?>
-<?php $this->element('paging');?>
+<?php echo $this->element('paging');?>
 	

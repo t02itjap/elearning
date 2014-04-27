@@ -17,17 +17,41 @@ class DocumentsController extends AppController{
 
 	public function viewDoc($id=null, $lesson_id=null){
 		//debug($id.'---'.$lesson_id);die();
+		if($this->Auth->user('level')==2){
+			$this->layout= "teacher";
+		}
 		//if (!isset($id))  $this->redirect(array('controller' => 'documents', 'action' => 'viewDoc', 2));
+		$reporters = $this->Document->field('copyright_reporters',array('id'=>$id));
+		if(strpos($reporters,',')){
+			$reporter = explode(',', $reporters);
+		}else $reporter = array($reporters);
+// 		debug($reporter);
+		$isCopyright = true;
+		if(in_array($this->Auth->user('id'),$reporter)){
+			$isCopyright = false;
+		}
+		$this->set('isCopyright',$isCopyright);
 		$this->set('clear', '');
 		$this->set('lesson_id', $lesson_id);
 		$doc = $this->Document->findById($id);
-		$file = $this->webroot . $doc['Document']['file_link'];
+// 		$teacher = $this->User->findById($doc['Document']['create_user_id']);
+		$this->set('doc',$doc);
+// 		debug($doc);die();
+		//debug($doc);die;
+		$file = $this->webroot.$doc['Document']['file_link'];
+		//$file = str_replace('\', $replace, $subject)
 		$this->set('file',$file);
 		$this->set('id',$id);
+		//debug($file);die;
 		//Copyright
 		if (isset($this->request->data['submit_data'])){
 			$this->Document->id=$id;
-			$this->Document->saveField('copyright_reporters',$this->Document->field('copyright_reporters')+1);
+			if($this->Document->field('copyright_violation') == 0 ){
+				$this->Document->set(array('copyright_violation'=>1));
+			}
+			$this->Document->set(array('copyright_reporters'=>($this->Document->field('copyright_reporters').','.$this->Auth->user('id'))));
+			$this->Document->save();
+			$this->Session->setFlash('Copyright違反を報告成功した');
 		}
 		//Comment
 		if (isset($this->request->data['Document']['txtComment'])&&$this->request->data['Document']['txtComment']!='') {
@@ -37,6 +61,7 @@ class DocumentsController extends AppController{
 			$dt = new DateTime();
 			//echo $dt->format('Y-m-d H:i:s');
 			//debug($this->Auth->user('id'));die();
+			$this->Comment->create();
 			$this->Comment->set(
 				array('comment'=>$this->request->data['Document']['txtComment'],
 					'user_id'=>$this->Auth->user('id'),

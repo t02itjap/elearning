@@ -13,6 +13,7 @@
 				echo $this->Form->end ( '検索' );
 				?>
     <?php if(isset($data)&&$data!=null): ?>
+    <?php echo $this->Session->flash();?>
     <!--
     <span><input type="text"/></span>
     <span><button>検索</button></span>-->
@@ -25,7 +26,7 @@
 				<th><?php echo $this->Paginator->sort('Lesson.create_date', '作った時間'); ?></th>
 				<!--<th><?php echo $this->Paginator->sort('Lesson.category_id', 'カテゴリー'); ?></th> -->
 				<th>タイトル違反</th>
-				<th>ブロック</th>
+				<th></th>
 			</tr>
 		</thead>
 		<tbody> 
@@ -36,7 +37,7 @@
 						?>
                     <tr>
 				<td class='content-center'><?php echo $item['Lesson']['id']; ?></td>
-				<td class='content-center'><?php echo "<a href='#'>".$item['Lesson']['lesson_name']."</a>"; ?></td>
+				<td class='content-center'><?php echo $this->Html->link($item['Lesson']['lesson_name'],array('controller'=>'teachers','action'=>'manage_course',$item['Lesson']['id']));?></td>
 				<td class='content-center'><?php echo $item['User']['user_name']; ?></td>
 				<td class='content-center'><?php echo $item['Lesson']['create_date']; ?></td>
 				<!--<td class='content-center'><?php echo $item['Lesson']['category_id']; ?></td>-->
@@ -57,7 +58,7 @@
 						
 						?>
                         <td class='content-center'><?php echo $count;?></td>
-				<td class='content-center'><?php echo $count1;?></td>
+                        <td><?php echo $this->Html->link('勧告',array('controller'=>'admins','action'=>'titleNotify',$item['User']['id'],$item['Lesson']['id']));?></td>
 			</tr>
                 <?php
 					}

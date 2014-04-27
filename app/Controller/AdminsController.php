@@ -25,7 +25,7 @@ class AdminsController extends AppController {
 			'LearnHistory',
 			'LessonOfCategory',
 			'TestHistory',
-			'LockedUser'
+			'LockedUser' 
 	);
 	var $helpers = array (
 			'Html',
@@ -51,426 +51,522 @@ class AdminsController extends AppController {
 					"action" => "logout" 
 			) );
 			return false;
-//<<<<<<< HEAD
-        }
-    }
-
-    function register_new_manager() {
-        $this->set('title_for_layout', '登録');
-        $forPass = 'sha1';
-        if (isset($this->request->data ['submit_data'])) {
-            $data = $this->request->data;
-            $birthDate = $data['User']['birth_year'] . '-' . $data['User']['birth_month'] . '-' . $data['User']['birth_date'];
-            $password = sha1($data['User']['user_name'] . $data['User']['password'] . $forPass);
-            $this->User->set(array(
-                'user_name' => $data['User']['user_name'],
-                'real_name' => $data['User']['real_name'],
-                'password' => $password,
-                'email' => $data['User']['email'],
-                'birth_date' => $birthDate,
-                'level' => 1,
-            	'approve_flag' => 1,
-                'bank_account_code' => 'khong xac dinh',
-                'address' => $data['User']['address'],
-                'phone_number' => $data['User']['phone_number'],
-                ));
-            $this->IpAddress->set(array('ip_address' => $data['User']['ip_address']));
-            if ($this->User->validates() && $this->IpAddress->validates()) {
-                $this->User->save();
-                $user = $this->User->find('first', array(
-                    'fields' => array('id'),
-                    'conditions' => array('User.user_name' => $data['User']['user_name'])
-                    ));
-                $this->IpAddress->set(array('admin_id' => $user['User']['id']));
-                $this->IpAddress->save();
-                $this->Session->setFlash('新しい管理者を作ることが成功です。');
-                $this->redirect(array('controller' => 'Admins', 'action' => 'manager_home'));
-            }
-            if (!$this->IpAddress->validates()) {
-                $ipAddressErr = $this->IpAddress->validationErrors['ip_address']['0'];
-                $this->set(compact('ipAddressErr'));
-            }
-        }
-    }
-
-    function student_manager($student_id) {
-        $this->set('title_for_layout', '学生アカウントを管理する');
-        $forPass = 'sha1';
-        $studentId = $student_id;
-        $student = $this->User->find('first', array(
-            'conditions' => array('User.id' => $studentId),
-            ));
-        $this->set(compact('student'));
-        if (isset($this->request->data['submit_data'])) {
-            $data = $this->request->data;
-            $bankCode = $data ['User'] ['cardPart1'].'-'.$data ['User'] ['cardPart2'].'-'.$data ['User'] ['cardPart3'].'-'.$data ['User'] ['cardPart4'].'-'.$data ['User'] ['cardPart5'];
-            if ($student['User']['email'] == $data['User']['email'] && $student['User']['phone_number'] == $data['User']['phone_number'] && $student['User']['address'] == $data['User']['address'] && $student['User']['bank_account_code'] == $bankCode) {
-                $this->Session->setFlash('情報を変更しなかった。');
-                $this->redirect(array('controller' => 'Admins', 'action' => 'student_manager',  $student['User']['id']));
-            } else {
-                $this->User->set(array(
-                    'bank_account_code' => $bankCode,
-                    'address' => $data['User']['address'],
-                    'phone_number' => $data['User']['phone_number'],
-                    ));
-                if ($student['User']['email'] != $data['User']['email']) {
-                    $this->User->set(array(
-                        'email' => $student['User']['email'],
-                        ));
-                }
-                if ($this->User->validates()) {
-                    $this->User->id = $student['User']['id'];
-                    if ($this->User->save()) {
-                        $this->Session->setFlash('情報を変更することが成功です。');
-                        $this->redirect(array('controller' => 'Admins', 'action' => 'student_manager',  $student['User']['id']));
-                    }
-                }
-            }
-        }
-        //block acc
-//        if (isset($this->request->data['delete_student'])) {
-//            $this->User->set(array(
-//                'status_flag' => 0,
-//                ));
-//            $this->User->id = $student['User']['id'];
-//            if ($this->User->save()) {
-//                $this->Session->setFlash('このアカウントが今ロックです');
-//                $this->redirect(array('controller' => 'Admins', 'action' => 'student_manager', $student['User']['id']));
-//            }
-//        }
-//restore acc
-//        if (isset($this->request->data['restore_student'])) {
-//            $this->User->set(array(
-//                'status_flag' => 1,
-//                ));
-//            $this->User->id = $teacher['User']['id'];
-//            if ($this->User->save()) {
-//                $this->Session->setFlash('このアカウントが今回生です');
-//                $this->redirect(array('controller' => 'Admins', 'action' => 'student_manager', $student['User']['id']));
-//            }
-//        }
-        if (isset($this->request->data['delete_student'])) {
-        	if ($this->User->deleteUser($student['User']['id']) &&
-            	$this->TestHistory->deleteTestHistoryByUserId($student['User']['id']) &&
-            	$this->InitialUser->deleteInitialUserByUserId($student['User']['id']) &&
-            	$this->Comment->deleteCommentByUserId($student['User']['id']) &&
-            	$this->Bill->deleteBillByUserid($student['User']['id']) &&
-            	$this->BannedStudent->deleteRecordBystudentId($student['User']['id'])){
-                	$this->Session->setFlash('このアカウントが今削除です');
-                	$this->redirect(array('controller' => 'Admins', 'action' => 'getAccount'));
-            }
-        }
-        if (isset($this->request->data['reset_password'])) {
-            $initialStudent = $this->InitialUser->find('first', array(
-                'conditions' => array(
-                    'user_id' => $student['User']['id'],
-                    ),
-                ));
-            $this->User->set(array(
-                'password' => $initialStudent['InitialUser']['initial_password'],
-                ));
-            $this->User->id = $student['User']['id'];
-            if ($this->User->save()) {
-                $this->Session->setFlash('このアカウントのパスワードをリセットすることが成功です。');
-                $this->redirect(array('controller' => 'Admins', 'action' => 'student_manager', $student['User']['id']));
-            }
-        }
-    }
-
-    function teacherManager($teacher_id) {
-        $this->set('title_for_layout', '先生アカウントを管理する');
-        $forPass = 'sha1';
-        $teacherId = $teacher_id;
-        $teacher = $this->User->find('first', array(
-            'conditions' => array('User.id' => $teacherId),
-            ));
-        $this->set(compact('teacher'));
-        if (isset($this->request->data['submit_data'])) {
-            $data = $this->request->data;
-            $bankCode = $data ['User'] ['bankCodePart1'].'-'.$data ['User'] ['bankCodePart2'].'-'.$data ['User'] ['bankCodePart3'].'-'.$data ['User'] ['bankCodePart4'];
-            if ($teacher['User']['email'] == $data['User']['email'] && $teacher['User']['phone_number'] == $data['User']['phone_number'] && $teacher['User']['address'] == $data['User']['address'] && $teacher['User']['bank_account_code'] == $bankCode) {
-                $this->Session->setFlash('情報を変更しなかった。');
-                $this->redirect(array('controller' => 'Admins', 'action' => 'teacherManager', $teacher['User']['id']));
-            } else {
-                $this->User->set(array(
-                    'bank_account_code' => $bankCode,
-                    'address' => $data['User']['address'],
-                    'phone_number' => $data['User']['phone_number'],
-                    ));
-                if ($teacher['User']['email'] != $data['User']['email']) {
-                    $this->User->set(array(
-                        'email' => $teacher['User']['email'],
-                        ));
-                }
-                if ($this->User->validates()) {
-                    $this->User->id = $teacher['User']['id'];
-                    if ($this->User->save()) {
-                        $this->Session->setFlash('情報を変更することが成功です。');
-                        $this->redirect(array('controller' => 'Admins', 'action' => 'teacherManager',  $teacher['User']['id']));
-                    }
-                }
-            }
-        }
-        //block acc
-//        if (isset($this->request->data['delete_teacher'])) {
-//            $this->User->set(array(
-//                'status_flag' => 0,
-//                ));
-//            $this->User->id = $teacher['User']['id'];
-//            if ($this->User->save()) {
-//                $this->Session->setFlash('このアカウントが今ロックです');
-//                $this->redirect(array('controller' => 'Admins', 'action' => 'teacherManager', $teacher['User']['id']));
-//            }
-//        }
-        //restore acc
-//        if (isset($this->request->data['restore_teacher'])) {
-//            $this->User->set(array(
-//                'status_flag' => 1,
-//                ));
-//            $this->User->id = $teacher['User']['id'];
-//            if ($this->User->save()) {
-//                $this->Session->setFlash('このアカウントが今回生です');
-//                $this->redirect(array('controller' => 'Admins', 'action' => 'teacherManager', $teacher['User']['id']));
-//            }
-//        }
-        if (isset($this->request->data['delete_teacher'])) {
-            if ($this->User->deleteUser($teacher['User']['id']) &&
-            	$this->Verifycode->deleteVerifycodeByUserId($teacher['User']['id']) &&
-            	$this->Test->deleteTestByUserId($teacher['User']['id']) &&
-            	$this->Lesson->deleteLessonByTeacherId($teacher['User']['id']) &&
-            	$this->InitialVerifycode->deleteInitialVerifycodeByUserId($teacher['User']['id']) &&
-            	$this->InitialUser->deleteInitialUserByUserId($teacher['User']['id']) &&
-            	$this->Document->deleteDocumentByUserId($teacher['User']['id']) &&
-            	$this->Comment->deleteCommentByUserId($teacher['User']['id']) &&
-            	$this->BannedStudent->deleteRecordByTeacherId($teacher['User']['id'])){
-                	$this->Session->setFlash('このアカウントが今削除です');
-                	$this->redirect(array('controller' => 'Admins', 'action' => 'getAccount'));
-            }
-        }
-        if (isset($this->request->data['reset_password'])) {
-            $initialTeacher = $this->InitialUser->find('first', array(
-                'conditions' => array(
-                    'user_id' => $teacher['User']['id'],
-                    ),
-                ));
-            $this->User->set(array(
-                'password' => $initialTeacher['InitialUser']['initial_password'],
-                ));
-            $this->User->id = $teacher['User']['id'];
-            if ($this->User->save()) {
-                $this->Session->setFlash('このアカウントのパスワードをリセットすることが成功です。');
-                $this->redirect(array('controller' => 'Admins', 'action' => 'teacherManager', $teacher['User']['id']));
-            }
-        }
-        if (isset($this->request->data['reset_verifycode'])) {
-            $initialVerifycode = $this->InitialVerifycode->find('first', array(
-                'conditions' => array(
-                    'user_id' => $teacher['User']['id'],
-                    ),
-                ));
-            $verifycode = $this->Verifycode->find('first', array(
-                'conditions' => array(
-                    'user_id' => $teacher['User']['id'],
-                    ),
-                ));
-            $this->Verifycode->set(array(
-                'question' => $initialVerifycode['InitialVerifycode']['initial_question'],
-                'verifycode' => $initialVerifycode['InitialVerifycode']['initial_verifycode'],
-                ));
-            $this->Verifycode->id = $verifycode['Verifycode']['id'];
-            if ($this->Verifycode->save()) {
-                $this->Session->setFlash('このアカウントのVerifyコードをリセットすることが成功です。');
-                $this->redirect(array('controller' => 'Admins', 'action' => 'teacherManager',  $teacher['User']['id']));
-            }
-        }
-    }
-
-    public function change_info() {
-        $this->set('title_for_layout', '個人情報を変更する');
-        $forPass = 'sha1';
-        $admin = $this->User->find('first', array(
-            'conditions' => array('User.id' => $this->Auth->user('id')),
-            ));
-        $ipList = $this->IpAddress->find('all', array(
-            'conditions' => array('admin_id' => $admin['User']['id']),
-            ));
-        $this->set(compact('admin', 'ipList'));
-        if (isset($this->request->data['submit_data'])) {
-            $data = $this->request->data;
-            for ($i = 0; $i < count($ipList); $i++) {
-                $ipAddress = 'ip_address' . $i;
-                if (isset($data['User'][$ipAddress])  && $data['User'][$ipAddress] != NULL ) {
-                    $data[$ipAddress] = $data['User'][$ipAddress];
-                    unset($data['User'][$ipAddress]);
-                }
-            }
-            $this->User->set(array(
-                'address' => $data['User']['address'],
-                'phone_number' => $data['User']['phone_number'],
-                ));
-            if ($admin['User']['email'] != $data['User']['email']) {
-                $this->User->set(array(
-                    'email' => $data['User']['email'],
-                    ));
-            }
-            if ($this->User->validates()) {
-                $check = 1;
-                for ($i = 0; $i < $data['hide']; $i++) {
-                	$invalidFlag = 0;
-                    $ipAddress = 'ip_address' . $i;
-                    if (isset($data[$ipAddress])) {
-                    	for($j = $i+1; $j < $data['hide']; $j++){
-                    		$ipAddress1 = 'ip_address'.$j;
-                    		if(isset($data[$ipAddress1]) && $data[$ipAddress] == $data[$ipAddress1]){
-                    			unset($data[$ipAddress]);
-                    			$invalidFlag = 1;
-                    			break;
-                    		}
-                    	}
-                    	if($invalidFlag == 1) continue;
-                        $this->IpAddress->set(array('ip_address' => $data[$ipAddress]));
-                        if ($this->IpAddress->validates())
-                            $check = 1;
-                        else {
-                            $check = 0;
-                            break;
-                        }
-                    }
-                }
-                if ($check == 1) {
-                    $this->User->id = $admin['User']['id'];
-                    $this->User->save();
-                    $idList = $this->IpAddress->find('all', array(
-                        'conditions' => array('admin_id' => $admin['User']['id']),
-                        ));
-                    for ($i = 0; $i < count($idList); $i++)
-                        $this->IpAddress->delete($idList[$i]['IpAddress']['id']);
-                    for ($i = 0; $i < $data['hide']; $i++) {
-                        $ipAddress = 'ip_address' . $i;
-                        if (isset($data[$ipAddress])) {
-                            $this->IpAddress->create();
-                            $this->IpAddress->set(array(
-                                'admin_id' => $admin['User']['id'],
-                                'ip_address' => $data[$ipAddress],
-                                ));
-                            $this->IpAddress->save();
-                        }
-                    }
-                    $this->Session->setFlash('情報を変更することが成功です。');
-                    $this->redirect(array('controller' => 'Admins', 'action' => 'change_info'));
-                }
-            }
-        }
-    }
-
-    public function manager_manager($admin_id) {
-        $this->set('title_for_layout', '管理者アカウントを管理する。');
-        $forPass = 'sha1';
-        $admin = $this->User->find('first', array(
-            'conditions' => array('User.id' => $admin_id),
-            ));
-        $ipList = $this->IpAddress->find('all', array(
-            'conditions' => array('admin_id' => $admin['User']['id']),
-            ));
-        $this->set(compact('admin', 'ipList'));
-        if (isset($this->request->data['submit_data']) && $admin['User']['online_flag'] == 0) {
-            $data = $this->request->data;
-            for ($i = 0; $i < count($ipList); $i++) {
-                $ipAddress = 'ip_address' . $i;
-                if (isset($data['User'][$ipAddress]) && $data['User'][$ipAddress] != NULL ) {
-                    $data[$ipAddress] = $data['User'][$ipAddress];
-                    unset($data['User'][$ipAddress]);
-                }
-            }
-            $this->User->set(array(
-                'address' => $data['User']['address'],
-                'phone_number' => $data['User']['phone_number'],
-                ));
-            if ($admin['User']['email'] != $data['User']['email']) {
-                $this->User->set(array(
-                    'email' => $data['User']['email'],
-                    ));
-            }
-            if ($this->User->validates()) {
-                $check = 1;
-                for ($i = 0; $i < $data['hide']; $i++) {
-                	$invalidFlag = 0;
-                    $ipAddress = 'ip_address' . $i;
-                    if (isset($data[$ipAddress])) {
-                    	for($j = $i+1; $j < $data['hide']; $j++){
-                    		$ipAddress1 = 'ip_address'.$j;
-                    		if(isset($data[$ipAddress1]) && $data[$ipAddress] == $data[$ipAddress1]){
-                    			unset($data[$ipAddress]);
-                    			$invalidFlag = 1;
-                    			break;
-                    		}
-                    	}
-                    	if($invalidFlag == 1) continue;
-                        $this->IpAddress->set(array('ip_address' => $data[$ipAddress]));
-                        if ($this->IpAddress->validates())
-                            $check = 1;
-                        else {
-                            $check = 0;
-                            break;
-                        }
-                    }
-                }
-                if ($check == 1) {
-                    $this->User->id = $admin['User']['id'];
-                    $this->User->save();
-                    $idList = $this->IpAddress->find('all', array(
-                        'conditions' => array('admin_id' => $admin['User']['id']),
-                        ));
-                    for ($i = 0; $i < count($idList); $i++)
-                        $this->IpAddress->delete($idList[$i]['IpAddress']['id']);
-                    for ($i = 0; $i < $data['hide']; $i++) {
-                        $ipAddress = 'ip_address' . $i;
-                        if (isset($data[$ipAddress])) {
-                            $this->IpAddress->create();
-                            $this->IpAddress->set(array(
-                                'admin_id' => $admin['User']['id'],
-                                'ip_address' => $data[$ipAddress],
-                                ));
-                            $this->IpAddress->save();
-                        }
-                    }
-                    $this->Session->setFlash('情報を変更することが成功です。');
-                    $this->redirect(array('controller' => 'Admins', 'action' => 'manager_manager', $admin['User']['id']));
-                }
-            }
-        }
-        if (isset($this->request->data['delete_manager']) && $admin['User']['online_flag'] == 0) {
-            if($this->User->deleteUser($admin['User']['id']) && $this->IpAddress->deleteIpByUserId($admin['User']['id'])){
-                $this->Session->setFlash('このアカウントが今削除です');
-                $this->redirect(array('controller' => 'Admins', 'action' => 'getAccount'));
-            }
-        }
-        if ($admin['User']['online_flag'] == 1 && (isset($this->request->data['submit_data']) || isset($this->request->data['delete_manager']))) {
-            $this->Session->setFlash('このアカウントが今オンラインです、アカウントの情報を変更できなかった。');
-            $this->redirect(array('controller' => 'Admins', 'action' => 'manager_manager', $admin['User']['id']));
-        }
-    }
-
+			// <<<<<<< HEAD
+		}
+	}
+	function deleteDoc($i) {
+		$this->autoRender = false;
+		$doc = $this->Document->find ( 'first', array (
+				'conditions' => array (
+						'Document.id' => $i 
+				) 
+		) );
+		// debug($doc);die();
+		$this->Document->delete ( $i );
+		$source = WWW_ROOT . $doc ['Document'] ['file_link'];
+		unlink ( $source );
+		$this->User->Notification->msg ( $doc['Document']['create_user_id'], "あなたのファイル".$doc['Document']['file_name']."が削除した" );
+		$this->Session->setFlash ( "ファイルが削除した" );
+		$this->redirect ( 'getDocument' );
+	}
+	function register_new_manager() {
+		$this->set ( 'title_for_layout', '登録' );
+		$forPass = 'sha1';
+		if (isset ( $this->request->data ['submit_data'] )) {
+			$data = $this->request->data;
+			$birthDate = $data ['User'] ['birth_year'] . '-' . $data ['User'] ['birth_month'] . '-' . $data ['User'] ['birth_date'];
+			$password = sha1 ( $data ['User'] ['user_name'] . $data ['User'] ['password'] . $forPass );
+			$this->User->set ( array (
+					'user_name' => $data ['User'] ['user_name'],
+					'real_name' => $data ['User'] ['real_name'],
+					'password' => $password,
+					'email' => $data ['User'] ['email'],
+					'birth_date' => $birthDate,
+					'level' => 1,
+					'approve_flag' => 1,
+					'bank_account_code' => 'khong xac dinh',
+					'address' => $data ['User'] ['address'],
+					'phone_number' => $data ['User'] ['phone_number'] 
+			) );
+			$this->IpAddress->set ( array (
+					'ip_address' => $data ['User'] ['ip_address'] 
+			) );
+			if ($this->User->validates () && $this->IpAddress->validates ()) {
+				$this->User->save ();
+				$user = $this->User->find ( 'first', array (
+						'fields' => array (
+								'id' 
+						),
+						'conditions' => array (
+								'User.user_name' => $data ['User'] ['user_name'] 
+						) 
+				) );
+				$this->IpAddress->set ( array (
+						'admin_id' => $user ['User'] ['id'] 
+				) );
+				$this->IpAddress->save ();
+				$this->Session->setFlash ( '新しい管理者を作ることが成功です。' );
+				$this->redirect ( array (
+						'controller' => 'Admins',
+						'action' => 'manager_home' 
+				) );
+			}
+			if (! $this->IpAddress->validates ()) {
+				$ipAddressErr = $this->IpAddress->validationErrors ['ip_address'] ['0'];
+				$this->set ( compact ( 'ipAddressErr' ) );
+			}
+		}
+	}
+	function student_manager($student_id) {
+		$this->set ( 'title_for_layout', '学生アカウントを管理する' );
+		$forPass = 'sha1';
+		$studentId = $student_id;
+		$student = $this->User->find ( 'first', array (
+				'conditions' => array (
+						'User.id' => $studentId 
+				) 
+		) );
+		$this->set ( compact ( 'student' ) );
+		if (isset ( $this->request->data ['submit_data'] )) {
+			$data = $this->request->data;
+			$bankCode = $data ['User'] ['cardPart1'] . '-' . $data ['User'] ['cardPart2'] . '-' . $data ['User'] ['cardPart3'] . '-' . $data ['User'] ['cardPart4'] . '-' . $data ['User'] ['cardPart5'];
+			if ($student ['User'] ['email'] == $data ['User'] ['email'] && $student ['User'] ['phone_number'] == $data ['User'] ['phone_number'] && $student ['User'] ['address'] == $data ['User'] ['address'] && $student ['User'] ['bank_account_code'] == $bankCode) {
+				$this->Session->setFlash ( '情報を変更しなかった。' );
+				$this->redirect ( array (
+						'controller' => 'Admins',
+						'action' => 'student_manager',
+						$student ['User'] ['id'] 
+				) );
+			} else {
+				$this->User->set ( array (
+						'bank_account_code' => $bankCode,
+						'address' => $data ['User'] ['address'],
+						'phone_number' => $data ['User'] ['phone_number'] 
+				) );
+				if ($student ['User'] ['email'] != $data ['User'] ['email']) {
+					$this->User->set ( array (
+							'email' => $student ['User'] ['email'] 
+					) );
+				}
+				if ($this->User->validates ()) {
+					$this->User->id = $student ['User'] ['id'];
+					if ($this->User->save ()) {
+						$this->Session->setFlash ( '情報を変更することが成功です。' );
+						$this->redirect ( array (
+								'controller' => 'Admins',
+								'action' => 'student_manager',
+								$student ['User'] ['id'] 
+						) );
+					}
+				}
+			}
+		}
+		// block acc
+		// if (isset($this->request->data['delete_student'])) {
+		// $this->User->set(array(
+		// 'status_flag' => 0,
+		// ));
+		// $this->User->id = $student['User']['id'];
+		// if ($this->User->save()) {
+		// $this->Session->setFlash('このアカウントが今ロックです');
+		// $this->redirect(array('controller' => 'Admins', 'action' => 'student_manager', $student['User']['id']));
+		// }
+		// }
+		// restore acc
+		// if (isset($this->request->data['restore_student'])) {
+		// $this->User->set(array(
+		// 'status_flag' => 1,
+		// ));
+		// $this->User->id = $teacher['User']['id'];
+		// if ($this->User->save()) {
+		// $this->Session->setFlash('このアカウントが今回生です');
+		// $this->redirect(array('controller' => 'Admins', 'action' => 'student_manager', $student['User']['id']));
+		// }
+		// }
+		if (isset ( $this->request->data ['delete_student'] )) {
+			if ($this->User->deleteUser ( $student ['User'] ['id'] ) && $this->TestHistory->deleteTestHistoryByUserId ( $student ['User'] ['id'] ) && $this->InitialUser->deleteInitialUserByUserId ( $student ['User'] ['id'] ) && $this->Comment->deleteCommentByUserId ( $student ['User'] ['id'] ) && $this->Bill->deleteBillByUserid ( $student ['User'] ['id'] ) && $this->BannedStudent->deleteRecordBystudentId ( $student ['User'] ['id'] )) {
+				$this->Session->setFlash ( 'このアカウントが今削除です' );
+				$this->redirect ( array (
+						'controller' => 'Admins',
+						'action' => 'getAccount' 
+				) );
+			}
+		}
+		if (isset ( $this->request->data ['reset_password'] )) {
+			$initialStudent = $this->InitialUser->find ( 'first', array (
+					'conditions' => array (
+							'user_id' => $student ['User'] ['id'] 
+					) 
+			) );
+			$this->User->set ( array (
+					'password' => $initialStudent ['InitialUser'] ['initial_password'] 
+			) );
+			$this->User->id = $student ['User'] ['id'];
+			if ($this->User->save ()) {
+				$this->Session->setFlash ( 'このアカウントのパスワードをリセットすることが成功です。' );
+				$this->redirect ( array (
+						'controller' => 'Admins',
+						'action' => 'student_manager',
+						$student ['User'] ['id'] 
+				) );
+			}
+		}
+	}
+	function teacherManager($teacher_id) {
+		$this->set ( 'title_for_layout', '先生アカウントを管理する' );
+		$forPass = 'sha1';
+		$teacherId = $teacher_id;
+		$teacher = $this->User->find ( 'first', array (
+				'conditions' => array (
+						'User.id' => $teacherId 
+				) 
+		) );
+		$this->set ( compact ( 'teacher' ) );
+		if (isset ( $this->request->data ['submit_data'] )) {
+			$data = $this->request->data;
+			$bankCode = $data ['User'] ['bankCodePart1'] . '-' . $data ['User'] ['bankCodePart2'] . '-' . $data ['User'] ['bankCodePart3'] . '-' . $data ['User'] ['bankCodePart4'];
+			if ($teacher ['User'] ['email'] == $data ['User'] ['email'] && $teacher ['User'] ['phone_number'] == $data ['User'] ['phone_number'] && $teacher ['User'] ['address'] == $data ['User'] ['address'] && $teacher ['User'] ['bank_account_code'] == $bankCode) {
+				$this->Session->setFlash ( '情報を変更しなかった。' );
+				$this->redirect ( array (
+						'controller' => 'Admins',
+						'action' => 'teacherManager',
+						$teacher ['User'] ['id'] 
+				) );
+			} else {
+				$this->User->set ( array (
+						'bank_account_code' => $bankCode,
+						'address' => $data ['User'] ['address'],
+						'phone_number' => $data ['User'] ['phone_number'] 
+				) );
+				if ($teacher ['User'] ['email'] != $data ['User'] ['email']) {
+					$this->User->set ( array (
+							'email' => $teacher ['User'] ['email'] 
+					) );
+				}
+				if ($this->User->validates ()) {
+					$this->User->id = $teacher ['User'] ['id'];
+					if ($this->User->save ()) {
+						$this->Session->setFlash ( '情報を変更することが成功です。' );
+						$this->redirect ( array (
+								'controller' => 'Admins',
+								'action' => 'teacherManager',
+								$teacher ['User'] ['id'] 
+						) );
+					}
+				}
+			}
+		}
+		// block acc
+		// if (isset($this->request->data['delete_teacher'])) {
+		// $this->User->set(array(
+		// 'status_flag' => 0,
+		// ));
+		// $this->User->id = $teacher['User']['id'];
+		// if ($this->User->save()) {
+		// $this->Session->setFlash('このアカウントが今ロックです');
+		// $this->redirect(array('controller' => 'Admins', 'action' => 'teacherManager', $teacher['User']['id']));
+		// }
+		// }
+		// restore acc
+		// if (isset($this->request->data['restore_teacher'])) {
+		// $this->User->set(array(
+		// 'status_flag' => 1,
+		// ));
+		// $this->User->id = $teacher['User']['id'];
+		// if ($this->User->save()) {
+		// $this->Session->setFlash('このアカウントが今回生です');
+		// $this->redirect(array('controller' => 'Admins', 'action' => 'teacherManager', $teacher['User']['id']));
+		// }
+		// }
+		if (isset ( $this->request->data ['delete_teacher'] )) {
+			if ($this->User->deleteUser ( $teacher ['User'] ['id'] ) && $this->Verifycode->deleteVerifycodeByUserId ( $teacher ['User'] ['id'] ) && $this->Test->deleteTestByUserId ( $teacher ['User'] ['id'] ) && $this->Lesson->deleteLessonByTeacherId ( $teacher ['User'] ['id'] ) && $this->InitialVerifycode->deleteInitialVerifycodeByUserId ( $teacher ['User'] ['id'] ) && $this->InitialUser->deleteInitialUserByUserId ( $teacher ['User'] ['id'] ) && $this->Document->deleteDocumentByUserId ( $teacher ['User'] ['id'] ) && $this->Comment->deleteCommentByUserId ( $teacher ['User'] ['id'] ) && $this->BannedStudent->deleteRecordByTeacherId ( $teacher ['User'] ['id'] )) {
+				$this->Session->setFlash ( 'このアカウントが今削除です' );
+				$this->redirect ( array (
+						'controller' => 'Admins',
+						'action' => 'getAccount' 
+				) );
+			}
+		}
+		if (isset ( $this->request->data ['reset_password'] )) {
+			$initialTeacher = $this->InitialUser->find ( 'first', array (
+					'conditions' => array (
+							'user_id' => $teacher ['User'] ['id'] 
+					) 
+			) );
+			$this->User->set ( array (
+					'password' => $initialTeacher ['InitialUser'] ['initial_password'] 
+			) );
+			$this->User->id = $teacher ['User'] ['id'];
+			if ($this->User->save ()) {
+				$this->Session->setFlash ( 'このアカウントのパスワードをリセットすることが成功です。' );
+				$this->redirect ( array (
+						'controller' => 'Admins',
+						'action' => 'teacherManager',
+						$teacher ['User'] ['id'] 
+				) );
+			}
+		}
+		if (isset ( $this->request->data ['reset_verifycode'] )) {
+			$initialVerifycode = $this->InitialVerifycode->find ( 'first', array (
+					'conditions' => array (
+							'user_id' => $teacher ['User'] ['id'] 
+					) 
+			) );
+			$verifycode = $this->Verifycode->find ( 'first', array (
+					'conditions' => array (
+							'user_id' => $teacher ['User'] ['id'] 
+					) 
+			) );
+			$this->Verifycode->set ( array (
+					'question' => $initialVerifycode ['InitialVerifycode'] ['initial_question'],
+					'verifycode' => $initialVerifycode ['InitialVerifycode'] ['initial_verifycode'] 
+			) );
+			$this->Verifycode->id = $verifycode ['Verifycode'] ['id'];
+			if ($this->Verifycode->save ()) {
+				$this->Session->setFlash ( 'このアカウントのVerifyコードをリセットすることが成功です。' );
+				$this->redirect ( array (
+						'controller' => 'Admins',
+						'action' => 'teacherManager',
+						$teacher ['User'] ['id'] 
+				) );
+			}
+		}
+	}
+	public function change_info() {
+		$this->set ( 'title_for_layout', '個人情報を変更する' );
+		$forPass = 'sha1';
+		$admin = $this->User->find ( 'first', array (
+				'conditions' => array (
+						'User.id' => $this->Auth->user ( 'id' ) 
+				) 
+		) );
+		$ipList = $this->IpAddress->find ( 'all', array (
+				'conditions' => array (
+						'admin_id' => $admin ['User'] ['id'] 
+				) 
+		) );
+		$this->set ( compact ( 'admin', 'ipList' ) );
+		if (isset ( $this->request->data ['submit_data'] )) {
+			$data = $this->request->data;
+			for($i = 0; $i < count ( $ipList ); $i ++) {
+				$ipAddress = 'ip_address' . $i;
+				if (isset ( $data ['User'] [$ipAddress] ) && $data ['User'] [$ipAddress] != NULL) {
+					$data [$ipAddress] = $data ['User'] [$ipAddress];
+					unset ( $data ['User'] [$ipAddress] );
+				}
+			}
+			$this->User->set ( array (
+					'address' => $data ['User'] ['address'],
+					'phone_number' => $data ['User'] ['phone_number'] 
+			) );
+			if ($admin ['User'] ['email'] != $data ['User'] ['email']) {
+				$this->User->set ( array (
+						'email' => $data ['User'] ['email'] 
+				) );
+			}
+			if ($this->User->validates ()) {
+				$check = 1;
+				for($i = 0; $i < $data ['hide']; $i ++) {
+					$invalidFlag = 0;
+					$ipAddress = 'ip_address' . $i;
+					if (isset ( $data [$ipAddress] )) {
+						for($j = $i + 1; $j < $data ['hide']; $j ++) {
+							$ipAddress1 = 'ip_address' . $j;
+							if (isset ( $data [$ipAddress1] ) && $data [$ipAddress] == $data [$ipAddress1]) {
+								unset ( $data [$ipAddress] );
+								$invalidFlag = 1;
+								break;
+							}
+						}
+						if ($invalidFlag == 1)
+							continue;
+						$this->IpAddress->set ( array (
+								'ip_address' => $data [$ipAddress] 
+						) );
+						if ($this->IpAddress->validates ())
+							$check = 1;
+						else {
+							$check = 0;
+							break;
+						}
+					}
+				}
+				if ($check == 1) {
+					$this->User->id = $admin ['User'] ['id'];
+					$this->User->save ();
+					$idList = $this->IpAddress->find ( 'all', array (
+							'conditions' => array (
+									'admin_id' => $admin ['User'] ['id'] 
+							) 
+					) );
+					for($i = 0; $i < count ( $idList ); $i ++)
+						$this->IpAddress->delete ( $idList [$i] ['IpAddress'] ['id'] );
+					for($i = 0; $i < $data ['hide']; $i ++) {
+						$ipAddress = 'ip_address' . $i;
+						if (isset ( $data [$ipAddress] )) {
+							$this->IpAddress->create ();
+							$this->IpAddress->set ( array (
+									'admin_id' => $admin ['User'] ['id'],
+									'ip_address' => $data [$ipAddress] 
+							) );
+							$this->IpAddress->save ();
+						}
+					}
+					$this->Session->setFlash ( '情報を変更することが成功です。' );
+					$this->redirect ( array (
+							'controller' => 'Admins',
+							'action' => 'change_info' 
+					) );
+				}
+			}
+		}
+	}
+	public function manager_manager($admin_id) {
+		$this->set ( 'title_for_layout', '管理者アカウントを管理する。' );
+		$forPass = 'sha1';
+		$admin = $this->User->find ( 'first', array (
+				'conditions' => array (
+						'User.id' => $admin_id 
+				) 
+		) );
+		$ipList = $this->IpAddress->find ( 'all', array (
+				'conditions' => array (
+						'admin_id' => $admin ['User'] ['id'] 
+				) 
+		) );
+		$this->set ( compact ( 'admin', 'ipList' ) );
+		if (isset ( $this->request->data ['submit_data'] ) && $admin ['User'] ['online_flag'] == 0) {
+			$data = $this->request->data;
+			for($i = 0; $i < count ( $ipList ); $i ++) {
+				$ipAddress = 'ip_address' . $i;
+				if (isset ( $data ['User'] [$ipAddress] ) && $data ['User'] [$ipAddress] != NULL) {
+					$data [$ipAddress] = $data ['User'] [$ipAddress];
+					unset ( $data ['User'] [$ipAddress] );
+				}
+			}
+			$this->User->set ( array (
+					'address' => $data ['User'] ['address'],
+					'phone_number' => $data ['User'] ['phone_number'] 
+			) );
+			if ($admin ['User'] ['email'] != $data ['User'] ['email']) {
+				$this->User->set ( array (
+						'email' => $data ['User'] ['email'] 
+				) );
+			}
+			if ($this->User->validates ()) {
+				$check = 1;
+				for($i = 0; $i < $data ['hide']; $i ++) {
+					$invalidFlag = 0;
+					$ipAddress = 'ip_address' . $i;
+					if (isset ( $data [$ipAddress] )) {
+						for($j = $i + 1; $j < $data ['hide']; $j ++) {
+							$ipAddress1 = 'ip_address' . $j;
+							if (isset ( $data [$ipAddress1] ) && $data [$ipAddress] == $data [$ipAddress1]) {
+								unset ( $data [$ipAddress] );
+								$invalidFlag = 1;
+								break;
+							}
+						}
+						if ($invalidFlag == 1)
+							continue;
+						$this->IpAddress->set ( array (
+								'ip_address' => $data [$ipAddress] 
+						) );
+						if ($this->IpAddress->validates ())
+							$check = 1;
+						else {
+							$check = 0;
+							break;
+						}
+					}
+				}
+				if ($check == 1) {
+					$this->User->id = $admin ['User'] ['id'];
+					$this->User->save ();
+					$idList = $this->IpAddress->find ( 'all', array (
+							'conditions' => array (
+									'admin_id' => $admin ['User'] ['id'] 
+							) 
+					) );
+					for($i = 0; $i < count ( $idList ); $i ++)
+						$this->IpAddress->delete ( $idList [$i] ['IpAddress'] ['id'] );
+					for($i = 0; $i < $data ['hide']; $i ++) {
+						$ipAddress = 'ip_address' . $i;
+						if (isset ( $data [$ipAddress] )) {
+							$this->IpAddress->create ();
+							$this->IpAddress->set ( array (
+									'admin_id' => $admin ['User'] ['id'],
+									'ip_address' => $data [$ipAddress] 
+							) );
+							$this->IpAddress->save ();
+						}
+					}
+					$this->Session->setFlash ( '情報を変更することが成功です。' );
+					$this->redirect ( array (
+							'controller' => 'Admins',
+							'action' => 'manager_manager',
+							$admin ['User'] ['id'] 
+					) );
+				}
+			}
+		}
+		if (isset ( $this->request->data ['delete_manager'] ) && $admin ['User'] ['online_flag'] == 0) {
+			if ($this->User->deleteUser ( $admin ['User'] ['id'] ) && $this->IpAddress->deleteIpByUserId ( $admin ['User'] ['id'] )) {
+				$this->Session->setFlash ( 'このアカウントが今削除です' );
+				$this->redirect ( array (
+						'controller' => 'Admins',
+						'action' => 'getAccount' 
+				) );
+			}
+		}
+		if ($admin ['User'] ['online_flag'] == 1 && (isset ( $this->request->data ['submit_data'] ) || isset ( $this->request->data ['delete_manager'] ))) {
+			$this->Session->setFlash ( 'このアカウントが今オンラインです、アカウントの情報を変更できなかった。' );
+			$this->redirect ( array (
+					'controller' => 'Admins',
+					'action' => 'manager_manager',
+					$admin ['User'] ['id'] 
+			) );
+		}
+	}
 	public function exportMoney() {
 		$data = $this->Session->read ( 'data' );
 		$date = date ( 'Y-m' );
 		// Write file!
-		$file = fopen ( WWW_ROOT.DS.'files'.DS.'exportMoney'.DS.'ELS-UBT-' . $date . '.tsv', 'w' );
-		$head = 'ELS-UBT-GWK54M78'."\t".date('Y')."\t".date('m')."\t".date('Y')."\t".date('m')."\t".date('d')."\t".date('h')."\t".date('i')."\t".date('s')."\t".$data['createId']."\t".$data['creater']."\r\n";
-		fwrite ( $file,$head);
-		foreach ($data['money'] as $money) {
-			if($money['user']['level']==2) $type = '54'; else $type = '18';
-			$line = $money['user'] ['user_name'] . "\t" . $money['user'] ['real_name'] . "\t" . $money ['sum'] . "\t" . $money['user'] ['address'] . "\t" . $money['user'] ['phone_number'] . "\t" . $type . $money['user'] ['bank_account_code'] . "\r\n";
-// 			debug($line);die();
+		$file = fopen ( WWW_ROOT . DS . 'files' . DS . 'exportMoney' . DS . 'ELS-UBT-' . $date . '.tsv', 'w' );
+		$head = 'ELS-UBT-GWK54M78' . "\t" . date ( 'Y' ) . "\t" . date ( 'm' ) . "\t" . date ( 'Y' ) . "\t" . date ( 'm' ) . "\t" . date ( 'd' ) . "\t" . date ( 'h' ) . "\t" . date ( 'i' ) . "\t" . date ( 's' ) . "\t" . $data ['createId'] . "\t" . $data ['creater'] . "\r\n";
+		fwrite ( $file, $head );
+		foreach ( $data ['money'] as $money ) {
+			if ($money ['user'] ['level'] == 2)
+				$type = '54';
+			else
+				$type = '18';
+			$line = $money ['user'] ['user_name'] . "\t" . $money ['user'] ['real_name'] . "\t" . $money ['sum'] . "\t" . $money ['user'] ['address'] . "\t" . $money ['user'] ['phone_number'] . "\t" . $type . $money ['user'] ['bank_account_code'] . "\r\n";
+			// debug($line);die();
 			fwrite ( $file, $line );
 		}
 		fwrite ( $file, 'END＿＿＿END＿＿＿END' . "\t" . date ( 'Y' ) . "\t" . date ( 'n' ) );
 		fclose ( $file );
-		$this->response->file ( WWW_ROOT.DS.'files'.DS.'exportMoney'.DS.'ELS-UBT-' . $date . '.tsv', array (
+		$this->response->file ( WWW_ROOT . DS . 'files' . DS . 'exportMoney' . DS . 'ELS-UBT-' . $date . '.tsv', array (
 				'download' => true,
 				'name' => 'ELS-UBT-' . $date . '.tsv' 
 		) );
 		return $this->reponse;
+	}
+	
+	function titleNotify($teacher,$lessonId){
+		$this->autoRender = false;
+		$lesson = $this->Lesson->findById($lessonId);
+		$this->User->Notification->msg ( $teacher, "あなたの授業".$lesson['Lesson']['lesson_name']."がタイトル違反した" );
+		$this->Session->setFlash('勧告した');
+		$this->redirect('getLesson');
+	}
+	
+	function copyrightNotify($teacher,$docId){
+		$this->autoRender = false;
+		$doc = $this->Document->findById($docId);
+		$this->User->Notification->msg ( $teacher, "あなたのファイル".$doc['Document']['file_name']."がCopyright違反した" );
+		$this->Session->setFlash('勧告した');
+		$this->redirect('getDocument');
 	}
 	
 	// Huong Viet`
@@ -482,7 +578,9 @@ class AdminsController extends AppController {
 						'Document.id' => $documentId 
 				) 
 		) );
+		// debug($document);
 		$this->set ( compact ( 'document' ) );
+		$this->set ( "block", $document ['Document'] ['lock_flag'] );
 		
 		if (isset ( $this->request->data ['delete_file'] )) {
 			// debug($this->request->data['hide']);
@@ -495,18 +593,37 @@ class AdminsController extends AppController {
 			) );
 		}
 		if (isset ( $this->request->data ['block_file'] )) {
-			// debug($this->request->data);die();
+			$this->User->Notification->msg ( $this->Document->field ( 'create_user_id', array (
+					'id' => $count
+			) ), "あなたの" . $this->Document->field ( 'file_name', array (
+					'id' => $count
+			) ) . "ファイルがブロックした" );
 			$count = $this->request->data ['block_file'];
 			$this->Document->id = $count;
-			// debug($this->Document->id);die();
-			if ($this->Document->lock_flag == 0) {
-				$this->Document->set ( array (
-						'lock_flag' => 1 
-				) );
-				$this->Document->save ();
-			}
-			
+			$this->Document->set ( array (
+					'lock_flag' => 1 
+			) );
+			$this->Document->save ();
 			$this->Session->setFlash ( 'このアップロードファイルをブロックした。' );
+			$this->redirect ( array (
+					'controller' => 'admins',
+					'action' => 'getDocument' 
+			) );
+		}
+		if (isset ( $this->request->data ['unblock_file'] )) {
+			
+			$count = $this->request->data ['unblock_file'];
+			$this->User->Notification->msg ( $this->Document->field ( 'create_user_id', array (
+					'id' => $count 
+			) ), "あなたの" . $this->Document->field ( 'file_name', array (
+					'id' => $count 
+			) ) . "ファイルがアンブロックした" );
+			$this->Document->id = $count;
+			$this->Document->set ( array (
+					'lock_flag' => 0 
+			) );
+			$this->Document->save ();
+			$this->Session->setFlash ( 'このアップロードファイルをアンブロックした。' );
 			$this->redirect ( array (
 					'controller' => 'admins',
 					'action' => 'getDocument' 
@@ -662,9 +779,18 @@ class AdminsController extends AppController {
 			$this->request->data ['User'] ['password'] = $data ['User'] ['password'];
 			
 			if ($this->Auth->login ()) {
+				$this->User->id = $this->Auth->user ( 'id' );
+				$this->User->set ( array (
+						'ip_address' => $this->request->clientIp (),
+						'online_flag' => 1 
+				) );
+				$this->User->save ();
 				$this->Session->delete ( 'missing' );
 				$this->User->id = $this->Auth->user ( 'id' );
-				$this->User->set ( array ('ip_address' => $this->request->clientIp (), 'online_flag' => 1 ) );
+				$this->User->set ( array (
+						'ip_address' => $this->request->clientIp (),
+						'online_flag' => 1 
+				) );
 				$this->User->save ();
 				$this->redirect ( array (
 						"controller" => "Lessons",
@@ -683,9 +809,11 @@ class AdminsController extends AppController {
 	// Athor: Manh Phi.
 	// Moneys Export Function
 	public function managerMoney() {
-		$this->set('title_for_layout', '課金情報');
+		$this->set ( 'title_for_layout', '課金情報' );
 		$isDownload = false;
-		$percent = $this->ChangeableValue->field('current_value',array('id'=>2));
+		$percent = $this->ChangeableValue->field ( 'current_value', array (
+				'id' => 2 
+		) );
 		if (isset ( $this->request->data ['result'] )) {
 			$time = $this->request->data ['Admins'];
 			$monthyear = $time ['year'] . "-" . $time ['month'] . "%";
@@ -693,7 +821,7 @@ class AdminsController extends AppController {
 			$sData = $this->Bill->find ( 'all', array (
 					'fields' => array (
 							'sum(Bill.lesson_cost) AS sMoney',
-							'Bill.user_id'
+							'Bill.user_id' 
 					),
 					'group' => 'Bill.user_id',
 					'conditions' => array (
@@ -704,20 +832,22 @@ class AdminsController extends AppController {
 			$tData = $this->Bill->find ( 'all', array (
 					'fields' => array (
 							'sum(Bill.lesson_cost) AS tMoney',
-							'Bill.lesson_id'
+							'Bill.lesson_id' 
 					),
 					'group' => 'Bill.lesson_id',
 					'conditions' => array (
-							'Bill.learn_date LIKE ' => $monthyear
-					)
+							'Bill.learn_date LIKE ' => $monthyear 
+					) 
 			) );
-// 			debug($tData);die();
-			if(!empty($sData)||!empty($tData)){
+			// debug($tData);die();
+			if (! empty ( $sData ) || ! empty ( $tData )) {
 				$isDownload = true;
 				
-				$money= array();
+				$money = array ();
 				for($i = 0; $i < count ( $tData ); $i ++) {
-					$teacherId = $this->Lesson->field('create_user_id',array('id'=>$tData[$i]['Bill']['lesson_id']));
+					$teacherId = $this->Lesson->field ( 'create_user_id', array (
+							'id' => $tData [$i] ['Bill'] ['lesson_id'] 
+					) );
 					$user = $this->User->find ( 'first', array (
 							'fields' => array (
 									'user_name',
@@ -725,13 +855,16 @@ class AdminsController extends AppController {
 									'phone_number',
 									'address',
 									'bank_account_code',
-									'level'
+									'level' 
 							),
 							'conditions' => array (
-									'User.id' => $teacherId
-							)
+									'User.id' => $teacherId 
+							) 
 					) );
-					$money[] = array('sum' => $tData[$i][0]['tMoney']*$percent/100,'user'=>$user ['User']);
+					$money [] = array (
+							'sum' => $tData [$i] [0] ['tMoney'] * $percent / 100,
+							'user' => $user ['User'] 
+					);
 				}
 				for($i = 0; $i < count ( $sData ); $i ++) {
 					$user = $this->User->find ( 'first', array (
@@ -741,27 +874,33 @@ class AdminsController extends AppController {
 									'phone_number',
 									'address',
 									'bank_account_code',
-									'level'
+									'level' 
 							),
 							'conditions' => array (
-									'User.id' => $sData [$i] ['Bill'] ['user_id']
-							)
+									'User.id' => $sData [$i] ['Bill'] ['user_id'] 
+							) 
 					) );
-					$money[] = array('sum' => $sData[$i][0]['sMoney'],'user'=>$user ['User']);
+					$money [] = array (
+							'sum' => $sData [$i] [0] ['sMoney'],
+							'user' => $user ['User'] 
+					);
 				}
-// 				debug($money);
-				//ghep 2 mang
-				$data = array('createId'=>$this->Auth->user('user_name'),'creater'=>$this->Auth->user('real_name'),'money'=>$money);
+				// debug($money);
+				// ghep 2 mang
+				$data = array (
+						'createId' => $this->Auth->user ( 'user_name' ),
+						'creater' => $this->Auth->user ( 'real_name' ),
+						'money' => $money 
+				);
 				$this->set ( 'data', $data );
 				
 				$this->Session->write ( 'data', $data );
-			}		
+			}
 		}
-		$this->set('isDownload',$isDownload);
+		$this->set ( 'isDownload', $isDownload );
 	}
-	
 	public function getDocument() {
-		$this->set('title_for_layout', 'アップロードファイルを管理します');
+		$this->set ( 'title_for_layout', 'アップロードファイルを管理します' );
 		if (! empty ( $this->data ) && $this->data ['Document'] ['file_name'] != null) {
 			// neu co thi truy van du lieu dua vao bien $users
 			$count = $this->Document->find ( 'count', array (
@@ -772,29 +911,43 @@ class AdminsController extends AppController {
 			// goi du lieu tu controller len view
 			if ($count != 0) {
 				
-				$this->paginate = array(
+				$this->paginate = array (
 						'limit' => 10,
-                        'field'=>array('Document.id', 'Document.file_name', 'Lesson.lesson_name', 'Document.created_date', 'User.user_name', 'Document.copyright_violation', 'Document.lock_flag'),
+						'field' => array (
+								'Document.id',
+								'Document.file_name',
+								'Lesson.lesson_name',
+								'Document.created_date',
+								'User.user_name',
+								'Document.copyright_violation',
+								'Document.lock_flag' 
+						),
 						'conditions' => array (
 								'file_name LIKE ' => '%' . $this->data ['Document'] ['file_name'] . '%' 
 						) 
 				);
 				$data = $this->paginate ( 'Document' );
 				$this->set ( 'data', $data );
-
 			}
 		} 
 
 		else {
 			$this->paginate = array (
 					'limit' => 10,
-                    'field'=>array('Document.id', 'Document.file_name', 'Lesson.lesson_name', 'Document.created_date', 'User.user_name', 'Document.copyright_violation', 'Document.lock_flag') 
+					'field' => array (
+							'Document.id',
+							'Document.file_name',
+							'Lesson.lesson_name',
+							'Document.created_date',
+							'User.user_name',
+							'Document.copyright_violation',
+							'Document.lock_flag' 
+					) 
 			);
-			$data = $this->paginate ('Document');
+			$data = $this->paginate ( 'Document' );
 			$this->set ( 'data', $data );
 		}
 	}
-    
 	public function getConfirmAccount() {
 		if (! empty ( $this->data )) {
 			if (isset ( $this->data ['User'] ['user_name'] ) && $this->data ['User'] ['user_name'] != null) {
@@ -924,7 +1077,7 @@ class AdminsController extends AppController {
 		}
 	}
 	public function getReceipts() {
-		$this->set('title_for_layout', '報酬情報');
+		$this->set ( 'title_for_layout', '報酬情報' );
 		// //授業のデータを取る
 		// $this->paginate = array(
 		// 'limit' => 10
@@ -1004,7 +1157,7 @@ class AdminsController extends AppController {
 	}
 	public function changeValues() {
 		// 可変値を取る
-		$this->set('title_for_layout', '可変値を変更します');
+		$this->set ( 'title_for_layout', '可変値を変更します' );
 		$data = $this->ChangeableValue->find ( 'all' );
 		$this->set ( 'data', $data );
 		// debug($data);

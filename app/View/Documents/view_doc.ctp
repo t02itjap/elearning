@@ -1,6 +1,6 @@
    <link rel="stylesheet" type="text/css" href="<?php echo $this->webroot . 'css/phi.css' ?>">
    <div id="start_study">
-    <p id="doc_name">資料名</p>
+    <p id="doc_name">資料名 : <?php echo $doc['Document']['file_name'];?> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; アップロード者：<?php echo $doc['User']['user_name']?>先生　&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 作った日：<?php echo $doc['Document']['create_date'];?></p>
     <!-- lap -->
     <div class="col-lg-9" height="500px" width="900px" style="position: relative">
       <div class="overlay"></div> 
@@ -34,10 +34,13 @@
        <param name="enableContextMenu" value="0">
    </div>
    <?php
+   echo $this->Session->flash();
+   if(!$isCopyright)
+   	$style = 'color:gray;'; else $style = "";
    echo $this->Form->create(null,array('url'=>array('controller'=>'documents','action'=>'viewDoc',$id)));
   //secho $this->Form->input('',array('type' => 'hidden','value'=>$id));
-   echo $this->Form->button ( 'Copyright違反 ', array ('type' => 'submit', 'name' => 'data[submit_data]','id' => 'submit_button' ) );
-   echo $this->Form->end ()
+   echo $this->Form->button ( 'Copyright違反 ', array ('type' => 'submit', 'name' => 'data[submit_data]','id' => 'submit_button' ,'style'=>$style,'disabled'=>!$isCopyright) );
+   echo $this->Form->end ();
    ?>
    <div id="comment">
     <div class="old_comment">
@@ -55,11 +58,11 @@
     </div>
     <div id="new_comment">
         <?php
-        echo $this->Form->create(null,array('controller'=>'documents','action'=>'viewDoc',$id, $lesson_id));
+        echo $this->Form->create(null,array(array('controller'=>'documents','action'=>'viewDoc',$id, $lesson_id)));
         echo $this->Form->textarea("txtComment",array('id'=>"comment",'value'=>$clear));
         echo $this->Form->input('id',array('type' => 'hidden','value'=>$lesson_id));
         echo $this->Form->button ( 'ポスト', array ('type' => 'submit','class'=>'btn','id'=>"btn-save", 'onclick'=>'return cmtValid()'));
-        echo $this->Form->end ()?>
+        echo $this->Form->end ();?>
          </div><!--End #new_comment-->
        </div><!--End #comment-->
      </div><!--End #start_study-->

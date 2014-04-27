@@ -11,7 +11,6 @@ header ( 'Expires: 0' ); // Proxies.?>
 	echo $this->Html->meta ( 'icon' );
 	
 	echo $this->Html->css ( array (
-			'cake.generic',
 			'jquery-ui.custom',
 			'bootstrap',
 			'style' 

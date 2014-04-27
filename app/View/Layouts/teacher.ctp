@@ -27,7 +27,6 @@ $cakeDescription = __d ( 'cake_dev', 'CakePHP: the rapid development php framewo
 			<div id="slide_bar">
         		<?php echo $this->element('acc_info');?>
         		<?php echo $this->element('search');?>
-        		
         	</div>
         	<?php echo $this->element('teacher_menu');?>
 			<div id="main_content">

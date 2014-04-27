@@ -4,6 +4,9 @@ class TestsController extends AppController{
 	var $components=array('Session','TestUtil');
 	function beforeFilter(){
 		parent::beforeFilter();
+		if($this->Auth->user('level')== 2){
+			$this->layout= "teacher";
+		}
 		$this->layout= "student";
 		//$test=$this->Test->loadTestFile(null,null);
 		//debug($test);
@@ -57,6 +60,9 @@ class TestsController extends AppController{
 	}
 
 	public function result($testID){
+		if($this->Auth->user('level')== 2){
+			$this->layout= "teacher";
+		}
 		if (!isset($testID)) die;
 		$his = $this->TestHistory->findById($testID);
 			// $file = WWW_ROOT . DS . $t['Test']['create_user_id'] . DS . $t['Test']['file_link'];

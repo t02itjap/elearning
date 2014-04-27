@@ -4,14 +4,6 @@ class LessonsController extends AppController {
 	var $components = array('Session');
 	var $costId=6;
 	var $teacherIdSet = array('-1');
-	//Configure::write('costId', 5);
-	//var $helpers = array('Ajax','Javascript');
-
-/*
-	var $uses = array ('User');
-	$data= array();
->>>>>>> 2be1f5077ad250cac8ce44b372e03e0dc8dbebab
-*/
 	function beforeFilter(){
 	parent::beforeFilter();
 	//$this->layout= "student";
@@ -28,7 +20,7 @@ class LessonsController extends AppController {
 				$this->paginate = array(
 				'limit'=>3,
 				'fields'=> array('Lesson.id', 'Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'User.user_name'),
-				'conditions'=>array('Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false)
+				'conditions'=>array('Lesson.delete_flag'=>0, 'Lesson.lock_flag'=>0)
 				);		
 				break;
 
@@ -36,7 +28,7 @@ class LessonsController extends AppController {
 				$this->paginate = array(
 				'limit'=>3,
 				'fields'=> array('Lesson.id', 'Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'User.user_name'),
-				'conditions'=>array('Lesson.create_user_id !='=>$this->Auth->User('id'), 'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false)
+				'conditions'=>array('Lesson.create_user_id !=' => $this->Auth->User('id'), 'Lesson.delete_flag'=>0, 'Lesson.lock_flag'=>0)
 				);	
 				break;
 
@@ -694,7 +686,7 @@ class LessonsController extends AppController {
 		//get lesson cost
 		$lessonCost=$this->ChangeableValue->find('all', array(
 			'fields'=>array('ChangeableValue.current_value'),
-			'conditions'=>array('ChangeableValue.id'=>5)
+			'conditions'=>array('ChangeableValue.id'=>6)
 			));
 		$this->set ('cost', $lessonCost[0]['ChangeableValue']['current_value']);
 		$this->showLayout();	

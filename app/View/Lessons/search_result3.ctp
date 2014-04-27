@@ -24,12 +24,14 @@ if($result['count']>=1):
 				<?php 
 				if(isset($level)){
 					switch ($level) {
-						case '1':
-							echo "<li><a href='#' class='see'>見る</a></li>";
+						case '3':
+							echo '<li>';
+							echo $this->Html->link('見る',array('controller'=>'students','action'=>'view_lesson_to_learn',$lesson['Lesson']['id']));
+							echo '</li>';
 							break;
 
 						case '2':
-							echo "<li><a href='#' class='see'>見る</a></li>";
+							//echo "<li><a href='#' class='see'>見る</a></li>";
 							if($this->Session->read('Auth.User.id')==$lesson['Lesson']['create_user_id']){
 								echo $this->Html->link(
 								    '削除',
@@ -63,8 +65,6 @@ if($result['count']>=1):
 							break;
 					}
 				}
-				else
-					echo "<li><a href='#' class='see'>見る</a></li>";
 			?>
 			</ul>
 		</div>

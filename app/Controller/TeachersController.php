@@ -25,7 +25,11 @@ class TeachersController extends AppController {
 
     public function beforeFilter() {
         parent::beforeFilter();
-        $this->layout = 'teacher';
+        if($this->Auth->user('level')==1){
+        	$this->layout = 'manager';
+        }
+        else 
+        	$this->layout = 'teacher';
         $this->Auth->authorize = 'Controller';
     }
 
@@ -48,11 +52,22 @@ class TeachersController extends AppController {
             ),
             'fields' => array(
                 'viewers',
-                'voters'
+                'voters',
+            	'create_user_id'
             )
                 ));
 
-        $lesson ['Lesson'] ['voters'] = explode(",", $lesson ['Lesson'] ['voters']);
+        if(strpos($lesson ['Lesson'] ['voters'],',')){
+        	$lesson ['Lesson'] ['voters'] = explode(",", $lesson ['Lesson'] ['voters']);
+	        foreach ($lesson['Lesson']['voters'] as $value){
+	        	$user = $this->User->find('first',array('conditions'=>array('id'=>$value)));
+	        	$lesson['Lesson']['like'][] = $user;
+	        }
+        }else {
+        	$user = $this->User->find('first',array('conditions'=>array('id'=>$lesson['Lesson']['voters'])));
+        	$lesson['Lesson']['like'][] = $user;
+        }
+//         debug($lesson['Lesson']['like']);die();
         $lesson ['Lesson'] ['vote_count'] = count($lesson ['Lesson'] ['voters']);
 
         $snum = $this->Bill->find("count", array(
@@ -66,6 +81,7 @@ class TeachersController extends AppController {
 
         // get learned student
         $this->paginate = array(
+        	
             'fields' => array(
                 'user_id',
                 'learn_date'
@@ -76,7 +92,9 @@ class TeachersController extends AppController {
         );
 
         $students = $this->paginate('Bill');
+        $total= count($students)*$this->ChangeableValue->field('current_value',array('id'=>6))*$this->ChangeableValue->field('current_value',array('id'=>2))/100;
         $this->set('lesson', $lesson);
+        $this->set('total', $total);
         $this->set('snum', $snum);
         $i = - 1;
         foreach ($students as $s) {
@@ -113,10 +131,10 @@ class TeachersController extends AppController {
                     $this->Session->setFlash("ユーザネームが存在しない");
                     return;
                 }
-                if (!$this->BannedStudent->isBanned($ban ['BannedStudent'] ['StudentName'])) {
+                if (!$this->BannedStudent->isBanned($ban ['BannedStudent'] ['StudentName'],$lesson['Lesson']['create_user_id']) ){
                     $this->BannedStudent->create();
                     $this->BannedStudent->set(array(
-                        'teacher_id' => $this->Auth->user('id'),
+                        'teacher_id' => $lesson['Lesson']['create_user_id'],
                         'student_id' => $stu ['User'] ['id'],
                         'reason' => $ban ['BannedStudent'] ['Reason'],
                         'banned_date'=>date("Y-m-d h:i:s", time())
@@ -306,7 +324,7 @@ class TeachersController extends AppController {
                 	$this->Test->create();
                 	//新しいドキュメントのテーブルのデータベースを作成する 
                 	if ($this->Test->checkValid($upData['name'], $user_id) == false) {
-                        debug('Fuck y here'); die;
+//                         debug('Fuck y here'); die;
                     	$bug = 1;
                 		$err1 = '<br><span>このファイルが存在でした、あるいはこのファイルの形態が間違いです。<span></br>';
                     	$this->set(compact('err1'));	
@@ -394,6 +412,9 @@ class TeachersController extends AppController {
     }
 
     public function manage_course($id_lesson) {
+    	if($this->Auth->user('level')==1){
+    		$this->layout = 'manager';
+    	}
         if (!$id_lesson) {
             throw new NotFoundException('このページが存在じゃありません。');
         }
@@ -427,6 +448,10 @@ class TeachersController extends AppController {
             //新しいレッスンのテーブルのデータベースを作成する 
             $this->Lesson->save();
             $lesson_id = $this->Lesson->id;
+            $categoryListOfLesson = $this->LessonOfCategory->find('all', array(
+            	'conditions' => array('lesson_id' => $lesson_id),
+            )); 
+            foreach($categoryListOfLesson as $categoryOfLesson ) $this->LessonOfCategory->delete($categoryOfLesson['LessonOfCategory']['id']);
             foreach ($data['Lesson']['category'] as $value) {
                 if ($value != '0') {
                     $this->LessonOfCategory->create();
@@ -437,12 +462,16 @@ class TeachersController extends AppController {
             }
             //データベースにデータを保存する
             if (isset($data['Lesson']['file_link_document'])) {
+            	//debug($data['Lesson'])
                 $uploadData = $data['Lesson']['file_link_document'];
+                debug($uploadData);die;
                 foreach ($uploadData as $upData) {
                     //debug($upData);
                     $this->Document->create();
                     //新しいドキュメントのテーブルのデータベースを作成する 
                     $user_id = $this->Auth->user('id');
+//                     debug($upData);
+//                     die;
                     if ($this->Document->checkValid($upData['name'],$user_id)) {
                         $this->Document->set(array(
                             'file_link' => 'files' . DS . $user_id . DS . $upData['name'],
@@ -510,12 +539,13 @@ class TeachersController extends AppController {
 
     public function uploadNewDocument() {
         if (isset($_FILES)) {
+        	//debug($_FILES);die;
             $user_id = $this->Auth->user('id');
             $uploaddir = WWW_ROOT . 'files' . DS . $user_id . DS;
             $uploadfile = $uploaddir . basename($_FILES['file-0']['name']);
             $check = FALSE;
             //check file
-            if ($this->Document->checkValid($_FILES['file-0']['name'])) {
+            if ($this->Document->checkValid($_FILES['file-0']['name'],$user_id)) {
                 $check = TRUE;
                 //upload file moi
                 move_uploaded_file($_FILES['file-0']['tmp_name'], $uploadfile);
@@ -527,6 +557,7 @@ class TeachersController extends AppController {
 
     public function uploadNewTest() {
         if (isset($_FILES)) {
+        	debug($_FILES);die;
             $user_id = $this->Auth->user('id');
             $uploaddir = WWW_ROOT . 'files' . DS . $user_id . DS;
             $uploadfile = $uploaddir . basename($_FILES['file-0']['name']);
@@ -535,7 +566,7 @@ class TeachersController extends AppController {
             if ($this->Test->checkValid($_FILES['file-0']['name'])) {
                 $check = TRUE;
                 //upload file moi
-                move_uploaded_file($_FILES['file-0']['tmp_name'], $uploadfile);
+                move_uploaded_file($_FILES['file-0']['tmp_name'], $uploaddir);
 //=======
 //            $this->Test->set(array(
 //                'file_link' => $uploadData1['name'],
@@ -555,7 +586,7 @@ class TeachersController extends AppController {
 
     public function updateNewDocument() {
         if (isset($_GET)) {
-            var_dump($_GET);
+            //var_dump($_GET);
             $user_id = $this->Auth->user('id');
             $url = WWW_ROOT . 'files' . DS . $user_id . DS . $_GET['old_name'];
             unlink($url);
