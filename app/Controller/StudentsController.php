@@ -118,15 +118,6 @@ class StudentsController extends AppController {
     public function home() {
         debug($this->Auth->user());
     }
-    public function category(){
-    	$this->paginate = array(
-    			'limit'=>2,
-    			'fields'=> array('Category.id', 'Category.category_name'),
-    			//'order'=>'Category.category_name'
-    	);
-    	$categoryList = $this->paginate('Category');
-    	$this->set(compact('categoryList'));
-    }
     public function view_lesson_to_learn($id) {
         if (!isset($id)) {
             throw new NotFoundException('404 not found');
