@@ -1,14 +1,10 @@
-<?php 
-	$categoryList = $this->requestAction('app/category');
-	//debug($categoryList);die();
-?>
-<div id="category">
-	<table>
+<?php $this->set('title_for_layout', 'カテゴリリスト'); ?>
+<div>
+	<table style="font-size: 15px;">
 		<tr>
-			<th><?php echo $this->Paginator->sort('category_name', '授業名'); ?></th>
+			<th><?php echo $this->Paginator->sort('category_name', 'カテゴリリスト'); ?></th>
 		</tr>
-		<?php 	
-		debug($categoryList);
+		<?php 
        		foreach ($categoryList as $key) {
 	       		echo "<tr>";
 	       			echo "<th>";	
@@ -18,6 +14,5 @@
         	}
         ?>
 	</table>
-</div><!--End #category-->
-
-
+</div>
+<?php echo $this->element('paging');?>

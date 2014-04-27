@@ -1,8 +1,4 @@
-<?php 
-	$categoryList = $this->requestAction('app/category');
-	//debug($categoryList);die();
-?>
-<div id="category">
+<div>
 	<table>
 		<tr>
 			<th><?php echo $this->Paginator->sort('category_name', '授業名'); ?></th>
@@ -18,6 +14,4 @@
         	}
         ?>
 	</table>
-</div><!--End #category-->
-
-
+</div>

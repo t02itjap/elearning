@@ -11,9 +11,15 @@
                     user_id : user_id
                 }
             }) .done(function(data) {
-                if(data == 1){
-                    $('#learnDiv').show();
-                    $('#learn').hide().remove();
+                //alert(data);
+                switch(data){
+                    case '2':
+                        $('#learnDiv').show();
+                        $('#learn').hide().remove();
+                        break;
+                    case '1':
+                        alert("Ban da bi tu choi tham gia khoa hoc boi giao vien");
+                        break;
                 }
             });
         });

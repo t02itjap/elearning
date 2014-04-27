@@ -58,14 +58,6 @@ class AppController extends Controller {
         $this->Auth->allow(array('view_all_lessons', 'lessons_by_category', 'search_result'));
         if (isset($this->params['requested'])) $this->Auth->allow($this->action); 
     }
-    public function category(){
-    	$categoryList = $this->Category->find('all');
-    	if (!empty($this->request->params['requested'])) {
-    		return $categoryList;
-		}
-        
-    	$this->set(compact('categoryList'));
-    }
     public function acc_info(){
     	$user = $this->User->find('first', array(
     		'conditions' => array('id' => $this->Auth->user('id')),

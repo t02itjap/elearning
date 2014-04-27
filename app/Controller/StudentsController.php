@@ -187,17 +187,31 @@ class StudentsController extends AppController {
         $this->autoRender = false;
         if (isset($_POST)) {
             $data = $_POST;
-            $this->Bill->create();
-            $lessonCost=$this->ChangeableValue->find('all', array(
-            'fields'=>array('ChangeableValue.current_value'),
-            'conditions'=>array('ChangeableValue.id'=>$this->costId)
+            $teacherIds=$this->BannedStudent->find('all', array(
+                 'fields'=>array('BannedStudent.teacher_id'),
+                 'conditions'=>array('BannedStudent.student_id'=>$this->Auth->User('id'))
             ));
-            $this->Bill->set('lesson_cost', $lessonCost[0]['ChangeableValue']['current_value']);
-            $this->Bill->set('learn_date', date('Y/m/d H:i'));
-            if ($this->Bill->save($data)) {
-                echo true;
-            }else
-                echo false;
+            foreach ($teacherIds as $key) {
+                $teacherIdSet[]=$key['BannedStudent']['teacher_id'];
+            }
+            $ownerId=$this->Lesson->field('Lesson.create_user_id', array('id'=>$data['lesson_id']));
+            if(!empty($teacherIdSet)&&in_array($ownerId, $teacherIdSet)){
+                echo '1';
+            }
+            else{
+                $this->Bill->create();
+                $lessonCost=$this->ChangeableValue->find('all', array(
+                'fields'=>array('ChangeableValue.current_value'),
+                'conditions'=>array('ChangeableValue.id'=>$this->costId)
+                ));
+                $this->Bill->set('lesson_cost', $lessonCost[0]['ChangeableValue']['current_value']);
+                $this->Bill->set('learn_date', date('Y/m/d H:i'));
+                //echo '2'; die();
+                if ($this->Bill->save($data)) {
+                    echo '2';
+                }else
+                    echo '3';
+            }
         }
         die;
     }
@@ -260,6 +274,16 @@ class StudentsController extends AppController {
         );
         $data = $this->paginate('TestHistory');
         $this->set('data', $data);
+    }
+
+    public function category(){
+        $this->paginate = array(
+                'limit'=>2,
+                'fields'=> array('Category.id', 'Category.category_name'),
+                //'order'=>'Category.category_name'
+        );
+        $categoryList = $this->paginate('Category');
+        $this->set(compact('categoryList'));
     }
 
     function exportBill($time) {

@@ -41,19 +41,19 @@ class LessonsController extends AppController {
 				break;
 
 			case '3':
-				$teacherIds=$this->BannedStudent->find('all', array(
-						'fields'=>array('BannedStudent.teacher_id'),
-						'conditions'=>array('BannedStudent.student_id'=>$this->Auth->User('id'))
-				));
-				//debug($teacherIds);die();
-				foreach ($teacherIds as $key) {
-					$this->teacherIdSet[]=$key['BannedStudent']['teacher_id'];
-				}
+				// $teacherIds=$this->BannedStudent->find('all', array(
+				// 		'fields'=>array('BannedStudent.teacher_id'),
+				// 		'conditions'=>array('BannedStudent.student_id'=>$this->Auth->User('id'))
+				// ));
+				// //debug($teacherIds);die();
+				// foreach ($teacherIds as $key) {
+				// 	$this->teacherIdSet[]=$key['BannedStudent']['teacher_id'];
+				// }
 				//debug($this->teacherIdSet);die();
 				$this->paginate = array(
 				'limit'=>3,
 				'fields'=> array('Lesson.id', 'Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'User.user_name'),
-				'conditions'=>array('Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false, 'NOT'=>array('Lesson.create_user_id'=>$this->teacherIdSet))
+				'conditions'=>array('Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false) //'NOT'=>array('Lesson.create_user_id'=>$this->teacherIdSet))
 				);		
 				break;
 			default:
@@ -119,17 +119,17 @@ class LessonsController extends AppController {
 				$lessons_id[] = $key['LessonOfCategory']['lesson_id'];
 		}
 		if($this->Auth->User('level')==3){
-			$teacherIds=$this->BannedStudent->find('all', array(
-						'fields'=>array('BannedStudent.teacher_id'),
-						'conditions'=>array('BannedStudent.student_id'=>$this->Auth->User('id'))
-			));
-			foreach ($teacherIds as $key) {
-				$this->teacherIdSet[]=$key['BannedStudent']['teacher_id'];
-			}
+			// $teacherIds=$this->BannedStudent->find('all', array(
+			// 			'fields'=>array('BannedStudent.teacher_id'),
+			// 			'conditions'=>array('BannedStudent.student_id'=>$this->Auth->User('id'))
+			// ));
+			// foreach ($teacherIds as $key) {
+			// 	$this->teacherIdSet[]=$key['BannedStudent']['teacher_id'];
+			// }
 			$this->paginate = array(
 			'limit'=>1,
 			'fields'=> array('Lesson.id', 'Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'User.user_name'),
-			'conditions'=>array('Lesson.id'=>$lessons_id, 'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false, 'NOT'=>array('Lesson.create_user_id'=>$this->teacherIdSet))
+			'conditions'=>array('Lesson.id'=>$lessons_id, 'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false) //'NOT'=>array('Lesson.create_user_id'=>$this->teacherIdSet))
 			);	
 		}
 		else{
@@ -152,275 +152,275 @@ class LessonsController extends AppController {
 		$this->set('title_for_layout', $category_name.'カテゴリを含む授業');
 	}
 
-	public function search_result1(){
-		if(!empty($this->data)&&
-			($this->request->data['teacher_name']!=null||
-				$this->request->data['course_name']!=null||
-				$this->request->data['category_name'])){
-			$teacher_name=$this->request->data['teacher_name'];
-			$course_name=$this->request->data['course_name'];
-			$category_name=$this->request->data['category_name'];
-			$this->Session->write('teacher_name', $teacher_name);
-			$this->Session->write('course_name', $course_name);
-			$this->Session->write('category_name', $category_name);
-		}
-		else{
-			if($this->Session->check('teacher_name')&&$this->Session->check('course_name')&&$this->Session->check('category_name')){
-				$teacher_name=$this->Session->read('teacher_name');
-				$course_name=$this->Session->read('course_name');
-				$category_name=$this->Session->read('category_name');
-			}
-		}
+	// public function search_result1(){
+	// 	if(!empty($this->data)&&
+	// 		($this->request->data['teacher_name']!=null||
+	// 			$this->request->data['course_name']!=null||
+	// 			$this->request->data['category_name'])){
+	// 		$teacher_name=$this->request->data['teacher_name'];
+	// 		$course_name=$this->request->data['course_name'];
+	// 		$category_name=$this->request->data['category_name'];
+	// 		$this->Session->write('teacher_name', $teacher_name);
+	// 		$this->Session->write('course_name', $course_name);
+	// 		$this->Session->write('category_name', $category_name);
+	// 	}
+	// 	else{
+	// 		if($this->Session->check('teacher_name')&&$this->Session->check('course_name')&&$this->Session->check('category_name')){
+	// 			$teacher_name=$this->Session->read('teacher_name');
+	// 			$course_name=$this->Session->read('course_name');
+	// 			$category_name=$this->Session->read('category_name');
+	// 		}
+	// 	}
 
-		//start search
-		if($teacher_name!=null&&$course_name==null&&$category_name==null){
-			$this->paginate = array(
-				'limit'=>1,
-				'fields'=> array('Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'Lesson.create_user_id', 'User.user_name'),
-				'conditions'=>array('User.user_name LIKE'=>'%'.$teacher_name.'%', 'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false)
-				);
-		}
-		if($teacher_name==null&&$course_name!=null&&$category_name==null){
-			$this->paginate = array(
-				'limit'=>1,
-				'fields'=> array('Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'Lesson.create_user_id', 'User.user_name'),
-				'conditions'=>array('Lesson.lesson_name LIKE'=>'%'.$course_name.'%', 'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false)
-				);
-		}
-		if($teacher_name==null&&$course_name==null&&$category_name!=null){
-			$lIdAndCName=$this->LessonOfCategory->getLIdAndCName1($category_name);
-			$lessons_id = Array();
-			foreach($lIdAndCName as $key){
-				$lessons_id[] = $key['LessonOfCategory']['lesson_id'];
-			}
-			$this->paginate = array(
-				'limit'=>1,
-				'fields'=> array('Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'Lesson.create_user_id', 'User.user_name'),
-				'conditions'=>array('Lesson.id'=>$lessons_id, 'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false)
-				);
-		}
-		if($teacher_name!=null&&$course_name!=null&&$category_name==null){
-			$this->paginate = array(
-				'limit'=>1,
-				'fields'=> array('Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'Lesson.create_user_id', 'User.user_name'),
-				'conditions'=>array('User.user_name LIKE'=>'%'.$teacher_name.'%', 'Lesson.lesson_name LIKE'=>'%'.$course_name.'%',
-								'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false)
-				);
-		}
-		if($teacher_name!=null&&$course_name==null&&$category_name!=null){
-			$lIdAndCName=$this->LessonOfCategory->getLIdAndCName1($category_name);
-			$lessons_id = Array();
-			foreach($lIdAndCName as $key){
-				$lessons_id[] = $key['LessonOfCategory']['lesson_id'];
-			}
-			$this->paginate = array(
-				'limit'=>1,
-				'fields'=> array('Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'Lesson.create_user_id', 'User.user_name'),
-				'conditions'=>array('Lesson.id'=>$lessons_id, 'User.user_name LIKE'=>'%'.$teacher_name.'%',
-								'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false)
-				);
-		}
-		if($teacher_name==null&&$course_name!=null&&$category_name!=null){
-			$lIdAndCName=$this->LessonOfCategory->getLIdAndCName1($category_name);
-			$lessons_id = Array();
-			foreach($lIdAndCName as $key){
-				$lessons_id[] = $key['LessonOfCategory']['lesson_id'];
-			}
-			$this->paginate = array(
-				'limit'=>1,
-				'fields'=> array('Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'Lesson.create_user_id', 'User.user_name'),
-				'conditions'=>array('Lesson.id'=>$lessons_id, 'Lesson.lesson_name LIKE'=>'%'.$course_name.'%',
-								'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false)
-				);
-		}
-		if($teacher_name!=null&&$course_name!=null&&$category_name!=null){
-			$lIdAndCName=$this->LessonOfCategory->getLIdAndCName1($category_name);
-			$lessons_id = Array();
-			foreach($lIdAndCName as $key){
-				$lessons_id[] = $key['LessonOfCategory']['lesson_id'];
-			}
-			$this->paginate = array(
-				'limit'=>1,
-				'fields'=> array('Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'Lesson.create_user_id', 'User.user_name'),
-				'conditions'=>array('Lesson.id'=>$lessons_id, 'Lesson.lesson_name LIKE'=>'%'.$course_name.'%',
-								'User.user_name LIKE'=>'%'.$teacher_name.'%',
-								'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false)
-				);
-		}
+	// 	//start search
+	// 	if($teacher_name!=null&&$course_name==null&&$category_name==null){
+	// 		$this->paginate = array(
+	// 			'limit'=>1,
+	// 			'fields'=> array('Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'Lesson.create_user_id', 'User.user_name'),
+	// 			'conditions'=>array('User.user_name LIKE'=>'%'.$teacher_name.'%', 'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false)
+	// 			);
+	// 	}
+	// 	if($teacher_name==null&&$course_name!=null&&$category_name==null){
+	// 		$this->paginate = array(
+	// 			'limit'=>1,
+	// 			'fields'=> array('Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'Lesson.create_user_id', 'User.user_name'),
+	// 			'conditions'=>array('Lesson.lesson_name LIKE'=>'%'.$course_name.'%', 'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false)
+	// 			);
+	// 	}
+	// 	if($teacher_name==null&&$course_name==null&&$category_name!=null){
+	// 		$lIdAndCName=$this->LessonOfCategory->getLIdAndCName1($category_name);
+	// 		$lessons_id = Array();
+	// 		foreach($lIdAndCName as $key){
+	// 			$lessons_id[] = $key['LessonOfCategory']['lesson_id'];
+	// 		}
+	// 		$this->paginate = array(
+	// 			'limit'=>1,
+	// 			'fields'=> array('Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'Lesson.create_user_id', 'User.user_name'),
+	// 			'conditions'=>array('Lesson.id'=>$lessons_id, 'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false)
+	// 			);
+	// 	}
+	// 	if($teacher_name!=null&&$course_name!=null&&$category_name==null){
+	// 		$this->paginate = array(
+	// 			'limit'=>1,
+	// 			'fields'=> array('Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'Lesson.create_user_id', 'User.user_name'),
+	// 			'conditions'=>array('User.user_name LIKE'=>'%'.$teacher_name.'%', 'Lesson.lesson_name LIKE'=>'%'.$course_name.'%',
+	// 							'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false)
+	// 			);
+	// 	}
+	// 	if($teacher_name!=null&&$course_name==null&&$category_name!=null){
+	// 		$lIdAndCName=$this->LessonOfCategory->getLIdAndCName1($category_name);
+	// 		$lessons_id = Array();
+	// 		foreach($lIdAndCName as $key){
+	// 			$lessons_id[] = $key['LessonOfCategory']['lesson_id'];
+	// 		}
+	// 		$this->paginate = array(
+	// 			'limit'=>1,
+	// 			'fields'=> array('Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'Lesson.create_user_id', 'User.user_name'),
+	// 			'conditions'=>array('Lesson.id'=>$lessons_id, 'User.user_name LIKE'=>'%'.$teacher_name.'%',
+	// 							'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false)
+	// 			);
+	// 	}
+	// 	if($teacher_name==null&&$course_name!=null&&$category_name!=null){
+	// 		$lIdAndCName=$this->LessonOfCategory->getLIdAndCName1($category_name);
+	// 		$lessons_id = Array();
+	// 		foreach($lIdAndCName as $key){
+	// 			$lessons_id[] = $key['LessonOfCategory']['lesson_id'];
+	// 		}
+	// 		$this->paginate = array(
+	// 			'limit'=>1,
+	// 			'fields'=> array('Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'Lesson.create_user_id', 'User.user_name'),
+	// 			'conditions'=>array('Lesson.id'=>$lessons_id, 'Lesson.lesson_name LIKE'=>'%'.$course_name.'%',
+	// 							'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false)
+	// 			);
+	// 	}
+	// 	if($teacher_name!=null&&$course_name!=null&&$category_name!=null){
+	// 		$lIdAndCName=$this->LessonOfCategory->getLIdAndCName1($category_name);
+	// 		$lessons_id = Array();
+	// 		foreach($lIdAndCName as $key){
+	// 			$lessons_id[] = $key['LessonOfCategory']['lesson_id'];
+	// 		}
+	// 		$this->paginate = array(
+	// 			'limit'=>1,
+	// 			'fields'=> array('Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'Lesson.create_user_id', 'User.user_name'),
+	// 			'conditions'=>array('Lesson.id'=>$lessons_id, 'Lesson.lesson_name LIKE'=>'%'.$course_name.'%',
+	// 							'User.user_name LIKE'=>'%'.$teacher_name.'%',
+	// 							'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false)
+	// 			);
+	// 	}
 
-		$lessons = $this->paginate('Lesson');
-		$this->set ( compact ( 'lessons' ));
-		$this->showLayout();
-		$this->set('title_for_layout', '検索結果'); 
-	}
+	// 	$lessons = $this->paginate('Lesson');
+	// 	$this->set ( compact ( 'lessons' ));
+	// 	$this->showLayout();
+	// 	$this->set('title_for_layout', '検索結果'); 
+	// }
 	
-	public function search_result2(){
-		$isand=false;
-		if(!empty($this->data)&&$this->request->data['keyword']!=null){
-			$keyword=$this->request->data['keyword'];
-			$type=$this->data['Lesson']['type'];
-			$this->Session->write('keyword', $keyword);
-			$this->Session->write('type', $type);
-			//debug($keyword);
-			//debug($type);die();
-		}
-		else if($this->Session->check('keyword')&&$this->Session->check('type')){
-			$keyword=$this->Session->read('keyword');
-			$type=$this->Session->read('type');
-			//debug($keyword);
-		}
-		$andpos=strpos($keyword, '+');
-		$orpos=strpos($keyword, '-');
+	// public function search_result2(){
+	// 	$isand=false;
+	// 	if(!empty($this->data)&&$this->request->data['keyword']!=null){
+	// 		$keyword=$this->request->data['keyword'];
+	// 		$type=$this->data['Lesson']['type'];
+	// 		$this->Session->write('keyword', $keyword);
+	// 		$this->Session->write('type', $type);
+	// 		//debug($keyword);
+	// 		//debug($type);die();
+	// 	}
+	// 	else if($this->Session->check('keyword')&&$this->Session->check('type')){
+	// 		$keyword=$this->Session->read('keyword');
+	// 		$type=$this->Session->read('type');
+	// 		//debug($keyword);
+	// 	}
+	// 	$andpos=strpos($keyword, '+');
+	// 	$orpos=strpos($keyword, '-');
 		
-		if(($andpos!=0&&$orpos!=0&&$andpos<=$orpos)||$orpos==0)
-		{
-			$keywords=explode('+', $keyword);
-			$isand=true;
-		}
-		else{
-			$keywords=explode('-', $keyword);
-			$isand=false;
-		}
+	// 	if(($andpos!=0&&$orpos!=0&&$andpos<=$orpos)||$orpos==0)
+	// 	{
+	// 		$keywords=explode('+', $keyword);
+	// 		$isand=true;
+	// 	}
+	// 	else{
+	// 		$keywords=explode('-', $keyword);
+	// 		$isand=false;
+	// 	}
 		
-		//debug($keywords);
-		switch ($type) {
-			case 'teacher':
-			foreach ($keywords as $key) {
-				$condition1[]=array('User.user_name LIKE'=>'%'.$key.'%');
-			}
-			if($isand){
-				$conditions=array($condition1, 'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false);		
-			}
-			else
-				$conditions=array('OR'=>$condition1, 'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false);
+	// 	//debug($keywords);
+	// 	switch ($type) {
+	// 		case 'teacher':
+	// 		foreach ($keywords as $key) {
+	// 			$condition1[]=array('User.user_name LIKE'=>'%'.$key.'%');
+	// 		}
+	// 		if($isand){
+	// 			$conditions=array($condition1, 'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false);		
+	// 		}
+	// 		else
+	// 			$conditions=array('OR'=>$condition1, 'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false);
 
-			if($this->Auth->User('level')==3){
-				$teacherIds=$this->BannedStudent->find('all', array(
-							'fields'=>array('BannedStudent.teacher_id'),
-							'conditions'=>array('BannedStudent.student_id'=>$this->Auth->User('id'))
-				));
-				foreach ($teacherIds as $key) {
-					$this->teacherIdSet[]=$key['BannedStudent']['teacher_id'];
-				}
-				$this->paginate = array(
-				'limit'=>1,
-				'fields'=> array('Lesson.id', 'Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'User.user_name'),
-				'conditions'=>array($conditions, 'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false, 'NOT'=>array('Lesson.create_user_id'=>$this->teacherIdSet))
-				);	
-			}
-			else
-				$this->paginate = array(
-					'limit'=>1,
-					'fields'=> array('Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'Lesson.create_user_id', 'User.user_name'),
-					'conditions'=>array($conditions, 'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false)
-					);
-			break;
+	// 		if($this->Auth->User('level')==3){
+	// 			$teacherIds=$this->BannedStudent->find('all', array(
+	// 						'fields'=>array('BannedStudent.teacher_id'),
+	// 						'conditions'=>array('BannedStudent.student_id'=>$this->Auth->User('id'))
+	// 			));
+	// 			foreach ($teacherIds as $key) {
+	// 				$this->teacherIdSet[]=$key['BannedStudent']['teacher_id'];
+	// 			}
+	// 			$this->paginate = array(
+	// 			'limit'=>1,
+	// 			'fields'=> array('Lesson.id', 'Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'User.user_name'),
+	// 			'conditions'=>array($conditions, 'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false, 'NOT'=>array('Lesson.create_user_id'=>$this->teacherIdSet))
+	// 			);	
+	// 		}
+	// 		else
+	// 			$this->paginate = array(
+	// 				'limit'=>1,
+	// 				'fields'=> array('Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'Lesson.create_user_id', 'User.user_name'),
+	// 				'conditions'=>array($conditions, 'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false)
+	// 				);
+	// 		break;
 
-			case 'lesson':
-			foreach ($keywords as $key) {
-				$condition1[]=array('Lesson.lesson_name LIKE'=>'%'.$key.'%');
-			}
-			if($isand){
-				$conditions=array($condition1, 'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false);		
-			}
-			else
-				$conditions=array('OR'=>$condition1, 'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false);
-			if($this->Auth->User('level')==3){
-				$teacherIds=$this->BannedStudent->find('all', array(
-							'fields'=>array('BannedStudent.teacher_id'),
-							'conditions'=>array('BannedStudent.student_id'=>$this->Auth->User('id'))
-				));
-				foreach ($teacherIds as $key) {
-					$this->teacherIdSet[]=$key['BannedStudent']['teacher_id'];
-				}
-				$this->paginate = array(
-				'limit'=>1,
-				'fields'=> array('Lesson.id', 'Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'User.user_name'),
-				'conditions'=>array($conditions, 'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false, 'NOT'=>array('Lesson.create_user_id'=>$this->teacherIdSet))
-				);	
-			}
-			else
-				$this->paginate = array(
-					'limit'=>1,
-					'fields'=> array('Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'Lesson.create_user_id', 'User.user_name'),
-					'conditions'=>array($conditions, 'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false)
-					);
-			break;
+	// 		case 'lesson':
+	// 		foreach ($keywords as $key) {
+	// 			$condition1[]=array('Lesson.lesson_name LIKE'=>'%'.$key.'%');
+	// 		}
+	// 		if($isand){
+	// 			$conditions=array($condition1, 'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false);		
+	// 		}
+	// 		else
+	// 			$conditions=array('OR'=>$condition1, 'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false);
+	// 		if($this->Auth->User('level')==3){
+	// 			$teacherIds=$this->BannedStudent->find('all', array(
+	// 						'fields'=>array('BannedStudent.teacher_id'),
+	// 						'conditions'=>array('BannedStudent.student_id'=>$this->Auth->User('id'))
+	// 			));
+	// 			foreach ($teacherIds as $key) {
+	// 				$this->teacherIdSet[]=$key['BannedStudent']['teacher_id'];
+	// 			}
+	// 			$this->paginate = array(
+	// 			'limit'=>1,
+	// 			'fields'=> array('Lesson.id', 'Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'User.user_name'),
+	// 			'conditions'=>array($conditions, 'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false, 'NOT'=>array('Lesson.create_user_id'=>$this->teacherIdSet))
+	// 			);	
+	// 		}
+	// 		else
+	// 			$this->paginate = array(
+	// 				'limit'=>1,
+	// 				'fields'=> array('Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'Lesson.create_user_id', 'User.user_name'),
+	// 				'conditions'=>array($conditions, 'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false)
+	// 				);
+	// 		break;
 
-			case 'category':
-			$lIdAndCName=$this->LessonOfCategory->getLIdAndCName2($keyword);
-			$lessons_id = Array();
-			foreach($lIdAndCName as $key){
-				$lessons_id[] = $key['LessonOfCategory']['lesson_id'];
-			}
-			if($this->Auth->User('level')==3){
-				$teacherIds=$this->BannedStudent->find('all', array(
-							'fields'=>array('BannedStudent.teacher_id'),
-							'conditions'=>array('BannedStudent.student_id'=>$this->Auth->User('id'))
-				));
-				foreach ($teacherIds as $key) {
-					$this->teacherIdSet[]=$key['BannedStudent']['teacher_id'];
-				}
-				$this->paginate = array(
-				'limit'=>1,
-				'fields'=> array('Lesson.id', 'Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'User.user_name'),
-				'conditions'=>array('Lesson.id'=>$lessons_id, 'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false, 'NOT'=>array('Lesson.create_user_id'=>$this->teacherIdSet))
-				);	
-			}
-			else
-				$this->paginate = array(
-					'limit'=>1,
-					'fields'=> array('Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'Lesson.create_user_id', 'User.user_name'),
-					'conditions'=>array('Lesson.id'=>$lessons_id, 'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false)
-					);
-			break;
+	// 		case 'category':
+	// 		$lIdAndCName=$this->LessonOfCategory->getLIdAndCName2($keyword);
+	// 		$lessons_id = Array();
+	// 		foreach($lIdAndCName as $key){
+	// 			$lessons_id[] = $key['LessonOfCategory']['lesson_id'];
+	// 		}
+	// 		if($this->Auth->User('level')==3){
+	// 			$teacherIds=$this->BannedStudent->find('all', array(
+	// 						'fields'=>array('BannedStudent.teacher_id'),
+	// 						'conditions'=>array('BannedStudent.student_id'=>$this->Auth->User('id'))
+	// 			));
+	// 			foreach ($teacherIds as $key) {
+	// 				$this->teacherIdSet[]=$key['BannedStudent']['teacher_id'];
+	// 			}
+	// 			$this->paginate = array(
+	// 			'limit'=>1,
+	// 			'fields'=> array('Lesson.id', 'Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'User.user_name'),
+	// 			'conditions'=>array('Lesson.id'=>$lessons_id, 'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false, 'NOT'=>array('Lesson.create_user_id'=>$this->teacherIdSet))
+	// 			);	
+	// 		}
+	// 		else
+	// 			$this->paginate = array(
+	// 				'limit'=>1,
+	// 				'fields'=> array('Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'Lesson.create_user_id', 'User.user_name'),
+	// 				'conditions'=>array('Lesson.id'=>$lessons_id, 'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false)
+	// 				);
+	// 		break;
 
-			case 'description':
-			foreach ($keywords as $key) {
-				$condition1[]=array('Lesson.description LIKE'=>'%'.$key.'%');
-			}
-			if($isand){
-				$conditions=array($condition1, 'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false);		
-			}
-			else
-				$conditions=array('OR'=>$condition1, 'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false);
-			if($this->Auth->User('level')==3){
-				$teacherIds=$this->BannedStudent->find('all', array(
-							'fields'=>array('BannedStudent.teacher_id'),
-							'conditions'=>array('BannedStudent.student_id'=>$this->Auth->User('id'))
-				));
-				foreach ($teacherIds as $key) {
-					$this->teacherIdSet[]=$key['BannedStudent']['teacher_id'];
-				}
-				$this->paginate = array(
-				'limit'=>1,
-				'fields'=> array('Lesson.id', 'Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'User.user_name'),
-				'conditions'=>array($conditions, 'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false, 'NOT'=>array('Lesson.create_user_id'=>$this->teacherIdSet))
-				);	
-			}
-			else
-				$this->paginate = array(
-					'limit'=>1,
-					'fields'=> array('Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'Lesson.create_user_id', 'User.user_name'),
-					'conditions'=>array($conditions, 'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false)
-					);
-			break;
+	// 		case 'description':
+	// 		foreach ($keywords as $key) {
+	// 			$condition1[]=array('Lesson.description LIKE'=>'%'.$key.'%');
+	// 		}
+	// 		if($isand){
+	// 			$conditions=array($condition1, 'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false);		
+	// 		}
+	// 		else
+	// 			$conditions=array('OR'=>$condition1, 'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false);
+	// 		if($this->Auth->User('level')==3){
+	// 			$teacherIds=$this->BannedStudent->find('all', array(
+	// 						'fields'=>array('BannedStudent.teacher_id'),
+	// 						'conditions'=>array('BannedStudent.student_id'=>$this->Auth->User('id'))
+	// 			));
+	// 			foreach ($teacherIds as $key) {
+	// 				$this->teacherIdSet[]=$key['BannedStudent']['teacher_id'];
+	// 			}
+	// 			$this->paginate = array(
+	// 			'limit'=>1,
+	// 			'fields'=> array('Lesson.id', 'Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'User.user_name'),
+	// 			'conditions'=>array($conditions, 'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false, 'NOT'=>array('Lesson.create_user_id'=>$this->teacherIdSet))
+	// 			);	
+	// 		}
+	// 		else
+	// 			$this->paginate = array(
+	// 				'limit'=>1,
+	// 				'fields'=> array('Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'Lesson.create_user_id', 'User.user_name'),
+	// 				'conditions'=>array($conditions, 'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false)
+	// 				);
+	// 		break;
 
-			default:
-		   		# code...
-			break;
-		}
-		$lessons = $this->paginate('Lesson');
-		$this->set ( compact ( 'lessons' ));
-		//get lesson cost
-		$lessonCost=$this->ChangeableValue->find('all', array(
-			'fields'=>array('ChangeableValue.current_value'),
-			'conditions'=>array('ChangeableValue.id'=>$this->costId)
-			));
-		$this->set ('cost', $lessonCost[0]['ChangeableValue']['current_value']);
-		$this->showLayout();
-		$this->set('title_for_layout', '検索結果');  
-	}
+	// 		default:
+	// 	   		# code...
+	// 		break;
+	// 	}
+	// 	$lessons = $this->paginate('Lesson');
+	// 	$this->set ( compact ( 'lessons' ));
+	// 	//get lesson cost
+	// 	$lessonCost=$this->ChangeableValue->find('all', array(
+	// 		'fields'=>array('ChangeableValue.current_value'),
+	// 		'conditions'=>array('ChangeableValue.id'=>$this->costId)
+	// 		));
+	// 	$this->set ('cost', $lessonCost[0]['ChangeableValue']['current_value']);
+	// 	$this->showLayout();
+	// 	$this->set('title_for_layout', '検索結果');  
+	// }
 
 	public function search_result3(){
 		$isand=false;
@@ -468,17 +468,17 @@ class LessonsController extends AppController {
 			}
 			$conditionCategory=array('Lesson.id'=>$lessons_id);
 			if($this->Auth->User('level')==3){
-				$teacherIds=$this->BannedStudent->find('all', array(
-							'fields'=>array('BannedStudent.teacher_id'),
-							'conditions'=>array('BannedStudent.student_id'=>$this->Auth->User('id'))
-				));
-				foreach ($teacherIds as $key) {
-					$this->teacherIdSet[]=$key['BannedStudent']['teacher_id'];
-				}
+				// $teacherIds=$this->BannedStudent->find('all', array(
+				// 			'fields'=>array('BannedStudent.teacher_id'),
+				// 			'conditions'=>array('BannedStudent.student_id'=>$this->Auth->User('id'))
+				// ));
+				// foreach ($teacherIds as $key) {
+				// 	$this->teacherIdSet[]=$key['BannedStudent']['teacher_id'];
+				// }
 				$conditions=array('OR'=>array($conditionTeacher, $conditionLesson, $conditionDescription, $conditionCategory), 
 									'Lesson.delete_flag'=>false, 
-									'Lesson.lock_flag'=>false, 
-									'NOT'=>array('Lesson.create_user_id'=>$this->teacherIdSet)
+									'Lesson.lock_flag'=>false 
+									//'NOT'=>array('Lesson.create_user_id'=>$this->teacherIdSet)
 									);
 
 			}
@@ -498,17 +498,17 @@ class LessonsController extends AppController {
 			}
 			$condition[]=array('Lesson.id'=>$lessons_id);
 			if($this->Auth->User('level')==3){
-				$teacherIds=$this->BannedStudent->find('all', array(
-							'fields'=>array('BannedStudent.teacher_id'),
-							'conditions'=>array('BannedStudent.student_id'=>$this->Auth->User('id'))
-				));
-				foreach ($teacherIds as $key) {
-					$this->teacherIdSet[]=$key['BannedStudent']['teacher_id'];
-				}
+				// $teacherIds=$this->BannedStudent->find('all', array(
+				// 			'fields'=>array('BannedStudent.teacher_id'),
+				// 			'conditions'=>array('BannedStudent.student_id'=>$this->Auth->User('id'))
+				// ));
+				// foreach ($teacherIds as $key) {
+				// 	$this->teacherIdSet[]=$key['BannedStudent']['teacher_id'];
+				// }
 				$conditions=array('OR'=>$condition, 
 									'Lesson.delete_flag'=>false, 
-									'Lesson.lock_flag'=>false,
-									'NOT'=>array('Lesson.create_user_id'=>$this->teacherIdSet)
+									'Lesson.lock_flag'=>false
+									//'NOT'=>array('Lesson.create_user_id'=>$this->teacherIdSet)
 									);
 			}
 			else{
@@ -539,60 +539,60 @@ class LessonsController extends AppController {
 
 	}
 	//検索ボックスで検索された授業
-	public function search_result(){
-		if(!empty($this->data)&&$this->request->data['keyword']!=null){
-			$keyword=$this->request->data['keyword'];
-			$type=$this->data['Lesson']['type'];
-			$this->Session->write('keyword', $keyword);
-			$this->Session->write('type', $type);
-			//debug($keyword);
-			//debug($type);die();
-		}
-		else if($this->Session->check('keyword')&&$this->Session->check('type')){
-			$keyword=$this->Session->read('keyword');
-			$type=$this->Session->read('type');
-			//debug($keyword);
-		}
+	// public function search_result(){
+	// 	if(!empty($this->data)&&$this->request->data['keyword']!=null){
+	// 		$keyword=$this->request->data['keyword'];
+	// 		$type=$this->data['Lesson']['type'];
+	// 		$this->Session->write('keyword', $keyword);
+	// 		$this->Session->write('type', $type);
+	// 		//debug($keyword);
+	// 		//debug($type);die();
+	// 	}
+	// 	else if($this->Session->check('keyword')&&$this->Session->check('type')){
+	// 		$keyword=$this->Session->read('keyword');
+	// 		$type=$this->Session->read('type');
+	// 		//debug($keyword);
+	// 	}
 
-		switch ($type) {
-			case 'teacher':
-			$this->paginate = array(
-				'limit'=>1,
-				'fields'=> array('Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'Lesson.create_user_id', 'User.user_name'),
-				'conditions'=>array('User.user_name LIKE'=>'%'.$keyword.'%', 'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false)
-				);
-			break;
+	// 	switch ($type) {
+	// 		case 'teacher':
+	// 		$this->paginate = array(
+	// 			'limit'=>1,
+	// 			'fields'=> array('Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'Lesson.create_user_id', 'User.user_name'),
+	// 			'conditions'=>array('User.user_name LIKE'=>'%'.$keyword.'%', 'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false)
+	// 			);
+	// 		break;
 
-			case 'lesson':
-			$this->paginate = array(
-				'limit'=>1,
-				'fields'=> array('Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'Lesson.create_user_id', 'User.user_name'),
-				'conditions'=>array('Lesson.lesson_name LIKE'=>'%'.$keyword.'%', 'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false)
-				);
-			break;
+	// 		case 'lesson':
+	// 		$this->paginate = array(
+	// 			'limit'=>1,
+	// 			'fields'=> array('Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'Lesson.create_user_id', 'User.user_name'),
+	// 			'conditions'=>array('Lesson.lesson_name LIKE'=>'%'.$keyword.'%', 'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false)
+	// 			);
+	// 		break;
 
-			case 'category':
-			$lIdAndCName=$this->LessonOfCategory->getLIdAndCName1($keyword);
-			$lessons_id = Array();
-			foreach($lIdAndCName as $key){
-				$lessons_id[] = $key['LessonOfCategory']['lesson_id'];
-			}
-			$this->paginate = array(
-				'limit'=>1,
-				'fields'=> array('Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'Lesson.create_user_id', 'User.user_name'),
-				'conditions'=>array('Lesson.id'=>$lessons_id, 'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false)
-				);
-			break;
+	// 		case 'category':
+	// 		$lIdAndCName=$this->LessonOfCategory->getLIdAndCName1($keyword);
+	// 		$lessons_id = Array();
+	// 		foreach($lIdAndCName as $key){
+	// 			$lessons_id[] = $key['LessonOfCategory']['lesson_id'];
+	// 		}
+	// 		$this->paginate = array(
+	// 			'limit'=>1,
+	// 			'fields'=> array('Lesson.lesson_name', 'Lesson.description', 'Lesson.create_date', 'Lesson.create_user_id', 'User.user_name'),
+	// 			'conditions'=>array('Lesson.id'=>$lessons_id, 'Lesson.delete_flag'=>false, 'Lesson.lock_flag'=>false)
+	// 			);
+	// 		break;
 
-			default:
-		   		# code...
-			break;
-		}
-		$lessons = $this->paginate('Lesson');
-		$this->set ( compact ( 'lessons' ));
-		$this->showLayout();
-		$this->set('title_for_layout', '検索結果');  
-	}
+	// 		default:
+	// 	   		# code...
+	// 		break;
+	// 	}
+	// 	$lessons = $this->paginate('Lesson');
+	// 	$this->set ( compact ( 'lessons' ));
+	// 	$this->showLayout();
+	// 	$this->set('title_for_layout', '検索結果');  
+	// }
 
 	protected function showLayout(){
 		//debug($this->Auth->User());
