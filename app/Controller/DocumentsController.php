@@ -21,10 +21,22 @@ class DocumentsController extends AppController{
 			$this->layout= "teacher";
 		}
 		//if (!isset($id))  $this->redirect(array('controller' => 'documents', 'action' => 'viewDoc', 2));
+		$reporters = $this->Document->field('copyright_reporters',array('id'=>$id));
+		if(strpos($reporters,',')){
+			$reporter = explode(',', $reporters);
+		}else $reporter = array($reporters);
+// 		debug($reporter);
+		$isCopyright = true;
+		if(in_array($this->Auth->user('id'),$reporter)){
+			$isCopyright = false;
+		}
+		$this->set('isCopyright',$isCopyright);
 		$this->set('clear', '');
 		$this->set('lesson_id', $lesson_id);
 		$doc = $this->Document->findById($id);
+// 		$teacher = $this->User->findById($doc['Document']['create_user_id']);
 		$this->set('doc',$doc);
+// 		debug($doc);die();
 		//debug($doc);die;
 		$file = $this->webroot.$doc['Document']['file_link'];
 		//$file = str_replace('\', $replace, $subject)
@@ -37,7 +49,7 @@ class DocumentsController extends AppController{
 			if($this->Document->field('copyright_violation') == 0 ){
 				$this->Document->set(array('copyright_violation'=>1));
 			}
-			$this->Document->set(array('copyright_reporters'=>($this->Document->field('copyright_reporters')+1)));
+			$this->Document->set(array('copyright_reporters'=>($this->Document->field('copyright_reporters').','.$this->Auth->user('id'))));
 			$this->Document->save();
 			$this->Session->setFlash('Copyright違反を報告成功した');
 		}

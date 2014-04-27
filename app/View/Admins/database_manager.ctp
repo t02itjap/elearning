@@ -7,6 +7,7 @@ echo $this->Html->script ( array (
 ) );
 ?>
 <?php echo $this->Session->flash('backup');?>
+<h3>手動バックアップ管理</h3>
 <div id='data_manage'>
 	<table>
 		<tr>

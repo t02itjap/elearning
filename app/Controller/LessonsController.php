@@ -686,7 +686,7 @@ class LessonsController extends AppController {
 		//get lesson cost
 		$lessonCost=$this->ChangeableValue->find('all', array(
 			'fields'=>array('ChangeableValue.current_value'),
-			'conditions'=>array('ChangeableValue.id'=>5)
+			'conditions'=>array('ChangeableValue.id'=>6)
 			));
 		$this->set ('cost', $lessonCost[0]['ChangeableValue']['current_value']);
 		$this->showLayout();	

@@ -1,0 +1,184 @@
+[33mcommit 35abc50aefebe822ac75a43b22df933419aa687a[m
+Author: Tien Dinh Quang <tienbkhv@gmail.com>
+Date:   Fri Apr 25 20:27:52 2014 +0700
+
+    export csdl test
+
+[33mcommit 498fc9d918307635f7ab985e8845ede9ab1bd578[m
+Merge: 4aadd50 d8b7d2f
+Author: Tien Dinh Quang <tienbkhv@gmail.com>
+Date:   Fri Apr 25 20:16:16 2014 +0700
+
+    Merge branch 'master' of github.com:t02itjap/elearning
+
+[33mcommit 4aadd501caa1a26231c7c47589dfd547aeab87c0[m
+Author: Tien Dinh Quang <tienbkhv@gmail.com>
+Date:   Fri Apr 25 20:15:37 2014 +0700
+
+    sua de test
+
+[33mcommit d8b7d2fa53f6311527f3c5f8d0ae01399861c684[m
+Author: Khanh <nguyendinh.khanh0@gmail.com>
+Date:   Fri Apr 25 14:03:44 2014 +0700
+
+    fix loi khi select cac category giong nhau van luu  vao csdl
+
+[33mcommit c86c47226b0eb2f828964284e030b0c7d32388df[m
+Author: Khanh <nguyendinh.khanh0@gmail.com>
+Date:   Fri Apr 25 13:12:17 2014 +0700
+
+    fix loi khi select cac category giong nhau van luu  vao csdl
+
+[33mcommit 5e575acfb4acd751a2a23910f667a1540990bab6[m
+Merge: 9b56b3c 8c87db0
+Author: Khanh <nguyendinh.khanh0@gmail.com>
+Date:   Fri Apr 25 12:18:45 2014 +0700
+
+    Merge branch 'master' of https://github.com/t02itjap/elearning
+
+[33mcommit 9b56b3c6b53a12021950aa6ae70043e4efae25b5[m
+Author: Khanh <nguyendinh.khanh0@gmail.com>
+Date:   Fri Apr 25 12:18:21 2014 +0700
+
+    sua css
+
+[33mcommit 8c87db0fe652683131300bac178b318674d98c51[m
+Author: Tien Dinh Quang <tienbkhv@gmail.com>
+Date:   Fri Apr 25 08:52:09 2014 +0700
+
+    comment
+
+[33mcommit 6901908f43fc62e63f47d3bcf94df1d534373a18[m
+Merge: 4a53e51 bae2e32
+Author: Tien Dinh Quang <tienbkhv@gmail.com>
+Date:   Fri Apr 25 07:25:13 2014 +0700
+
+    sua conflich
+
+[33mcommit 4a53e51e2a0f84cbf94d8690f3a090bc25097b02[m
+Author: Tien Dinh Quang <tienbkhv@gmail.com>
+Date:   Fri Apr 25 07:23:15 2014 +0700
+
+    sua code
+
+[33mcommit bae2e3259cae59950bada72a5f8d6eac4bb74477[m
+Merge: 560efee a4f3d93
+Author: hoanle <hoanle12@gmail.com>
+Date:   Fri Apr 25 07:21:58 2014 +0700
+
+    fix conflict
+
+[33mcommit 560efee00abbf8a41e0ae074e7ff9161aadfab50[m
+Author: hoanle <hoanle12@gmail.com>
+Date:   Fri Apr 25 07:19:55 2014 +0700
+
+    fix something
+
+[33mcommit a4f3d931a0fb160c20bc539ac89aae88046dd44c[m
+Author: Khanh <nguyendinh.khanh0@gmail.com>
+Date:   Fri Apr 25 07:08:23 2014 +0700
+
+    sua css
+
+[33mcommit 802537ca49d89558ff98671d54d26754677e6dc5[m
+Merge: 9b8d8ff d0c8506
+Author: hoanle <hoanle12@gmail.com>
+Date:   Fri Apr 25 07:05:33 2014 +0700
+
+    fix conflict
+
+[33mcommit 9b8d8ff16fb645c98e3373fa0d4d608f362386a2[m
+Author: hoanle <hoanle12@gmail.com>
+Date:   Fri Apr 25 07:03:57 2014 +0700
+
+    commit to pull
+
+[33mcommit d0c8506275141d4d770927cef8eb810f05f769e7[m
+Merge: 535d6d9 65e15b1
+Author: Khanh <nguyendinh.khanh0@gmail.com>
+Date:   Fri Apr 25 05:53:21 2014 +0700
+
+    sua cac model, teachercontroller, studentcontroller, admincontroller de co chuc nang delete
+
+[33mcommit 535d6d90685c0c652fe82510a2c060cdc4360b82[m
+Author: Khanh <nguyendinh.khanh0@gmail.com>
+Date:   Fri Apr 25 05:25:12 2014 +0700
+
+    sua cac model, teachercontroller, studentcontroller, admincontroller de co chuc nang delete
+
+[33mcommit 0cad9a95cae7867816f832ca762078835f4d4d89[m
+Merge: 4ed2c41 65e15b1
+Author: hoanle <hoanle12@gmail.com>
+Date:   Fri Apr 25 04:15:43 2014 +0700
+
+    Merge branch 'master' of https://github.com/t02itjap/elearning
+
+[33mcommit 4ed2c411c6b0a671e376f94db63b7bffac1e2272[m
+Author: hoanle <hoanle12@gmail.com>
+Date:   Fri Apr 25 04:15:32 2014 +0700
+
+    fix something
+
+[33mcommit 65e15b1d42747ad0aa56cc88baf746b3f424667b[m
+Author: Tien Dinh Quang <tienbkhv@gmail.com>
+Date:   Fri Apr 25 04:07:59 2014 +0700
+
+    fix tiep
+
+[33mcommit ac924cd2f76dde9ae2827672b0c57c4b174f1963[m
+Merge: 28159e6 cdfa75f
+Author: Tien Dinh Quang <tienbkhv@gmail.com>
+Date:   Fri Apr 25 03:47:49 2014 +0700
+
+    fixx
+
+[33mcommit 28159e684dda6e81d2f32c52607637a5716dba69[m
+Author: Tien Dinh Quang <tienbkhv@gmail.com>
+Date:   Fri Apr 25 03:45:40 2014 +0700
+
+    export money
+
+[33mcommit f9f33fff3a7275f7026f7ea18f9053fb9f90e25f[m
+Merge: afebf69 cdfa75f
+Author: hoanle <hoanle12@gmail.com>
+Date:   Fri Apr 25 02:54:31 2014 +0700
+
+    Merge branch 'master' of https://github.com/t02itjap/elearning
+
+[33mcommit afebf690619260c0758efcd20dec2a845a5a0d17[m
+Author: hoanle <hoanle12@gmail.com>
+Date:   Fri Apr 25 02:54:19 2014 +0700
+
+    commit to pull
+
+[33mcommit cdfa75f9c49a5722dba180ed80c0e54dd27003b5[m
+Merge: 0c2db07 09b2d76
+Author: ManhPhi <manhphi65@gmail.com>
+Date:   Fri Apr 25 02:52:00 2014 +0700
+
+    Merge branch 'master' of github.com:t02itjap/elearning
+
+[33mcommit 0c2db0718040180d4f1f26a2ca936b7daf9dde63[m
+Author: ManhPhi <manhphi65@gmail.com>
+Date:   Fri Apr 25 02:51:18 2014 +0700
+
+    full test make and view Test, View Doccument
+
+[33mcommit 09b2d7631ec85fac31decc27258fa5c2676b131a[m
+Merge: 5257ca9 ac4a694
+Author: hoanle <hoanle12@gmail.com>
+Date:   Fri Apr 25 01:51:27 2014 +0700
+
+    Merge branch 'master' of https://github.com/t02itjap/elearning
+
+[33mcommit 5257ca9e65932555a53eb6d27b2a2cd8c316762a[m
+Author: hoanle <hoanle12@gmail.com>
+Date:   Fri Apr 25 01:51:16 2014 +0700
+
+    fix some thing relate manage document
+
+[33mcommit ac4a6942209a0cc4c0cff57956aaa78ee314d43e[m
+Author: Khanh <nguyendinh.khanh0@gmail.com>
+Date:   Fri Apr 25 00:30:36 2014 +0700
+
+    them phan check trong manage_course

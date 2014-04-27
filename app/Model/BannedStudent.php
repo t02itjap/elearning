@@ -14,11 +14,11 @@ class BannedStudent extends AppModel {
 			)
 	);
 	//kiem tra xem student $id co bi ban ko
-	public function isBanned($uname){
+	public function isBanned($uname,$teacher){
 		$user = new User();
 		$_user = $user->find('first',array('conditions'=>array('user_name'=>$uname,'level'=>3)));
 		if($_user)
-			return $this->find('first',array('conditions'=>array('student_id'=>$_user['User']['id'])));
+			return $this->find('first',array('conditions'=>array('student_id'=>$_user['User']['id'],'teacher_id'=>$teacher)));
 		else 
 			return false;
 	}

@@ -18,17 +18,19 @@
     <!--
     <span><input type="text"/></span>
     <span><button>検索</button></span>-->
-	<table class='table table-striped' style='table-layout: fixed'>
+	<table class='table table-striped' style='table-layout: fixed;font-size:14px;'>
 		<thead>
 			<tr>
-				<th><?php echo $this->Paginator->sort('Document.id', 'ID'); ?></th>
-				<th><?php echo $this->Paginator->sort('Document.file_name', 'ファイル名'); ?></th>
+				<th style="width:20px;"><?php echo $this->Paginator->sort('Document.id', 'ID'); ?></th>
+				<th style="width:50px;"><?php echo $this->Paginator->sort('Document.file_name', 'ファイル名'); ?></th>
 				<th><?php echo $this->Paginator->sort('Document.lesson_id', '授業名'); ?></th>
 				<th><?php echo $this->Paginator->sort('Document.create_date', 'アップロード時間'); ?></th>
 				<th><?php echo $this->Paginator->sort('Document.create_user_id', 'アップロード者'); ?></th>
-				<th><?php echo $this->Paginator->sort('Document.copyright_violation', 'Copyright違反'); ?></th>
-				<th><?php echo 'ファイルリンク' ;?></th>
-				<th></th>
+				
+				<th style="width:100px;"><?php echo 'ファイルリンク' ;?></th>
+				<th>Copyright違反</th>
+				<th style="width:40px;"></th>
+				<th style="width:40px;"></th>
 			</tr>
 		</thead>
 		<tbody> 
@@ -58,21 +60,19 @@
 				<td class='content-center'><?php echo $this->Html->link($item['Document']['file_name'], array('controller' => 'Admins', 'action' => 'managerDocument', $item['Document']['id'])); ?></td>
 				<td class='content-center'><?php echo $item['Lesson']['lesson_name']; ?></td>
 				<td class='content-center'><?php echo $item['Document']['create_date']; ?></td>
+				
 				<td class='content-center'><?php echo $item['User']['user_name']; ?></td>
-                        <?php
-						$count = '違反ない';
-						$temp = $item ['Document'] ['copyright_violation'];
-						if ($temp == 1) {
-							$count = '違反';
-						}
-						$count1 = 'ブロックない';
-						$temp1 = $item ['Document'] ['lock_flag'];
-						if ($temp1 == 1) {
-							$count1 = 'ブロック';
-						}
-						?>
-                        <td class='content-center'><?php echo $count; ?></td>
 				<td class='content-center'><?php echo $item['Document']['file_link'] ?></td>
+                        <td class='content-center'><?php 
+                        if(!empty($item['Document']['copyright_reporters']))
+                        {
+                        if(strpos($item['Document']['copyright_reporters'],',')){
+							$reporter = explode(',', $item['Document']['copyright_reporters']);
+							echo count($reporter);
+                        }else echo '1';
+                        }else echo '0';
+                        ?></td>
+				<td class='content-center'><?php echo $this->Html->link('勧告',array('controller'=>'admins','action'=>'copyrightNotify',$item['Document']['create_user_id'],$item['Document']['id']));?></td>
 				<td class='content-center'><?php echo $this->Html->link('削除',array('controller'=>'admins','action'=>'deleteDoc',$item['Document']['id']));?></td>
 				
 			</tr>

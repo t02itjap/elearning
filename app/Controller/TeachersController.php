@@ -52,11 +52,12 @@ class TeachersController extends AppController {
             ),
             'fields' => array(
                 'viewers',
-                'voters'
+                'voters',
+            	'create_user_id'
             )
                 ));
 
-        if(strpos(',',$$lesson ['Lesson'] ['voters'])){
+        if(strpos($lesson ['Lesson'] ['voters'],',')){
         	$lesson ['Lesson'] ['voters'] = explode(",", $lesson ['Lesson'] ['voters']);
 	        foreach ($lesson['Lesson']['voters'] as $value){
 	        	$user = $this->User->find('first',array('conditions'=>array('id'=>$value)));
@@ -130,10 +131,10 @@ class TeachersController extends AppController {
                     $this->Session->setFlash("ユーザネームが存在しない");
                     return;
                 }
-                if (!$this->BannedStudent->isBanned($ban ['BannedStudent'] ['StudentName'])) {
+                if (!$this->BannedStudent->isBanned($ban ['BannedStudent'] ['StudentName'],$lesson['Lesson']['create_user_id']) ){
                     $this->BannedStudent->create();
                     $this->BannedStudent->set(array(
-                        'teacher_id' => $this->Auth->user('id'),
+                        'teacher_id' => $lesson['Lesson']['create_user_id'],
                         'student_id' => $stu ['User'] ['id'],
                         'reason' => $ban ['BannedStudent'] ['Reason'],
                         'banned_date'=>date("Y-m-d h:i:s", time())
@@ -323,7 +324,7 @@ class TeachersController extends AppController {
                 	$this->Test->create();
                 	//新しいドキュメントのテーブルのデータベースを作成する 
                 	if ($this->Test->checkValid($upData['name'], $user_id) == false) {
-                        debug('Fuck y here'); die;
+//                         debug('Fuck y here'); die;
                     	$bug = 1;
                 		$err1 = '<br><span>このファイルが存在でした、あるいはこのファイルの形態が間違いです。<span></br>';
                     	$this->set(compact('err1'));	

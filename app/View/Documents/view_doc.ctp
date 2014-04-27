@@ -1,6 +1,6 @@
    <link rel="stylesheet" type="text/css" href="<?php echo $this->webroot . 'css/phi.css' ?>">
    <div id="start_study">
-    <p id="doc_name">資料名 : <?php echo $doc['Document']['file_name']?></p>
+    <p id="doc_name">資料名 : <?php echo $doc['Document']['file_name'];?> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; アップロード者：<?php echo $doc['User']['user_name']?>先生　&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 作った日：<?php echo $doc['Document']['create_date'];?></p>
     <!-- lap -->
     <div class="col-lg-9" height="500px" width="900px" style="position: relative">
       <div class="overlay"></div> 
@@ -35,9 +35,11 @@
    </div>
    <?php
    echo $this->Session->flash();
+   if(!$isCopyright)
+   	$style = 'color:gray;'; else $style = "";
    echo $this->Form->create(null,array('url'=>array('controller'=>'documents','action'=>'viewDoc',$id)));
   //secho $this->Form->input('',array('type' => 'hidden','value'=>$id));
-   echo $this->Form->button ( 'Copyright違反 ', array ('type' => 'submit', 'name' => 'data[submit_data]','id' => 'submit_button' ) );
+   echo $this->Form->button ( 'Copyright違反 ', array ('type' => 'submit', 'name' => 'data[submit_data]','id' => 'submit_button' ,'style'=>$style,'disabled'=>!$isCopyright) );
    echo $this->Form->end ();
    ?>
    <div id="comment">

@@ -5,12 +5,12 @@
 	</br>
 	<p class ='label label-info' style = 'display:block;font-size:14px;'>受講者数：<?php if(empty($snum)) echo '0'; else echo $snum;?>人</p>
 	<h3>受講者リスト</h3>
-	<table  style='table-layout: fixed'>
+	<table  style='table-layout: fixed;margin-bottom: 10px;'>
 		<thead>
 			<tr>
-				<th>順番</th>
-				<th><?php echo $this->Paginator->sort('Bill.user_name', '名前'); ?></th>
-				<th><?php echo $this->Paginator->sort('Bill.learn_date', '時間'); ?></th>
+				<th style="text-align: center;font-size: 14px;">順番</th>
+				<th style="text-align: center;font-size: 14px;"><?php echo $this->Paginator->sort('Bill.user_name', '名前'); ?></th>
+				<th style="text-align: center;font-size: 14px;"><?php echo $this->Paginator->sort('Bill.learn_date', '時間'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -24,10 +24,10 @@
 	                    </tbody>
 	</table>
 	
-	<h3>合計報酬　：<?php echo $total?></h3>
+	<h4 style="font-size: 14px;font-weight: bold;">合計報酬　：<?php echo $total?></h4>
                 <?php echo $this->element('paging');?>
                 </br>
-                <?php echo $this->Session->flash();?>
+                
                 <h3>ライク者リスト</h3>
                 <table>
 		<thead>
@@ -48,7 +48,7 @@
                     <?php $i++;}?>
                     </tbody>
 	</table>
-	
+			<?php echo $this->Session->flash();?>
             <h3>ブロック学生リスト</h3>
 	<table>
 		<thead>
