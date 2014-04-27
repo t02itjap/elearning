@@ -18,7 +18,7 @@
 					    	)
 						); ?>
 				</li>
-				<li><?php echo $this->Html->link('学生の試験結果',array('controller'=>'Teachers','action'=>'getStudentTestHistoriesList'))?></li>
+				<li><?php echo $this->Html->link('試験結果',array('controller'=>'Teachers','action'=>'getStudentTestHistoriesList'))?></li>
               	<li><?php echo $this->Html->link('授業を作る',array('controller'=>'Teachers','action'=>'create_course'))?></li>
             	<?php
             	echo $this->Element('Notifications.NotificationInit');

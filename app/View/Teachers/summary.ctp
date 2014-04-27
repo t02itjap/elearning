@@ -1,7 +1,5 @@
 <div id="summary">
-	<p class ='label label-info' style = 'display:block;font-size:14px;'>Like数：<?php echo $lesson['Lesson']['vote_count']-1?>件（<?php if(empty($snum)) echo(''); else echo((($lesson['Lesson']['vote_count']-1)/$snum*100).' ％受講者数')?>)</p>
-	</br>
-	<p class ='label label-info' style = 'display:block;font-size:14px;'>参照数：<?php if(empty($lesson['Lesson']['viewers'])) echo '0'; else  echo $lesson['Lesson']['viewers']?>人</p>
+	<p class ='label label-info' style = 'display:block;font-size:14px;'>Like数：<?php echo $lesson['Lesson']['vote_count']?>件(<?php if(empty($snum)) echo(''); else echo((($lesson['Lesson']['vote_count'])/$snum*100).' ％受講者数')?>)</p>
 	</br>
 	<p class ='label label-info' style = 'display:block;font-size:14px;'>受講者数：<?php if(empty($snum)) echo '0'; else echo $snum;?>人</p>
 	<h3>受講者リスト</h3>
@@ -38,6 +36,7 @@
 			</tr>
 		</thead>
 		<tbody>
+					<?php if(isset($lesson['Lesson']['like'])){?>
                     <?php $i=1;foreach ($lesson['Lesson']['like'] as $l) {?>
                     
                     <tr>
@@ -45,7 +44,7 @@
 				<td><?php echo $l['User']['user_name']?></td>
 				<td><?php echo $l['User']['real_name']?></td>
 			</tr>
-                    <?php $i++;}?>
+                    <?php $i++;}}?>
                     </tbody>
 	</table>
 			<?php echo $this->Session->flash();?>

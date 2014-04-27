@@ -1,5 +1,6 @@
 <?php
 //debug($lessons);
+echo $this->Session->flash();
 echo $this->Html->css('style'); 
 $result=$this->Paginator->params();
 //debug($result);
