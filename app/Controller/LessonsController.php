@@ -424,7 +424,7 @@ class LessonsController extends AppController {
 			//debug($keyword);
 			//debug($type);die();
 		}
-		else if($this->Session->check('keyword')&&$this->Session->check('type')){
+		else if($this->Session->check('keyword')){
 			$keyword=$this->Session->read('keyword');
 			//$type=$this->Session->read('type');
 			//debug($keyword);

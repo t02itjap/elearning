@@ -127,7 +127,6 @@ class UsersController extends AppController {
 				$this->User->id = $this->Auth->user ( 'id' );
 				$this->User->set ( array ('ip_address' => $this->request->clientIp (), 'online_flag' => 1 ) );
 				$this->User->save ();
-				$this->Session->setFlash ( "よこそ　" . $this->Auth->user ( 'user_name' ) );
 				// xoa lock ip
 				$this->LockedUser->deleteAll ( array ('ip_address' => $this->request->clientIp () ) );
 				// redirect to homepage

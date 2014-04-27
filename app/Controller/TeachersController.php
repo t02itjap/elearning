@@ -56,7 +56,8 @@ class TeachersController extends AppController {
             	'create_user_id'
             )
                 ));
-
+		
+        if(!empty($lesson ['Lesson'] ['voters'])){
         if(strpos($lesson ['Lesson'] ['voters'],',')){
         	$lesson ['Lesson'] ['voters'] = explode(",", $lesson ['Lesson'] ['voters']);
 	        foreach ($lesson['Lesson']['voters'] as $value){
@@ -68,8 +69,9 @@ class TeachersController extends AppController {
         	$lesson['Lesson']['like'][] = $user;
         }
 //         debug($lesson['Lesson']['like']);die();
-        $lesson ['Lesson'] ['vote_count'] = count($lesson ['Lesson'] ['voters']);
 
+        $lesson ['Lesson'] ['vote_count'] = count($lesson ['Lesson'] ['voters']);
+        }else $lesson ['Lesson'] ['vote_count'] = 0;
         $snum = $this->Bill->find("count", array(
             'conditions' => array(
                 'lesson_id' => $id

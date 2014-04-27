@@ -2,7 +2,7 @@
 <div>
 	<table style="font-size: 15px;">
 		<tr>
-			<th><?php echo $this->Paginator->sort('category_name', 'カテゴリリスト'); ?></th>
+			<th><?php echo $this->Paginator->sort('category_name', 'カテゴリソート'); ?></th>
 		</tr>
 		<?php 
        		foreach ($categoryList as $key) {

@@ -8,6 +8,7 @@
 <!-- <span style="border: 1px solid green"><input type="radio"/>sdfasfs<input type="radio"/>間違い答え</span> -->
 
 <div id="test">
+	<h4 style="color:blue;font-size: 14px;font-weight: bold;">青い色：正解</h4>   <h4 style ="color:red;font-size: 14px;font-weight: bold;">赤い色：選択した答え</h4>
     <ul>
         <?php 
         $q = $test->questions;
@@ -25,7 +26,7 @@
                         echo "<p style='color: blue'><input name=$i disable='true' checked='true' value=$j type='radio'/>$j.$answer</p><br />";
                     } else {
                         //Check and not Blue.
-                        echo "<p style='color: black'><input name=$i disable='true' checked='true' value=$j type='radio'/>$j.$answer</p><br />";
+                        echo "<p style='color: red'><input name=$i disable='true' checked='true' value=$j type='radio'/>$j.$answer</p><br />";
                     }
                 } else {
                     if ($j==$q[$i]['correct']) {
