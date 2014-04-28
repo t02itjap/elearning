@@ -38,7 +38,7 @@
                     user_id : user_id
                 }
             }) .done(function(data) {
-                likeButton.attr('disabled','disabled');
+                likeButton.attr('color','gray');
                 var currentCount = parseInt($('#countLike').text());
                 console.log(currentCount);
                 currentCount += 1;
@@ -110,7 +110,7 @@ foreach ($category as $categories) {
         <?php
         $tmpDisable = '';
         if ($flagLike)
-            $tmpDisable = 'disabled';
+            $tmpDisable = 'style="color:gray;"';
         echo '<button id="like"' . $tmpDisable . ' lesson_id="' . $id . '" user_id="' . $user_id . '">Like</button>';
         ?>
     </div>   

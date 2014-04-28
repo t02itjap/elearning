@@ -1314,7 +1314,7 @@ class AdminsController extends AppController {
 	}
 	public function database_manager() {
 		$this->set ( 'title_for_layout', 'バックアップとリストアデータベース' );
-		$dir = new Folder ( WWW_ROOT . 'files/db' );
+		$dir = new Folder ( WWW_ROOT . 'backup' );
 		$files = $dir->find ( '.*\.sql' );
 		$files_info = array ();
 		foreach ( $files as $file_name ) {
@@ -1390,10 +1390,16 @@ class AdminsController extends AppController {
 	public function delete_file() {
 		$this->autoRender = false;
 		if (isset ( $this->params ['named'] ['file'] )) {
-			$source = WWW_ROOT . 'files/db/' . $this->params ['named'] ['file'];
+			$source = WWW_ROOT . 'backup/' . $this->params ['named'] ['file'];
 			
 			unlink ( $source );
+			//delete backup files
+			$dirBackupPath = explode('.', $source)[0];
+			$dirBackup = new Folder($dirBackupPath);
+			$dirBackup->delete();
 		}
+		
+		
 		$this->Session->setFlash ( __ ( $this->params ['named'] ['file'] . '　ファイルが削除した。' ), 'default', array (), 'backup' );
 		$this->redirect ( array (
 				'controller' => 'admins',
@@ -1402,8 +1408,8 @@ class AdminsController extends AppController {
 	}
 	public function delete_all() {
 		$this->autoRender = false;
-		$dir = new Folder ( WWW_ROOT . 'files/db' );
-		$dir->chmod ( WWW_ROOT . 'files/db', 0777, true, array () );
+		$dir = new Folder ( WWW_ROOT . 'backup' );
+		$dir->chmod ( WWW_ROOT . 'backup', 0777, true, array () );
 		$files = $dir->find ( '.*\.sql' );
 		foreach ( $files as $file ) {
 			unlink ( $dir->pwd () . DS . $file );
@@ -1417,11 +1423,18 @@ class AdminsController extends AppController {
 	public function backup_database() {
 		$this->autoRender = false;
 		$databaseName = 'elearning';
-		$fileName = WWW_ROOT . 'files/db/' . $databaseName . '-backup-' . date ( 'Y-m-d_H-i-s' ) . '.sql';
+		$fileName = WWW_ROOT . 'backup/' . $databaseName . '-backup-' . date ( 'Y-m-d_H-i-s' ) ;
+		$file = $fileName. '.sql';
 		
-		$cmd = 'cd "C:/xampp/mysql/bin" & mysqldump.exe --user=root --host=localhost elearning > ' . $fileName;
+		$cmd = 'cd "C:/xampp/mysql/bin" & mysqldump.exe --user=root --host=localhost elearning > ' . $file;
 		
 		exec ( $cmd );
+		//backup file
+		$dirBackup = new Folder();
+		$dirBackup->create($fileName);
+		$dirCurrent = new Folder(WWW_ROOT.'files');
+		$dirCurrent->copy($fileName);
+		//
 		$this->Session->setFlash ( __ ( '現在のデータベースがバックアップした。' ), 'default', array (), 'backup' );
 		$this->redirect ( array (
 				'controller' => 'admins',
@@ -1431,14 +1444,32 @@ class AdminsController extends AppController {
 	public function restore_database() {
 		$this->autoRender = false;
 		if (isset ( $this->params ['named'] ['file'] )) {
+			$dir = new Folder ( WWW_ROOT  );
+			$dir->chmod ( WWW_ROOT , 0777, true, array () );
 			$mysql_host = 'localhost';
 			$mysql_username = 'root';
 			$mysql_password = '';
 			$db_name = 'elearning';
-			$source = WWW_ROOT . 'files/db/' . $this->params ['named'] ['file'];
+			$source = WWW_ROOT . 'backup/' . $this->params ['named'] ['file'];
 			$command = 'cd "C:/xampp/mysql/bin" & mysql.exe --user=root --host=localhost elearning < ' . $source;
 			// var_dump ( $command );
 			exec ( $command );
+			//restore file
+			$dirBackupPath = explode('.', $source)[0];
+// 			debug($dirBackupPath);die;
+			$dirBackup = new Folder($dirBackupPath);
+			$dirBackup->chmod ( WWW_ROOT . 'backup', 0777, true, array () );
+// 			debug($dirBackup);die;
+			$dirCurrent = new Folder(WWW_ROOT.'files');
+			$dirCurrent->chmod ( WWW_ROOT . 'backup', 0777, true, array () );
+			$dirCurrent->delete();
+			$dirNew = new Folder();
+			
+			if($dirNew->create(WWW_ROOT.'files')){
+// 				$dirNew->chmod ( WWW_ROOT . 'backup', 0777, true, array () );
+				$dirBackup->copy(WWW_ROOT.'files');
+			}
+			$this->Session->setFlash('バックアップエラー');			
 		}
 		$this->Session->setFlash ( __ ( $this->params ['named'] ['file'] . ' バックアップファイルがリストアした。' ), 'default', array (), 'backup' );
 		$this->redirect ( array (

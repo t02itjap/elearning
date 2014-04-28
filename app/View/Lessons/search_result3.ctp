@@ -26,12 +26,13 @@ if($result['count']>=1):
 					switch ($level) {
 						case '3':
 							echo '<li>';
-							echo $this->Html->link('見る',array('controller'=>'students','action'=>'view_lesson_to_learn',$lesson['Lesson']['id']));
+							echo $this->Html->link('見る',array('controller'=>'students','action'=>'view_lesson_to_learn',$lesson['Lesson']['id']),array('class'=>'link-button'));
 							echo '</li>';
 							break;
 
 						case '2':
 							//echo "<li><a href='#' class='see'>見る</a></li>";
+							echo '<li>';
 							if($this->Session->read('Auth.User.id')==$lesson['Lesson']['create_user_id']){
 								echo $this->Html->link(
 								    '削除',
@@ -40,10 +41,20 @@ if($result['count']>=1):
 								        'action' => 'delete_lesson',
 								        $lesson['Lesson']['id']
 								    	),
-								    array('class'=>'confirm_delete')
+								    array('class'=>'confirm_delete link-button')
 									);
 								echo "</li>";
-								echo "<li><a href='#' class='see'>情報サマリー</a></li>";
+								echo "<li>";
+								echo $this->Html->link(
+										'授業サマリー',
+										array(
+												'controller' => 'teachers',
+												'action' => 'summary',
+												$lesson['Lesson']['id']
+										),
+										array('class'=>'see link-button')
+								);
+								echo "</li>";
 							}
 							else{
 								echo "<li>";
@@ -54,7 +65,7 @@ if($result['count']>=1):
 								        'action' => 'title_report',
 								        $lesson['Lesson']['id']
 								    	),
-								    array('class'=>'confirm_report')
+								    array('class'=>'confirm_report link-button')
 									);
 								echo "</li>";
 							}

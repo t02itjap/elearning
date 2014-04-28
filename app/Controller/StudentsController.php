@@ -121,7 +121,7 @@ class StudentsController extends AppController {
 			}
 		}
 		if (isset ( $this->request->data ['delete_student'] )) {
-			if ($this->User->deleteUser ( $student ['User'] ['id'] ) && $this->TestHistory->deleteTestHistoryByUserId ( $student ['User'] ['id'] ) && $this->InitialUser->deleteInitialUserByUserId ( $student ['User'] ['id'] ) && $this->Comment->deleteCommentByUserId ( $student ['User'] ['id'] ) && $this->Bill->deleteBillByUserid ( $student ['User'] ['id'] ) && $this->BannedStudent->deleteRecordBystudentId ( $student ['User'] ['id'] )) {
+			if ($this->Lesson->deleteVoter($student ['User'] ['id']) && $this->Lesson->deleteReporter($student ['User'] ['id']) && $this->User->deleteUser ( $student ['User'] ['id'] ) && $this->TestHistory->deleteTestHistoryByUserId ( $student ['User'] ['id'] ) && $this->InitialUser->deleteInitialUserByUserId ( $student ['User'] ['id'] ) && $this->Comment->deleteCommentByUserId ( $student ['User'] ['id'] ) && $this->Bill->deleteBillByUserid ( $student ['User'] ['id'] ) && $this->BannedStudent->deleteRecordBystudentId ( $student ['User'] ['id'] )) {
 				$this->Session->destroy ();
 				$this->Session->setFlash ( 'このアカウントが今削除です' );
 				$this->redirect ( array (

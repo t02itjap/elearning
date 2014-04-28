@@ -1,4 +1,8 @@
 <?php
+
+App::uses('Folder', 'Utility');
+App::uses('File', 'Utility');
+
 class TeachersController extends AppController {
     public $name = "Teachers";
 	var $uses = array (
@@ -189,7 +193,11 @@ class TeachersController extends AppController {
             }
         }
         if (isset($this->request->data ['delete_teacher'])) {
-        	if ($this->User->deleteUser($teacher['User']['id']) &&
+        	//delete files
+        	$tFiles = new Folder(WWW_ROOT . 'files/'.$this->Auth->user('id'));
+        	
+        	//delete in database
+        	if ($tFiles->delete()&&$this->User->deleteUser($teacher['User']['id']) &&
             	$this->Verifycode->deleteVerifycodeByUserId($teacher['User']['id']) &&
             	$this->Test->deleteTestByUserId($teacher['User']['id']) &&
             	$this->Bill->deleteBillByTeacherid($teacher['User']['id'])&&

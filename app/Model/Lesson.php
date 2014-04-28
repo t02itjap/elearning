@@ -63,11 +63,55 @@ class Lesson extends AppModel {
 			)
 		)
 	);
+    public  function deleteReporter($stuId){
+    	$check = 1;
+    	$reportList = $this->find('all',array(
+    			'conditions' => array('Lesson.copyright_reporters LIKE ' => '%,'.$stuId.',%')
+    	));
+//     	debug($reportList);die();
+    	
+    	if($reportList != NULL) foreach ($reportList as $report){
+    		$this->id = $report['Lesson']['id'];
+    		$curReporter = $this->field('copyright_reporters');
+    		$newReporter = str_replace(','.$stuId.',', ',', $curReporter);
+    		$this->set(array('copyright_reporters'=>$newReporter));
+    		if(!$this->save()){
+    			$check = 0;
+    			break;
+    		}
+    	}
+    	if($check == 1) return true;
+    	else return false;
+    }
+    
+    public  function deleteVoter($stuId){
+    	$check = 1;
+    	$likeList = $this->find('all',array(
+    			'conditions' => array('Lesson.voters LIKE ' => '%,'.$stuId.',%')
+    	));
+//     	debug($likeList);die;
+    	 
+    	if($likeList != NULL)
+    		foreach ($likeList as $like){
+	    		$this->id = $like['Lesson']['id'];
+	    		$curVoter = $this->field('voters');
+	    		$newVoter = str_replace(','.$stuId.',', ',', $curVoter);
+	    		$this->set(array('copyright_reporters'=>$newVoter));
+	    		if(!$this->save()){
+	    			$check = 0;
+	    			break;
+	    		}
+    	}
+    	if($check == 1) return true;
+    	else return false;
+    }
+    
 	public function deleteLessonByTeacherId($teacherId){
     	$check = 1;
 		$recordList = $this->find('all',array(
         	'conditions' => array('Lesson.create_user_id' => $teacherId)
         ));
+		
         if($recordList != NULL) foreach ($recordList as $record){
             if(!$this->delete($record['Lesson']['id'])){
             	$check = 0;

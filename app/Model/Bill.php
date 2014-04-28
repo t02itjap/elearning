@@ -72,7 +72,7 @@ class Bill extends AppModel{
 		$check = 1;
 		$lessonTable = new Lesson();
 		$lessonList = $lessonTable->find('all',array('conditions'=>array('create_user_id'=>$teacherId)));
-		debug($lessonList);
+// 		debug($lessonList);
 		if(!empty($lessonList)) foreach ($lessonList as $lesson){
 			if(!$this->deleteBillByLessonid($lesson['Lesson']['id'])){
 				$check = 0;
