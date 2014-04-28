@@ -1365,14 +1365,11 @@ class AdminsController extends AppController {
 			$cmd = $cmd . ' /st ' . $startTime;
 			$cmd = $cmd . ' /ed ' . implode ( '/', explode ( '-', $endDate ) );
 			$cmd = $cmd . ' /et ' . $endTime;
-			$cmd = $cmd . ' /k';
+			$cmd = $cmd . ' /k'.' /f';
 			exec ( $cmd, $ret );
 			// debug(strpos( $ret));die();
-			if (strpos ( $ret [0], 'WARNING' ) !== false) {
-				$this->Session->setFlash ( '自動バックアップが運転している', 'default', array (), 'autobackup' );
-			} else {
-				$this->Session->setFlash ( '自動バックアップのスケジュールがスタットした。', 'default', array (), 'autobackup' );
-			}
+			
+			$this->Session->setFlash ( '自動バックアップのスケジュールがスタットした。', 'default', array (), 'autobackup' );
 		}
 	}
 	public function endBackup() {
