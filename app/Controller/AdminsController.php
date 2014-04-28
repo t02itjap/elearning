@@ -557,16 +557,16 @@ class AdminsController extends AppController {
 		$this->autoRender = false;
 		$lesson = $this->Lesson->findById($lessonId);
 		$this->User->Notification->msg ( $teacher, "あなたの授業".$lesson['Lesson']['lesson_name']."がタイトル違反した" );
-		$this->Session->setFlash('勧告した');
+		$this->Session->setFlash('授業タイトル違反を勧告した');
 		$this->redirect('getLesson');
 	}
 	
-	function copyrightNotify($teacher,$docId){
+	function copyrightNotify($teacher,$lessonId){
 		$this->autoRender = false;
-		$doc = $this->Document->findById($docId);
-		$this->User->Notification->msg ( $teacher, "あなたのファイル".$doc['Document']['file_name']."がCopyright違反した" );
-		$this->Session->setFlash('勧告した');
-		$this->redirect('getDocument');
+		$lesson = $this->Lesson->findById($lessonId);
+		$this->User->Notification->msg ( $teacher, "あなたのファイル".$lesson['Lesson']['lesson_name']."がCopyright違反した" );
+		$this->Session->setFlash('Copyright違反を勧告した');
+		$this->redirect('getLesson');
 	}
 	
 	// Huong Viet`
@@ -593,18 +593,19 @@ class AdminsController extends AppController {
 			) );
 		}
 		if (isset ( $this->request->data ['block_file'] )) {
+			$count = $this->request->data ['block_file'];
 			$this->User->Notification->msg ( $this->Document->field ( 'create_user_id', array (
 					'id' => $count
 			) ), "あなたの" . $this->Document->field ( 'file_name', array (
 					'id' => $count
-			) ) . "ファイルがブロックした" );
-			$count = $this->request->data ['block_file'];
+			) ) . "ファイルがブロックした。" );
+			
 			$this->Document->id = $count;
 			$this->Document->set ( array (
 					'lock_flag' => 1 
 			) );
 			$this->Document->save ();
-			$this->Session->setFlash ( 'このアップロードファイルをブロックした。' );
+			$this->Session->setFlash ( 'このアップロードファイルをブロックした。メッセージを通信した。' );
 			$this->redirect ( array (
 					'controller' => 'admins',
 					'action' => 'getDocument' 

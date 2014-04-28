@@ -1,4 +1,5 @@
 <?php 
+App::uses('Lesson','Model');
 class Bill extends AppModel{
 	//Thang viet
 	var $name = 'Bill';
@@ -66,7 +67,22 @@ class Bill extends AppModel{
         if($check == 1) return true;
         else return false;
 	}
-	public function deleteBillByLessonid($LessonId){
+	
+	public function deleteBillByTeacherid($teacherId){
+		$check = 1;
+		$lessonTable = new Lesson();
+		$lessonList = $lessonTable->find('all',array('conditions'=>array('create_user_id'=>$teacherId)));
+		debug($lessonList);
+		if(!empty($lessonList)) foreach ($lessonList as $lesson){
+			if(!$this->deleteBillByLessonid($lesson['Lesson']['id'])){
+				$check = 0;
+			}
+		}
+		if($check == 1) return true;
+		else return false;
+	}
+	
+	public function deleteBillByLessonid($lessonId){
 		$check = 1;
 		$recordList = $this->find('all',array(
         	'conditions' => array('lesson_id' => $lessonId)

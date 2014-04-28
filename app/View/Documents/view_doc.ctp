@@ -33,15 +33,7 @@
        height="300px" width="100%" style="z-index: 1" enableContextMenu="0">
        <param name="enableContextMenu" value="0">
    </div>
-   <?php
-   echo $this->Session->flash();
-   if(!$isCopyright)
-   	$style = 'color:gray;'; else $style = "";
-   echo $this->Form->create(null,array('url'=>array('controller'=>'documents','action'=>'viewDoc',$id)));
-  //secho $this->Form->input('',array('type' => 'hidden','value'=>$id));
-   echo $this->Form->button ( 'Copyright違反 ', array ('type' => 'submit', 'name' => 'data[submit_data]','id' => 'submit_button' ,'style'=>$style,'disabled'=>!$isCopyright) );
-   echo $this->Form->end ();
-   ?>
+   
    <div id="comment">
     <div class="old_comment">
       <?php

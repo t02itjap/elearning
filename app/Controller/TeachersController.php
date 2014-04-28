@@ -192,11 +192,14 @@ class TeachersController extends AppController {
         	if ($this->User->deleteUser($teacher['User']['id']) &&
             	$this->Verifycode->deleteVerifycodeByUserId($teacher['User']['id']) &&
             	$this->Test->deleteTestByUserId($teacher['User']['id']) &&
+            	$this->Bill->deleteBillByTeacherid($teacher['User']['id'])&&
             	$this->Lesson->deleteLessonByTeacherId($teacher['User']['id']) &&
             	$this->InitialVerifycode->deleteInitialVerifycodeByUserId($teacher['User']['id']) &&
             	$this->InitialUser->deleteInitialUserByUserId($teacher['User']['id']) &&
             	$this->Document->deleteDocumentByUserId($teacher['User']['id']) &&
             	$this->Comment->deleteCommentByUserId($teacher['User']['id']) &&
+            	
+            	$this->TestHistory->deleteTestHistoryByUserId($teacher['User']['id'])&&
             	$this->BannedStudent->deleteRecordByTeacherId($teacher['User']['id'])){
             		$this->Session->destroy ();
                 	$this->Session->setFlash('このアカウントが今削除です');
@@ -649,6 +652,7 @@ class TeachersController extends AppController {
     	$this->set('title_for_layout', '報酬情報');
         $temp = $this->ChangeableValue->find('first', array('conditions' => array('id' => 2)));
         $rate = $temp['ChangeableValue']['current_value'];
+        $fee = $this->ChangeableValue->field('current_value',array('id'=>6));
         //$time = date('Y-m');
         if ($this->request->is('post')) {
             $year = $this->data['YearMonth']['year']['year'];
@@ -704,6 +708,8 @@ class TeachersController extends AppController {
             'group' => 'Bill.lesson_id'
         );
         $data = $this->paginate('Bill');
+        $this->set('rate',$rate);
+        $this->set('fee',$fee);
         //$this->set('data', $data);
         $this->Session->write('data', $data);
         $sum = 0;

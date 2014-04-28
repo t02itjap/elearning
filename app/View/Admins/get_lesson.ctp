@@ -20,13 +20,15 @@
 	<table class='table table-striped' style='table-layout: fixed'>
 		<thead>
 			<tr>
-				<th><?php echo $this->Paginator->sort('Lesson.id', 'ID'); ?></th>
-				<th><?php echo $this->Paginator->sort('Lesson.lesson_name', '授業名'); ?></th>
-				<th><?php echo $this->Paginator->sort('User.user_name', '作った人'); ?></th>
+				<th style="width:20px;"><?php echo $this->Paginator->sort('Lesson.id', 'ID'); ?></th>
+				<th style="width:60px;"><?php echo $this->Paginator->sort('Lesson.lesson_name', '授業名'); ?></th>
+				<th style="width:60px;"><?php echo $this->Paginator->sort('User.user_name', '作った人'); ?></th>
 				<th><?php echo $this->Paginator->sort('Lesson.create_date', '作った時間'); ?></th>
 				<!--<th><?php echo $this->Paginator->sort('Lesson.category_id', 'カテゴリー'); ?></th> -->
-				<th>タイトル違反</th>
-				<th></th>
+				<th style="width:60px;">タイトル違反</th>
+				<th style="width:80px;">タイトル違反勧告</th>
+				<th style="width:70px;">Copyright違反</th>
+				<th style="width:90px;">Copyright違反勧告</th>
 			</tr>
 		</thead>
 		<tbody> 
@@ -59,6 +61,14 @@
 						?>
                         <td class='content-center'><?php echo $count;?></td>
                         <td><?php echo $this->Html->link('勧告',array('controller'=>'admins','action'=>'titleNotify',$item['User']['id'],$item['Lesson']['id']));?></td>
+                        <td class='content-center'><?php 
+                        if(!empty($item['Lesson']['copyright_reporters'])){
+							$reporter = explode(',', $item['Lesson']['copyright_reporters']);
+							
+							echo count($reporter)-1;
+                        }else echo '0';
+                        ?></td>
+				<td class='content-center'><?php echo $this->Html->link('勧告',array('controller'=>'admins','action'=>'copyrightNotify',$item['Lesson']['create_user_id'],$item['Lesson']['id']));?></td>
 			</tr>
                 <?php
 					}

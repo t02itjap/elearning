@@ -39,7 +39,9 @@ class LessonOfCategory extends AppModel {
 		$isand=false;
 		$andpos=strpos($keyword, '+');
 		$orpos=strpos($keyword, '-');
-		
+		$lIdAndCname=array();
+		$lIdAndCnameTemp=array();
+
 		if(($andpos!=0&&$orpos!=0&&$andpos<=$orpos)||($orpos==0&&$andpos!=0))
 		{
 			$keywords=explode('+', $keyword);
@@ -54,23 +56,40 @@ class LessonOfCategory extends AppModel {
 		}
 		//debug($condition1);
 		if($isand){
-			foreach ($keywords as $key) {
-				$lIdAndCnameTemp[]=$this->find('all', array(
+			for($k=0;$k<count($keywords);$k++){
+				$lIdAndCnameTemp[$k]=$this->find('all', array(
 				'fields'=>array('LessonOfCategory.lesson_id'),
-				'conditions'=>array('Category.category_name LIKE'=>'%'.$key.'%')
+				'conditions'=>array('Category.category_name LIKE'=>'%'.$keywords[$k].'%'),
+				'group'=>'LessonOfCategory.lesson_id'
 				));
+				if(!empty($lIdAndCnameTemp[$k]))
+					for($i=0;$i<count($lIdAndCnameTemp[$k]);$i++){
+						$temp[$k][]=$lIdAndCnameTemp[$k][$i]['LessonOfCategory']['lesson_id'];
+				}
+				else
+					$temp[$k][]=-1;
 			}
-			//debug("isand in LessonOfCategory");	
-			$lIdAndCname=call_user_func_array('array_intersect', $lIdAndCnameTemp);
-		}
+			if(!empty($temp)){
+				$lIdAndCname=$temp[0];
+				//debug($lIdAndCname);die();
+				for($i=1;$i<count($temp);$i++){
+					$lIdAndCname=array_intersect($lIdAndCname, $temp[$i]);
+				}
+			}
+		}	
 		else{
 			$conditions=array('OR'=>$condition1);
+
 			//debug($conditions);
-			$lIdAndCname=$this->find('all', array(
+			$temp=$this->find('all', array(
 				'fields'=>array('LessonOfCategory.lesson_id'),
-				'conditions'=>$conditions
+				'conditions'=>$conditions,
+				'group'=>'LessonOfCategory.lesson_id'
 			));
-			//debug("Not isand in LessonOfCategory");
+			if(!empty($temp))
+				for($i=0;$i<count($temp);$i++){
+					$lIdAndCname[$i]=$temp[$i]['LessonOfCategory']['lesson_id'];
+				}
 		}
 		return $lIdAndCname;
 	}

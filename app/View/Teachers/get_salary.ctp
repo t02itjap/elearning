@@ -26,6 +26,9 @@ echo $this->Form->end();
             <tr>
                 <th><?php echo $this->Paginator->sort('Lesson.lesson_name', '授業名'); ?></th>
                 <th>学生数</th>
+                <th>学費</th>
+                <th>報酬率</th>
+                <th>学生の払った金</th>
                 <th>報酬</th>
             </tr>
         </thead>
@@ -35,8 +38,13 @@ echo $this->Form->end();
                 ?>
                 <tr>
                     <td class='content-center'><?php echo $item['Lesson']['lesson_name']; ?></td>
+                    
+                    
                     <td class='content-center'><?php echo $item[0]['COUNT']; ?></td>
-                    <td class='content-center'><?php echo $item[0]['SUM']; ?></td>
+                    <td class='content-center' ><?php echo $fee;?></td>
+                    <td class='content-center' ><?php echo $rate."%"?></td>
+                    <td calss='content-center'><?php echo $item[0]['SUM']*100/$rate;?></td>
+                    <td class='content-center'><?php echo $item[0]['SUM'];?></td>
                 </tr>
                 <?php
             }

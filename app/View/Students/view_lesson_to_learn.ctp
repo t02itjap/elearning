@@ -74,24 +74,39 @@ foreach ($category as $categories) {
     }
     echo '<button id="learn" lesson_id="' . $id . '" user_id="' . $user_id . '" style="' . $tmp_2 . '">勉強しましょう</button>';
     ?>
+    <?php
+   echo $this->Session->flash();
+   if(!$isCopyright)
+   	$style = 'color:gray;'; else $style = "";
+   echo $this->Form->create(null,array('url'=>array('controller'=>'students','action'=>'view_lesson_to_learn',$lesson['Lesson']['id'])));
+  //secho $this->Form->input('',array('type' => 'hidden','value'=>$id));
+   echo $this->Form->button ( 'Copyright違反 ', array ('type' => 'submit', 'name' => 'data[submit_data]','id' => 'submit_button' ,'style'=>$style,'disabled'=>!$isCopyright) );
+   echo $this->Form->end ();
+   ?>
     <div id="learnDiv" style="<?php echo $tmp ?>">
         <span class="ml">資料：</span>
-        <span class="doc">
+        <ul style="list-style-type:square;margin-left: 100px;font-size: 14px;">
+        
         <?php
     	foreach ($lesson['Document'] as $documents) {
 			if($documents['lock_flag']!= true){
+			echo '<li>';
         	echo $this->Html->link($documents['file_name'], array('controller' => 'Documents', 'action' => 'viewDoc',$documents['id']));
+        	echo '</li>';
         	echo "<br/>";
         	}
     	}
-    ?></a></span><br /><br /><br />
+    ?></ul>
         <span class="ml">テスト：</span>
-        <span class="test"><?php
+        <ul style="list-style-type:square;margin-left: 100px;font-size: 14px;">
+        <?php
                 foreach ($lesson['Test'] as $tests) {
+					echo '<li>';
                     echo $this->Html->link($tests['file_name'], array('controller'=>'tests','action'=>'test',$tests['id']));
+                    echo '</li>';
                     echo "<br/>";
                 }
-    ?></span><br /><br /><br />
+    ?></ul>
         <?php
         $tmpDisable = '';
         if ($flagLike)

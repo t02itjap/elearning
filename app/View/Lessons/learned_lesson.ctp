@@ -20,7 +20,7 @@ foreach ($lessons as $lesson):
 			<li>先生：<?php echo $lesson['User']['user_name']; ?></li>
 			<li>学費：<?php echo $cost; ?> VND</li>
 			<?php 
-			echo "<li><a href='#' class='see'>見る</a></li>";
+			echo $this->Html->link('見る',array('controller' => 'Students', 'action' => 'view_lesson_to_learn', $lesson['Lesson']['id']), array('class' => 'link-button','style'=>'float:right;'));
 			?>
 		</ul>
 	</div>

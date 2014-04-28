@@ -444,13 +444,7 @@ class LessonsController extends AppController {
 		//debug($keywords);
 		
 		//Get lessonId and categoryName
-		$lIdAndCName=$this->LessonOfCategory->getLIdAndCName2($keyword);
-		$lessons_id = Array();
-		//debug($keyword);
-		//debug($lIdAndCName);
-		foreach($lIdAndCName as $key){
-			$lessons_id[] = $key['LessonOfCategory']['lesson_id'];
-		}
+		$lessons_id=$this->LessonOfCategory->getLIdAndCName2($keyword);
 		//debug($lessons_id);
 		if($isand){
 			foreach ($keywords as $key) {

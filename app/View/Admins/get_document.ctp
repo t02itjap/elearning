@@ -28,8 +28,7 @@
 				<th><?php echo $this->Paginator->sort('Document.create_user_id', 'アップロード者'); ?></th>
 				
 				<th style="width:100px;"><?php echo 'ファイルリンク' ;?></th>
-				<th>Copyright違反</th>
-				<th style="width:40px;"></th>
+				
 				<th style="width:40px;"></th>
 			</tr>
 		</thead>
@@ -63,16 +62,7 @@
 				
 				<td class='content-center'><?php echo $item['User']['user_name']; ?></td>
 				<td class='content-center'><?php echo $item['Document']['file_link'] ?></td>
-                        <td class='content-center'><?php 
-                        if(!empty($item['Document']['copyright_reporters']))
-                        {
-                        if(strpos($item['Document']['copyright_reporters'],',')){
-							$reporter = explode(',', $item['Document']['copyright_reporters']);
-							echo count($reporter);
-                        }else echo '1';
-                        }else echo '0';
-                        ?></td>
-				<td class='content-center'><?php echo $this->Html->link('勧告',array('controller'=>'admins','action'=>'copyrightNotify',$item['Document']['create_user_id'],$item['Document']['id']));?></td>
+                        
 				<td class='content-center'><?php echo $this->Html->link('削除',array('controller'=>'admins','action'=>'deleteDoc',$item['Document']['id']));?></td>
 				
 			</tr>
