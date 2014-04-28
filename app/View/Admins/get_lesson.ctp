@@ -60,7 +60,12 @@
 						
 						?>
                         <td class='content-center'><?php echo $count;?></td>
+                        <?php 
+                        if($item ['Lesson'] ['title_violation']){
+                        ?>
                         <td><?php echo $this->Html->link('勧告',array('controller'=>'admins','action'=>'titleNotify',$item['User']['id'],$item['Lesson']['id']));?></td>
+                        <?php }else echo '<td style = "font-weight:bold;">勧告</td>';?>
+                        
                         <td class='content-center'><?php 
                         if(!empty($item['Lesson']['copyright_reporters'])){
 							$reporter = explode(',', $item['Lesson']['copyright_reporters']);
@@ -68,7 +73,11 @@
 							echo count($reporter)-1;
                         }else echo '0';
                         ?></td>
+                        <?php 
+                        if($item ['Lesson'] ['copyright_violation']){
+                        ?>
 				<td class='content-center'><?php echo $this->Html->link('勧告',array('controller'=>'admins','action'=>'copyrightNotify',$item['Lesson']['create_user_id'],$item['Lesson']['id']));?></td>
+						<?php }else echo '<td style = "font-weight:bold;">勧告</td>';?>
 			</tr>
                 <?php
 					}
@@ -79,7 +88,7 @@
 				 <?php
 else :
 					{
-						echo $message;
+						echo '結果がない';
 					}
 					?>
 <?php endif; ?>

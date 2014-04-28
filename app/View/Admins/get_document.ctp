@@ -3,16 +3,16 @@
 <div id="acc_manage">
 	<?php echo $this->Session->flash();?>
     <?php
-				echo $this->Form->create ( 'Document' );
-				echo '<div style = "float: left; margin-left: 5px; margin-top:3px">';
-				echo $this->Form->input ( 'file_name', array (
-						'placeholder' => 'ファイル検索', 'label' => false
-				) );
-				echo '</div>';
-				echo '<div style = "float: left; margin-left: 5px; margin-top:0px">';
-				echo $this->Form->button('検索', array('type' => 'submit', 'name' => 'data[submit_data]', 'class' => 'link-button', 'id' => 'submit_button'));
-				echo '</div>';
-				echo $this->Form->end ();
+// 				echo $this->Form->create ( 'Document' );
+// 				echo '<div style = "float: left; margin-left: 5px; margin-top:3px">';
+// 				echo $this->Form->input ( 'file_name', array (
+// 						'placeholder' => 'ファイル検索', 'label' => false
+// 				) );
+// 				echo '</div>';
+// 				echo '<div style = "float: left; margin-left: 5px; margin-top:0px">';
+// 				echo $this->Form->button('検索', array('type' => 'submit', 'name' => 'data[submit_data]', 'class' => 'link-button', 'id' => 'submit_button'));
+// 				echo '</div>';
+// 				echo $this->Form->end ();
 				?>
     <?php if(isset($data)&&$data!=null): ?>
     <!--

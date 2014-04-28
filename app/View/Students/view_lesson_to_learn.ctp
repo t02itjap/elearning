@@ -20,7 +20,7 @@
                         $('#learn').hide().remove();
                         break;
                     case '1':
-                        alert("Ban da bi tu choi tham gia khoa hoc boi giao vien");
+                        alert("あなたはこの授業の先生から受講が拒否された！");
                         break;
                 }
             });

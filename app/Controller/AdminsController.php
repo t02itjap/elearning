@@ -540,7 +540,7 @@ class AdminsController extends AppController {
 				$type = '54';
 			else
 				$type = '18';
-			$line = $money ['user'] ['user_name'] . "\t" . $money ['user'] ['real_name'] . "\t" . $money ['sum'] . "\t" . $money ['user'] ['address'] . "\t" . $money ['user'] ['phone_number'] . "\t" . $type . $money ['user'] ['bank_account_code'] . "\r\n";
+			$line = $money ['user'] ['user_name'] . "\t" . $money ['user'] ['real_name'] . "\t" . $money ['sum'] . "\t" . $money ['user'] ['address'] . "\t" . $money ['user'] ['phone_number'] . "\t" . $type ."\t" . $money ['user'] ['bank_account_code'] . "\r\n";
 			// debug($line);die();
 			fwrite ( $file, $line );
 		}
@@ -1367,7 +1367,7 @@ class AdminsController extends AppController {
 			$cmd = $cmd . ' /et ' . $endTime;
 			$cmd = $cmd . ' /k';
 			exec ( $cmd, $ret );
-			// debug(strpos( $ret[0],'WARNING'));die();
+			// debug(strpos( $ret));die();
 			if (strpos ( $ret [0], 'WARNING' ) !== false) {
 				$this->Session->setFlash ( '自動バックアップが運転している', 'default', array (), 'autobackup' );
 			} else {

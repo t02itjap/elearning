@@ -73,7 +73,7 @@ class Document extends AppModel {
     public function deleteDocumentByUserId($userId){
     	$check = 1;
 		$recordList = $this->find('all',array(
-        	'conditions' => array('Lesson.create_user_id' => $userId)
+        	'conditions' => array('Document.create_user_id' => $userId)
         ));
         if($recordList != NULL) foreach ($recordList as $record){
             if(!$this->delete($record['Document']['id'])){
@@ -82,9 +82,6 @@ class Document extends AppModel {
             }
         }
         if($check == 1){
-			$uploaddir = WWW_ROOT . 'files/'.$userId.'/';
-			if (!is_dir($uploaddir)) rmdir($uploaddir);
-
         	return true;
         }
         else return false;

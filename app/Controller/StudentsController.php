@@ -338,7 +338,7 @@ class StudentsController extends AppController {
 	}
 	public function category() {
 		$this->paginate = array (
-				'limit' => 2,
+				'limit' => 3,
 				'fields' => array (
 						'Category.id',
 						'Category.category_name' 
